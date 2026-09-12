@@ -1,7 +1,7 @@
 {
   "app": "полиця настілок",
   "version": 2,
-  "saved": "2026-09-12T20:04:28.319Z",
+  "saved": "2026-09-12T20:04:47.270Z",
   "games": [
     {
       "added": "2026-09-12",
@@ -334,7 +334,9 @@
       "bggId": "760",
       "bggRank": 334,
       "bggRating": 7.4,
-      "byCount": {},
+      "byCount": {
+        "2": 8
+      },
       "comment": "",
       "cover": "https://cf.geekdo-images.com/RnbZfspkPRfr6EMkRkac2Q__square200/img/m4waWxap7NBFIOXb-bz2Mw3Ng-E=/200x200/filters:strip_icc()/pic149717.jpg",
       "id": "g-battle-line",
@@ -356,14 +358,14 @@
           "url": "https://boardgamegeek.com/filepage/38150/player-aid-hand-rankings"
         }
       ],
-      "score": null,
+      "score": 8,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:04:19.328Z",
-      "weight": null
+      "updated": "2026-09-12T20:04:38.187Z",
+      "weight": 1
     },
     {
       "added": "2026-09-12",
