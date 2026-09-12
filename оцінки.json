@@ -45,19 +45,23 @@
     },
     {
       "added": "2026-09-12",
+      "bggId": "403160",
+      "bggRank": 7917,
+      "bggRating": 8.3,
       "byCount": {},
       "comment": "",
+      "cover": "https://cf.geekdo-images.com/9z9YyDFj1HECltRfdHgKvg__square200/img/IqZD4BxidqyetgIz9fweyw-nHjM=/200x200/filters:strip_icc()/pic8760198.jpg",
       "id": "g-aridnyk",
       "maxP": null,
       "minP": null,
       "minutes": null,
       "name": "Арідник",
-      "nameEn": "",
+      "nameEn": "Aridnyk",
       "plays": 0,
       "score": null,
       "status": "колекція",
       "tags": [],
-      "updated": "2026-09-12T13:16:12.465Z",
+      "updated": "2026-09-12T15:48:27.262Z",
       "weight": null
     },
     {
@@ -1822,5 +1826,5 @@
       "weight": null
     }
   ],
-  "saved": "2026-09-12T13:48:34.345Z"
+  "saved": "2026-09-12T15:48:27.262Z"
 }
