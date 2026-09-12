@@ -2941,16 +2941,28 @@
       "name": "Змієвир. Академія драконів",
       "nameEn": "Wyrmspan: Dragon Academy",
       "plays": 0,
+      "rules": [
+        {
+          "kind": "інше",
+          "title": "Правила (англійською)",
+          "url": "https://www.dropbox.com/scl/fo/ulyfze69rb24tsgip7mn7/h/Wyrmspan/Dragon%20Academy%20Expansion/Wyr_DA_Rulebook_r10.pdf?rlkey=ha4lz6kvkwmjaglah0lwtzjto&dl=0"
+        },
+        {
+          "kind": "інше",
+          "title": "Сторінка доповнення у видавця",
+          "url": "https://stonemaiergames.com/games/wyrmspan/dragon-academy/"
+        }
+      ],
       "score": null,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T16:01:36.850Z",
+      "updated": "2026-09-12T18:31:20.466Z",
       "weight": null
     }
   ],
-  "saved": "2026-09-12T17:59:01.052Z",
+  "saved": "2026-09-12T18:31:20.466Z",
   "version": 2
 }
