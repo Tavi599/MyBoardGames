@@ -1,7 +1,7 @@
 {
   "app": "полиця настілок",
   "version": 2,
-  "saved": "2026-09-12T19:56:20.488Z",
+  "saved": "2026-09-12T19:56:44.600Z",
   "games": [
     {
       "added": "2026-09-12",
@@ -2704,7 +2704,11 @@
       "bggId": "368036",
       "bggRank": 4085,
       "bggRating": 7.2,
-      "byCount": {},
+      "byCount": {
+        "2": 8,
+        "3": 8,
+        "4": 7
+      },
       "comment": "",
       "cover": "https://cf.geekdo-images.com/kQUHlDU78eJUi8zb7DxaLA__square200/img/5g_q5BF7fr7arkEnq6BuraeT0CM=/200x200/filters:strip_icc()/pic7700486.jpg",
       "id": "g-unlock-angel",
@@ -2721,14 +2725,14 @@
           "url": "https://geekach.com.ua/content/files/pravila-nastlno-gri-unlock-korotk-prigodi-98163429.pdf"
         }
       ],
-      "score": null,
+      "score": 8,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T17:20:03.076Z",
-      "weight": null
+      "updated": "2026-09-12T19:56:35.584Z",
+      "weight": 2
     },
     {
       "added": "2026-09-12",
