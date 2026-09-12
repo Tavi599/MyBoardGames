@@ -1,6 +1,6 @@
 {
   "app": "полиця настілок",
-  "saved": "2026-09-12T12:02:44.927Z",
+  "saved": "2026-09-12T12:02:58.094Z",
   "games": [
     {
       "added": "2026-09-10",
@@ -12,10 +12,10 @@
       "minutes": null,
       "name": "Картографи",
       "plays": 0,
-      "score": null,
+      "score": 7,
       "status": "колекція",
       "tags": [],
-      "updated": "2026-09-10T16:25:00.000Z",
+      "updated": "2026-09-12T12:02:49.342Z",
       "weight": null
     },
     {
@@ -76,10 +76,10 @@
       "minutes": null,
       "name": "Кіт у коробці",
       "plays": 0,
-      "score": null,
+      "score": 7,
       "status": "колекція",
       "tags": [],
-      "updated": "2026-09-10T16:25:00.000Z",
+      "updated": "2026-09-12T12:02:57.487Z",
       "weight": null
     },
     {
