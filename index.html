@@ -1616,7 +1616,14 @@ function renderFilters(){
 /** Один обробник на всі фільтри: клік по стрічці, зміна списку, набір у пошуку. */
 function поставити(ключ, знач){
   ui[ключ] = знач;
-  renderFilters();
+  // Перемальовуємо лише стрічку — вона показує стан кнопками. Список і поле
+  // пошуку тримають вибране самі, а повна перемальовка щоразу висмикувала б
+  // фокус із віджета просто посеред роботи.
+  const стрічка = $("filters").querySelector(".seg[data-ф='" + ключ + "']");
+  if(стрічка){
+    Array.prototype.forEach.call(стрічка.querySelectorAll("button"), (b) =>
+      b.setAttribute("aria-pressed", b.dataset.v === знач ? "true" : "false"));
+  }
   render();
 }
 $("filters").addEventListener("input", (e) => {
