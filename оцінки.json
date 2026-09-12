@@ -1,7 +1,7 @@
 {
   "app": "полиця настілок",
   "version": 2,
-  "saved": "2026-09-12T20:01:00.340Z",
+  "saved": "2026-09-12T20:02:53.169Z",
   "games": [
     {
       "added": "2026-09-12",
@@ -2724,7 +2724,8 @@
       "byCount": {
         "2": 8,
         "3": 8,
-        "4": 7
+        "4": 7,
+        "5": 6
       },
       "comment": "",
       "cover": "https://cf.geekdo-images.com/kQUHlDU78eJUi8zb7DxaLA__square200/img/5g_q5BF7fr7arkEnq6BuraeT0CM=/200x200/filters:strip_icc()/pic7700486.jpg",
@@ -2734,7 +2735,7 @@
       "minutes": null,
       "name": "Unlock! Короткі пригоди. Політ ангела",
       "nameEn": "Unlock! Short Adventures: The Flight of the Angel",
-      "plays": 0,
+      "plays": 1,
       "rules": [
         {
           "kind": "офіційні",
@@ -2747,7 +2748,7 @@
         "позбувся"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:00:51.285Z",
+      "updated": "2026-09-12T20:02:43.854Z",
       "weight": 2,
       "status": "позбувся"
     },
