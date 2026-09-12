@@ -1,7 +1,7 @@
 {
   "app": "полиця настілок",
   "version": 2,
-  "saved": "2026-09-12T19:45:56.337Z",
+  "saved": "2026-09-12T19:46:31.846Z",
   "games": [
     {
       "added": "2026-09-12",
@@ -77,7 +77,11 @@
       "bggId": "403160",
       "bggRank": 7917,
       "bggRating": 8.3,
-      "byCount": {},
+      "byCount": {
+        "2": 6,
+        "3": 7,
+        "4": 7
+      },
       "comment": "",
       "cover": "https://cf.geekdo-images.com/9z9YyDFj1HECltRfdHgKvg__square200/img/IqZD4BxidqyetgIz9fweyw-nHjM=/200x200/filters:strip_icc()/pic8760198.jpg",
       "id": "g-aridnyk",
@@ -104,13 +108,13 @@
           "url": "https://desktopgames.com.ua/games/7989/aridnyk_storybook_compressed.pdf"
         }
       ],
-      "score": null,
+      "score": 7,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T17:40:57.486Z",
+      "updated": "2026-09-12T19:46:22.526Z",
       "weight": null
     },
     {
