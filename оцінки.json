@@ -1,7 +1,7 @@
 {
   "app": "полиця настілок",
   "version": 2,
-  "saved": "2026-09-12T20:23:08.598Z",
+  "saved": "2026-09-12T20:23:41.967Z",
   "games": [
     {
       "added": "2026-09-12",
@@ -1498,7 +1498,11 @@
       "added": "2026-09-12",
       "bggId": "160154",
       "bggRating": 6.7,
-      "byCount": {},
+      "byCount": {
+        "2": 5,
+        "3": 6,
+        "4": 6
+      },
       "comment": "Правила взято від «Мачі Коро 2» — окремих для цієї коробки немає, різниця невелика.",
       "cover": "https://cf.geekdo-images.com/5SWmP8J_Xif6nAxTL0k4qw__square200/img/RTgkm0lptXMbtojVoSuF1PT12r0=/200x200/filters:strip_icc()/pic4278304.jpg",
       "expansion": true,
@@ -1508,7 +1512,7 @@
       "minutes": null,
       "name": "Мачі Коро: Шарп",
       "nameEn": "Machi Koro: Millionaire's Row",
-      "plays": 0,
+      "plays": 2,
       "rules": [
         {
           "kind": "інше",
@@ -1516,14 +1520,14 @@
           "url": "https://desktopgames.com.ua/games/8508/machi_koro_rules_ua.pdf"
         }
       ],
-      "score": null,
-      "status": "колекція",
+      "score": 6,
+      "status": "позбувся",
       "statuses": [
-        "колекція"
+        "позбувся"
       ],
       "tags": [],
-      "updated": "2026-09-12T17:54:05.874Z",
-      "weight": null
+      "updated": "2026-09-12T20:23:33.013Z",
+      "weight": 1.5
     },
     {
       "added": "2026-09-12",
