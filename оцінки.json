@@ -436,18 +436,18 @@
     },
     {
       "added": "2026-09-12",
-      "bggId": "308500",
-      "bggRank": 12273,
-      "bggRating": 6.4,
+      "bggId": "334307",
+      "bggRank": 6168,
+      "bggRating": 6.3,
       "byCount": {},
       "comment": "",
-      "cover": "https://cf.geekdo-images.com/pNyUXcqnZijf2H6hgocejA__square200/img/XCQGYc6paLAqRFj6b9TMcujfuwU=/200x200/filters:strip_icc()/pic7240542.jpg",
+      "cover": "https://cf.geekdo-images.com/UVTPVAE3v_Czlo0zx0zHDA__square200/img/r8SFhWvGIjX1GUe2QTvE2hqRT-M=/200x200/filters:strip_icc()/pic6549741.jpg",
       "id": "g-clash-of-deck",
       "maxP": null,
       "minP": null,
       "minutes": null,
-      "name": "Clash of Deck",
-      "nameEn": "",
+      "name": "Битва Колод: Посвята",
+      "nameEn": "Clash of Decks: Starter Kit",
       "plays": 0,
       "score": null,
       "status": "колекція",
@@ -455,7 +455,7 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T16:06:23.511Z",
+      "updated": "2026-09-12T16:08:04.404Z",
       "weight": null
     },
     {
@@ -2142,5 +2142,5 @@
       "weight": null
     }
   ],
-  "saved": "2026-09-12T16:06:23.511Z"
+  "saved": "2026-09-12T16:08:04.404Z"
 }
