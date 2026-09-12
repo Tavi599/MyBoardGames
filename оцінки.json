@@ -8,6 +8,7 @@
       "bggRating": 7.0,
       "byCount": {},
       "comment": "",
+      "cover": "https://cf.geekdo-images.com/WuOY1XAIJQ-RGAmT_apW_w__square200/img/2-QwpZlqN_31di8NDcLRRpBe9F8=/200x200/filters:strip_icc()/pic8632998.jpg",
       "id": "g-6nimmt",
       "maxP": null,
       "minP": null,
@@ -18,7 +19,7 @@
       "score": null,
       "status": "колекція",
       "tags": [],
-      "updated": "2026-09-12T13:36:19.544Z",
+      "updated": "2026-09-12T13:47:45.799Z",
       "weight": null
     },
     {
@@ -28,6 +29,7 @@
       "bggRating": 8.1,
       "byCount": {},
       "comment": "",
+      "cover": "https://cf.geekdo-images.com/zdagMskTF7wJBPjX74XsRw__square200/img/xNee3M-jWc5u5sMjn7IyvWFJ4qQ=/200x200/filters:strip_icc()/pic2576399.jpg",
       "id": "g-7wonders-duel",
       "maxP": null,
       "minP": null,
@@ -38,7 +40,7 @@
       "score": null,
       "status": "колекція",
       "tags": [],
-      "updated": "2026-09-12T13:36:19.544Z",
+      "updated": "2026-09-12T13:47:45.799Z",
       "weight": null
     },
     {
@@ -65,6 +67,7 @@
       "bggRating": 8.1,
       "byCount": {},
       "comment": "",
+      "cover": "https://cf.geekdo-images.com/B5F5ulz0UivNgrI9Ky0euA__square200/img/rCOvTBoMid0V821bCAJuY_gLLfc=/200x200/filters:strip_icc()/pic3122349.jpg",
       "id": "g-arkham",
       "maxP": null,
       "minP": null,
@@ -75,7 +78,7 @@
       "score": null,
       "status": "колекція",
       "tags": [],
-      "updated": "2026-09-12T13:36:19.544Z",
+      "updated": "2026-09-12T13:47:45.799Z",
       "weight": null
     },
     {
@@ -84,7 +87,7 @@
       "bggRating": 8.4,
       "byCount": {},
       "comment": "",
-      "cover": "https://desktopgames.com.ua/games/5270/ah-tcg-the-dunwich-legacy-ua_preview_200x200.webp",
+      "cover": "https://cf.geekdo-images.com/K-Gm9TAbPmHhA0E7wWvZ8g__square200/img/fJOVOW_8W_D_gjxxLqG2DD9Fd6w=/200x200/filters:strip_icc()/pic3610420.jpg",
       "expansion": true,
       "id": "g-arkham-dunwich",
       "maxP": null,
@@ -96,7 +99,7 @@
       "score": null,
       "status": "колекція",
       "tags": [],
-      "updated": "2026-09-12T13:36:19.544Z",
+      "updated": "2026-09-12T13:47:45.799Z",
       "weight": null
     },
     {
@@ -105,7 +108,7 @@
       "bggRating": 8.5,
       "byCount": {},
       "comment": "",
-      "cover": "https://desktopgames.com.ua/games/8432/arkham-horror-card-game-edge-of-the-earth-campaign_preview_200x200.webp",
+      "cover": "https://cf.geekdo-images.com/zCBeaFMFckzNCwJihcOXLQ__square200/img/YSrBfvWfdr0u3I9gf1_Vy-g_6gs=/200x200/filters:strip_icc()/pic7003509.png",
       "expansion": true,
       "id": "g-arkham-edge",
       "maxP": null,
@@ -117,7 +120,7 @@
       "score": null,
       "status": "колекція",
       "tags": [],
-      "updated": "2026-09-12T13:36:19.544Z",
+      "updated": "2026-09-12T13:47:45.799Z",
       "weight": null
     },
     {
@@ -127,7 +130,7 @@
       "bggRating": 8.1,
       "byCount": {},
       "comment": "",
-      "cover": "https://desktopgames.com.ua/games/5005/lost-ruins-of-arnak-ua_preview_200x200.webp",
+      "cover": "https://cf.geekdo-images.com/6GqH14TJJhza86BX5HCLEQ__square200/img/tyxj64Wz6GWL1X-jfnsg3tnaWV4=/200x200/filters:strip_icc()/pic5674958.jpg",
       "id": "g-arnak",
       "maxP": null,
       "minP": null,
@@ -138,7 +141,49 @@
       "score": null,
       "status": "колекція",
       "tags": [],
-      "updated": "2026-09-12T13:36:19.544Z",
+      "updated": "2026-09-12T13:47:45.799Z",
+      "weight": null,
+      "withExp": [
+        "g-arnak-promo"
+      ]
+    },
+    {
+      "added": "2026-09-12",
+      "bggId": "439816",
+      "bggRating": 8.7,
+      "byCount": {},
+      "comment": "",
+      "cover": "https://cf.geekdo-images.com/LnwY556xbt_3qHIISdG46Q__square200/img/Ts4mmaAPjcmq_TEtzj-WlNFqPF0=/200x200/filters:strip_icc()/pic9094312.jpg",
+      "expansion": true,
+      "id": "g-arnak-paths",
+      "maxP": null,
+      "minP": null,
+      "minutes": null,
+      "name": "Загублені руїни Арнаку. Звивисті стежки",
+      "nameEn": "Lost Ruins of Arnak: Twisted Paths",
+      "plays": 0,
+      "score": null,
+      "status": "колекція",
+      "tags": [],
+      "updated": "2026-09-12T13:48:34.345Z",
+      "weight": null
+    },
+    {
+      "added": "2026-09-12",
+      "byCount": {},
+      "comment": "",
+      "expansion": true,
+      "id": "g-arnak-promo",
+      "maxP": null,
+      "minP": null,
+      "minutes": null,
+      "name": "Загублені руїни Арнаку. Промо-картки",
+      "nameEn": "",
+      "plays": 0,
+      "score": null,
+      "status": "колекція",
+      "tags": [],
+      "updated": "2026-09-12T13:47:45.799Z",
       "weight": null
     },
     {
@@ -148,6 +193,7 @@
       "bggRating": 7.4,
       "byCount": {},
       "comment": "",
+      "cover": "https://cf.geekdo-images.com/RnbZfspkPRfr6EMkRkac2Q__square200/img/m4waWxap7NBFIOXb-bz2Mw3Ng-E=/200x200/filters:strip_icc()/pic149717.jpg",
       "id": "g-battle-line",
       "maxP": null,
       "minP": null,
@@ -158,7 +204,7 @@
       "score": null,
       "status": "колекція",
       "tags": [],
-      "updated": "2026-09-12T13:36:19.544Z",
+      "updated": "2026-09-12T13:47:45.799Z",
       "weight": null
     },
     {
@@ -168,7 +214,7 @@
       "bggRating": 7.4,
       "byCount": {},
       "comment": "",
-      "cover": "https://desktopgames.com.ua/games/6827/beast-ua_preview_200x200.webp",
+      "cover": "https://cf.geekdo-images.com/-9NLgO6ASOHgZtMtamqjxw__square200/img/FAhOsxfX6w9eobTUUAe_bFT9_VQ=/200x200/filters:strip_icc()/pic6418160.png",
       "id": "g-beast",
       "maxP": null,
       "minP": null,
@@ -179,7 +225,7 @@
       "score": null,
       "status": "колекція",
       "tags": [],
-      "updated": "2026-09-12T13:36:19.544Z",
+      "updated": "2026-09-12T13:47:45.799Z",
       "weight": null
     },
     {
@@ -189,6 +235,7 @@
       "bggRating": 7.0,
       "byCount": {},
       "comment": "",
+      "cover": "https://cf.geekdo-images.com/Yi4JKIcyzJUoTfaFBogu9w__square200/img/dy6A8mTbYMl3zWZBTSztHG223Yo=/200x200/filters:strip_icc()/pic7479534.png",
       "id": "g-beaver-creek",
       "maxP": null,
       "minP": null,
@@ -199,7 +246,7 @@
       "score": null,
       "status": "колекція",
       "tags": [],
-      "updated": "2026-09-12T13:36:19.544Z",
+      "updated": "2026-09-12T13:47:45.799Z",
       "weight": null
     },
     {
@@ -209,6 +256,7 @@
       "bggRating": 6.2,
       "byCount": {},
       "comment": "",
+      "cover": "https://cf.geekdo-images.com/RQjk743e2jCOynyi8MzjLA__square200/img/81cn_-k4c27l0V_HRi_s7mAmq60=/200x200/filters:strip_icc()/pic3107195.jpg",
       "id": "g-behind-throne",
       "maxP": null,
       "minP": null,
@@ -219,7 +267,7 @@
       "score": null,
       "status": "колекція",
       "tags": [],
-      "updated": "2026-09-12T13:36:19.544Z",
+      "updated": "2026-09-12T13:47:45.799Z",
       "weight": null
     },
     {
@@ -229,6 +277,7 @@
       "bggRating": 7.0,
       "byCount": {},
       "comment": "",
+      "cover": "https://cf.geekdo-images.com/LPZHyg3KP_JI0x5CRut9lQ__square200/img/R12nhKeixxfeyUwTiX8n4vDaKa0=/200x200/filters:strip_icc()/pic6643190.png",
       "id": "g-boop",
       "maxP": null,
       "minP": null,
@@ -239,7 +288,7 @@
       "score": null,
       "status": "колекція",
       "tags": [],
-      "updated": "2026-09-12T13:36:19.544Z",
+      "updated": "2026-09-12T13:47:45.799Z",
       "weight": null
     },
     {
@@ -249,6 +298,7 @@
       "bggRating": 7.3,
       "byCount": {},
       "comment": "",
+      "cover": "https://cf.geekdo-images.com/y56BJ_mADO2ORYwLaP8ktA__square200/img/T2Y_cQpd5pHWTm-YJUr8WrwrM-0=/200x200/filters:strip_icc()/pic8058626.png",
       "id": "g-boss-monster",
       "maxP": null,
       "minP": null,
@@ -259,7 +309,7 @@
       "score": null,
       "status": "колекція",
       "tags": [],
-      "updated": "2026-09-12T13:36:19.544Z",
+      "updated": "2026-09-12T13:47:45.799Z",
       "weight": null
     },
     {
@@ -269,6 +319,7 @@
       "bggRating": 7.4,
       "byCount": {},
       "comment": "",
+      "cover": "https://cf.geekdo-images.com/Noz8-u1ba828WUv69pTXKg__square200/img/x_o72ndBZWBaW73qjzBYWyRyEwc=/200x200/filters:strip_icc()/pic3613444.jpg",
       "id": "g-bunny-kingdom",
       "maxP": null,
       "minP": null,
@@ -279,7 +330,7 @@
       "score": null,
       "status": "колекція",
       "tags": [],
-      "updated": "2026-09-12T13:36:19.544Z",
+      "updated": "2026-09-12T13:47:45.799Z",
       "weight": null
     },
     {
@@ -289,6 +340,7 @@
       "bggRating": 7.5,
       "byCount": {},
       "comment": "",
+      "cover": "https://cf.geekdo-images.com/qGkU6XsF1448F_A4P8TY5Q__square200/img/g1oiWjMOPM2WUJCR39oULcbByOc=/200x200/filters:strip_icc()/pic8124431.jpg",
       "id": "g-calico",
       "maxP": null,
       "minP": null,
@@ -299,7 +351,7 @@
       "score": null,
       "status": "колекція",
       "tags": [],
-      "updated": "2026-09-12T13:36:19.544Z",
+      "updated": "2026-09-12T13:47:45.799Z",
       "weight": null
     },
     {
@@ -309,6 +361,7 @@
       "bggRating": 7.7,
       "byCount": {},
       "comment": "",
+      "cover": "https://cf.geekdo-images.com/rGomBfj0FGrZM-w3h5HFWQ__square200/img/ffjAFgvd7XZQT0KLRsql4zl4bYc=/200x200/filters:strip_icc()/pic8250341.png",
       "id": "g-castle-combo",
       "maxP": null,
       "minP": null,
@@ -319,7 +372,7 @@
       "score": null,
       "status": "колекція",
       "tags": [],
-      "updated": "2026-09-12T13:36:19.544Z",
+      "updated": "2026-09-12T13:47:45.799Z",
       "weight": null
     },
     {
@@ -329,6 +382,7 @@
       "bggRating": 7.5,
       "byCount": {},
       "comment": "",
+      "cover": "https://cf.geekdo-images.com/u1EZSUC5n8k4g4OFPkn3ow__square200/img/V8mrcajnGdDbYPtFs7VFzC6uxA8=/200x200/filters:strip_icc()/pic8014078.jpg",
       "id": "g-clever",
       "maxP": null,
       "minP": null,
@@ -339,7 +393,7 @@
       "score": null,
       "status": "колекція",
       "tags": [],
-      "updated": "2026-09-12T13:36:19.544Z",
+      "updated": "2026-09-12T13:47:45.799Z",
       "weight": null
     },
     {
@@ -349,7 +403,7 @@
       "bggRating": 7.1,
       "byCount": {},
       "comment": "",
-      "cover": "https://desktopgames.com.ua/games/2481/colt-express-ua_preview_200x200.webp",
+      "cover": "https://cf.geekdo-images.com/2HKX0QANk_DY7CIVK5O5fQ__square200/img/l53XQJIMz82XDOBQvDCOsnK1-II=/200x200/filters:strip_icc()/pic2869710.jpg",
       "id": "g-colt-express",
       "maxP": null,
       "minP": null,
@@ -360,7 +414,7 @@
       "score": null,
       "status": "колекція",
       "tags": [],
-      "updated": "2026-09-12T13:36:19.544Z",
+      "updated": "2026-09-12T13:47:45.799Z",
       "weight": null
     },
     {
@@ -370,6 +424,7 @@
       "bggRating": 8.2,
       "byCount": {},
       "comment": "",
+      "cover": "https://cf.geekdo-images.com/SPpzri7fwLRgVWMKOocHxw__square200/img/G7NDTea1O6DjOTL7d2PyoEgkuAo=/200x200/filters:strip_icc()/pic9712872.png",
       "id": "g-cthulhu",
       "maxP": null,
       "minP": null,
@@ -380,7 +435,7 @@
       "score": null,
       "status": "колекція",
       "tags": [],
-      "updated": "2026-09-12T13:36:19.544Z",
+      "updated": "2026-09-12T13:47:45.799Z",
       "weight": null
     },
     {
@@ -390,6 +445,7 @@
       "bggRating": 6.1,
       "byCount": {},
       "comment": "",
+      "cover": "https://cf.geekdo-images.com/N8bL53-pRU7zaXDTrEaYrw__square200/img/t8FLFsxuthr79x87K4evHO-G2OU=/200x200/filters:strip_icc()/pic2691976.png",
       "id": "g-exploding-kittens",
       "maxP": null,
       "minP": null,
@@ -400,7 +456,7 @@
       "score": null,
       "status": "колекція",
       "tags": [],
-      "updated": "2026-09-12T13:36:19.544Z",
+      "updated": "2026-09-12T13:47:45.799Z",
       "weight": null
     },
     {
@@ -409,6 +465,7 @@
       "bggRating": 8.2,
       "byCount": {},
       "comment": "",
+      "cover": "https://cf.geekdo-images.com/DHrlMA2XJr5T5IsO_X0Z3w__square200/img/E81Ht7LG14pDPLH_-YVvNfW1JOk=/200x200/filters:strip_icc()/pic7998961.jpg",
       "expansion": true,
       "id": "g-forest-alpine",
       "maxP": null,
@@ -420,7 +477,7 @@
       "score": null,
       "status": "колекція",
       "tags": [],
-      "updated": "2026-09-12T13:36:19.544Z",
+      "updated": "2026-09-12T13:47:45.799Z",
       "weight": null
     },
     {
@@ -430,6 +487,7 @@
       "bggRating": 7.7,
       "byCount": {},
       "comment": "",
+      "cover": "https://cf.geekdo-images.com/08bC8NviSTNc4Zvur4pueA__square200/img/rxr_L6hd1BjMCgkO8Omt1BAAGH0=/200x200/filters:strip_icc()/pic7578350.jpg",
       "id": "g-forest-shuffle",
       "maxP": null,
       "minP": null,
@@ -440,7 +498,7 @@
       "score": null,
       "status": "колекція",
       "tags": [],
-      "updated": "2026-09-12T13:36:19.544Z",
+      "updated": "2026-09-12T13:47:45.799Z",
       "weight": null
     },
     {
@@ -450,6 +508,7 @@
       "bggRating": 7.0,
       "byCount": {},
       "comment": "",
+      "cover": "https://cf.geekdo-images.com/1uTAJoAdG3UC6N0G7UMeTA__square200/img/Yzupp5tGzfGlclaWuqObZ6G9W3w=/200x200/filters:strip_icc()/pic4942502.jpg",
       "id": "g-fox-duet",
       "maxP": null,
       "minP": null,
@@ -460,7 +519,7 @@
       "score": null,
       "status": "колекція",
       "tags": [],
-      "updated": "2026-09-12T13:36:19.544Z",
+      "updated": "2026-09-12T13:47:45.799Z",
       "weight": null
     },
     {
@@ -470,6 +529,7 @@
       "bggRating": 8.0,
       "byCount": {},
       "comment": "",
+      "cover": "https://cf.geekdo-images.com/PJRaImV8iXGAq2L-6rrn-w__square200/img/jEUyGb2ochXtziGkbgdDqSyvLVQ=/200x200/filters:strip_icc()/pic2649931.jpg",
       "id": "g-grand-austria",
       "maxP": null,
       "minP": null,
@@ -480,7 +540,7 @@
       "score": null,
       "status": "колекція",
       "tags": [],
-      "updated": "2026-09-12T13:36:19.544Z",
+      "updated": "2026-09-12T13:47:45.799Z",
       "weight": null
     },
     {
@@ -490,6 +550,7 @@
       "bggRating": 8.0,
       "byCount": {},
       "comment": "",
+      "cover": "https://cf.geekdo-images.com/-vOrd4bOspibyohYExLqWg__square200/img/LYL8i7kS1_RuTZLvSi8a8hPBh74=/200x200/filters:strip_icc()/pic6940449.png",
       "id": "g-heat",
       "maxP": null,
       "minP": null,
@@ -500,7 +561,7 @@
       "score": null,
       "status": "колекція",
       "tags": [],
-      "updated": "2026-09-12T13:36:19.544Z",
+      "updated": "2026-09-12T13:47:45.799Z",
       "weight": null
     },
     {
@@ -510,6 +571,7 @@
       "bggRating": 6.8,
       "byCount": {},
       "comment": "",
+      "cover": "https://cf.geekdo-images.com/h_bVZGn0gcOq1BLse8mpug__square200/img/qFw-_HfDi1M0QJIbXAGo05xv4WI=/200x200/filters:strip_icc()/pic6431805.jpg",
       "id": "g-hens",
       "maxP": null,
       "minP": null,
@@ -520,7 +582,7 @@
       "score": null,
       "status": "колекція",
       "tags": [],
-      "updated": "2026-09-12T13:36:19.544Z",
+      "updated": "2026-09-12T13:47:45.799Z",
       "weight": null
     },
     {
@@ -530,6 +592,7 @@
       "bggRating": 7.3,
       "byCount": {},
       "comment": "",
+      "cover": "https://cf.geekdo-images.com/fQe85tsBZoH6ibPnm1k1UA__square200/img/fnjhJ8bLeF_PXhcmrBmKtdiUxyY=/200x200/filters:strip_icc()/pic791151.jpg",
       "id": "g-hive",
       "maxP": null,
       "minP": null,
@@ -540,7 +603,7 @@
       "score": null,
       "status": "колекція",
       "tags": [],
-      "updated": "2026-09-12T13:36:19.544Z",
+      "updated": "2026-09-12T13:47:45.799Z",
       "weight": null
     },
     {
@@ -562,19 +625,23 @@
     },
     {
       "added": "2026-09-12",
+      "bggId": "425505",
+      "bggRank": 3075,
+      "bggRating": 7.8,
       "byCount": {},
       "comment": "",
+      "cover": "https://cf.geekdo-images.com/s8nB_bnCj_nBdwMJZqsptA__square200/img/0dT9LLAJSC0oz_KYUfp9rr44sck=/200x200/filters:strip_icc()/pic8332322.png",
       "id": "g-hurtohrai",
       "maxP": null,
       "minP": null,
       "minutes": null,
-      "name": "Гуртограй буйнолісся",
-      "nameEn": "",
+      "name": "Гортограй. Буйнолісся",
+      "nameEn": "Storyfold: Wildwoods",
       "plays": 0,
       "score": null,
       "status": "колекція",
       "tags": [],
-      "updated": "2026-09-12T13:28:59.858Z",
+      "updated": "2026-09-12T13:47:45.799Z",
       "weight": null
     },
     {
@@ -584,7 +651,7 @@
       "bggRating": 7.6,
       "byCount": {},
       "comment": "",
-      "cover": "https://desktopgames.com.ua/games/4823/the-isle-of-cats-ukr_preview_200x200.webp",
+      "cover": "https://cf.geekdo-images.com/AuAheDzhkLufiZFE9JaRNA__square200/img/ZihFbpHcPsrHUxU8dfHFr8eqfDY=/200x200/filters:strip_icc()/pic4781085.jpg",
       "id": "g-isle-of-cats",
       "maxP": null,
       "minP": null,
@@ -595,7 +662,7 @@
       "score": null,
       "status": "колекція",
       "tags": [],
-      "updated": "2026-09-12T13:36:19.544Z",
+      "updated": "2026-09-12T13:47:45.799Z",
       "weight": null
     },
     {
@@ -604,6 +671,7 @@
       "bggRating": 8.6,
       "byCount": {},
       "comment": "",
+      "cover": "https://cf.geekdo-images.com/aW6ZfL4494d930euj-MGAw__square200/img/bi2ixYGuafLJ4U3HpR25bmyVNoA=/200x200/filters:strip_icc()/pic7793981.jpg",
       "expansion": true,
       "id": "g-khn-boss",
       "maxP": null,
@@ -615,7 +683,7 @@
       "score": null,
       "status": "колекція",
       "tags": [],
-      "updated": "2026-09-12T13:36:19.544Z",
+      "updated": "2026-09-12T13:47:45.799Z",
       "weight": null
     },
     {
@@ -624,6 +692,7 @@
       "bggRating": 8.2,
       "byCount": {},
       "comment": "",
+      "cover": "https://cf.geekdo-images.com/pZsA-RFd8w1bg33xoyQQkw__square200/img/qeamKvmT3OZwViwvikSvz3KiWDQ=/200x200/filters:strip_icc()/pic6985344.jpg",
       "expansion": true,
       "id": "g-khn-dreamer",
       "maxP": null,
@@ -635,7 +704,7 @@
       "score": null,
       "status": "колекція",
       "tags": [],
-      "updated": "2026-09-12T13:36:19.544Z",
+      "updated": "2026-09-12T13:47:45.799Z",
       "weight": null
     },
     {
@@ -644,6 +713,7 @@
       "bggRating": 8.0,
       "byCount": {},
       "comment": "",
+      "cover": "https://cf.geekdo-images.com/Wc8AZj2TKP4lPupQkRwYIQ__square200/img/vTBH00sK_B9Pe5lF4s0ZgWciSw8=/200x200/filters:strip_icc()/pic7998936.jpg",
       "expansion": true,
       "id": "g-khn-guardian",
       "maxP": null,
@@ -655,7 +725,7 @@
       "score": null,
       "status": "колекція",
       "tags": [],
-      "updated": "2026-09-12T13:36:19.544Z",
+      "updated": "2026-09-12T13:47:45.799Z",
       "weight": null
     },
     {
@@ -664,6 +734,7 @@
       "bggRating": 8.1,
       "byCount": {},
       "comment": "",
+      "cover": "https://cf.geekdo-images.com/ZC5y7zSkbNwKTIk-eHs1ww__square200/img/UnKITGfNYfaotfgrCWkbXhCOMFU=/200x200/filters:strip_icc()/pic6985340.jpg",
       "expansion": true,
       "id": "g-khn-guild",
       "maxP": null,
@@ -675,7 +746,7 @@
       "score": null,
       "status": "колекція",
       "tags": [],
-      "updated": "2026-09-12T13:36:19.544Z",
+      "updated": "2026-09-12T13:47:45.799Z",
       "weight": null
     },
     {
@@ -685,6 +756,7 @@
       "bggRating": 6.8,
       "byCount": {},
       "comment": "",
+      "cover": "https://cf.geekdo-images.com/TIEYwnIRV6kvAEnFkYe2OA__square200/img/YNmcVic7N2ymvrqtbycFat1YCUA=/200x200/filters:strip_icc()/pic6858706.png",
       "id": "g-kites",
       "maxP": null,
       "minP": null,
@@ -695,7 +767,7 @@
       "score": null,
       "status": "колекція",
       "tags": [],
-      "updated": "2026-09-12T13:36:19.544Z",
+      "updated": "2026-09-12T13:47:45.799Z",
       "weight": null
     },
     {
@@ -705,7 +777,7 @@
       "bggRating": 7.5,
       "byCount": {},
       "comment": "",
-      "cover": "https://desktopgames.com.ua/games/6410/love-letter-ua_preview_200x200.webp",
+      "cover": "https://cf.geekdo-images.com/V7WQjhAh0AatPXTYOrXtCQ__square200/img/JNxoieLDxOfvNW1_Jb49_msjLnM=/200x200/filters:strip_icc()/pic4766499.png",
       "id": "g-love-letter",
       "maxP": null,
       "minP": null,
@@ -716,7 +788,7 @@
       "score": null,
       "status": "колекція",
       "tags": [],
-      "updated": "2026-09-12T13:36:19.544Z",
+      "updated": "2026-09-12T13:47:45.799Z",
       "weight": null
     },
     {
@@ -726,6 +798,7 @@
       "bggRating": 6.6,
       "byCount": {},
       "comment": "",
+      "cover": "https://cf.geekdo-images.com/_lI2eUDHfesfe5SswJiFAg__square200/img/wCEwsJYv0H3lKHUkkX4naqWkjRk=/200x200/filters:strip_icc()/pic4783831.png",
       "id": "g-machi-koro",
       "maxP": null,
       "minP": null,
@@ -736,7 +809,7 @@
       "score": null,
       "status": "колекція",
       "tags": [],
-      "updated": "2026-09-12T13:36:19.544Z",
+      "updated": "2026-09-12T13:47:45.799Z",
       "weight": null
     },
     {
@@ -748,13 +821,13 @@
       "maxP": null,
       "minP": null,
       "minutes": null,
-      "name": "Мачі Коро Шарп",
-      "nameEn": "Machi Koro Sharp",
+      "name": "Мачі Коро: Шарп",
+      "nameEn": "Machi Koro: Sharp",
       "plays": 0,
       "score": null,
       "status": "колекція",
       "tags": [],
-      "updated": "2026-09-12T13:16:12.465Z",
+      "updated": "2026-09-12T13:41:44.133Z",
       "weight": null
     },
     {
@@ -764,6 +837,7 @@
       "bggRating": 7.5,
       "byCount": {},
       "comment": "",
+      "cover": "https://cf.geekdo-images.com/b8gl6w-BqUVgBURdyFcFZg__square200/img/63j_bVSf6HQDPar7eBrXRiFaRAE=/200x200/filters:strip_icc()/pic7646386.png",
       "id": "g-mindbug",
       "maxP": null,
       "minP": null,
@@ -774,7 +848,7 @@
       "score": null,
       "status": "колекція",
       "tags": [],
-      "updated": "2026-09-12T13:36:19.544Z",
+      "updated": "2026-09-12T13:47:45.799Z",
       "weight": null
     },
     {
@@ -784,6 +858,7 @@
       "bggRating": 7.1,
       "byCount": {},
       "comment": "",
+      "cover": "https://cf.geekdo-images.com/CQ9o1kqExmBpHcPMVk0qwQ__square200/img/7d93pnyTawhyzQ-RwwF1xRXxYKY=/200x200/filters:strip_icc()/pic7926071.jpg",
       "id": "g-mlem",
       "maxP": null,
       "minP": null,
@@ -794,7 +869,7 @@
       "score": null,
       "status": "колекція",
       "tags": [],
-      "updated": "2026-09-12T13:36:19.544Z",
+      "updated": "2026-09-12T13:47:45.799Z",
       "weight": null
     },
     {
@@ -804,7 +879,7 @@
       "bggRating": 7.4,
       "byCount": {},
       "comment": "",
-      "cover": "https://desktopgames.com.ua/games/8207/mycelia-ua_preview_200x200.webp",
+      "cover": "https://cf.geekdo-images.com/P8-3HeCgEa_CODQiQxq9SQ__square200/img/URABUnlUKVDr28ko0YiDqNgUwDU=/200x200/filters:strip_icc()/pic7849476.jpg",
       "id": "g-mycelia",
       "maxP": null,
       "minP": null,
@@ -815,7 +890,7 @@
       "score": null,
       "status": "колекція",
       "tags": [],
-      "updated": "2026-09-12T13:36:19.544Z",
+      "updated": "2026-09-12T13:47:45.799Z",
       "weight": null
     },
     {
@@ -825,6 +900,7 @@
       "bggRating": 7.2,
       "byCount": {},
       "comment": "",
+      "cover": "https://cf.geekdo-images.com/2cf8lebaIrJ8Z62HGEs2wQ__square200/img/cz0beGOxw35-mbbD2LhPIQOrXyE=/200x200/filters:strip_icc()/pic3287905.png",
       "id": "g-mystic-vale",
       "maxP": null,
       "minP": null,
@@ -835,7 +911,7 @@
       "score": null,
       "status": "колекція",
       "tags": [],
-      "updated": "2026-09-12T13:36:19.544Z",
+      "updated": "2026-09-12T13:47:45.799Z",
       "weight": null
     },
     {
@@ -845,7 +921,7 @@
       "bggRating": 7.0,
       "byCount": {},
       "comment": "",
-      "cover": "https://desktopgames.com.ua/games/6374/hishtnaya-planeta_preview_200x200.webp",
+      "cover": "https://cf.geekdo-images.com/2nPAI9x1rOjj2fq30qRFvQ__square200/img/HWwoZVpEcH-TmVddUz8Zb-cnWUI=/200x200/filters:strip_icc()/pic3118416.jpg",
       "id": "g-not-alone",
       "maxP": null,
       "minP": null,
@@ -856,7 +932,7 @@
       "score": null,
       "status": "колекція",
       "tags": [],
-      "updated": "2026-09-12T13:36:19.544Z",
+      "updated": "2026-09-12T13:47:45.799Z",
       "weight": null
     },
     {
@@ -865,6 +941,7 @@
       "bggRating": 7.4,
       "byCount": {},
       "comment": "",
+      "cover": "https://cf.geekdo-images.com/bsSAYjs5fL7az9UvtDORUQ__square200/img/Gg0vQfYAbCq9gntu884ToIHdObs=/200x200/filters:strip_icc()/pic3611884.jpg",
       "expansion": true,
       "id": "g-not-alone-exploration",
       "maxP": null,
@@ -876,7 +953,7 @@
       "score": null,
       "status": "колекція",
       "tags": [],
-      "updated": "2026-09-12T13:36:19.544Z",
+      "updated": "2026-09-12T13:47:45.799Z",
       "weight": null
     },
     {
@@ -885,6 +962,7 @@
       "bggRating": 7.5,
       "byCount": {},
       "comment": "",
+      "cover": "https://cf.geekdo-images.com/lfDInYgrjJA-71_xI8TDBA__square200/img/cX3ZBbdjDSh1ogTAEAbxAGN_9V4=/200x200/filters:strip_icc()/pic4565295.jpg",
       "expansion": true,
       "id": "g-not-alone-sanctuary",
       "maxP": null,
@@ -896,7 +974,7 @@
       "score": null,
       "status": "колекція",
       "tags": [],
-      "updated": "2026-09-12T13:36:19.544Z",
+      "updated": "2026-09-12T13:47:45.799Z",
       "weight": null
     },
     {
@@ -906,6 +984,7 @@
       "bggRating": 7.1,
       "byCount": {},
       "comment": "",
+      "cover": "https://cf.geekdo-images.com/zFtCdg2K7NEV9BPaEzgAbQ__square200/img/lQOUwb_SiuTjkECP1L4l4Pwzx30=/200x200/filters:strip_icc()/pic6842458.png",
       "id": "g-pioneer-rails",
       "maxP": null,
       "minP": null,
@@ -916,7 +995,7 @@
       "score": null,
       "status": "колекція",
       "tags": [],
-      "updated": "2026-09-12T13:36:19.544Z",
+      "updated": "2026-09-12T13:47:45.799Z",
       "weight": null
     },
     {
@@ -926,6 +1005,7 @@
       "bggRating": 6.6,
       "byCount": {},
       "comment": "",
+      "cover": "https://cf.geekdo-images.com/bTE1oeN-8Y-RdSpjR0b-2A__square200/img/vKgWF8S0luOdh0a4FzqxBjqqvXw=/200x200/filters:strip_icc()/pic4199323.png",
       "id": "g-planet",
       "maxP": null,
       "minP": null,
@@ -936,7 +1016,7 @@
       "score": null,
       "status": "колекція",
       "tags": [],
-      "updated": "2026-09-12T13:36:19.544Z",
+      "updated": "2026-09-12T13:47:45.799Z",
       "weight": null
     },
     {
@@ -946,6 +1026,7 @@
       "bggRating": 7.1,
       "byCount": {},
       "comment": "",
+      "cover": "https://cf.geekdo-images.com/vwjYMFporFhvAU48k73MIw__square200/img/lKhO8dqRZMech0gUUd8C46Roh2U=/200x200/filters:strip_icc()/pic7298696.jpg",
       "id": "g-potion-explosion",
       "maxP": null,
       "minP": null,
@@ -956,7 +1037,7 @@
       "score": null,
       "status": "колекція",
       "tags": [],
-      "updated": "2026-09-12T13:36:19.544Z",
+      "updated": "2026-09-12T13:47:45.799Z",
       "weight": null
     },
     {
@@ -966,6 +1047,7 @@
       "bggRating": 6.9,
       "byCount": {},
       "comment": "",
+      "cover": "https://cf.geekdo-images.com/GI_7QfgwhhnmCaGfhOK4gQ__square200/img/YZ4cmDXCnX49Y5ZGo9MVQykAKa8=/200x200/filters:strip_icc()/pic5545298.png",
       "id": "g-ramen",
       "maxP": null,
       "minP": null,
@@ -976,7 +1058,7 @@
       "score": null,
       "status": "колекція",
       "tags": [],
-      "updated": "2026-09-12T13:36:19.544Z",
+      "updated": "2026-09-12T13:47:45.799Z",
       "weight": null
     },
     {
@@ -986,6 +1068,7 @@
       "bggRating": 7.5,
       "byCount": {},
       "comment": "",
+      "cover": "https://cf.geekdo-images.com/CIh_rXKoRw9z8K0PJxT8nQ__square200/img/aAoK8OyqIWSLtWHLqEzaZ17n0FY=/200x200/filters:strip_icc()/pic6973911.jpg",
       "id": "g-sea-salt",
       "maxP": null,
       "minP": null,
@@ -996,7 +1079,7 @@
       "score": null,
       "status": "колекція",
       "tags": [],
-      "updated": "2026-09-12T13:36:19.544Z",
+      "updated": "2026-09-12T13:47:45.799Z",
       "weight": null
     },
     {
@@ -1005,6 +1088,7 @@
       "bggRating": 7.8,
       "byCount": {},
       "comment": "",
+      "cover": "https://cf.geekdo-images.com/9jDNDtPC0s-eATSWly8oEg__square200/img/ruLYAtscHwsjwt3h0SS-OrsD3Sw=/200x200/filters:strip_icc()/pic7731597.jpg",
       "expansion": true,
       "id": "g-sea-salt-extra",
       "maxP": null,
@@ -1016,7 +1100,7 @@
       "score": null,
       "status": "колекція",
       "tags": [],
-      "updated": "2026-09-12T13:36:19.544Z",
+      "updated": "2026-09-12T13:47:45.799Z",
       "weight": null
     },
     {
@@ -1026,7 +1110,7 @@
       "bggRating": 7.5,
       "byCount": {},
       "comment": "",
-      "cover": "https://desktopgames.com.ua/games/6456/cartographers-ua_preview_200x200.webp",
+      "cover": "https://cf.geekdo-images.com/GifbnAmsA4lfEcDkeaC9VA__square200/img/TVN7rhkwJmTqjTdzh8sSMbZ6hgU=/200x200/filters:strip_icc()/pic4397932.png",
       "id": "g-seed-01",
       "maxP": null,
       "minP": null,
@@ -1037,7 +1121,7 @@
       "score": 7,
       "status": "колекція",
       "tags": [],
-      "updated": "2026-09-12T13:36:19.544Z",
+      "updated": "2026-09-12T13:47:45.799Z",
       "weight": null
     },
     {
@@ -1047,6 +1131,7 @@
       "bggRating": 6.9,
       "byCount": {},
       "comment": "",
+      "cover": "https://cf.geekdo-images.com/NVsxRYyE_vIBzObK72maCQ__square200/img/27C-PSsm3Ne9hMY1Od6b581wJCY=/200x200/filters:strip_icc()/pic9402780.jpg",
       "id": "g-seed-02",
       "maxP": null,
       "minP": null,
@@ -1057,7 +1142,7 @@
       "score": null,
       "status": "колекція",
       "tags": [],
-      "updated": "2026-09-12T13:36:19.544Z",
+      "updated": "2026-09-12T13:47:45.799Z",
       "weight": null
     },
     {
@@ -1067,6 +1152,7 @@
       "bggRating": 7.2,
       "byCount": {},
       "comment": "",
+      "cover": "https://cf.geekdo-images.com/5cExnc8YU5n-52o4FGTZzA__square200/img/eLPuGguCkrABdCyAzQgYQiHX_ng=/200x200/filters:strip_icc()/pic6970585.png",
       "id": "g-seed-03",
       "maxP": null,
       "minP": null,
@@ -1077,7 +1163,7 @@
       "score": null,
       "status": "колекція",
       "tags": [],
-      "updated": "2026-09-12T13:36:19.544Z",
+      "updated": "2026-09-12T13:47:45.799Z",
       "weight": null
     },
     {
@@ -1087,6 +1173,7 @@
       "bggRating": 8.2,
       "byCount": {},
       "comment": "",
+      "cover": "https://cf.geekdo-images.com/_N9ueJu-Vaq656p7HSI9sw__square200/img/byfI0qhiM2qQN02Ugjpji0ThmsU=/200x200/filters:strip_icc()/pic6267930.jpg",
       "id": "g-seed-04",
       "maxP": null,
       "minP": null,
@@ -1097,7 +1184,7 @@
       "score": null,
       "status": "колекція",
       "tags": [],
-      "updated": "2026-09-12T13:36:19.544Z",
+      "updated": "2026-09-12T13:47:45.799Z",
       "weight": null
     },
     {
@@ -1107,6 +1194,7 @@
       "bggRating": 7.0,
       "byCount": {},
       "comment": "",
+      "cover": "https://cf.geekdo-images.com/hKCfrhDRpKoKhjY0c6Y1kA__square200/img/DhHjHIf-PuAzsMrAQMjMPPyNX-M=/200x200/filters:strip_icc()/pic6110612.jpg",
       "id": "g-seed-05",
       "maxP": null,
       "minP": null,
@@ -1117,7 +1205,7 @@
       "score": 7,
       "status": "колекція",
       "tags": [],
-      "updated": "2026-09-12T13:36:19.544Z",
+      "updated": "2026-09-12T13:47:45.799Z",
       "weight": null
     },
     {
@@ -1127,6 +1215,7 @@
       "bggRating": 6.8,
       "byCount": {},
       "comment": "",
+      "cover": "https://cf.geekdo-images.com/ly9FxByzM8tdYvF7ROKMZQ__square200/img/3giuPW0iFvRXWBnUjev2bpy9pZo=/200x200/filters:strip_icc()/pic8273127.jpg",
       "id": "g-seed-06",
       "maxP": null,
       "minP": null,
@@ -1137,7 +1226,7 @@
       "score": 7,
       "status": "колекція",
       "tags": [],
-      "updated": "2026-09-12T13:36:19.544Z",
+      "updated": "2026-09-12T13:47:45.799Z",
       "weight": null
     },
     {
@@ -1147,6 +1236,7 @@
       "bggRating": 7.5,
       "byCount": {},
       "comment": "",
+      "cover": "https://cf.geekdo-images.com/9wDd5YVER3lwpGO3v5EkTA__square200/img/HkDaA9SmD98zXUpqTEt5OTqC0b4=/200x200/filters:strip_icc()/pic5374175.jpg",
       "id": "g-seed-07",
       "maxP": null,
       "minP": null,
@@ -1157,7 +1247,7 @@
       "score": null,
       "status": "колекція",
       "tags": [],
-      "updated": "2026-09-12T13:36:19.544Z",
+      "updated": "2026-09-12T13:47:45.799Z",
       "weight": null
     },
     {
@@ -1167,7 +1257,7 @@
       "bggRating": 7.6,
       "byCount": {},
       "comment": "",
-      "cover": "https://desktopgames.com.ua/games/7334/earth-ua_preview_200x200.webp",
+      "cover": "https://cf.geekdo-images.com/0xqF_KyOb7V26Lu5YT3fxw__square200/img/3Sg2feLbyFfnIZt-jyi3fg9d634=/200x200/filters:strip_icc()/pic6699821.jpg",
       "id": "g-seed-08",
       "maxP": null,
       "minP": null,
@@ -1178,7 +1268,7 @@
       "score": null,
       "status": "колекція",
       "tags": [],
-      "updated": "2026-09-12T13:36:19.544Z",
+      "updated": "2026-09-12T13:47:45.799Z",
       "weight": null
     },
     {
@@ -1188,6 +1278,7 @@
       "bggRating": 6.6,
       "byCount": {},
       "comment": "",
+      "cover": "https://cf.geekdo-images.com/uyE342LSf5ztt9gxPY1nVQ__square200/img/QY_Hl_FML6dCtSN8SZwCsBO-dmU=/200x200/filters:strip_icc()/pic7241989.jpg",
       "id": "g-seed-09",
       "maxP": null,
       "minP": null,
@@ -1198,7 +1289,7 @@
       "score": null,
       "status": "колекція",
       "tags": [],
-      "updated": "2026-09-12T13:36:19.544Z",
+      "updated": "2026-09-12T13:47:45.799Z",
       "weight": null
     },
     {
@@ -1208,6 +1299,7 @@
       "bggRating": 7.5,
       "byCount": {},
       "comment": "",
+      "cover": "https://cf.geekdo-images.com/lvIHUl0m2wFXACaKcdVrjQ__square200/img/qax4CSYB0K_foFOR1_YFYFLGoIU=/200x200/filters:strip_icc()/pic8172090.jpg",
       "id": "g-seed-10",
       "maxP": null,
       "minP": null,
@@ -1218,7 +1310,7 @@
       "score": null,
       "status": "колекція",
       "tags": [],
-      "updated": "2026-09-12T13:36:19.544Z",
+      "updated": "2026-09-12T13:47:45.799Z",
       "weight": null
     },
     {
@@ -1228,6 +1320,7 @@
       "bggRating": 7.6,
       "byCount": {},
       "comment": "",
+      "cover": "https://cf.geekdo-images.com/85t1wkwgvh3d2mmjsRcDrw__square200/img/bRa-B8rFSo91_Ub1EQUF2rMF8wA=/200x200/filters:strip_icc()/pic6039256.jpg",
       "id": "g-seed-11",
       "maxP": null,
       "minP": null,
@@ -1238,7 +1331,7 @@
       "score": 8,
       "status": "колекція",
       "tags": [],
-      "updated": "2026-09-12T13:36:19.544Z",
+      "updated": "2026-09-12T13:47:45.799Z",
       "weight": null
     },
     {
@@ -1248,6 +1341,7 @@
       "bggRating": 8.3,
       "byCount": {},
       "comment": "",
+      "cover": "https://cf.geekdo-images.com/r72BZoC3whophBzKi45Rgg__square200/img/TPdjs6tQHryeGybC3XTU6j6liXU=/200x200/filters:strip_icc()/pic6737677.jpg",
       "id": "g-seed-12",
       "maxP": null,
       "minP": null,
@@ -1258,7 +1352,7 @@
       "score": 9,
       "status": "колекція",
       "tags": [],
-      "updated": "2026-09-12T13:36:19.544Z",
+      "updated": "2026-09-12T13:47:45.799Z",
       "weight": null
     },
     {
@@ -1268,6 +1362,7 @@
       "bggRating": 7.5,
       "byCount": {},
       "comment": "",
+      "cover": "https://cf.geekdo-images.com/Z6MMX39UEAZT3-f-DlnHsA__square200/img/-4IgwLO3OOQqlUZ9D5Dc83cF63M=/200x200/filters:strip_icc()/pic8114705.jpg",
       "id": "g-seed-13",
       "maxP": null,
       "minP": null,
@@ -1278,7 +1373,7 @@
       "score": null,
       "status": "колекція",
       "tags": [],
-      "updated": "2026-09-12T13:36:19.544Z",
+      "updated": "2026-09-12T13:47:45.799Z",
       "weight": null
     },
     {
@@ -1288,6 +1383,7 @@
       "bggRating": 8.4,
       "byCount": {},
       "comment": "",
+      "cover": "https://cf.geekdo-images.com/_HhIdavYW-hid20Iq3hhmg__square200/img/PAvcImUWC1c5q2TBIbG87fyPfEM=/200x200/filters:strip_icc()/pic5055631.jpg",
       "id": "g-seed-14",
       "maxP": null,
       "minP": null,
@@ -1298,7 +1394,7 @@
       "score": null,
       "status": "колекція",
       "tags": [],
-      "updated": "2026-09-12T13:36:19.544Z",
+      "updated": "2026-09-12T13:47:45.799Z",
       "weight": null
     },
     {
@@ -1307,6 +1403,7 @@
       "bggRating": 8.5,
       "byCount": {},
       "comment": "",
+      "cover": "https://cf.geekdo-images.com/Xf1C1NuxY1YOHPFmpmNqiw__square200/img/l0g824tNSuRfkGw2e_Dl8ZC92fE=/200x200/filters:strip_icc()/pic3064278.jpg",
       "id": "g-seed-15",
       "maxP": null,
       "minP": null,
@@ -1317,7 +1414,7 @@
       "score": null,
       "status": "колекція",
       "tags": [],
-      "updated": "2026-09-12T13:36:19.544Z",
+      "updated": "2026-09-12T13:47:45.799Z",
       "weight": null
     },
     {
@@ -1327,7 +1424,7 @@
       "bggRating": 7.9,
       "byCount": {},
       "comment": "",
-      "cover": "https://desktopgames.com.ua/games/6829/keep-heroes-out-ua_preview_200x200.webp",
+      "cover": "https://cf.geekdo-images.com/lfFKMNCzIJesp8IFHK8dEw__square200/img/1IXIr_qVhHNgcS1d_uc2pD7o9as=/200x200/filters:strip_icc()/pic6985339.jpg",
       "id": "g-seed-16",
       "maxP": null,
       "minP": null,
@@ -1338,7 +1435,7 @@
       "score": null,
       "status": "колекція",
       "tags": [],
-      "updated": "2026-09-12T13:36:19.544Z",
+      "updated": "2026-09-12T13:47:45.799Z",
       "weight": null,
       "withExp": [
         "g-khn-boss",
@@ -1353,7 +1450,7 @@
       "bggRating": 7.4,
       "byCount": {},
       "comment": "",
-      "cover": "https://desktopgames.com.ua/games/6465/splendor-ua_preview_200x200.webp",
+      "cover": "https://cf.geekdo-images.com/vNFe4JkhKAERzi4T0Ntwpw__square200/img/GwddOGnRbOKcppnaCyo-tC9yXIU=/200x200/filters:strip_icc()/pic8234167.png",
       "id": "g-splendor",
       "maxP": null,
       "minP": null,
@@ -1364,7 +1461,7 @@
       "score": null,
       "status": "колекція",
       "tags": [],
-      "updated": "2026-09-12T13:36:19.544Z",
+      "updated": "2026-09-12T13:47:45.799Z",
       "weight": null
     },
     {
@@ -1374,6 +1471,7 @@
       "bggRating": 7.9,
       "byCount": {},
       "comment": "",
+      "cover": "https://cf.geekdo-images.com/V1PyFDPNFY4bJFgreLPxmQ__square200/img/-SLkcZucropiAGFMan7xd1ALV2g=/200x200/filters:strip_icc()/pic6929347.jpg",
       "id": "g-splendor-duel",
       "maxP": null,
       "minP": null,
@@ -1384,7 +1482,7 @@
       "score": null,
       "status": "колекція",
       "tags": [],
-      "updated": "2026-09-12T13:36:19.544Z",
+      "updated": "2026-09-12T13:47:45.799Z",
       "weight": null
     },
     {
@@ -1394,6 +1492,7 @@
       "bggRating": 7.5,
       "byCount": {},
       "comment": "",
+      "cover": "https://cf.geekdo-images.com/EsJqPL5CB_TMt0MYL-lnVg__square200/img/AvKeTylgREPEwlpsoIXwpU1Onbw=/200x200/filters:strip_icc()/pic1903816.jpg",
       "id": "g-star-realms",
       "maxP": null,
       "minP": null,
@@ -1404,7 +1503,7 @@
       "score": null,
       "status": "колекція",
       "tags": [],
-      "updated": "2026-09-12T13:36:19.544Z",
+      "updated": "2026-09-12T13:47:45.799Z",
       "weight": null
     },
     {
@@ -1414,6 +1513,7 @@
       "bggRating": 7.5,
       "byCount": {},
       "comment": "",
+      "cover": "https://cf.geekdo-images.com/elmZegVZ6gp4_5izUgxGQQ__square200/img/amNueNB79Z2bXi0yX1TGp4dsETo=/200x200/filters:strip_icc()/pic1632539.jpg",
       "id": "g-stone-age",
       "maxP": null,
       "minP": null,
@@ -1424,7 +1524,28 @@
       "score": null,
       "status": "колекція",
       "tags": [],
-      "updated": "2026-09-12T13:36:19.544Z",
+      "updated": "2026-09-12T13:47:45.799Z",
+      "weight": null
+    },
+    {
+      "added": "2026-09-12",
+      "bggId": "269207",
+      "bggRank": 251,
+      "bggRating": 7.6,
+      "byCount": {},
+      "comment": "",
+      "cover": "https://cf.geekdo-images.com/H-AU-nhjCbaxWlWj_O-eFw__square200/img/57hfgxNekcshLjDy0gTWu-Y0p18=/200x200/filters:strip_icc()/pic4873141.jpg",
+      "id": "g-tiefenthal",
+      "maxP": null,
+      "minP": null,
+      "minutes": null,
+      "name": "Таверни Тіфенталя",
+      "nameEn": "The Taverns of Tiefenthal",
+      "plays": 0,
+      "score": null,
+      "status": "колекція",
+      "tags": [],
+      "updated": "2026-09-12T13:48:34.345Z",
       "weight": null
     },
     {
@@ -1434,6 +1555,7 @@
       "bggRating": 7.3,
       "byCount": {},
       "comment": "",
+      "cover": "https://cf.geekdo-images.com/G_moxnKfgJ4w_NGmr9T6Lg__square200/img/rbr8EjBLYsaiIsW_fEIwokMye3k=/200x200/filters:strip_icc()/pic6871609.jpg",
       "id": "g-tribes-wind",
       "maxP": null,
       "minP": null,
@@ -1444,7 +1566,7 @@
       "score": null,
       "status": "колекція",
       "tags": [],
-      "updated": "2026-09-12T13:36:19.544Z",
+      "updated": "2026-09-12T13:47:45.799Z",
       "weight": null
     },
     {
@@ -1454,6 +1576,7 @@
       "bggRating": 7.0,
       "byCount": {},
       "comment": "",
+      "cover": "https://cf.geekdo-images.com/6hLMSDvAPpt4rdNqBnJ1yw__square200/img/5L7h_uypne1wa7SEeRiCezKn-8M=/200x200/filters:strip_icc()/pic8006476.jpg",
       "id": "g-ttr-paris",
       "maxP": null,
       "minP": null,
@@ -1464,7 +1587,7 @@
       "score": null,
       "status": "колекція",
       "tags": [],
-      "updated": "2026-09-12T13:36:19.544Z",
+      "updated": "2026-09-12T13:47:45.799Z",
       "weight": null
     },
     {
@@ -1474,6 +1597,7 @@
       "bggRating": 7.4,
       "byCount": {},
       "comment": "",
+      "cover": "https://cf.geekdo-images.com/y8ifesXfHobUtIgnSuC0DA__square200/img/6Sgtcf0UlSl0OY_Y30A7kmuO88I=/200x200/filters:strip_icc()/pic4860701.jpg",
       "id": "g-tucana",
       "maxP": null,
       "minP": null,
@@ -1484,7 +1608,7 @@
       "score": null,
       "status": "колекція",
       "tags": [],
-      "updated": "2026-09-12T13:36:19.544Z",
+      "updated": "2026-09-12T13:47:45.799Z",
       "weight": null
     },
     {
@@ -1494,6 +1618,7 @@
       "bggRating": 7.2,
       "byCount": {},
       "comment": "",
+      "cover": "https://cf.geekdo-images.com/kQUHlDU78eJUi8zb7DxaLA__square200/img/5g_q5BF7fr7arkEnq6BuraeT0CM=/200x200/filters:strip_icc()/pic7700486.jpg",
       "id": "g-unlock-angel",
       "maxP": null,
       "minP": null,
@@ -1504,7 +1629,7 @@
       "score": null,
       "status": "колекція",
       "tags": [],
-      "updated": "2026-09-12T13:36:19.544Z",
+      "updated": "2026-09-12T13:47:45.799Z",
       "weight": null
     },
     {
@@ -1514,6 +1639,7 @@
       "bggRating": 6.7,
       "byCount": {},
       "comment": "",
+      "cover": "https://cf.geekdo-images.com/75CKyZVBkUa3dUOemD27YA__square200/img/TLLmb6ddZRT_6rKlISGUqbJIekg=/200x200/filters:strip_icc()/pic6991242.jpg",
       "id": "g-unlock-mummy",
       "maxP": null,
       "minP": null,
@@ -1524,7 +1650,7 @@
       "score": null,
       "status": "колекція",
       "tags": [],
-      "updated": "2026-09-12T13:36:19.544Z",
+      "updated": "2026-09-12T13:47:45.799Z",
       "weight": null
     },
     {
@@ -1534,6 +1660,7 @@
       "bggRating": 6.5,
       "byCount": {},
       "comment": "",
+      "cover": "https://cf.geekdo-images.com/cybvdQmzPVANQ-gLyTqMUA__square200/img/9RW1QmmH7UL66C_FFcD7CYtufsY=/200x200/filters:strip_icc()/pic7700501.jpg",
       "id": "g-unlock-recipes",
       "maxP": null,
       "minP": null,
@@ -1544,7 +1671,7 @@
       "score": null,
       "status": "колекція",
       "tags": [],
-      "updated": "2026-09-12T13:36:19.544Z",
+      "updated": "2026-09-12T13:47:45.799Z",
       "weight": null
     },
     {
@@ -1554,6 +1681,7 @@
       "bggRating": 5.5,
       "byCount": {},
       "comment": "",
+      "cover": "https://cf.geekdo-images.com/-DHiHBBSnvaLu0Do8CIykQ__square200/img/JzrvZyZuYBdC4EIEy-gPJEJ2Lk0=/200x200/filters:strip_icc()/pic8204165.jpg",
       "id": "g-uno",
       "maxP": null,
       "minP": null,
@@ -1564,7 +1692,7 @@
       "score": null,
       "status": "колекція",
       "tags": [],
-      "updated": "2026-09-12T13:36:19.544Z",
+      "updated": "2026-09-12T13:47:45.799Z",
       "weight": null
     },
     {
@@ -1574,6 +1702,7 @@
       "bggRating": 8.0,
       "byCount": {},
       "comment": "",
+      "cover": "https://cf.geekdo-images.com/l_PRU2lVlX9seScRFcvFlA__square200/img/q8oiJvSqse6aDn9xMKya2Fo4G80=/200x200/filters:strip_icc()/pic6500949.jpg",
       "id": "g-viticulture",
       "maxP": null,
       "minP": null,
@@ -1584,7 +1713,7 @@
       "score": null,
       "status": "колекція",
       "tags": [],
-      "updated": "2026-09-12T13:36:19.544Z",
+      "updated": "2026-09-12T13:47:45.799Z",
       "weight": null
     },
     {
@@ -1594,6 +1723,7 @@
       "bggRating": 8.0,
       "byCount": {},
       "comment": "",
+      "cover": "https://cf.geekdo-images.com/qXT1U-nFh9PE8ujfdmI7dA__square200/img/dhL41LnGHG3_goo6-PGqOIYH-no=/200x200/filters:strip_icc()/pic7754663.jpg",
       "id": "g-white-castle",
       "maxP": null,
       "minP": null,
@@ -1604,7 +1734,7 @@
       "score": null,
       "status": "колекція",
       "tags": [],
-      "updated": "2026-09-12T13:36:19.544Z",
+      "updated": "2026-09-12T13:47:45.799Z",
       "weight": null
     },
     {
@@ -1614,7 +1744,7 @@
       "bggRating": 8.0,
       "byCount": {},
       "comment": "",
-      "cover": "https://desktopgames.com.ua/games/4352/wingspan-ukr_preview_200x200.webp",
+      "cover": "https://cf.geekdo-images.com/yLZJCVLlIx4c7eJEWUNJ7w__square200/img/BuUGdo8iEnHLPKZvyttszIdBNOU=/200x200/filters:strip_icc()/pic4458123.jpg",
       "id": "g-wingspan",
       "maxP": null,
       "minP": null,
@@ -1625,7 +1755,7 @@
       "score": null,
       "status": "колекція",
       "tags": [],
-      "updated": "2026-09-12T13:36:19.544Z",
+      "updated": "2026-09-12T13:47:45.799Z",
       "weight": null
     },
     {
@@ -1635,6 +1765,7 @@
       "bggRating": 8.4,
       "byCount": {},
       "comment": "",
+      "cover": "https://cf.geekdo-images.com/TksQfRZfS3cVO5qO7kTNsw__square200/img/1vAmM1NjEYz6U9NvT1uBX2FV4IY=/200x200/filters:strip_icc()/pic8419452.jpg",
       "id": "g-witcher",
       "maxP": null,
       "minP": null,
@@ -1645,7 +1776,7 @@
       "score": null,
       "status": "колекція",
       "tags": [],
-      "updated": "2026-09-12T13:36:19.544Z",
+      "updated": "2026-09-12T13:47:45.799Z",
       "weight": null
     },
     {
@@ -1655,7 +1786,7 @@
       "bggRating": 7.9,
       "byCount": {},
       "comment": "",
-      "cover": "https://desktopgames.com.ua/games/8254/nastylna-gra-zmiievyr-wyrmspan-ua_preview_200x200.webp",
+      "cover": "https://cf.geekdo-images.com/cNc-FMsYo-mcRTGaXV2qcQ__square200/img/CyTrkKg-UcJlKfG4mX6HO_J0o_E=/200x200/filters:strip_icc()/pic8894992.jpg",
       "id": "g-wyrmspan",
       "maxP": null,
       "minP": null,
@@ -1666,7 +1797,7 @@
       "score": null,
       "status": "колекція",
       "tags": [],
-      "updated": "2026-09-12T13:36:19.544Z",
+      "updated": "2026-09-12T13:47:45.799Z",
       "weight": null
     },
     {
@@ -1675,6 +1806,7 @@
       "bggRating": 8.4,
       "byCount": {},
       "comment": "",
+      "cover": "https://cf.geekdo-images.com/JItWBskxjgKA8psXoHVCkA__square200/img/gmtbIadzf9KYxFl7M_pvUljOQoM=/200x200/filters:strip_icc()/pic9079437.jpg",
       "expansion": true,
       "id": "g-wyrmspan-dragon",
       "maxP": null,
@@ -1686,9 +1818,9 @@
       "score": null,
       "status": "колекція",
       "tags": [],
-      "updated": "2026-09-12T13:36:19.544Z",
+      "updated": "2026-09-12T13:47:45.799Z",
       "weight": null
     }
   ],
-  "saved": "2026-09-12T13:36:19.544Z"
+  "saved": "2026-09-12T13:48:34.345Z"
 }
