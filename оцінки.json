@@ -1,7 +1,7 @@
 {
   "app": "полиця настілок",
   "version": 2,
-  "saved": "2026-09-12T20:18:48.960Z",
+  "saved": "2026-09-12T20:19:38.269Z",
   "games": [
     {
       "added": "2026-09-12",
@@ -1028,7 +1028,12 @@
       "bggId": "366013",
       "bggRank": 47,
       "bggRating": 8,
-      "byCount": {},
+      "byCount": {
+        "2": 5,
+        "3": 5,
+        "4": 6,
+        "5": 6
+      },
       "comment": "",
       "cover": "https://cf.geekdo-images.com/-vOrd4bOspibyohYExLqWg__square200/img/LYL8i7kS1_RuTZLvSi8a8hPBh74=/200x200/filters:strip_icc()/pic6940449.png",
       "id": "g-heat",
@@ -1037,7 +1042,7 @@
       "minutes": null,
       "name": "Турбо. Спека на треку",
       "nameEn": "Heat: Pedal to the Metal",
-      "plays": 0,
+      "plays": 4,
       "rules": [
         {
           "kind": "офіційні",
@@ -1050,14 +1055,14 @@
           "url": "https://geekach.com.ua/content/files/uskladnen-pravila-86556142.pdf"
         }
       ],
-      "score": null,
-      "status": "колекція",
+      "score": 6,
+      "status": "позбувся",
       "statuses": [
-        "колекція"
+        "позбувся"
       ],
       "tags": [],
-      "updated": "2026-09-12T17:20:03.076Z",
-      "weight": null
+      "updated": "2026-09-12T20:19:29.124Z",
+      "weight": 1.5
     },
     {
       "added": "2026-09-12",
