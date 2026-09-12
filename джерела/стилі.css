@@ -358,6 +358,15 @@ button{cursor:pointer}
 .chip:hover{border-color:var(--ink-faint)}
 .chip[aria-pressed="true"]{background:var(--petrol); border-color:var(--petrol);
   color:var(--on-accent)}
+/* Статус, що фарбує рядок у списку, тим самим кольором позначений і тут —
+   і згаслим, і ввімкненим. Порядок правил має значення: ці мусять стояти
+   після загального, інакше бірюза загального перекриє їх обидва. */
+.chip.sale{color:var(--rust); border-color:var(--rust)}
+.chip.sale[aria-pressed="true"]{background:var(--rust); border-color:var(--rust);
+  color:var(--on-accent)}
+.chip.other{color:var(--sage); border-color:var(--sage)}
+.chip.other[aria-pressed="true"]{background:var(--sage); border-color:var(--sage);
+  color:var(--on-accent)}
 /* Похідний статус не має вигляду кнопки взагалі: усе, що схоже на
    чип, читається як натискне, а цей веде лічильник партій. */
 .auto-note{display:flex; align-items:center; gap:7px}

@@ -44,7 +44,8 @@ function paintScale(host){
 function renderStatus(g){
   const є = new Set(stats(g));
   const ручні = Object.keys(STATUS).map((k) =>
-    "<button type='button' class='chip' data-st='" + esc(k) + "' aria-pressed='" +
+    "<button type='button' class='chip" + (ТОН_СТАТУСУ[k] ? " " + ТОН_СТАТУСУ[k] : "") +
+    "' data-st='" + esc(k) + "' aria-pressed='" +
     (є.has(k) ? "true" : "false") + "'>" + esc(STATUS[k]) + "</button>");
   $("cStatus").innerHTML = ручні.join("");
   const авто = autoStats(g).map((k) => AUTO[k]);

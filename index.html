@@ -381,6 +381,15 @@ button{cursor:pointer}
 .chip:hover{border-color:var(--ink-faint)}
 .chip[aria-pressed="true"]{background:var(--petrol); border-color:var(--petrol);
   color:var(--on-accent)}
+/* Статус, що фарбує рядок у списку, тим самим кольором позначений і тут —
+   і згаслим, і ввімкненим. Порядок правил має значення: ці мусять стояти
+   після загального, інакше бірюза загального перекриє їх обидва. */
+.chip.sale{color:var(--rust); border-color:var(--rust)}
+.chip.sale[aria-pressed="true"]{background:var(--rust); border-color:var(--rust);
+  color:var(--on-accent)}
+.chip.other{color:var(--sage); border-color:var(--sage)}
+.chip.other[aria-pressed="true"]{background:var(--sage); border-color:var(--sage);
+  color:var(--on-accent)}
 /* Похідний статус не має вигляду кнопки взагалі: усе, що схоже на
    чип, читається як натискне, а цей веде лічильник партій. */
 .auto-note{display:flex; align-items:center; gap:7px}
@@ -779,6 +788,11 @@ const СКАСОВАНІ_СТАТУСИ = ["хочу", "відклав"];
    її вже нема. Тож ці три гасять одне одного. «улюблена», «онлайн» і
    «кандидат на продаж» не про це — вони вільно стають поруч із будь-яким. */
 const ВЛАСНІСТЬ = ["колекція", "чужа", "позбувся"];
+/* Статуси, що фарбують рядок у списку. Той самий колір несе й чип у
+   картці: інакше список каже, що «кандидат на продаж» червоний, а
+   картка малює його як будь-який інший — і позначка перестає читатись
+   як позначка. Значення — це ті самі класи, що вже є в стилях рядка. */
+const ТОН_СТАТУСУ = {"продаж": "sale", "чужа": "other"};
 // Похідний статус: його не ставлять руками, він випливає з лічильника партій
 // і сам зникає після першої зіграної. Тримати його окремо від STATUS, щоб
 // він ніколи не потрапив у збережені дані.
@@ -1871,7 +1885,8 @@ function paintScale(host){
 function renderStatus(g){
   const є = new Set(stats(g));
   const ручні = Object.keys(STATUS).map((k) =>
-    "<button type='button' class='chip' data-st='" + esc(k) + "' aria-pressed='" +
+    "<button type='button' class='chip" + (ТОН_СТАТУСУ[k] ? " " + ТОН_СТАТУСУ[k] : "") +
+    "' data-st='" + esc(k) + "' aria-pressed='" +
     (є.has(k) ? "true" : "false") + "'>" + esc(STATUS[k]) + "</button>");
   $("cStatus").innerHTML = ручні.join("");
   const авто = autoStats(g).map((k) => AUTO[k]);
