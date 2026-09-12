@@ -26,6 +26,7 @@ import перевірка
             "minP": 1, "maxP": 4, "minutes": 60,
             "bggMin": 1, "bggMax": 6, "bggBest": [2, 3], "bggRec": [1, 2, 3, 4],
             "bggTimeMin": 45, "bggTimeMax": 90, "bggWeight": 2.8,
+            "bggFamily": ["strategy-games"], "bggGenres": ["card-game", "fantasy"],
             "tags": ["євро"], "comment": "",
             "cover": "https://example.test/a.jpg",
             "bggId": "1", "bggRating": 7.6, "bggRank": 120,
@@ -82,6 +83,16 @@ import перевірка
      "зростаючий"),
     ("опитування вище за стелю коробки",
      lambda с: с["games"][0].update(bggBest=[2, 9]), "поза межами"),
+    ("жанри не списком", lambda с: с["games"][0].update(bggGenres="fantasy"),
+     "списком рядків"),
+    ("жанр не слугом", lambda с: с["games"][0].update(bggGenres=["Card Game"]),
+     "не слуги"),
+    ("жанр повторюється",
+     lambda с: с["games"][0].update(bggGenres=["card-game", "card-game"]), "без повторів"),
+    ("жанри не за абеткою",
+     lambda с: с["games"][0].update(bggGenres=["fantasy", "card-game"]), "впорядкований"),
+    ("родина не слугом", lambda с: с["games"][0].update(bggFamily=["Strategy Games"]),
+     "не слуги"),
     ("прив'язка в нікуди", lambda с: с["games"][0].update(withExp=["g-нема"]),
      "неіснуючу"),
     ("прив'язка до не-доповнення",
@@ -120,6 +131,21 @@ def головне():
         впало += 1
     else:
         print("✓ чистий зразок проходить" + (f" (застережень: {len(з)})" if з else ""))
+
+    # Жанр без українського підпису — не помилка: дані цілі, просто сторінка
+    # покаже слуг як є. Але мовчати про це не можна, інакше новий жанр
+    # заїде в інтерфейс англійською й ніхто не помітить.
+    с = copy.deepcopy(ЗРАЗОК)
+    с["games"][0]["bggGenres"] = ["card-game", "quantum-ballet"]
+    п, з = перевірка.перевірити(с)
+    if п:
+        впало += 1
+        print(f"✗ невідомий жанр став помилкою, а мав лишитися застереженням: {п}")
+    elif any("немає українського підпису" in р for р in з):
+        print("✓ спіймано: жанр без підпису — застереженням, не помилкою")
+    else:
+        впало += 1
+        print(f"✗ ПРОҐАВЛЕНО: жанр без українського підпису; застереження: {з}")
 
     for назва, зіпсувати, очікую in ВАДИ:
         с = copy.deepcopy(ЗРАЗОК)

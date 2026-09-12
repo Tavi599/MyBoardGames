@@ -96,7 +96,16 @@ function renderBgg(g){
         : g.bggTimeMin + "–" + g.bggTimeMax + " хв") : "");
   дод("Складність", g.bggWeight ? fmt(g.bggWeight) + " з 5" : "");
 
-  $("bggGrp").hidden = !рядки.length;
+  // Жанри — чипами, а не рядком: кожен шукає себе по всій полиці. Родина
+  // йде першою й окремим кольором, бо саме за нею фільтрують угорі.
+  const мітки = familyNames(g).map((н) => [н, "рід"])
+    .concat(genreNames(g).map((н) => [н, ""]));
+  $("cGenres").hidden = !мітки.length;
+  $("cGenres").innerHTML = мітки.map(([н, к]) =>
+    "<button type='button' class='chip tag " + к + "' data-genre='" + esc(н) +
+    "' title='Знайти всі такі'>" + esc(н) + "</button>").join("");
+
+  $("bggGrp").hidden = !рядки.length && !мітки.length;
   if(!рядки.length) return;
   $("cBgg").innerHTML = рядки.map(([п, з]) =>
     "<div><dt>" + esc(п) + "</dt><dd>" + esc(з) + "</dd></div>").join("");
@@ -311,6 +320,18 @@ $("cRuleAdd").addEventListener("click", () => {
 });
 $("cRuleUrl").addEventListener("keydown", (e) => {
   if(e.key === "Enter"){ e.preventDefault(); $("cRuleAdd").click(); }
+});
+/* Жанр у картці — це не позначка, а запит: натиснув «фентезі» — закрилась
+   картка, у пошуку стоїть «фентезі», у списку лише воно. Це та навігація
+   по жанрах, якої бракувало: дрібних жанрів вісім десятків, і фільтром
+   вони були б стіною кнопок. */
+$("cGenres").addEventListener("click", (e) => {
+  const b = e.target.closest("[data-genre]"); if(!b) return;
+  closeCard();
+  ui.q = b.dataset.genre;
+  renderFilters();
+  render();
+  window.scrollTo({top: 0, behavior: "smooth"});
 });
 $("cRules").addEventListener("click", (e) => {
   const b = e.target.closest("[data-rule]"); if(!b) return;

@@ -87,6 +87,9 @@ button{cursor:pointer}
 
 .seg{display:flex; align-items:center; gap:2px; background:var(--sheet); border:1px solid var(--rule);
   border-radius:7px; padding:3px; height:36px}
+/* Стрічка жанрів довша за екран телефона, тож їй дозволено переноситись.
+   Фіксована висота тут стала б причиною того, що кнопки вилазять за рамку. */
+.seg.wrap{flex-wrap:wrap; height:auto; min-height:36px; row-gap:3px}
 .seg > span{font:600 10px/1 "IBM Plex Mono",ui-monospace,monospace; letter-spacing:.12em;
   text-transform:uppercase; color:var(--ink-faint); padding:0 7px 0 5px}
 .seg button{border:0; background:none; border-radius:5px; padding:0 9px; height:28px;
@@ -288,6 +291,13 @@ button{cursor:pointer}
 .auto-note::before{content:""; width:5px; height:5px; border-radius:50%;
   background:var(--ink-faint); flex:none}
 /* Прив'язане доповнення: чип із хрестиком, який його відв'язує. */
+/* Жанр у картці — запит, а не позначка: натиснеш і побачиш усі такі.
+   Тому й вигляд інший, ніж у статусів: нижчий, з лупою замість крапки. */
+.chips.tags{margin:0 0 12px}
+.chip.tag{height:26px; padding:0 10px; font-size:12.5px; color:var(--ink-faint);
+  border-color:var(--rule-soft)}
+.chip.tag:hover{border-color:var(--petrol); color:var(--petrol)}
+.chip.tag.рід{color:var(--petrol); border-color:var(--petrol); font-weight:600}
 .chip.tied{background:var(--sunk); color:var(--ink); border-style:dashed}
 .chip.tied b{margin-left:7px; color:var(--ink-faint); font-weight:600}
 .chip.tied:hover b{color:var(--rust)}

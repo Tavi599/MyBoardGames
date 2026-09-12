@@ -110,6 +110,9 @@ button{cursor:pointer}
 
 .seg{display:flex; align-items:center; gap:2px; background:var(--sheet); border:1px solid var(--rule);
   border-radius:7px; padding:3px; height:36px}
+/* Стрічка жанрів довша за екран телефона, тож їй дозволено переноситись.
+   Фіксована висота тут стала б причиною того, що кнопки вилазять за рамку. */
+.seg.wrap{flex-wrap:wrap; height:auto; min-height:36px; row-gap:3px}
 .seg > span{font:600 10px/1 "IBM Plex Mono",ui-monospace,monospace; letter-spacing:.12em;
   text-transform:uppercase; color:var(--ink-faint); padding:0 7px 0 5px}
 .seg button{border:0; background:none; border-radius:5px; padding:0 9px; height:28px;
@@ -311,6 +314,13 @@ button{cursor:pointer}
 .auto-note::before{content:""; width:5px; height:5px; border-radius:50%;
   background:var(--ink-faint); flex:none}
 /* Прив'язане доповнення: чип із хрестиком, який його відв'язує. */
+/* Жанр у картці — запит, а не позначка: натиснеш і побачиш усі такі.
+   Тому й вигляд інший, ніж у статусів: нижчий, з лупою замість крапки. */
+.chips.tags{margin:0 0 12px}
+.chip.tag{height:26px; padding:0 10px; font-size:12.5px; color:var(--ink-faint);
+  border-color:var(--rule-soft)}
+.chip.tag:hover{border-color:var(--petrol); color:var(--petrol)}
+.chip.tag.рід{color:var(--petrol); border-color:var(--petrol); font-weight:600}
 .chip.tied{background:var(--sunk); color:var(--ink); border-style:dashed}
 .chip.tied b{margin-left:7px; color:var(--ink-faint); font-weight:600}
 .chip.tied:hover b{color:var(--rust)}
@@ -440,8 +450,11 @@ textarea:focus{outline:none; border-color:var(--petrol)}
       <button class="flip" id="fFlip" aria-label="Перевернути порядок">↓</button></div>
     <div class="spacer"></div>
     <span class="chip" id="chip" title="Де зберігаються оцінки"></span>
-    <button class="btn" id="expBtn" aria-pressed="false"
-            title="Показувати лише основні коробки">Без доповнень</button>
+    <div class="menu-wrap" id="hideWrap">
+      <button class="btn" id="hideBtn" aria-haspopup="true" aria-expanded="false"
+              aria-pressed="false" title="Прибрати з полиці цілі групи коробок">Приховати</button>
+      <div class="menu" id="hidePick" hidden></div>
+    </div>
     <button class="btn" id="cmpBtn" aria-pressed="false">Порівняти</button>
     <button class="btn pri" id="addBtn">Додати гру</button>
     <div class="menu-wrap">
@@ -549,8 +562,10 @@ textarea:focus{outline:none; border-color:var(--petrol)}
 
     <fieldset class="grp" id="bggGrp">
       <legend>Що каже BGG</legend>
+      <div class="chips tags" id="cGenres" hidden></div>
       <dl class="bgg-info" id="cBgg"></dl>
-      <p class="hint">Чужі числа, тому тут їх не змінюють. «Найкраще на» й
+      <p class="hint">Натисни жанр — і в списку лишиться саме він.
+        Чужі числа, тому тут їх не змінюють. «Найкраще на» й
         «годиться на» — це опитування гравців, а не те, що написано на коробці.
         Свої межі став у полях «Від», «До», «Хвилин» — вони лягають зверху.</p>
       <a class="btn" id="cBggLink" target="_blank" rel="noopener noreferrer">Сторінка на BGG</a>
@@ -637,6 +652,10 @@ textarea:focus{outline:none; border-color:var(--petrol)}
 </aside>
 
 <script>
+/* Згенеровано збіркою з «джерела/жанри.json» — правити там. */
+"use strict";
+const РОДИНИ = {"strategy-games": "стратегія", "family-games": "сімейна", "thematic-games": "тематична", "party-games": "вечіркова", "abstract-games": "абстрактна", "customizable-games": "колекційна", "childrens-games": "дитяча", "wargames": "воєнна"};
+const ЖАНРИ = {"abstract-strategy": "абстрактна стратегія", "action-dexterity": "спритність", "adventure": "пригоди", "american-west": "Дикий Захід", "ancient": "античність", "animals": "тварини", "arabian": "Схід", "aviation-flight": "авіація", "bluffing": "блеф", "book": "книга", "card-game": "карткова", "childrens-game": "дитяча", "city-building": "розбудова міста", "civilization": "цивілізація", "collectible-components": "колекційні складники", "comic-book-strip": "комікси", "deduction": "дедукція", "dice": "кубики", "economic": "економіка", "educational": "навчальна", "environmental": "довкілля", "exploration": "дослідження світу", "fantasy": "фентезі", "farming": "фермерство", "fighting": "бійка", "horror": "жахи", "humor": "гумор", "industry-manufacturing": "виробництво", "mafia": "мафія", "maze": "лабіринт", "medieval": "середньовіччя", "memory": "памʼять", "miniatures": "мініатюри", "movies-tv-radio-theme": "кіно й серіали", "murder-mystery": "убивство й розслідування", "mythology": "міфологія", "nautical": "море", "negotiation": "перемовини", "novel-based": "за книгою", "number": "числа", "party-game": "вечіркова", "pirates": "пірати", "political": "політика", "prehistoric": "первісні часи", "print-and-play": "роздрукуй і грай", "puzzle": "головоломка", "racing": "перегони", "real-time": "на час", "renaissance": "Ренесанс", "science-fiction": "наукова фантастика", "space-exploration": "освоєння космосу", "spies-secret-agents": "шпигуни", "sports": "спорт", "territory-building": "розширення володінь", "trains": "потяги", "transportation": "транспорт", "travel": "подорожі", "video-game-theme": "відеоігри", "wargame": "воєнна", "word-game": "словесна", "zombies": "зомбі"};
 "use strict";
 /* Склади столу, за які можна поставити окрему оцінку. «5+» — це «більше
    за п'ятьох, скільки коробка дозволяє»; ключ навмисне сталий, а підпис
@@ -673,6 +692,19 @@ function rules(g){
 }
 /** Ті, що відкриються з рядка списку одним дотиком. */
 function перші(g){ return rules(g)[0] || null; }
+
+/* ── жанри ────────────────────────────────────────────────────────────
+   Дві константи, РОДИНИ і ЖАНРИ, вкладає збірка з «джерела/жанри.json» —
+   того самого файла, яким звіряється перевірка даних. У самих записах
+   лежать слуги BGG («card-game»), а не підписи: підпис можна переписати
+   українською заново, і жоден запис від цього не зміниться.
+
+   Родин на весь BGG вісім, тому вони й стали навігацією. Жанрів вісім
+   десятків — вони живуть у картці й знаходяться пошуком. */
+
+/** Слуг без підпису показуємо як є: незвичне слово краще за порожнє місце. */
+function familyNames(g){ return (g.bggFamily || []).map((k) => РОДИНИ[k] || k); }
+function genreNames(g){ return (g.bggGenres || []).map((k) => ЖАНРИ[k] || k); }
 
 /* ── числа з BGG ──────────────────────────────────────────────────────
    Склад столу, тривалість і «вагу» тягне з BGG етап збору даних; свої
@@ -768,7 +800,7 @@ let db = null;
 let ready = false;
 // Поля фільтрів сюди дописує реєстр із «03-вибірка.js» — щоб типове
 // значення кожного фільтра жило в одному місці, а не в двох.
-const ui = {sort:"score", rev:false, noExp:false, cmp:false,
+const ui = {sort:"score", rev:false, hide:new Set(), cmp:false,
             picked:new Set(), open:null};
 
 const $ = (id) => document.getElementById(id);
@@ -1231,9 +1263,33 @@ const ФІЛЬТРИ = [
       const q = String(v).trim().toLowerCase();
       if(!q) return true;
       // Шукаємо і за українською, і за оригінальною назвою: половина полиці
-      // тримається в голові англійською.
-      return [g.name, g.nameEn, g.comment, (g.tags || []).join(" ")]
+      // тримається в голові англійською. Жанри йдуть і підписом, і слугом —
+      // «фентезі» й «fantasy» мають знаходити те саме.
+      return [g.name, g.nameEn, g.comment, (g.tags || []).join(" "),
+              familyNames(g).join(" "), genreNames(g).join(" "),
+              (g.bggFamily || []).join(" "), (g.bggGenres || []).join(" ")]
         .join(" ").toLowerCase().includes(q);
+    },
+  },
+  {
+    ключ: "family", вид: "стрічка", підпис: "Жанр", типово: "all", широка: true,
+    // Показуємо лише ті родини, які справді є на полиці: порожня кнопка
+    // «воєнна» лише займала б місце й обіцяла неіснуюче.
+    варіанти(){
+      const є = new Set();
+      games.forEach((g) => (g.bggFamily || []).forEach((k) => є.add(k)));
+      const свої = Object.keys(РОДИНИ).filter((k) => є.has(k))
+        .sort((a, b) => РОДИНИ[a].localeCompare(РОДИНИ[b], "uk"))
+        .map((k) => [k, РОДИНИ[k]]);
+      // «Без родини» — не примха: BGG не встиг розсортувати частину новинок,
+      // і без цієї кнопки вони були б недосяжні жодним жанром.
+      const безрідні = games.some((g) => !(g.bggFamily || []).length);
+      return [["all", "усі"]].concat(свої, безрідні ? [["нема", "без жанру"]] : []);
+    },
+    пасує(g, v){
+      if(v === "all") return true;
+      const р = g.bggFamily || [];
+      return v === "нема" ? !р.length : р.indexOf(v) >= 0;
     },
   },
   {
@@ -1297,9 +1353,27 @@ function fitsCount(g, який){
   const c = +с;
   return (mn == null || mn <= c) && (mx == null || mx >= c);
 }
-/** Полиця з урахуванням того, чи сховані доповнення: підсумки мають
-    рахуватися по тому самому, що людина бачить у списку. */
-function shelf(){ return ui.noExp ? games.filter((g) => !g.expansion) : games; }
+/* ── що прибрати з полиці зовсім ──────────────────────────────────────
+   Це не фільтр, а звуження самої полиці, і різниця тут суттєва: підсумки
+   нагорі рахуються по shelf(), тож прибране не потрапляє ні в «ігор на
+   полиці», ні в середню оцінку. Саме цього від «приховати» й чекаєш —
+   на відміну від фільтра, який лише звужує показане.
+
+   Позначок можна поставити скільки завгодно: доповнення, позбуті коробки
+   й те, у що граєш лише онлайн, — це три різні причини не хотіти бачити
+   гру в списку, і вони не виключають одна одну. */
+const ХОВАНКИ = [
+  {ключ: "exp", підпис: "доповнення", пасує: (g) => !!g.expansion},
+  {ключ: "позбувся", підпис: "позбуті коробки",
+   пасує: (g) => stats(g).indexOf("позбувся") >= 0},
+  {ключ: "онлайн", підпис: "лише онлайн",
+   пасує: (g) => stats(g).indexOf("онлайн") >= 0},
+];
+function shelf(){
+  const х = ui.hide;
+  if(!х || !х.size) return games;
+  return games.filter((g) => !ХОВАНКИ.some((п) => х.has(п.ключ) && п.пасує(g)));
+}
 
 const заНазвою = (a, b) => (a.name || "").localeCompare(b.name || "", "uk");
 const пусто = (v) => v == null || v === "";
@@ -1323,7 +1397,7 @@ function visible(){
     .sort(порівняти);
 }
 /* ── малювання ───────────────────────────────────── */
-function render(){ renderStats(); renderList(); renderCmp(); }
+function render(){ оновитиСтрічки(); renderStats(); renderList(); renderCmp(); }
 
 function renderStats(){
   const games = shelf();
@@ -1378,6 +1452,9 @@ function renderList(){
     const meta = [];
     const назви = statNames(g);
     if(назви.length) meta.push(назви.join(" · "));
+    // У рядок іде тільки родина — одне слово. Дрібні жанри чекають у картці:
+    // «фентезі · тварини · карткова · пригоди» в рядку списку — це шум.
+    const рід = familyNames(g); if(рід.length) meta.push(рід.join(" · "));
     const хто = playersText(g); if(хто) meta.push(хто);
     const коли = timeText(g); if(коли) meta.push(коли);
     if(g.plays) meta.push(g.plays + " " + plural(g.plays, "партія", "партії", "партій"));
@@ -1587,7 +1664,16 @@ function renderBgg(g){
         : g.bggTimeMin + "–" + g.bggTimeMax + " хв") : "");
   дод("Складність", g.bggWeight ? fmt(g.bggWeight) + " з 5" : "");
 
-  $("bggGrp").hidden = !рядки.length;
+  // Жанри — чипами, а не рядком: кожен шукає себе по всій полиці. Родина
+  // йде першою й окремим кольором, бо саме за нею фільтрують угорі.
+  const мітки = familyNames(g).map((н) => [н, "рід"])
+    .concat(genreNames(g).map((н) => [н, ""]));
+  $("cGenres").hidden = !мітки.length;
+  $("cGenres").innerHTML = мітки.map(([н, к]) =>
+    "<button type='button' class='chip tag " + к + "' data-genre='" + esc(н) +
+    "' title='Знайти всі такі'>" + esc(н) + "</button>").join("");
+
+  $("bggGrp").hidden = !рядки.length && !мітки.length;
   if(!рядки.length) return;
   $("cBgg").innerHTML = рядки.map(([п, з]) =>
     "<div><dt>" + esc(п) + "</dt><dd>" + esc(з) + "</dd></div>").join("");
@@ -1803,6 +1889,18 @@ $("cRuleAdd").addEventListener("click", () => {
 $("cRuleUrl").addEventListener("keydown", (e) => {
   if(e.key === "Enter"){ e.preventDefault(); $("cRuleAdd").click(); }
 });
+/* Жанр у картці — це не позначка, а запит: натиснув «фентезі» — закрилась
+   картка, у пошуку стоїть «фентезі», у списку лише воно. Це та навігація
+   по жанрах, якої бракувало: дрібних жанрів вісім десятків, і фільтром
+   вони були б стіною кнопок. */
+$("cGenres").addEventListener("click", (e) => {
+  const b = e.target.closest("[data-genre]"); if(!b) return;
+  closeCard();
+  ui.q = b.dataset.genre;
+  renderFilters();
+  render();
+  window.scrollTo({top: 0, behavior: "smooth"});
+});
 $("cRules").addEventListener("click", (e) => {
   const b = e.target.closest("[data-rule]"); if(!b) return;
   const g = current(); if(!g || !canEdit()) return;
@@ -1813,6 +1911,36 @@ $("cRules").addEventListener("click", (e) => {
   touch();
 });
 /* ── панель керування ────────────────────────────── */
+
+/** Підпис і кнопки однієї стрічки. Окремо, бо їх малюють двоє: повна
+    побудова панелі й оновлення стрічки, чиї варіанти залежать від даних. */
+function нутрощіСтрічки(ф){
+  return "<span>" + esc(ф.підпис) + "</span>" +
+    ф.варіанти().map(([знач, підпис]) =>
+      "<button data-v='" + esc(знач) + "' aria-pressed='" +
+      (ui[ф.ключ] === знач ? "true" : "false") + "'>" + esc(підпис) + "</button>").join("");
+}
+
+/** Варіанти стрічки можуть залежати від даних: жанри беруться з самої
+    полиці, а полиця приїжджає вже після того, як панель намальовано —
+    і з мережі, і з кеша, і кількома заходами. Тому перед кожним показом
+    звіряємо набір кнопок і перемальовуємо саме ту стрічку, у якої він
+    змінився. Панель цілком не чіпаємо навмисне: у ній живе поле пошуку,
+    і повне перемальовування висмикує з нього фокус посеред слова. */
+function оновитиСтрічки(){
+  ФІЛЬТРИ.forEach((ф) => {
+    if(ф.вид !== "стрічка") return;
+    const вузол = $("filters").querySelector(".seg[data-ф='" + ф.ключ + "']");
+    if(!вузол) return;
+    const треба = ф.варіанти().map((в) => в[0]);
+    const є = Array.prototype.map.call(вузол.querySelectorAll("button"), (b) => b.dataset.v);
+    if(є.join(" ") === треба.join(" ")) return;
+    // Обране могло зникнути разом зі своєю кнопкою — тоді вертаємось до
+    // типового, інакше список мовчки лишився б порожнім назавжди.
+    if(треба.indexOf(ui[ф.ключ]) < 0) ui[ф.ключ] = ф.типово;
+    вузол.innerHTML = нутрощіСтрічки(ф);
+  });
+}
 
 /** Малює фільтри з реєстру. Жодного фільтра тут не названо поіменно:
     щоб додати новий, досить дописати об'єкт у ФІЛЬТРИ. */
@@ -1825,12 +1953,9 @@ function renderFilters(){
         "' aria-label='" + esc(ф.держак || "Пошук") + "'></div>";
     }
     if(ф.вид === "стрічка"){
-      return "<div class='seg' data-ф='" + esc(ф.ключ) + "' role='group' aria-label='" +
-        esc(ф.підпис) + "'><span>" + esc(ф.підпис) + "</span>" +
-        ф.варіанти().map(([знач, підпис]) =>
-          "<button data-v='" + esc(знач) + "' aria-pressed='" +
-          (v === знач ? "true" : "false") + "'>" + esc(підпис) + "</button>").join("") +
-        "</div>";
+      return "<div class='seg" + (ф.широка ? " wrap" : "") + "' data-ф='" +
+        esc(ф.ключ) + "' role='group' aria-label='" +
+        esc(ф.підпис) + "'>" + нутрощіСтрічки(ф) + "</div>";
     }
     const ід = "f-" + ф.ключ;
     return "<div class='fld'><label for='" + ід + "'>" + esc(ф.підпис) + "</label>" +
@@ -1889,11 +2014,41 @@ function підказка(){
 }
 renderFilters();
 підказка();
-$("expBtn").addEventListener("click", function(){
-  ui.noExp = !ui.noExp;
-  this.setAttribute("aria-pressed", ui.noExp ? "true" : "false");
-  this.textContent = ui.noExp ? "Показати доповнення" : "Без доповнень";
+/* ── приховати цілі групи ─────────────────────────────────────────────
+   Раніше тут була одна кнопка «Без доповнень». Причин не хотіти бачити
+   коробку в списку виявилося більше однієї, і вони не виключають одна
+   одну, тож замість кнопки — перелік із позначками: скільки треба,
+   стільки й познач. Сам перелік малюється з ХОВАНОК. */
+function renderHide(){
+  $("hidePick").innerHTML = ХОВАНКИ.map((п) =>
+    "<label class='pickrow'><input type='checkbox' data-hide='" + esc(п.ключ) + "'" +
+    (ui.hide.has(п.ключ) ? " checked" : "") + "><span>" + esc(п.підпис) +
+    "</span></label>").join("");
+  const скільки = ui.hide.size;
+  const кн = $("hideBtn");
+  кн.textContent = скільки ? "Приховано: " + скільки : "Приховати";
+  кн.setAttribute("aria-pressed", скільки ? "true" : "false");
+}
+function закритиХованки(){
+  $("hidePick").hidden = true;
+  $("hideBtn").setAttribute("aria-expanded", "false");
+}
+renderHide();
+$("hideBtn").addEventListener("click", () => {
+  const відкрити = $("hidePick").hidden;
+  hideMenu();                       // чуже меню поруч — геть
+  $("hidePick").hidden = !відкрити;
+  $("hideBtn").setAttribute("aria-expanded", відкрити ? "true" : "false");
+});
+$("hidePick").addEventListener("change", (e) => {
+  const el = e.target.closest("[data-hide]"); if(!el) return;
+  if(el.checked) ui.hide.add(el.dataset.hide); else ui.hide.delete(el.dataset.hide);
+  renderHide();
   render();
+});
+// Клік усередині переліку його не закриває: позначок ставлять кілька підряд.
+document.addEventListener("click", (e) => {
+  if(!$("hidePick").hidden && !e.target.closest("#hideWrap")) закритиХованки();
 });
 $("cWith").addEventListener("change", (e) => {
   const el = e.target.closest("[data-exp]"); if(!el) return;

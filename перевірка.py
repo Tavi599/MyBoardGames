@@ -36,8 +36,13 @@ sys.stdout.reconfigure(encoding="utf-8")
     "plays", "minP", "maxP", "minutes", "tags", "comment", "cover", "expansion",
     "withExp", "bggId", "bggRating", "bggRank", "added", "updated", "deleted",
     "rules", "bggMin", "bggMax", "bggBest", "bggRec", "bggTimeMin", "bggTimeMax",
-    "bggWeight",
+    "bggWeight", "bggFamily", "bggGenres",
 }
+
+# Підписи жанрів живуть в одному файлі зі сторінкою: «збірка.py» вкладає
+# його в код, а ми звіряємо з ним дані. Якби списки лежали окремо, вони б
+# розійшлися першого ж разу, коли на полицю стане гра з новим жанром.
+СЛОВНИК_ЖАНРІВ = pathlib.Path(__file__).parent / "джерела" / "жанри.json"
 
 ВИДИ_ПРАВИЛ = {"офіційні", "соло", "памʼятка", "переклад", "інше"}
 
@@ -115,6 +120,34 @@ def мить(де, поле, v, обов):
         біда(де, f"{поле} = {v!r} — не читається як дата")
 
 
+def підписи():
+    """Слуги жанрів, до яких є український підпис. Порожньо, якщо словника
+    немає: перевірка даних не має падати через відсутній файл сторінки."""
+    try:
+        д = json.loads(СЛОВНИК_ЖАНРІВ.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return None
+    return {"bggFamily": set(д.get("родини", {})), "bggGenres": set(д.get("жанри", {}))}
+
+
+def жанри(де, поле, v, відомі):
+    """Слуги з BGG: рядки-слуги, без повторів, і кожен із підписом."""
+    if v is None:
+        return
+    if not isinstance(v, list) or not all(isinstance(x, str) for x in v):
+        return біда(де, f"{поле} має бути списком рядків")
+    if v != sorted(set(v)):
+        біда(де, f"{поле} = {v}: має бути впорядкований список без повторів")
+    криві = [x for x in v if not re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", x)]
+    if криві:
+        біда(де, f"{поле}: не слуги — {криві}")
+    if відомі is not None:
+        німі = sorted(set(v) - відомі[поле])
+        if німі:
+            # Не помилка: дані цілі, просто сторінка покаже слуг як є.
+            увага(де, f"{поле}: немає українського підпису — {', '.join(німі)}")
+
+
 def перевірити(стан):
     """Повертає (помилки, застереження). Викликається і з тестів."""
     помилки.clear()
@@ -136,6 +169,7 @@ def _перевірити(стан):
     elif в != ВЕРСІЯ_ДАНИХ:
         біда("корінь", f"version = {в}, а програма чекає {ВЕРСІЯ_ДАНИХ}")
 
+    відомі_жанри = підписи()
     бачені = {}
     for н, г in enumerate(ігри):
         if not isinstance(г, dict):
@@ -197,6 +231,8 @@ def _перевірити(стан):
         ціле(де, "bggTimeMax", г.get("bggTimeMax"), 1, 6000)
         опитування(де, "bggBest", г.get("bggBest"), г.get("bggMax"))
         опитування(де, "bggRec", г.get("bggRec"), г.get("bggMax"))
+        жанри(де, "bggFamily", г.get("bggFamily"), відомі_жанри)
+        жанри(де, "bggGenres", г.get("bggGenres"), відомі_жанри)
         for менше, більше in (("minP", "maxP"), ("bggMin", "bggMax"),
                               ("bggTimeMin", "bggTimeMax")):
             a, b = г.get(менше), г.get(більше)

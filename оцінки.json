@@ -7,6 +7,14 @@
         5,
         6
       ],
+      "bggFamily": [
+        "family-games"
+      ],
+      "bggGenres": [
+        "card-game",
+        "number",
+        "party-game"
+      ],
       "bggId": "432",
       "bggMax": 10,
       "bggMin": 2,
@@ -52,13 +60,23 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:47:53.458Z",
+      "updated": "2026-09-12T21:32:21.571Z",
       "weight": null
     },
     {
       "added": "2026-09-12",
       "bggBest": [
         2
+      ],
+      "bggFamily": [
+        "strategy-games"
+      ],
+      "bggGenres": [
+        "ancient",
+        "card-game",
+        "city-building",
+        "civilization",
+        "economic"
       ],
       "bggId": "173346",
       "bggMax": 2,
@@ -101,7 +119,7 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:47:53.458Z",
+      "updated": "2026-09-12T21:32:21.571Z",
       "weight": null
     },
     {
@@ -109,6 +127,15 @@
       "bggBest": [
         2,
         3
+      ],
+      "bggFamily": [
+        "family-games"
+      ],
+      "bggGenres": [
+        "adventure",
+        "comic-book-strip",
+        "fantasy",
+        "mythology"
       ],
       "bggId": "403160",
       "bggMax": 4,
@@ -161,13 +188,25 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:47:53.458Z",
+      "updated": "2026-09-12T21:32:21.571Z",
       "weight": 2
     },
     {
       "added": "2026-09-12",
       "bggBest": [
         2
+      ],
+      "bggFamily": [
+        "customizable-games",
+        "thematic-games"
+      ],
+      "bggGenres": [
+        "adventure",
+        "card-game",
+        "collectible-components",
+        "exploration",
+        "horror",
+        "novel-based"
       ],
       "bggId": "205637",
       "bggMax": 2,
@@ -214,13 +253,22 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:47:53.458Z",
+      "updated": "2026-09-12T21:32:21.571Z",
       "weight": null
     },
     {
       "added": "2026-09-12",
       "bggBest": [
         2
+      ],
+      "bggFamily": [
+        "customizable-games"
+      ],
+      "bggGenres": [
+        "card-game",
+        "fantasy",
+        "horror",
+        "novel-based"
       ],
       "bggId": "208545",
       "bggMax": 2,
@@ -267,13 +315,23 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:47:53.458Z",
+      "updated": "2026-09-12T21:32:21.571Z",
       "weight": 5
     },
     {
       "added": "2026-09-12",
       "bggBest": [
         2
+      ],
+      "bggFamily": [
+        "customizable-games",
+        "thematic-games"
+      ],
+      "bggGenres": [
+        "card-game",
+        "fantasy",
+        "horror",
+        "novel-based"
       ],
       "bggId": "340035",
       "bggMax": 4,
@@ -312,13 +370,22 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:47:53.458Z",
+      "updated": "2026-09-12T21:32:21.571Z",
       "weight": 5
     },
     {
       "added": "2026-09-12",
       "bggBest": [
         3
+      ],
+      "bggFamily": [
+        "strategy-games"
+      ],
+      "bggGenres": [
+        "adventure",
+        "card-game",
+        "exploration",
+        "fantasy"
       ],
       "bggId": "312484",
       "bggMax": 4,
@@ -369,7 +436,7 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:47:53.458Z",
+      "updated": "2026-09-12T21:32:21.571Z",
       "weight": 3,
       "withExp": [
         "g-arnak-promo"
@@ -381,6 +448,13 @@
         1,
         2,
         3
+      ],
+      "bggFamily": [
+        "strategy-games"
+      ],
+      "bggGenres": [
+        "adventure",
+        "exploration"
       ],
       "bggId": "439816",
       "bggMax": 4,
@@ -419,7 +493,7 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:47:53.458Z",
+      "updated": "2026-09-12T21:32:21.571Z",
       "weight": null
     },
     {
@@ -452,6 +526,13 @@
       "added": "2026-09-12",
       "bggBest": [
         2
+      ],
+      "bggFamily": [
+        "strategy-games"
+      ],
+      "bggGenres": [
+        "ancient",
+        "card-game"
       ],
       "bggId": "760",
       "bggMax": 2,
@@ -494,13 +575,23 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:47:53.458Z",
+      "updated": "2026-09-12T21:32:21.571Z",
       "weight": 1
     },
     {
       "added": "2026-09-12",
       "bggBest": [
         3
+      ],
+      "bggFamily": [
+        "strategy-games",
+        "thematic-games"
+      ],
+      "bggGenres": [
+        "deduction",
+        "fantasy",
+        "fighting",
+        "horror"
       ],
       "bggId": "281549",
       "bggMax": 4,
@@ -543,7 +634,7 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:47:53.458Z",
+      "updated": "2026-09-12T21:32:21.571Z",
       "weight": null
     },
     {
@@ -551,6 +642,12 @@
       "bggBest": [
         3,
         4
+      ],
+      "bggGenres": [
+        "action-dexterity",
+        "animals",
+        "dice",
+        "party-game"
       ],
       "bggId": "386018",
       "bggMax": 5,
@@ -595,7 +692,7 @@
         "улюблена"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:47:53.458Z",
+      "updated": "2026-09-12T21:32:21.571Z",
       "weight": 1
     },
     {
@@ -603,6 +700,13 @@
       "bggBest": [
         3,
         4
+      ],
+      "bggGenres": [
+        "card-game",
+        "fantasy",
+        "medieval",
+        "number",
+        "political"
       ],
       "bggId": "175763",
       "bggMax": 4,
@@ -644,13 +748,20 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:47:53.458Z",
+      "updated": "2026-09-12T21:32:21.571Z",
       "weight": 1.5
     },
     {
       "added": "2026-09-12",
       "bggBest": [
         2
+      ],
+      "bggFamily": [
+        "abstract-games"
+      ],
+      "bggGenres": [
+        "abstract-strategy",
+        "animals"
       ],
       "bggId": "355433",
       "bggMax": 2,
@@ -688,7 +799,7 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:47:53.458Z",
+      "updated": "2026-09-12T21:32:21.571Z",
       "weight": 2
     },
     {
@@ -696,6 +807,14 @@
       "bggBest": [
         3,
         4
+      ],
+      "bggFamily": [
+        "family-games"
+      ],
+      "bggGenres": [
+        "card-game",
+        "fantasy",
+        "video-game-theme"
       ],
       "bggId": "415524",
       "bggMax": 4,
@@ -738,7 +857,7 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:47:53.458Z",
+      "updated": "2026-09-12T21:32:21.571Z",
       "weight": null
     },
     {
@@ -746,6 +865,15 @@
       "bggBest": [
         3,
         4
+      ],
+      "bggFamily": [
+        "family-games",
+        "strategy-games"
+      ],
+      "bggGenres": [
+        "animals",
+        "medieval",
+        "territory-building"
       ],
       "bggId": "184921",
       "bggMax": 4,
@@ -789,13 +917,22 @@
         "онлайн"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:47:53.458Z",
+      "updated": "2026-09-12T21:32:21.571Z",
       "weight": 1.5
     },
     {
       "added": "2026-09-12",
       "bggBest": [
         2
+      ],
+      "bggFamily": [
+        "abstract-games",
+        "family-games"
+      ],
+      "bggGenres": [
+        "abstract-strategy",
+        "animals",
+        "puzzle"
       ],
       "bggId": "283155",
       "bggMax": 4,
@@ -838,13 +975,20 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:47:53.458Z",
+      "updated": "2026-09-12T21:32:21.571Z",
       "weight": 2.5
     },
     {
       "added": "2026-09-12",
       "bggBest": [
         2
+      ],
+      "bggFamily": [
+        "family-games"
+      ],
+      "bggGenres": [
+        "card-game",
+        "medieval"
       ],
       "bggId": "416851",
       "bggMax": 5,
@@ -888,13 +1032,23 @@
         "онлайн"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:47:53.458Z",
+      "updated": "2026-09-12T21:32:21.571Z",
       "weight": 2
     },
     {
       "added": "2026-09-12",
       "bggBest": [
         2
+      ],
+      "bggFamily": [
+        "customizable-games"
+      ],
+      "bggGenres": [
+        "card-game",
+        "fantasy",
+        "fighting",
+        "medieval",
+        "print-and-play"
       ],
       "bggId": "334307",
       "bggMax": 2,
@@ -931,13 +1085,20 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:47:53.458Z",
+      "updated": "2026-09-12T21:32:21.571Z",
       "weight": null
     },
     {
       "added": "2026-09-12",
       "bggBest": [
         2
+      ],
+      "bggFamily": [
+        "family-games"
+      ],
+      "bggGenres": [
+        "dice",
+        "number"
       ],
       "bggId": "244522",
       "bggMax": 4,
@@ -980,7 +1141,7 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:47:53.458Z",
+      "updated": "2026-09-12T21:32:21.571Z",
       "weight": null
     },
     {
@@ -988,6 +1149,15 @@
       "bggBest": [
         5,
         6
+      ],
+      "bggFamily": [
+        "family-games"
+      ],
+      "bggGenres": [
+        "american-west",
+        "bluffing",
+        "fighting",
+        "trains"
       ],
       "bggId": "158899",
       "bggMax": 6,
@@ -1031,13 +1201,23 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:47:53.458Z",
+      "updated": "2026-09-12T21:32:21.571Z",
       "weight": 2
     },
     {
       "added": "2026-09-12",
       "bggBest": [
         3
+      ],
+      "bggFamily": [
+        "thematic-games"
+      ],
+      "bggGenres": [
+        "fantasy",
+        "fighting",
+        "horror",
+        "miniatures",
+        "novel-based"
       ],
       "bggId": "253344",
       "bggMax": 5,
@@ -1080,13 +1260,21 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:47:53.458Z",
+      "updated": "2026-09-12T21:32:21.571Z",
       "weight": 4
     },
     {
       "added": "2026-09-12",
       "bggBest": [
         2
+      ],
+      "bggFamily": [
+        "strategy-games"
+      ],
+      "bggGenres": [
+        "card-game",
+        "print-and-play",
+        "travel"
       ],
       "bggId": "322703",
       "bggMax": 2,
@@ -1123,7 +1311,7 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:47:53.458Z",
+      "updated": "2026-09-12T21:32:21.571Z",
       "weight": null
     },
     {
@@ -1131,6 +1319,14 @@
       "bggBest": [
         5,
         6
+      ],
+      "bggFamily": [
+        "party-games"
+      ],
+      "bggGenres": [
+        "card-game",
+        "humor",
+        "party-game"
       ],
       "bggId": "39856",
       "bggMax": 6,
@@ -1178,7 +1374,7 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:47:53.458Z",
+      "updated": "2026-09-12T21:32:21.571Z",
       "weight": 1
     },
     {
@@ -1186,6 +1382,15 @@
       "bggBest": [
         4,
         5
+      ],
+      "bggFamily": [
+        "party-games"
+      ],
+      "bggGenres": [
+        "animals",
+        "card-game",
+        "comic-book-strip",
+        "humor"
       ],
       "bggId": "172225",
       "bggMax": 5,
@@ -1228,13 +1433,25 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:47:53.458Z",
+      "updated": "2026-09-12T21:32:21.571Z",
       "weight": 1
     },
     {
       "added": "2026-09-12",
       "bggBest": [
         2
+      ],
+      "bggFamily": [
+        "family-games",
+        "strategy-games"
+      ],
+      "bggGenres": [
+        "animals",
+        "card-game",
+        "educational",
+        "environmental",
+        "exploration",
+        "territory-building"
       ],
       "bggId": "412576",
       "bggMax": 5,
@@ -1272,13 +1489,23 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:47:53.458Z",
+      "updated": "2026-09-12T21:32:21.571Z",
       "weight": null
     },
     {
       "added": "2026-09-12",
       "bggBest": [
         2
+      ],
+      "bggFamily": [
+        "family-games",
+        "strategy-games"
+      ],
+      "bggGenres": [
+        "animals",
+        "card-game",
+        "educational",
+        "environmental"
       ],
       "bggId": "391163",
       "bggMax": 5,
@@ -1316,13 +1543,21 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:47:53.458Z",
+      "updated": "2026-09-12T21:32:21.571Z",
       "weight": null
     },
     {
       "added": "2026-09-12",
       "bggBest": [
         2
+      ],
+      "bggFamily": [
+        "family-games"
+      ],
+      "bggGenres": [
+        "animals",
+        "card-game",
+        "fantasy"
       ],
       "bggId": "288169",
       "bggMax": 2,
@@ -1360,13 +1595,19 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:47:53.458Z",
+      "updated": "2026-09-12T21:32:21.571Z",
       "weight": 1
     },
     {
       "added": "2026-09-12",
       "bggBest": [
         2
+      ],
+      "bggFamily": [
+        "strategy-games"
+      ],
+      "bggGenres": [
+        "economic"
       ],
       "bggId": "182874",
       "bggMax": 4,
@@ -1403,7 +1644,7 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:47:53.458Z",
+      "updated": "2026-09-12T21:32:21.571Z",
       "weight": 4
     },
     {
@@ -1411,6 +1652,13 @@
       "bggBest": [
         5,
         6
+      ],
+      "bggFamily": [
+        "family-games"
+      ],
+      "bggGenres": [
+        "racing",
+        "sports"
       ],
       "bggId": "366013",
       "bggMax": 6,
@@ -1461,7 +1709,7 @@
         "позбувся"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:47:53.458Z",
+      "updated": "2026-09-12T21:32:21.571Z",
       "weight": 1.5
     },
     {
@@ -1469,6 +1717,14 @@
       "bggBest": [
         3,
         4
+      ],
+      "bggFamily": [
+        "abstract-games"
+      ],
+      "bggGenres": [
+        "abstract-strategy",
+        "animals",
+        "card-game"
       ],
       "bggId": "348447",
       "bggMax": 4,
@@ -1511,13 +1767,20 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:47:53.458Z",
+      "updated": "2026-09-12T21:32:21.571Z",
       "weight": 1.5
     },
     {
       "added": "2026-09-12",
       "bggBest": [
         2
+      ],
+      "bggFamily": [
+        "abstract-games"
+      ],
+      "bggGenres": [
+        "abstract-strategy",
+        "animals"
       ],
       "bggId": "2655",
       "bggMax": 2,
@@ -1556,13 +1819,16 @@
         "улюблена"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:47:53.458Z",
+      "updated": "2026-09-12T21:32:21.571Z",
       "weight": 1
     },
     {
       "added": "2026-09-12",
       "bggBest": [
         5
+      ],
+      "bggGenres": [
+        "card-game"
       ],
       "bggId": "421978",
       "bggMax": 6,
@@ -1602,13 +1868,20 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:47:53.458Z",
+      "updated": "2026-09-12T21:32:21.571Z",
       "weight": 1
     },
     {
       "added": "2026-09-12",
       "bggBest": [
         1
+      ],
+      "bggGenres": [
+        "adventure",
+        "book",
+        "dice",
+        "exploration",
+        "fantasy"
       ],
       "bggId": "425505",
       "bggMax": 1,
@@ -1644,13 +1917,24 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:47:53.458Z",
+      "updated": "2026-09-12T21:32:21.571Z",
       "weight": null
     },
     {
       "added": "2026-09-12",
       "bggBest": [
         3
+      ],
+      "bggFamily": [
+        "family-games",
+        "strategy-games"
+      ],
+      "bggGenres": [
+        "animals",
+        "fantasy",
+        "nautical",
+        "pirates",
+        "puzzle"
       ],
       "bggId": "281259",
       "bggMax": 4,
@@ -1699,13 +1983,16 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:47:53.458Z",
+      "updated": "2026-09-12T21:32:21.571Z",
       "weight": 2.5
     },
     {
       "added": "2026-09-12",
       "bggBest": [
         2
+      ],
+      "bggFamily": [
+        "thematic-games"
       ],
       "bggId": "394150",
       "bggMax": 4,
@@ -1753,13 +2040,16 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:47:53.458Z",
+      "updated": "2026-09-12T21:32:21.571Z",
       "weight": 3
     },
     {
       "added": "2026-09-12",
       "bggBest": [
         2
+      ],
+      "bggFamily": [
+        "thematic-games"
       ],
       "bggId": "351549",
       "bggMax": 4,
@@ -1802,13 +2092,16 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:47:53.458Z",
+      "updated": "2026-09-12T21:32:21.571Z",
       "weight": 1.5
     },
     {
       "added": "2026-09-12",
       "bggBest": [
         2
+      ],
+      "bggFamily": [
+        "thematic-games"
       ],
       "bggId": "404357",
       "bggMax": 4,
@@ -1851,13 +2144,16 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:47:53.458Z",
+      "updated": "2026-09-12T21:32:21.571Z",
       "weight": 1.5
     },
     {
       "added": "2026-09-12",
       "bggBest": [
         3
+      ],
+      "bggFamily": [
+        "thematic-games"
       ],
       "bggId": "351550",
       "bggMax": 5,
@@ -1905,7 +2201,7 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:47:53.458Z",
+      "updated": "2026-09-12T21:32:21.571Z",
       "weight": 3
     },
     {
@@ -1914,6 +2210,14 @@
         4,
         5,
         6
+      ],
+      "bggFamily": [
+        "family-games",
+        "party-games"
+      ],
+      "bggGenres": [
+        "card-game",
+        "real-time"
       ],
       "bggId": "348096",
       "bggMax": 6,
@@ -1958,13 +2262,22 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:47:53.458Z",
+      "updated": "2026-09-12T21:32:21.571Z",
       "weight": 1
     },
     {
       "added": "2026-09-12",
       "bggBest": [
         4
+      ],
+      "bggFamily": [
+        "family-games",
+        "party-games"
+      ],
+      "bggGenres": [
+        "card-game",
+        "deduction",
+        "renaissance"
       ],
       "bggId": "277085",
       "bggMax": 6,
@@ -2013,13 +2326,20 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:47:53.458Z",
+      "updated": "2026-09-12T21:32:21.571Z",
       "weight": 1
     },
     {
       "added": "2026-09-12",
       "bggBest": [
         4
+      ],
+      "bggFamily": [
+        "family-games"
+      ],
+      "bggGenres": [
+        "city-building",
+        "dice"
       ],
       "bggId": "143884",
       "bggMax": 4,
@@ -2061,13 +2381,21 @@
         "позбувся"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:47:53.458Z",
+      "updated": "2026-09-12T21:32:21.571Z",
       "weight": 1.5
     },
     {
       "added": "2026-09-12",
       "bggBest": [
         4
+      ],
+      "bggFamily": [
+        "family-games"
+      ],
+      "bggGenres": [
+        "card-game",
+        "city-building",
+        "dice"
       ],
       "bggId": "160154",
       "bggMax": 4,
@@ -2109,13 +2437,23 @@
         "позбувся"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:47:53.458Z",
+      "updated": "2026-09-12T21:32:21.571Z",
       "weight": 1.5
     },
     {
       "added": "2026-09-12",
       "bggBest": [
         2
+      ],
+      "bggFamily": [
+        "family-games",
+        "strategy-games"
+      ],
+      "bggGenres": [
+        "card-game",
+        "fantasy",
+        "fighting",
+        "science-fiction"
       ],
       "bggId": "345584",
       "bggMax": 2,
@@ -2153,7 +2491,7 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:47:53.458Z",
+      "updated": "2026-09-12T21:32:21.571Z",
       "weight": 1
     },
     {
@@ -2161,6 +2499,14 @@
       "bggBest": [
         4,
         5
+      ],
+      "bggFamily": [
+        "family-games"
+      ],
+      "bggGenres": [
+        "animals",
+        "dice",
+        "space-exploration"
       ],
       "bggId": "387378",
       "bggMax": 5,
@@ -2204,13 +2550,20 @@
         "улюблена"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:47:53.458Z",
+      "updated": "2026-09-12T21:32:21.571Z",
       "weight": 1
     },
     {
       "added": "2026-09-12",
       "bggBest": [
         2
+      ],
+      "bggFamily": [
+        "family-games",
+        "strategy-games"
+      ],
+      "bggGenres": [
+        "card-game"
       ],
       "bggId": "392023",
       "bggMax": 4,
@@ -2249,13 +2602,20 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:47:53.458Z",
+      "updated": "2026-09-12T21:32:21.571Z",
       "weight": null
     },
     {
       "added": "2026-09-12",
       "bggBest": [
         2
+      ],
+      "bggFamily": [
+        "strategy-games"
+      ],
+      "bggGenres": [
+        "card-game",
+        "fantasy"
       ],
       "bggId": "194607",
       "bggMax": 4,
@@ -2298,7 +2658,7 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:47:53.458Z",
+      "updated": "2026-09-12T21:32:21.571Z",
       "weight": null
     },
     {
@@ -2306,6 +2666,16 @@
       "bggBest": [
         4,
         5
+      ],
+      "bggFamily": [
+        "strategy-games"
+      ],
+      "bggGenres": [
+        "bluffing",
+        "card-game",
+        "deduction",
+        "horror",
+        "science-fiction"
       ],
       "bggId": "194879",
       "bggMax": 7,
@@ -2345,7 +2715,7 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:47:53.458Z",
+      "updated": "2026-09-12T21:32:21.571Z",
       "weight": null
     },
     {
@@ -2354,6 +2724,14 @@
         4,
         5,
         6
+      ],
+      "bggFamily": [
+        "strategy-games"
+      ],
+      "bggGenres": [
+        "bluffing",
+        "card-game",
+        "science-fiction"
       ],
       "bggId": "222738",
       "bggMax": 7,
@@ -2394,13 +2772,16 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:47:53.458Z",
+      "updated": "2026-09-12T21:32:21.571Z",
       "weight": null
     },
     {
       "added": "2026-09-12",
       "bggBest": [
         5
+      ],
+      "bggFamily": [
+        "strategy-games"
       ],
       "bggId": "222739",
       "bggMax": 7,
@@ -2440,7 +2821,7 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:47:53.458Z",
+      "updated": "2026-09-12T21:32:21.571Z",
       "weight": null
     },
     {
@@ -2448,6 +2829,14 @@
       "bggBest": [
         2,
         3
+      ],
+      "bggFamily": [
+        "family-games",
+        "strategy-games"
+      ],
+      "bggGenres": [
+        "american-west",
+        "trains"
       ],
       "bggId": "362164",
       "bggMax": 80,
@@ -2494,13 +2883,21 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:47:53.458Z",
+      "updated": "2026-09-12T21:32:21.571Z",
       "weight": 1.5
     },
     {
       "added": "2026-09-12",
       "bggBest": [
         4
+      ],
+      "bggFamily": [
+        "family-games"
+      ],
+      "bggGenres": [
+        "environmental",
+        "puzzle",
+        "science-fiction"
       ],
       "bggId": "252929",
       "bggMax": 4,
@@ -2542,13 +2939,20 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:47:53.458Z",
+      "updated": "2026-09-12T21:32:21.571Z",
       "weight": 1
     },
     {
       "added": "2026-09-12",
       "bggBest": [
         3
+      ],
+      "bggFamily": [
+        "family-games"
+      ],
+      "bggGenres": [
+        "fantasy",
+        "puzzle"
       ],
       "bggId": "180974",
       "bggMax": 4,
@@ -2588,7 +2992,7 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:47:53.458Z",
+      "updated": "2026-09-12T21:32:21.571Z",
       "weight": null
     },
     {
@@ -2596,6 +3000,10 @@
       "bggBest": [
         2,
         3
+      ],
+      "bggGenres": [
+        "card-game",
+        "number"
       ],
       "bggId": "314971",
       "bggMax": 4,
@@ -2638,13 +3046,20 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:47:53.458Z",
+      "updated": "2026-09-12T21:32:21.571Z",
       "weight": 1
     },
     {
       "added": "2026-09-12",
       "bggBest": [
         2
+      ],
+      "bggFamily": [
+        "family-games"
+      ],
+      "bggGenres": [
+        "animals",
+        "card-game"
       ],
       "bggId": "367220",
       "bggMax": 4,
@@ -2682,13 +3097,20 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:47:53.458Z",
+      "updated": "2026-09-12T21:32:21.571Z",
       "weight": null
     },
     {
       "added": "2026-09-12",
       "bggBest": [
         2
+      ],
+      "bggFamily": [
+        "family-games"
+      ],
+      "bggGenres": [
+        "animals",
+        "card-game"
       ],
       "bggId": "396545",
       "bggMax": 4,
@@ -2726,7 +3148,7 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:47:53.458Z",
+      "updated": "2026-09-12T21:32:21.571Z",
       "weight": null
     },
     {
@@ -2734,6 +3156,13 @@
       "bggBest": [
         3,
         4
+      ],
+      "bggFamily": [
+        "family-games"
+      ],
+      "bggGenres": [
+        "fantasy",
+        "territory-building"
       ],
       "bggId": "263918",
       "bggMax": 100,
@@ -2781,13 +3210,23 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:47:53.458Z",
+      "updated": "2026-09-12T21:32:21.571Z",
       "weight": 1
     },
     {
       "added": "2026-09-10",
       "bggBest": [
         4
+      ],
+      "bggFamily": [
+        "family-games",
+        "party-games"
+      ],
+      "bggGenres": [
+        "exploration",
+        "fantasy",
+        "maze",
+        "real-time"
       ],
       "bggId": "209778",
       "bggMax": 8,
@@ -2830,13 +3269,21 @@
         "позбувся"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:47:53.458Z",
+      "updated": "2026-09-12T21:32:21.571Z",
       "weight": 2
     },
     {
       "added": "2026-09-10",
       "bggBest": [
         3
+      ],
+      "bggFamily": [
+        "strategy-games"
+      ],
+      "bggGenres": [
+        "humor",
+        "political",
+        "science-fiction"
       ],
       "bggId": "367351",
       "bggMax": 4,
@@ -2877,7 +3324,7 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:47:53.458Z",
+      "updated": "2026-09-12T21:32:21.571Z",
       "weight": 3
     },
     {
@@ -2885,6 +3332,17 @@
       "bggBest": [
         2,
         4
+      ],
+      "bggFamily": [
+        "strategy-games"
+      ],
+      "bggGenres": [
+        "card-game",
+        "fantasy",
+        "fighting",
+        "horror",
+        "mythology",
+        "novel-based"
       ],
       "bggId": "335764",
       "bggMax": 4,
@@ -2923,13 +3381,17 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:47:53.458Z",
+      "updated": "2026-09-12T21:32:21.571Z",
       "weight": 2
     },
     {
       "added": "2026-09-10",
       "bggBest": [
         4
+      ],
+      "bggGenres": [
+        "animals",
+        "card-game"
       ],
       "bggId": "324345",
       "bggMax": 4,
@@ -2970,13 +3432,19 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:47:53.458Z",
+      "updated": "2026-09-12T21:32:21.571Z",
       "weight": 2
     },
     {
       "added": "2026-09-10",
       "bggBest": [
         3
+      ],
+      "bggFamily": [
+        "family-games"
+      ],
+      "bggGenres": [
+        "fantasy"
       ],
       "bggId": "415938",
       "bggMax": 4,
@@ -3016,7 +3484,7 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:47:53.458Z",
+      "updated": "2026-09-12T21:32:21.571Z",
       "weight": 2
     },
     {
@@ -3024,6 +3492,14 @@
       "bggBest": [
         2,
         3
+      ],
+      "bggFamily": [
+        "strategy-games"
+      ],
+      "bggGenres": [
+        "fantasy",
+        "novel-based",
+        "renaissance"
       ],
       "bggId": "298383",
       "bggMax": 4,
@@ -3067,7 +3543,7 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:47:53.458Z",
+      "updated": "2026-09-12T21:32:21.571Z",
       "weight": null
     },
     {
@@ -3075,6 +3551,14 @@
       "bggBest": [
         2,
         3
+      ],
+      "bggFamily": [
+        "strategy-games"
+      ],
+      "bggGenres": [
+        "animals",
+        "card-game",
+        "environmental"
       ],
       "bggId": "350184",
       "bggMax": 5,
@@ -3113,13 +3597,23 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:47:53.458Z",
+      "updated": "2026-09-12T21:32:21.571Z",
       "weight": null
     },
     {
       "added": "2026-09-10",
       "bggBest": [
         4
+      ],
+      "bggFamily": [
+        "party-games"
+      ],
+      "bggGenres": [
+        "animals",
+        "card-game",
+        "horror",
+        "humor",
+        "zombies"
       ],
       "bggId": "362202",
       "bggMax": 5,
@@ -3157,13 +3651,21 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:47:53.458Z",
+      "updated": "2026-09-12T21:32:21.571Z",
       "weight": null
     },
     {
       "added": "2026-09-10",
       "bggBest": [
         2
+      ],
+      "bggFamily": [
+        "thematic-games"
+      ],
+      "bggGenres": [
+        "adventure",
+        "movies-tv-radio-theme",
+        "science-fiction"
       ],
       "bggId": "420077",
       "bggMax": 4,
@@ -3206,7 +3708,7 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:47:53.458Z",
+      "updated": "2026-09-12T21:32:21.571Z",
       "weight": null
     },
     {
@@ -3214,6 +3716,15 @@
       "bggBest": [
         2,
         3
+      ],
+      "bggFamily": [
+        "strategy-games",
+        "thematic-games"
+      ],
+      "bggGenres": [
+        "card-game",
+        "exploration",
+        "prehistoric"
       ],
       "bggId": "300531",
       "bggMax": 4,
@@ -3255,13 +3766,23 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:47:53.458Z",
+      "updated": "2026-09-12T21:32:21.571Z",
       "weight": 3
     },
     {
       "added": "2026-09-10",
       "bggBest": [
         2
+      ],
+      "bggFamily": [
+        "thematic-games"
+      ],
+      "bggGenres": [
+        "adventure",
+        "aviation-flight",
+        "exploration",
+        "fantasy",
+        "fighting"
       ],
       "bggId": "358320",
       "bggMax": 4,
@@ -3308,13 +3829,23 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:47:53.458Z",
+      "updated": "2026-09-12T21:32:21.571Z",
       "weight": 3
     },
     {
       "added": "2026-09-10",
       "bggBest": [
         1
+      ],
+      "bggFamily": [
+        "strategy-games"
+      ],
+      "bggGenres": [
+        "adventure",
+        "card-game",
+        "fantasy",
+        "fighting",
+        "miniatures"
       ],
       "bggId": "393672",
       "bggMax": 1,
@@ -3355,13 +3886,24 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:47:53.458Z",
+      "updated": "2026-09-12T21:32:21.571Z",
       "weight": null
     },
     {
       "added": "2026-09-10",
       "bggBest": [
         2
+      ],
+      "bggFamily": [
+        "strategy-games",
+        "thematic-games"
+      ],
+      "bggGenres": [
+        "adventure",
+        "exploration",
+        "fantasy",
+        "fighting",
+        "miniatures"
       ],
       "bggId": "291457",
       "bggMax": 4,
@@ -3405,13 +3947,19 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:47:53.458Z",
+      "updated": "2026-09-12T21:32:21.571Z",
       "weight": null
     },
     {
       "added": "2026-09-10",
       "bggBest": [
         4
+      ],
+      "bggFamily": [
+        "strategy-games"
+      ],
+      "bggGenres": [
+        "farming"
       ],
       "bggId": "202174",
       "bggMax": 6,
@@ -3453,13 +4001,20 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:47:53.458Z",
+      "updated": "2026-09-12T21:32:21.571Z",
       "weight": 2
     },
     {
       "added": "2026-09-10",
       "bggBest": [
         2
+      ],
+      "bggFamily": [
+        "thematic-games"
+      ],
+      "bggGenres": [
+        "fantasy",
+        "fighting"
       ],
       "bggId": "333255",
       "bggMax": 4,
@@ -3512,7 +4067,7 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:47:53.458Z",
+      "updated": "2026-09-12T21:32:21.571Z",
       "weight": 3,
       "withExp": [
         "g-khn-boss",
@@ -3524,6 +4079,14 @@
       "added": "2026-09-12",
       "bggBest": [
         3
+      ],
+      "bggFamily": [
+        "family-games"
+      ],
+      "bggGenres": [
+        "card-game",
+        "economic",
+        "renaissance"
       ],
       "bggId": "148228",
       "bggMax": 4,
@@ -3565,13 +4128,22 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:47:53.458Z",
+      "updated": "2026-09-12T21:32:21.571Z",
       "weight": 1.5
     },
     {
       "added": "2026-09-12",
       "bggBest": [
         2
+      ],
+      "bggFamily": [
+        "family-games",
+        "strategy-games"
+      ],
+      "bggGenres": [
+        "card-game",
+        "economic",
+        "renaissance"
       ],
       "bggId": "364073",
       "bggMax": 2,
@@ -3609,13 +4181,21 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:47:53.458Z",
+      "updated": "2026-09-12T21:32:21.571Z",
       "weight": 1.5
     },
     {
       "added": "2026-09-12",
       "bggBest": [
         2
+      ],
+      "bggFamily": [
+        "strategy-games"
+      ],
+      "bggGenres": [
+        "card-game",
+        "fighting",
+        "science-fiction"
       ],
       "bggId": "147020",
       "bggMax": 2,
@@ -3653,13 +4233,22 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:47:53.458Z",
+      "updated": "2026-09-12T21:32:21.571Z",
       "weight": 1
     },
     {
       "added": "2026-09-12",
       "bggBest": [
         4
+      ],
+      "bggFamily": [
+        "family-games",
+        "strategy-games"
+      ],
+      "bggGenres": [
+        "dice",
+        "economic",
+        "prehistoric"
       ],
       "bggId": "34635",
       "bggMax": 4,
@@ -3701,7 +4290,7 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:47:53.458Z",
+      "updated": "2026-09-12T21:32:21.571Z",
       "weight": 2
     },
     {
@@ -3709,6 +4298,14 @@
       "bggBest": [
         2,
         3
+      ],
+      "bggFamily": [
+        "strategy-games"
+      ],
+      "bggGenres": [
+        "card-game",
+        "dice",
+        "medieval"
       ],
       "bggId": "269207",
       "bggMax": 4,
@@ -3751,13 +4348,22 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:47:53.458Z",
+      "updated": "2026-09-12T21:32:21.571Z",
       "weight": null
     },
     {
       "added": "2026-09-12",
       "bggBest": [
         3
+      ],
+      "bggFamily": [
+        "family-games",
+        "strategy-games"
+      ],
+      "bggGenres": [
+        "card-game",
+        "civilization",
+        "environmental"
       ],
       "bggId": "362986",
       "bggMax": 5,
@@ -3795,13 +4401,19 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:47:53.458Z",
+      "updated": "2026-09-12T21:32:21.571Z",
       "weight": null
     },
     {
       "added": "2026-09-12",
       "bggBest": [
         4
+      ],
+      "bggFamily": [
+        "family-games"
+      ],
+      "bggGenres": [
+        "trains"
       ],
       "bggId": "14996",
       "bggMax": 5,
@@ -3844,13 +4456,16 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:47:53.458Z",
+      "updated": "2026-09-12T21:32:21.571Z",
       "weight": 1.5
     },
     {
       "added": "2026-09-12",
       "bggBest": [
         3
+      ],
+      "bggGenres": [
+        "trains"
       ],
       "bggId": "403221",
       "bggMax": 4,
@@ -3891,7 +4506,7 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:47:53.458Z",
+      "updated": "2026-09-12T21:32:21.571Z",
       "weight": 1.5
     },
     {
@@ -3900,6 +4515,12 @@
         3,
         4,
         5
+      ],
+      "bggFamily": [
+        "family-games"
+      ],
+      "bggGenres": [
+        "exploration"
       ],
       "bggId": "283864",
       "bggMax": 8,
@@ -3947,13 +4568,21 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:47:53.458Z",
+      "updated": "2026-09-12T21:32:21.571Z",
       "weight": null
     },
     {
       "added": "2026-09-12",
       "bggBest": [
         2
+      ],
+      "bggFamily": [
+        "thematic-games"
+      ],
+      "bggGenres": [
+        "card-game",
+        "puzzle",
+        "real-time"
       ],
       "bggId": "368036",
       "bggMax": 6,
@@ -3996,13 +4625,22 @@
         "позбувся"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:47:53.458Z",
+      "updated": "2026-09-12T21:32:21.571Z",
       "weight": 2
     },
     {
       "added": "2026-09-12",
       "bggBest": [
         2
+      ],
+      "bggFamily": [
+        "thematic-games"
+      ],
+      "bggGenres": [
+        "card-game",
+        "exploration",
+        "puzzle",
+        "real-time"
       ],
       "bggId": "368037",
       "bggMax": 6,
@@ -4041,13 +4679,21 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:47:53.458Z",
+      "updated": "2026-09-12T21:32:21.571Z",
       "weight": null
     },
     {
       "added": "2026-09-12",
       "bggBest": [
         2
+      ],
+      "bggFamily": [
+        "thematic-games"
+      ],
+      "bggGenres": [
+        "card-game",
+        "puzzle",
+        "real-time"
       ],
       "bggId": "368039",
       "bggMax": 6,
@@ -4085,7 +4731,7 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:47:53.458Z",
+      "updated": "2026-09-12T21:32:21.571Z",
       "weight": null
     },
     {
@@ -4094,6 +4740,16 @@
         4,
         5,
         6
+      ],
+      "bggFamily": [
+        "family-games"
+      ],
+      "bggGenres": [
+        "card-game",
+        "childrens-game",
+        "comic-book-strip",
+        "movies-tv-radio-theme",
+        "number"
       ],
       "bggId": "2223",
       "bggMax": 10,
@@ -4137,7 +4793,7 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:47:53.458Z",
+      "updated": "2026-09-12T21:32:21.571Z",
       "weight": 1
     },
     {
@@ -4145,6 +4801,13 @@
       "bggBest": [
         3,
         4
+      ],
+      "bggFamily": [
+        "strategy-games"
+      ],
+      "bggGenres": [
+        "economic",
+        "farming"
       ],
       "bggId": "183394",
       "bggMax": 6,
@@ -4188,13 +4851,21 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:47:53.458Z",
+      "updated": "2026-09-12T21:32:21.571Z",
       "weight": 2
     },
     {
       "added": "2026-09-12",
       "bggBest": [
         3
+      ],
+      "bggFamily": [
+        "strategy-games"
+      ],
+      "bggGenres": [
+        "dice",
+        "economic",
+        "medieval"
       ],
       "bggId": "371942",
       "bggMax": 4,
@@ -4233,13 +4904,23 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:47:53.458Z",
+      "updated": "2026-09-12T21:32:21.571Z",
       "weight": null
     },
     {
       "added": "2026-09-12",
       "bggBest": [
         3
+      ],
+      "bggFamily": [
+        "family-games",
+        "strategy-games"
+      ],
+      "bggGenres": [
+        "animals",
+        "card-game",
+        "educational",
+        "environmental"
       ],
       "bggId": "266192",
       "bggMax": 5,
@@ -4282,13 +4963,22 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:47:53.458Z",
+      "updated": "2026-09-12T21:32:21.571Z",
       "weight": 2
     },
     {
       "added": "2026-09-12",
       "bggBest": [
         2
+      ],
+      "bggGenres": [
+        "card-game",
+        "fantasy",
+        "fighting",
+        "medieval",
+        "miniatures",
+        "novel-based",
+        "video-game-theme"
       ],
       "bggId": "411861",
       "bggMax": 3,
@@ -4331,13 +5021,21 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:47:53.458Z",
+      "updated": "2026-09-12T21:32:21.571Z",
       "weight": null
     },
     {
       "added": "2026-09-12",
       "bggBest": [
         3
+      ],
+      "bggFamily": [
+        "strategy-games"
+      ],
+      "bggGenres": [
+        "animals",
+        "card-game",
+        "fantasy"
       ],
       "bggId": "410201",
       "bggMax": 5,
@@ -4386,13 +5084,21 @@
         "улюблена"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:47:53.458Z",
+      "updated": "2026-09-12T21:32:21.571Z",
       "weight": 3
     },
     {
       "added": "2026-09-12",
       "bggBest": [
         3
+      ],
+      "bggFamily": [
+        "strategy-games"
+      ],
+      "bggGenres": [
+        "animals",
+        "card-game",
+        "fantasy"
       ],
       "bggId": "453406",
       "bggMax": 5,
@@ -4442,7 +5148,7 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:47:53.458Z",
+      "updated": "2026-09-12T21:32:21.571Z",
       "weight": null
     },
     {
@@ -4450,6 +5156,12 @@
       "bggBest": [
         4,
         5
+      ],
+      "bggFamily": [
+        "family-games"
+      ],
+      "bggGenres": [
+        "card-game"
       ],
       "bggId": "12942",
       "bggMax": 7,
@@ -4494,10 +5206,10 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:49:25.661Z",
+      "updated": "2026-09-12T21:32:21.571Z",
       "weight": null
     }
   ],
-  "saved": "2026-09-12T20:49:25.661Z",
+  "saved": "2026-09-12T21:32:21.571Z",
   "version": 2
 }

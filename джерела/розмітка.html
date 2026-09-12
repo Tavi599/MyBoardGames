@@ -13,8 +13,11 @@
       <button class="flip" id="fFlip" aria-label="Перевернути порядок">↓</button></div>
     <div class="spacer"></div>
     <span class="chip" id="chip" title="Де зберігаються оцінки"></span>
-    <button class="btn" id="expBtn" aria-pressed="false"
-            title="Показувати лише основні коробки">Без доповнень</button>
+    <div class="menu-wrap" id="hideWrap">
+      <button class="btn" id="hideBtn" aria-haspopup="true" aria-expanded="false"
+              aria-pressed="false" title="Прибрати з полиці цілі групи коробок">Приховати</button>
+      <div class="menu" id="hidePick" hidden></div>
+    </div>
     <button class="btn" id="cmpBtn" aria-pressed="false">Порівняти</button>
     <button class="btn pri" id="addBtn">Додати гру</button>
     <div class="menu-wrap">
@@ -122,8 +125,10 @@
 
     <fieldset class="grp" id="bggGrp">
       <legend>Що каже BGG</legend>
+      <div class="chips tags" id="cGenres" hidden></div>
       <dl class="bgg-info" id="cBgg"></dl>
-      <p class="hint">Чужі числа, тому тут їх не змінюють. «Найкраще на» й
+      <p class="hint">Натисни жанр — і в списку лишиться саме він.
+        Чужі числа, тому тут їх не змінюють. «Найкраще на» й
         «годиться на» — це опитування гравців, а не те, що написано на коробці.
         Свої межі став у полях «Від», «До», «Хвилин» — вони лягають зверху.</p>
       <a class="btn" id="cBggLink" target="_blank" rel="noopener noreferrer">Сторінка на BGG</a>
