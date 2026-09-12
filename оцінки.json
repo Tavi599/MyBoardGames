@@ -1,7 +1,7 @@
 {
   "app": "полиця настілок",
   "version": 2,
-  "saved": "2026-09-12T19:44:44.060Z",
+  "saved": "2026-09-12T19:45:17.374Z",
   "games": [
     {
       "added": "2026-09-12",
@@ -1961,7 +1961,11 @@
       "bggId": "324345",
       "bggRank": 3208,
       "bggRating": 7,
-      "byCount": {},
+      "byCount": {
+        "2": 6,
+        "3": 6.5,
+        "4": 8
+      },
       "comment": "",
       "cover": "https://cf.geekdo-images.com/hKCfrhDRpKoKhjY0c6Y1kA__square200/img/DhHjHIf-PuAzsMrAQMjMPPyNX-M=/200x200/filters:strip_icc()/pic6110612.jpg",
       "id": "g-seed-05",
@@ -1970,7 +1974,7 @@
       "minutes": null,
       "name": "Кіт у коробці",
       "nameEn": "Cat in the Box",
-      "plays": 0,
+      "plays": 3,
       "rules": [
         {
           "kind": "офіційні",
@@ -1984,7 +1988,7 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T17:20:03.076Z",
+      "updated": "2026-09-12T19:45:08.133Z",
       "weight": null
     },
     {
