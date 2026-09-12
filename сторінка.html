@@ -226,6 +226,13 @@ textarea:focus{outline:none; border-color:var(--petrol)}
 .c-foot .saved{flex:1; font:400 12px/1 "Onest",sans-serif; color:var(--ink-faint)}
 .danger{border-color:var(--rust); color:var(--rust); background:none}
 
+.locked{display:flex; gap:14px; align-items:center; flex-wrap:wrap; margin:12px 0 4px;
+  padding:13px 15px; border:1px solid var(--amber); border-radius:10px;
+  background:color-mix(in srgb, var(--amber) 9%, transparent)}
+.locked div{flex:1 1 320px; font-size:13.5px; line-height:1.5; color:var(--ink-soft)}
+.locked b{display:block; font:600 10px/1.6 "JetBrains Mono",ui-monospace,monospace;
+  letter-spacing:.14em; text-transform:uppercase; color:var(--amber)}
+
 .keybox{position:fixed; z-index:21; top:50%; left:50%; transform:translate(-50%,-50%);
   width:min(460px,92vw); max-height:86vh; overflow-y:auto; background:var(--sheet);
   border:1px solid var(--rule); border-radius:12px; box-shadow:var(--shadow); padding:18px}
@@ -305,6 +312,16 @@ textarea:focus{outline:none; border-color:var(--petrol)}
         <input id="fileIn" type="file" accept="application/json,.json" hidden>
       </div>
     </div>
+  </div>
+
+  <div class="locked" id="locked" hidden>
+    <div>
+      <b>Тільки читання</b>
+      Оцінки видно, але змінити їх не вийде: у цьому браузері немає ключа доступу
+      до репозиторію. Телефон і комп'ютер мають окремі сховища — ключ треба
+      поставити в кожному окремо.
+    </div>
+    <button class="btn pri" id="lockedKey">Поставити ключ</button>
   </div>
 
   <div id="cmpBox"></div>
@@ -598,8 +615,17 @@ function schedulePush(){
   pushTimer = setTimeout(ghPush, ПАУЗА);
 }
 
+/** Чи можна зараз щось міняти. Без ключа правка нікуди не долетить, тож
+    краще одразу показати, чого бракує, ніж прийняти її й тихо загубити. */
+function canEdit(){
+  if(mode === "github" && !token){ openKey(); return false; }
+  return true;
+}
+
 function badge(){
   const chip = $("chip");
+  const locked = $("locked");
+  if(locked) locked.hidden = !(mode === "github" && !token);
   if(mode === "github"){
     if(!token){
       chip.className = "chip"; chip.textContent = "тільки читання";
@@ -967,6 +993,7 @@ function scale(host, max, get, set){
   host._get = get; host._set = set;
   host.onclick = (e) => {
     const b = e.target.closest("button"); if(!b) return;
+    if(!canEdit()) return;
     const v = +b.textContent;
     set(get() === v ? null : v);
     paintScale(host);
@@ -1039,26 +1066,29 @@ function touch(){
     setTimeout(() => { if($("cSaved").textContent === "збережено") $("cSaved").textContent = ""; }, 1600);
   }, 350);
 }
-function bindField(el, apply, ev){
+function bindField(el, apply, ev, restore){
   el.addEventListener(ev || "input", () => {
     const g = current(); if(!g) return;
+    if(!canEdit()){ if(restore) el.value = restore(g); return; }
     apply(g, el.value);
     touch();
   });
 }
-bindField($("cName"), (g, v) => { g.name = v; });
-bindField($("cStatus"), (g, v) => { g.status = v; }, "change");
-bindField($("cMin"), (g, v) => { g.minP = v === "" ? null : +v; });
-bindField($("cMax"), (g, v) => { g.maxP = v === "" ? null : +v; });
-bindField($("cMinutes"), (g, v) => { g.minutes = v === "" ? null : +v; });
-bindField($("cNote"), (g, v) => { g.comment = v; });
+const порожньо = (v) => (v == null ? "" : v);
+bindField($("cName"), (g, v) => { g.name = v; }, "input", (g) => g.name || "");
+bindField($("cStatus"), (g, v) => { g.status = v; }, "change", (g) => g.status);
+bindField($("cMin"), (g, v) => { g.minP = v === "" ? null : +v; }, "input", (g) => порожньо(g.minP));
+bindField($("cMax"), (g, v) => { g.maxP = v === "" ? null : +v; }, "input", (g) => порожньо(g.maxP));
+bindField($("cMinutes"), (g, v) => { g.minutes = v === "" ? null : +v; }, "input", (g) => порожньо(g.minutes));
+bindField($("cNote"), (g, v) => { g.comment = v; }, "input", (g) => g.comment || "");
 bindField($("cTags"), (g, v) => {
   g.tags = v.split(",").map((s) => s.trim()).filter(Boolean);
-});
+}, "input", (g) => (g.tags || []).join(", "));
 $("pPlus").onclick = () => bumpPlays(1);
 $("pMinus").onclick = () => bumpPlays(-1);
 function bumpPlays(d){
   const g = current(); if(!g) return;
+  if(!canEdit()) return;
   g.plays = Math.max(0, (+g.plays || 0) + d);
   $("pVal").textContent = g.plays;
   touch();
@@ -1068,6 +1098,7 @@ $("cClose").onclick = closeCard;
 $("scrim").onclick = closeCard;
 $("cDel").onclick = function(){
   const g = current(); if(!g) return;
+  if(!canEdit()) return;
   if(this.textContent !== "Точно видалити?"){ this.textContent = "Точно видалити?"; return; }
   const id = g.id, name = g.name;
   closeCard(); drop(id); toast("«" + name + "» знято з полиці.");
@@ -1110,7 +1141,9 @@ $("list").addEventListener("change", (e) => {
   } else ui.picked.delete(id);
   render();
 });
+$("lockedKey").addEventListener("click", openKey);
 $("addBtn").addEventListener("click", async () => {
+  if(!canEdit()) return;
   const g = Object.assign(blank(""), {id:newId()});
   games.push(g);
   if(!db) localSave();

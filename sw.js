@@ -1,7 +1,11 @@
 /* Службовий робітник: тримає сторінку доступною без мережі.
-   Оболонку віддаємо з кешу й тихо оновлюємо; дані до GitHub API ніколи
-   не кешуємо — інакше показували б учорашні оцінки як сьогоднішні. */
-const КЕШ = "полиця-v1";
+
+   Саму сторінку беремо спершу з мережі й лише потім із кешу — інакше після
+   кожної правки телефон ще довго показував би стару версію. Дрібниці
+   (іконки, маніфест) навпаки: спершу кеш, бо вони майже не змінюються.
+   Запити до GitHub API не кешуємо ніколи — інакше вчорашні оцінки
+   виглядали б як сьогоднішні. */
+const КЕШ = "полиця-v2";
 const ОБОЛОНКА = ["./", "./index.html", "./manifest.webmanifest", "./icon-192.png", "./icon-512.png"];
 
 self.addEventListener("install", (подія) => {
@@ -16,21 +20,31 @@ self.addEventListener("activate", (подія) => {
   );
 });
 
+function покласти(запит, відповідь){
+  if(відповідь && відповідь.ok){
+    const копія = відповідь.clone();
+    caches.open(КЕШ).then((кеш) => кеш.put(запит, копія));
+  }
+  return відповідь;
+}
+
 self.addEventListener("fetch", (подія) => {
   const запит = подія.request;
   if(запит.method !== "GET") return;
-  const адреса = new URL(запит.url);
-  if(адреса.origin !== location.origin) return;   // GitHub API — завжди в мережу
+  if(new URL(запит.url).origin !== location.origin) return;   // GitHub API — завжди в мережу
+
+  if(запит.mode === "navigate"){
+    подія.respondWith(
+      fetch(запит).then((відповідь) => покласти(запит, відповідь))
+        .catch(() => caches.match(запит).then((з) => з || caches.match("./index.html")))
+    );
+    return;
+  }
 
   подія.respondWith(
     caches.match(запит).then((збережене) => {
-      const свіже = fetch(запит).then((відповідь) => {
-        if(відповідь && відповідь.ok){
-          const копія = відповідь.clone();
-          caches.open(КЕШ).then((кеш) => кеш.put(запит, копія));
-        }
-        return відповідь;
-      }).catch(() => збережене);
+      const свіже = fetch(запит).then((відповідь) => покласти(запит, відповідь))
+        .catch(() => збережене);
       return збережене || свіже;
     })
   );
