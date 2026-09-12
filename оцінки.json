@@ -1,7 +1,7 @@
 {
   "app": "полиця настілок",
   "version": 2,
-  "saved": "2026-09-12T20:24:02.603Z",
+  "saved": "2026-09-12T20:24:19.383Z",
   "games": [
     {
       "added": "2026-09-12",
@@ -2567,7 +2567,9 @@
       "bggId": "364073",
       "bggRank": 111,
       "bggRating": 7.9,
-      "byCount": {},
+      "byCount": {
+        "2": 7.5
+      },
       "comment": "",
       "cover": "https://cf.geekdo-images.com/V1PyFDPNFY4bJFgreLPxmQ__square200/img/-SLkcZucropiAGFMan7xd1ALV2g=/200x200/filters:strip_icc()/pic6929347.jpg",
       "id": "g-splendor-duel",
@@ -2584,13 +2586,13 @@
           "url": "https://geekach.com.ua/content/files/pravila-nastlno-gri-rozksh-duel-splendor-duel-ukranskou-movou-48923954.pdf"
         }
       ],
-      "score": null,
+      "score": 7.5,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:18:16.213Z",
+      "updated": "2026-09-12T20:24:10.231Z",
       "weight": 1.5
     },
     {
