@@ -119,13 +119,28 @@ function renderHide(){
   кн.textContent = скільки ? "Приховано: " + скільки : "Приховати";
   кн.setAttribute("aria-pressed", скільки ? "true" : "false");
 }
+/* Значки перемикача. Кнопка показує той вигляд, у який перемкне, — це
+   звичніше за показ поточного стану: на неї тиснуть, щоб отримати те,
+   що на ній намальовано. Назву все одно дублюємо в title й aria-label,
+   бо самого значка для розуміння замало. */
+const ЗНАЧОК_СІТКИ =
+  "<svg viewBox='0 0 16 16' width='15' height='15' fill='currentColor' aria-hidden='true'>" +
+  "<rect x='1' y='1' width='6' height='6' rx='1.5'/><rect x='9' y='1' width='6' height='6' rx='1.5'/>" +
+  "<rect x='1' y='9' width='6' height='6' rx='1.5'/><rect x='9' y='9' width='6' height='6' rx='1.5'/></svg>";
+const ЗНАЧОК_СПИСКУ =
+  "<svg viewBox='0 0 16 16' width='15' height='15' fill='currentColor' aria-hidden='true'>" +
+  "<rect x='1' y='2' width='4' height='4' rx='1'/><rect x='7' y='3' width='8' height='2' rx='1'/>" +
+  "<rect x='1' y='10' width='4' height='4' rx='1'/><rect x='7' y='11' width='8' height='2' rx='1'/></svg>";
+
 /** Перемикач вигляду. Запам'ятовується для кожного пристрою окремо. */
 function paintView(){
   const сітка = ui.view === "grid";
   const кн = $("viewBtn");
-  кн.textContent = сітка ? "Списком" : "Сіткою";
+  кн.innerHTML = сітка ? ЗНАЧОК_СПИСКУ : ЗНАЧОК_СІТКИ;
   кн.setAttribute("aria-pressed", сітка ? "true" : "false");
-  кн.title = сітка ? "Показати списком" : "Показати сіткою — кілька ігор у ряд";
+  const підпис = сітка ? "Показати списком" : "Показати сіткою — кілька ігор у ряд";
+  кн.title = підпис;
+  кн.setAttribute("aria-label", підпис);
 }
 paintView();
 $("viewBtn").addEventListener("click", () => {

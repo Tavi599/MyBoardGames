@@ -133,12 +133,20 @@ button{cursor:pointer}
 .cov.big{width:64px; height:64px; flex:none}
 .cov.big b{font-size:22px}
 /* Скільки записів показано — і вихід, коли їх раптом нуль. */
-.found{display:flex; align-items:baseline; gap:12px; padding:2px 4px 8px;
+.found{display:flex; align-items:center; gap:12px; padding:2px 4px 8px;
   font:600 10px/1.4 "IBM Plex Mono",ui-monospace,monospace;
   letter-spacing:.14em; text-transform:uppercase; color:var(--ink-faint)}
 .link{border:0; background:none; padding:0; color:var(--petrol); font:inherit;
   letter-spacing:.1em; text-decoration:underline; text-underline-offset:3px}
 .link:hover{color:var(--ink)}
+/* Перемикач вигляду — значком, а не словом, і завжди при правому краї
+   рядка над списком: саме тим, чим він керує. У панелі керування місце
+   було б хитке — там ряд переноситься, і «праворуч» щоразу інде. */
+.icon-btn{display:grid; place-items:center; width:32px; height:32px; flex:none;
+  border:1px solid var(--rule); border-radius:7px; background:var(--sheet);
+  color:var(--ink-soft); padding:0}
+.icon-btn:hover{border-color:var(--ink-faint); color:var(--ink)}
+.icon-btn[aria-pressed="true"]{background:var(--sunk); border-color:var(--ink-faint)}
 .head-row{padding:0 4px 7px; border-bottom:1px solid var(--rule)}
 .head-row span{font:600 10px/1.4 "IBM Plex Mono",ui-monospace,monospace;
   letter-spacing:.14em; text-transform:uppercase; color:var(--ink-faint)}

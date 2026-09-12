@@ -156,12 +156,20 @@ button{cursor:pointer}
 .cov.big{width:64px; height:64px; flex:none}
 .cov.big b{font-size:22px}
 /* Скільки записів показано — і вихід, коли їх раптом нуль. */
-.found{display:flex; align-items:baseline; gap:12px; padding:2px 4px 8px;
+.found{display:flex; align-items:center; gap:12px; padding:2px 4px 8px;
   font:600 10px/1.4 "IBM Plex Mono",ui-monospace,monospace;
   letter-spacing:.14em; text-transform:uppercase; color:var(--ink-faint)}
 .link{border:0; background:none; padding:0; color:var(--petrol); font:inherit;
   letter-spacing:.1em; text-decoration:underline; text-underline-offset:3px}
 .link:hover{color:var(--ink)}
+/* Перемикач вигляду — значком, а не словом, і завжди при правому краї
+   рядка над списком: саме тим, чим він керує. У панелі керування місце
+   було б хитке — там ряд переноситься, і «праворуч» щоразу інде. */
+.icon-btn{display:grid; place-items:center; width:32px; height:32px; flex:none;
+  border:1px solid var(--rule); border-radius:7px; background:var(--sheet);
+  color:var(--ink-soft); padding:0}
+.icon-btn:hover{border-color:var(--ink-faint); color:var(--ink)}
+.icon-btn[aria-pressed="true"]{background:var(--sunk); border-color:var(--ink-faint)}
 .head-row{padding:0 4px 7px; border-bottom:1px solid var(--rule)}
 .head-row span{font:600 10px/1.4 "IBM Plex Mono",ui-monospace,monospace;
   letter-spacing:.14em; text-transform:uppercase; color:var(--ink-faint)}
@@ -523,7 +531,6 @@ textarea:focus{outline:none; border-color:var(--petrol)}
               aria-pressed="false" title="Прибрати з полиці цілі групи коробок">Приховати</button>
       <div class="menu" id="hidePick" hidden></div>
     </div>
-    <button class="btn" id="viewBtn" aria-pressed="false">Сіткою</button>
     <button class="btn" id="cmpBtn" aria-pressed="false">Порівняти</button>
     <button class="btn pri" id="addBtn">Додати гру</button>
     <div class="menu-wrap">
@@ -561,6 +568,8 @@ textarea:focus{outline:none; border-color:var(--petrol)}
   <div class="found" id="found">
     <span id="foundN"></span>
     <button class="link" id="resetBtn" type="button" hidden>Скинути всі фільтри</button>
+    <span class="spacer"></span>
+    <button class="icon-btn" id="viewBtn" type="button" aria-pressed="false"></button>
   </div>
 
   <div class="head-row" id="headRow">
@@ -2301,13 +2310,28 @@ function renderHide(){
   кн.textContent = скільки ? "Приховано: " + скільки : "Приховати";
   кн.setAttribute("aria-pressed", скільки ? "true" : "false");
 }
+/* Значки перемикача. Кнопка показує той вигляд, у який перемкне, — це
+   звичніше за показ поточного стану: на неї тиснуть, щоб отримати те,
+   що на ній намальовано. Назву все одно дублюємо в title й aria-label,
+   бо самого значка для розуміння замало. */
+const ЗНАЧОК_СІТКИ =
+  "<svg viewBox='0 0 16 16' width='15' height='15' fill='currentColor' aria-hidden='true'>" +
+  "<rect x='1' y='1' width='6' height='6' rx='1.5'/><rect x='9' y='1' width='6' height='6' rx='1.5'/>" +
+  "<rect x='1' y='9' width='6' height='6' rx='1.5'/><rect x='9' y='9' width='6' height='6' rx='1.5'/></svg>";
+const ЗНАЧОК_СПИСКУ =
+  "<svg viewBox='0 0 16 16' width='15' height='15' fill='currentColor' aria-hidden='true'>" +
+  "<rect x='1' y='2' width='4' height='4' rx='1'/><rect x='7' y='3' width='8' height='2' rx='1'/>" +
+  "<rect x='1' y='10' width='4' height='4' rx='1'/><rect x='7' y='11' width='8' height='2' rx='1'/></svg>";
+
 /** Перемикач вигляду. Запам'ятовується для кожного пристрою окремо. */
 function paintView(){
   const сітка = ui.view === "grid";
   const кн = $("viewBtn");
-  кн.textContent = сітка ? "Списком" : "Сіткою";
+  кн.innerHTML = сітка ? ЗНАЧОК_СПИСКУ : ЗНАЧОК_СІТКИ;
   кн.setAttribute("aria-pressed", сітка ? "true" : "false");
-  кн.title = сітка ? "Показати списком" : "Показати сіткою — кілька ігор у ряд";
+  const підпис = сітка ? "Показати списком" : "Показати сіткою — кілька ігор у ряд";
+  кн.title = підпис;
+  кн.setAttribute("aria-label", підпис);
 }
 paintView();
 $("viewBtn").addEventListener("click", () => {
