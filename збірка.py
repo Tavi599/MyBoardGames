@@ -85,7 +85,8 @@ def словник_жанрів() -> str:
     return ('/* Згенеровано збіркою з «джерела/жанри.json» — правити там. */\n'
             '"use strict";\n'
             "const РОДИНИ = " + json.dumps(дані["родини"], ensure_ascii=False) + ";\n"
-            "const ЖАНРИ = " + json.dumps(дані["жанри"], ensure_ascii=False) + ";\n")
+            "const ЖАНРИ = " + json.dumps(дані["жанри"], ensure_ascii=False) + ";\n"
+            "const КЛЮЧОВІ = " + json.dumps(дані["ключові"], ensure_ascii=False) + ";\n")
 
 
 def читати(шлях: Path) -> str:

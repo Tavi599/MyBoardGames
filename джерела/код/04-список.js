@@ -72,7 +72,10 @@ function renderList(){
     if(назви.length) meta.push(назви.join(" · "));
     // У рядок іде тільки родина — одне слово. Дрібні жанри чекають у картці:
     // «фентезі · тварини · карткова · пригоди» в рядку списку — це шум.
-    const рід = familyNames(g); if(рід.length) meta.push(рід.join(" · "));
+    // Родина плюс перші три ключові жанри. Усі двадцять два в рядок не
+    // влазять і не мусять — решта чекає в картці.
+    const рід = familyNames(g).concat(keyGenreNames(g).slice(0, 3));
+    if(рід.length) meta.push(рід.join(" · "));
     const хто = playersText(g); if(хто) meta.push(хто);
     const коли = timeText(g); if(коли) meta.push(коли);
     if(g.plays) meta.push(g.plays + " " + plural(g.plays, "партія", "партії", "партій"));

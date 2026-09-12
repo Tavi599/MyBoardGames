@@ -311,6 +311,10 @@ button{cursor:pointer}
   border-color:var(--rule-soft)}
 .chip.tag:hover{border-color:var(--petrol); color:var(--petrol)}
 .chip.tag.рід{color:var(--petrol); border-color:var(--petrol); font-weight:600}
+/* Ключові жанри — ті, що є в другій стрічці фільтрів. Помітніші за
+   решту категорій, тихіші за родину: рівно стільки ваги, скільки
+   вони важать у навігації. */
+.chip.tag.ключ{color:var(--ink-soft); border-color:var(--rule)}
 .chip.tied{background:var(--sunk); color:var(--ink); border-style:dashed}
 .chip.tied b{margin-left:7px; color:var(--ink-faint); font-weight:600}
 .chip.tied:hover b{color:var(--rust)}

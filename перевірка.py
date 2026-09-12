@@ -39,7 +39,7 @@ sys.stdout.reconfigure(encoding="utf-8")
     "plays", "minP", "maxP", "minutes", "tags", "comment", "cover", "expansion",
     "withExp", "bggId", "bggRating", "bggRank", "added", "updated", "deleted",
     "rules", "bggMin", "bggMax", "bggBest", "bggRec", "bggTimeMin", "bggTimeMax",
-    "bggWeight", "bggFamily", "bggGenres", "family",
+    "bggWeight", "bggFamily", "bggGenres", "bggMech", "family",
 }
 
 # Підписи жанрів живуть в одному файлі зі сторінкою: «збірка.py» вкладає
@@ -240,6 +240,10 @@ def _перевірити(стан):
               {"family": відомі_жанри["bggFamily"]})
         жанри(де, "bggFamily", г.get("bggFamily"), відомі_жанри)
         жанри(де, "bggGenres", г.get("bggGenres"), відомі_жанри)
+        # Механіки перевіряємо лише за формою: їх на BGG сто двадцять,
+        # а показуємо ми не їх, а зведені з них ключові жанри, тож
+        # українських підписів до кожної тут немає й не треба.
+        жанри(де, "bggMech", г.get("bggMech"), None)
         for менше, більше in (("minP", "maxP"), ("bggMin", "bggMax"),
                               ("bggTimeMin", "bggTimeMax")):
             a, b = г.get(менше), г.get(більше)

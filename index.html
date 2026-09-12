@@ -334,6 +334,10 @@ button{cursor:pointer}
   border-color:var(--rule-soft)}
 .chip.tag:hover{border-color:var(--petrol); color:var(--petrol)}
 .chip.tag.рід{color:var(--petrol); border-color:var(--petrol); font-weight:600}
+/* Ключові жанри — ті, що є в другій стрічці фільтрів. Помітніші за
+   решту категорій, тихіші за родину: рівно стільки ваги, скільки
+   вони важать у навігації. */
+.chip.tag.ключ{color:var(--ink-soft); border-color:var(--rule)}
 .chip.tied{background:var(--sunk); color:var(--ink); border-style:dashed}
 .chip.tied b{margin-left:7px; color:var(--ink-faint); font-weight:600}
 .chip.tied:hover b{color:var(--rust)}
@@ -692,6 +696,7 @@ textarea:focus{outline:none; border-color:var(--petrol)}
 "use strict";
 const РОДИНИ = {"strategy-games": "стратегія", "family-games": "сімейна", "thematic-games": "тематична", "party-games": "вечіркова", "abstract-games": "абстрактна", "customizable-games": "колекційна", "childrens-games": "дитяча", "wargames": "воєнна"};
 const ЖАНРИ = {"abstract-strategy": "абстрактна стратегія", "action-dexterity": "спритність", "adventure": "пригоди", "american-west": "Дикий Захід", "ancient": "античність", "animals": "тварини", "arabian": "Схід", "aviation-flight": "авіація", "bluffing": "блеф", "book": "книга", "card-game": "карткова", "childrens-game": "дитяча", "city-building": "розбудова міста", "civilization": "цивілізація", "collectible-components": "колекційні складники", "comic-book-strip": "комікси", "deduction": "дедукція", "dice": "кубики", "economic": "економіка", "educational": "навчальна", "environmental": "довкілля", "exploration": "дослідження світу", "fantasy": "фентезі", "farming": "фермерство", "fighting": "бійка", "horror": "жахи", "humor": "гумор", "industry-manufacturing": "виробництво", "mafia": "мафія", "maze": "лабіринт", "medieval": "середньовіччя", "memory": "памʼять", "miniatures": "мініатюри", "movies-tv-radio-theme": "кіно й серіали", "murder-mystery": "убивство й розслідування", "mythology": "міфологія", "nautical": "море", "negotiation": "перемовини", "novel-based": "за книгою", "number": "числа", "party-game": "вечіркова", "pirates": "пірати", "political": "політика", "prehistoric": "первісні часи", "print-and-play": "роздрукуй і грай", "puzzle": "головоломка", "racing": "перегони", "real-time": "на час", "renaissance": "Ренесанс", "science-fiction": "наукова фантастика", "space-exploration": "освоєння космосу", "spies-secret-agents": "шпигуни", "sports": "спорт", "territory-building": "розширення володінь", "trains": "потяги", "transportation": "транспорт", "travel": "подорожі", "video-game-theme": "відеоігри", "wargame": "воєнна", "word-game": "словесна", "zombies": "зомбі"};
+const КЛЮЧОВІ = [{"ключ": "кооп", "підпис": "кооперативна", "механіки": ["cooperative-game"]}, {"ключ": "соло", "підпис": "соло", "механіки": ["solo-solitaire-game"]}, {"ключ": "командна", "підпис": "командна", "механіки": ["team-based-game"]}, {"ключ": "карткова", "підпис": "карткова", "категорії": ["card-game"]}, {"ключ": "колода", "підпис": "колодобудівна", "механіки": ["deck-bag-and-pool-building", "deck-construction"]}, {"ключ": "драфт", "підпис": "драфт", "механіки": ["open-drafting", "closed-drafting", "action-drafting"]}, {"ключ": "робітники", "підпис": "розміщення робітників", "механіки": ["worker-placement"]}, {"ключ": "кампанія", "підпис": "кампанія", "механіки": ["scenario-mission-campaign-game", "legacy-game"]}, {"ключ": "пиши", "підпис": "кинь-і-пиши", "механіки": ["paper-and-pencil"]}, {"ключ": "швидкість", "підпис": "на швидкість", "механіки": ["real-time", "speed-matching"], "категорії": ["real-time"]}, {"ключ": "ризик", "підпис": "ризик", "механіки": ["push-your-luck"]}, {"ключ": "викладання", "підпис": "викладання", "механіки": ["tile-placement", "pattern-building"]}, {"ключ": "гонка", "підпис": "гонка", "механіки": ["race"], "категорії": ["racing"]}, {"ключ": "хитрощі", "підпис": "блеф і дедукція", "механіки": ["hidden-roles", "traitor-game"], "категорії": ["bluffing", "deduction"]}, {"ключ": "економіка", "підпис": "економіка", "категорії": ["economic"]}, {"ключ": "фентезі", "підпис": "фентезі", "категорії": ["fantasy"]}, {"ключ": "жахи", "підпис": "жахи", "категорії": ["horror"]}, {"ключ": "фантастика", "підпис": "фантастика", "категорії": ["science-fiction", "space-exploration"]}, {"ключ": "тварини", "підпис": "тварини", "категорії": ["animals"]}, {"ключ": "пригоди", "підпис": "пригоди", "категорії": ["adventure", "exploration"]}, {"ключ": "бійка", "підпис": "бійка", "категорії": ["fighting"]}, {"ключ": "головоломка", "підпис": "головоломка", "категорії": ["puzzle"]}];
 "use strict";
 /* Склади столу, за які можна поставити окрему оцінку. «5+» — це «більше
    за п'ятьох, скільки коробка дозволяє»; ключ навмисне сталий, а підпис
@@ -758,6 +763,27 @@ function familyOf(g){
 /** Слуг без підпису показуємо як є: незвичне слово краще за порожнє місце. */
 function familyNames(g){ return familyOf(g).map((k) => РОДИНИ[k] || k); }
 function genreNames(g){ return (g.bggGenres || []).map((k) => ЖАНРИ[k] || k); }
+
+/* Ключові жанри — те, за чим справді обирають гру на вечір. BGG тримає це
+   в двох різних списках: категорія каже, про що гра (фентезі, тварини),
+   механіка — як вона грається (кооперативна, драфт, колодобудівна). За
+   другим обирають не менше, ніж за першим, тож ключовий жанр збирає
+   обидва: гра пасує, якщо має бодай один зі своїх слугів.
+
+   Ніде не зберігаються: виводяться щоразу з bggGenres і bggMech. Тому
+   зміна визначення в «жанри.json» діє одразу, без проходу по даних. */
+function hasKey(g, к){
+  const кат = g.bggGenres || [], мех = g.bggMech || [];
+  return (к.категорії || []).some((s) => кат.indexOf(s) >= 0)
+      || (к.механіки || []).some((s) => мех.indexOf(s) >= 0);
+}
+/** Ключі жанрів цієї коробки, у порядку словника. */
+function keyGenres(g){
+  return КЛЮЧОВІ.filter((к) => hasKey(g, к)).map((к) => к.ключ);
+}
+function keyGenreNames(g){
+  return КЛЮЧОВІ.filter((к) => hasKey(g, к)).map((к) => к.підпис);
+}
 
 /* ── числа з BGG ──────────────────────────────────────────────────────
    Склад столу, тривалість і «вагу» тягне з BGG етап збору даних; свої
@@ -1337,7 +1363,9 @@ const ФІЛЬТРИ = [
       // «фентезі» й «fantasy» мають знаходити те саме.
       return [g.name, g.nameEn, g.comment, (g.tags || []).join(" "),
               familyNames(g).join(" "), genreNames(g).join(" "),
-              familyOf(g).join(" "), (g.bggGenres || []).join(" ")]
+              keyGenreNames(g).join(" "),
+              familyOf(g).join(" "), (g.bggGenres || []).join(" "),
+              (g.bggMech || []).join(" ")]
         .join(" ").toLowerCase().includes(q);
     },
   },
@@ -1361,6 +1389,18 @@ const ФІЛЬТРИ = [
       const р = familyOf(g);
       return v === "нема" ? !р.length : р.indexOf(v) >= 0;
     },
+  },
+  {
+    ключ: "key", вид: "стрічка", підпис: "Тема", типово: "all", широка: true,
+    // Порядок як у словнику, а не за абеткою: там він осмислений —
+    // спершу те, як грається, далі про що воно.
+    варіанти(){
+      const є = new Set();
+      games.forEach((g) => keyGenres(g).forEach((k) => є.add(k)));
+      return [["all", "усі"]].concat(
+        КЛЮЧОВІ.filter((к) => є.has(к.ключ)).map((к) => [к.ключ, к.підпис]));
+    },
+    пасує: (g, v) => v === "all" || keyGenres(g).indexOf(v) >= 0,
   },
   {
     ключ: "count", вид: "стрічка", підпис: "Гравців", типово: "all",
@@ -1554,7 +1594,10 @@ function renderList(){
     if(назви.length) meta.push(назви.join(" · "));
     // У рядок іде тільки родина — одне слово. Дрібні жанри чекають у картці:
     // «фентезі · тварини · карткова · пригоди» в рядку списку — це шум.
-    const рід = familyNames(g); if(рід.length) meta.push(рід.join(" · "));
+    // Родина плюс перші три ключові жанри. Усі двадцять два в рядок не
+    // влазять і не мусять — решта чекає в картці.
+    const рід = familyNames(g).concat(keyGenreNames(g).slice(0, 3));
+    if(рід.length) meta.push(рід.join(" · "));
     const хто = playersText(g); if(хто) meta.push(хто);
     const коли = timeText(g); if(коли) meta.push(коли);
     if(g.plays) meta.push(g.plays + " " + plural(g.plays, "партія", "партії", "партій"));
@@ -1765,10 +1808,14 @@ function renderBgg(g){
         : g.bggTimeMin + "–" + g.bggTimeMax + " хв") : "");
   дод("Складність", g.bggWeight ? fmt(g.bggWeight) + " з 5" : "");
 
-  // Жанри — чипами, а не рядком: кожен шукає себе по всій полиці. Родина
-  // йде першою й окремим кольором, бо саме за нею фільтрують угорі.
+  // Жанри — чипами, а не рядком: кожен шукає себе по всій полиці.
+  // Три шари, і саме в такому порядку: родина (широка, за нею фільтрують
+  // першою стрічкою), ключові жанри (друга стрічка), і вже потім решта
+  // категорій BGG — вони не в навігації й тому найтихіші.
+  const ключові = keyGenreNames(g);
+  const решта = genreNames(g).filter((н) => ключові.indexOf(н) < 0);
   const мітки = familyNames(g).map((н) => [н, "рід"])
-    .concat(genreNames(g).map((н) => [н, ""]));
+    .concat(ключові.map((н) => [н, "ключ"]), решта.map((н) => [н, ""]));
   $("cGenres").hidden = !мітки.length;
   $("cGenres").innerHTML = мітки.map(([н, к]) =>
     "<button type='button' class='chip tag " + к + "' data-genre='" + esc(н) +

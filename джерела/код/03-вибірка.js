@@ -22,7 +22,9 @@ const ФІЛЬТРИ = [
       // «фентезі» й «fantasy» мають знаходити те саме.
       return [g.name, g.nameEn, g.comment, (g.tags || []).join(" "),
               familyNames(g).join(" "), genreNames(g).join(" "),
-              familyOf(g).join(" "), (g.bggGenres || []).join(" ")]
+              keyGenreNames(g).join(" "),
+              familyOf(g).join(" "), (g.bggGenres || []).join(" "),
+              (g.bggMech || []).join(" ")]
         .join(" ").toLowerCase().includes(q);
     },
   },
@@ -46,6 +48,18 @@ const ФІЛЬТРИ = [
       const р = familyOf(g);
       return v === "нема" ? !р.length : р.indexOf(v) >= 0;
     },
+  },
+  {
+    ключ: "key", вид: "стрічка", підпис: "Тема", типово: "all", широка: true,
+    // Порядок як у словнику, а не за абеткою: там він осмислений —
+    // спершу те, як грається, далі про що воно.
+    варіанти(){
+      const є = new Set();
+      games.forEach((g) => keyGenres(g).forEach((k) => є.add(k)));
+      return [["all", "усі"]].concat(
+        КЛЮЧОВІ.filter((к) => є.has(к.ключ)).map((к) => [к.ключ, к.підпис]));
+    },
+    пасує: (g, v) => v === "all" || keyGenres(g).indexOf(v) >= 0,
   },
   {
     ключ: "count", вид: "стрічка", підпис: "Гравців", типово: "all",
