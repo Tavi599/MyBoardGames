@@ -1,14 +1,18 @@
 {
   "app": "полиця настілок",
   "version": 2,
-  "saved": "2026-09-12T20:11:33.798Z",
+  "saved": "2026-09-12T20:12:08.700Z",
   "games": [
     {
       "added": "2026-09-12",
       "bggId": "432",
       "bggRank": 674,
       "bggRating": 7,
-      "byCount": {},
+      "byCount": {
+        "3": 5,
+        "4": 6,
+        "5": 6.5
+      },
       "comment": "",
       "cover": "https://cf.geekdo-images.com/WuOY1XAIJQ-RGAmT_apW_w__square200/img/2-QwpZlqN_31di8NDcLRRpBe9F8=/200x200/filters:strip_icc()/pic8632998.jpg",
       "id": "g-6nimmt",
@@ -25,13 +29,13 @@
           "url": "https://boardgamegeek.com/filepage/276531/rulebook-b-and-w-a4-size"
         }
       ],
-      "score": null,
+      "score": 6.5,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T17:57:22.686Z",
+      "updated": "2026-09-12T20:11:59.802Z",
       "weight": null
     },
     {
