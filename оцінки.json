@@ -1,7 +1,7 @@
 {
   "app": "полиця настілок",
   "version": 2,
-  "saved": "2026-09-12T19:46:55.920Z",
+  "saved": "2026-09-12T19:47:24.370Z",
   "games": [
     {
       "added": "2026-09-12",
@@ -404,7 +404,12 @@
       "bggId": "386018",
       "bggRank": 7713,
       "bggRating": 7,
-      "byCount": {},
+      "byCount": {
+        "2": 10,
+        "3": 10,
+        "4": 10,
+        "5": 8
+      },
       "comment": "",
       "cover": "https://cf.geekdo-images.com/Yi4JKIcyzJUoTfaFBogu9w__square200/img/dy6A8mTbYMl3zWZBTSztHG223Yo=/200x200/filters:strip_icc()/pic7479534.png",
       "id": "g-beaver-creek",
@@ -421,15 +426,15 @@
           "url": "https://geekach.com.ua/content/files/pravila-nastlno-gri-bobrova-greblja-beaver-creek-12258445.pdf"
         }
       ],
-      "score": null,
+      "score": 10,
       "status": "колекція",
       "statuses": [
         "колекція",
         "улюблена"
       ],
       "tags": [],
-      "updated": "2026-09-12T19:46:46.784Z",
-      "weight": null
+      "updated": "2026-09-12T19:47:15.230Z",
+      "weight": 1
     },
     {
       "added": "2026-09-12",
