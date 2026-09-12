@@ -1,7 +1,7 @@
 {
   "app": "полиця настілок",
   "version": 2,
-  "saved": "2026-09-12T20:10:51.566Z",
+  "saved": "2026-09-12T20:11:33.798Z",
   "games": [
     {
       "added": "2026-09-12",
@@ -714,7 +714,12 @@
       "bggId": "158899",
       "bggRank": 565,
       "bggRating": 7.1,
-      "byCount": {},
+      "byCount": {
+        "2": 4,
+        "3": 5,
+        "4": 7,
+        "5": 8
+      },
       "comment": "",
       "cover": "https://cf.geekdo-images.com/2HKX0QANk_DY7CIVK5O5fQ__square200/img/l53XQJIMz82XDOBQvDCOsnK1-II=/200x200/filters:strip_icc()/pic2869710.jpg",
       "id": "g-colt-express",
@@ -723,7 +728,7 @@
       "minutes": null,
       "name": "Кольт Експрес",
       "nameEn": "Colt Express",
-      "plays": 0,
+      "plays": 3,
       "rules": [
         {
           "kind": "офіційні",
@@ -731,14 +736,14 @@
           "url": "https://geekach.com.ua/content/files/pravila-nastlno-gri-kolt-ekspres-colt-express-ukranskou-movou-25570836.pdf"
         }
       ],
-      "score": null,
+      "score": 7,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T17:20:03.076Z",
-      "weight": null
+      "updated": "2026-09-12T20:11:33.272Z",
+      "weight": 2
     },
     {
       "added": "2026-09-12",
@@ -2687,7 +2692,8 @@
       "bggRank": 5738,
       "bggRating": 7,
       "byCount": {
-        "2": 7
+        "2": 6.5,
+        "3": 6.5
       },
       "comment": "",
       "cover": "https://cf.geekdo-images.com/6hLMSDvAPpt4rdNqBnJ1yw__square200/img/5L7h_uypne1wa7SEeRiCezKn-8M=/200x200/filters:strip_icc()/pic8006476.jpg",
@@ -2697,7 +2703,7 @@
       "minutes": null,
       "name": "Квиток на потяг. Париж",
       "nameEn": "Ticket to Ride: Paris",
-      "plays": 0,
+      "plays": 6,
       "rules": [
         {
           "kind": "офіційні",
@@ -2711,8 +2717,8 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:10:51.511Z",
-      "weight": null
+      "updated": "2026-09-12T20:11:00.235Z",
+      "weight": 1.5
     },
     {
       "added": "2026-09-12",
