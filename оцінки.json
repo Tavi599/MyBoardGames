@@ -1,7 +1,7 @@
 {
   "app": "полиця настілок",
   "version": 2,
-  "saved": "2026-09-12T20:14:31.270Z",
+  "saved": "2026-09-12T20:14:56.279Z",
   "games": [
     {
       "added": "2026-09-12",
@@ -1396,7 +1396,12 @@
       "bggId": "277085",
       "bggRank": 314,
       "bggRating": 7.5,
-      "byCount": {},
+      "byCount": {
+        "2": 5,
+        "3": 6,
+        "4": 8,
+        "5": 8
+      },
       "comment": "",
       "cover": "https://cf.geekdo-images.com/V7WQjhAh0AatPXTYOrXtCQ__square200/img/JNxoieLDxOfvNW1_Jb49_msjLnM=/200x200/filters:strip_icc()/pic4766499.png",
       "id": "g-love-letter",
@@ -1405,7 +1410,7 @@
       "minutes": null,
       "name": "Листи закоханих",
       "nameEn": "Love Letter",
-      "plays": 0,
+      "plays": 4,
       "rules": [
         {
           "kind": "офіційні",
@@ -1424,8 +1429,8 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T17:20:03.076Z",
-      "weight": null
+      "updated": "2026-09-12T20:14:46.930Z",
+      "weight": 1
     },
     {
       "added": "2026-09-12",
