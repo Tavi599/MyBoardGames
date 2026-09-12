@@ -1,7 +1,7 @@
 {
   "app": "полиця настілок",
   "version": 2,
-  "saved": "2026-09-12T20:06:01.256Z",
+  "saved": "2026-09-12T20:06:18.229Z",
   "games": [
     {
       "added": "2026-09-12",
@@ -2426,14 +2426,14 @@
           "url": "https://desktopgames.com.ua/games/6829/Keep_the_Heroes_Out_Rulebook_.pdf"
         }
       ],
-      "score": null,
+      "score": 9,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T17:54:05.874Z",
-      "weight": null,
+      "updated": "2026-09-12T20:06:09.176Z",
+      "weight": 3,
       "withExp": [
         "g-khn-boss",
         "g-khn-dreamer",
