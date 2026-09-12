@@ -1,7 +1,7 @@
 {
   "app": "полиця настілок",
   "version": 2,
-  "saved": "2026-09-12T19:55:45.945Z",
+  "saved": "2026-09-12T19:56:20.488Z",
   "games": [
     {
       "added": "2026-09-12",
@@ -1957,7 +1957,9 @@
       "bggId": "335764",
       "bggRank": 472,
       "bggRating": 8.2,
-      "byCount": {},
+      "byCount": {
+        "2": 7
+      },
       "comment": "",
       "cover": "https://cf.geekdo-images.com/_N9ueJu-Vaq656p7HSI9sw__square200/img/byfI0qhiM2qQN02Ugjpji0ThmsU=/200x200/filters:strip_icc()/pic6267930.jpg",
       "id": "g-seed-04",
@@ -1966,7 +1968,7 @@
       "minutes": null,
       "name": "Unmatched. Битва легенд, частина друга",
       "nameEn": "Unmatched: Battle of Legends, Volume Two",
-      "plays": 0,
+      "plays": 2,
       "rules": [
         {
           "kind": "офіційні",
@@ -1974,14 +1976,14 @@
           "url": "https://geekach.com.ua/content/files/pravila-gri-unmatched-bitva-legend.-chastina-druga-6045750.pdf"
         }
       ],
-      "score": null,
+      "score": 7,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T17:20:03.076Z",
-      "weight": null
+      "updated": "2026-09-12T19:56:10.698Z",
+      "weight": 2
     },
     {
       "added": "2026-09-10",
