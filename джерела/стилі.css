@@ -63,6 +63,9 @@ button{cursor:pointer}
 /* ── панель керування ──────────────────────────────── */
 .tools{display:flex; flex-wrap:wrap; gap:8px; align-items:center; padding:16px 0 10px; position:sticky; top:0;
   background:linear-gradient(var(--paper) 74%, transparent); z-index:6}
+/* Фільтри лежать в одному контейнері, але в ряду панелі мають стояти
+   поруч із рештою кнопок, наче контейнера немає. */
+.filters{display:contents}
 .fld{display:flex; align-items:center; gap:6px; background:var(--sheet);
   border:1px solid var(--rule); border-radius:7px; padding:0 10px; height:36px}
 .fld input,.fld select{background:none; border:0; height:34px; font-size:14px}

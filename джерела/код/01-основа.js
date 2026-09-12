@@ -18,8 +18,10 @@ const SEED = ["Картографи","Magic Maze","Planet B","Unmatched: Бит�
 let games = [];
 let db = null;
 let ready = false;
-const ui = {q:"", count:"all", status:"all", sort:"score", rev:false,
-            noExp:false, cmp:false, picked:new Set(), open:null};
+// Поля фільтрів сюди дописує реєстр із «03-вибірка.js» — щоб типове
+// значення кожного фільтра жило в одному місці, а не в двох.
+const ui = {sort:"score", rev:false, noExp:false, cmp:false,
+            picked:new Set(), open:null};
 
 const $ = (id) => document.getElementById(id);
 const esc = (s) => String(s == null ? "" : s).replace(/[&<>"]/g, (c) =>

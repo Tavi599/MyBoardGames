@@ -86,6 +86,9 @@ button{cursor:pointer}
 /* ── панель керування ──────────────────────────────── */
 .tools{display:flex; flex-wrap:wrap; gap:8px; align-items:center; padding:16px 0 10px; position:sticky; top:0;
   background:linear-gradient(var(--paper) 74%, transparent); z-index:6}
+/* Фільтри лежать в одному контейнері, але в ряду панелі мають стояти
+   поруч із рештою кнопок, наче контейнера немає. */
+.filters{display:contents}
 .fld{display:flex; align-items:center; gap:6px; background:var(--sheet);
   border:1px solid var(--rule); border-radius:7px; padding:0 10px; height:36px}
 .fld input,.fld select{background:none; border:0; height:34px; font-size:14px}
@@ -346,36 +349,10 @@ textarea:focus{outline:none; border-color:var(--petrol)}
   </header>
 
   <div class="tools">
-    <div class="fld"><input id="q" type="search" placeholder="Пошук за назвою, тегом, нотаткою" aria-label="Пошук"></div>
-    <div class="seg" id="segCount" role="group" aria-label="Кількість гравців">
-      <span>Гравців</span>
-      <button data-c="all" aria-pressed="true">усі</button>
-      <button data-c="2" aria-pressed="false">2</button>
-      <button data-c="3" aria-pressed="false">3</button>
-      <button data-c="4" aria-pressed="false">4</button>
-      <button data-c="5" aria-pressed="false">5+</button>
-    </div>
-    <div class="fld"><label for="fStatus">Статус</label>
-      <select id="fStatus">
-        <option value="all">усі</option>
-        <option value="хочу">хочу зіграти</option>
-        <option value="колекція">у колекції</option>
-        <option value="улюблена">улюблена</option>
-        <option value="онлайн">лише онлайн</option>
-        <option value="незіграна">ще не зіграна</option>
-        <option value="відклав">відклав</option>
-        <option value="позбувся">позбувся</option>
-      </select></div>
+    <!-- Фільтри й сортування малюються з реєстру в «03-вибірка.js». -->
+    <div class="filters" id="filters"></div>
     <div class="fld"><label for="fSort">Сортувати</label>
-      <select id="fSort">
-        <option value="score">за оцінкою</option>
-        <option value="name">за абеткою</option>
-        <option value="bgg">за оцінкою BGG</option>
-        <option value="plays">за партіями</option>
-        <option value="added">за датою додавання</option>
-        <option value="minutes">за часом партії</option>
-        <option value="weight">за складністю</option>
-      </select>
+      <select id="fSort"></select>
       <button class="flip" id="fFlip" aria-label="Перевернути порядок">↓</button></div>
     <div class="spacer"></div>
     <span class="chip" id="chip" title="Де зберігаються оцінки"></span>
@@ -568,8 +545,10 @@ const SEED = ["Картографи","Magic Maze","Planet B","Unmatched: Бит�
 let games = [];
 let db = null;
 let ready = false;
-const ui = {q:"", count:"all", status:"all", sort:"score", rev:false,
-            noExp:false, cmp:false, picked:new Set(), open:null};
+// Поля фільтрів сюди дописує реєстр із «03-вибірка.js» — щоб типове
+// значення кожного фільтра жило в одному місці, а не в двох.
+const ui = {sort:"score", rev:false, noExp:false, cmp:false,
+            picked:new Set(), open:null};
 
 const $ = (id) => document.getElementById(id);
 const esc = (s) => String(s == null ? "" : s).replace(/[&<>"]/g, (c) =>
@@ -970,58 +949,105 @@ async function boot(){
   );
 }
 
+/* ── реєстр фільтрів і сортувань ──────────────────────────────────────
+   Кожен фільтр описано тут один раз. Панель керування малює себе з цього
+   опису, visible() ходить цим самим списком, стан лежить у ui[ключ].
+   Додати фільтр — це дописати один об'єкт і більше нічого не чіпати.
+
+     ключ     поле в ui, куди лягає вибране
+     вид      "пошук" | "стрічка" | "список"
+     підпис   що написано біля віджета
+     типово   значення, за якого фільтр нічого не відсіює
+     варіанти () => [[значення, підпис], …] — для стрічки й списку
+     пасує    (гра, значення) => чи лишається коробка в списку
+*/
+const ФІЛЬТРИ = [
+  {
+    ключ: "q", вид: "пошук", типово: "",
+    держак: "Пошук за назвою, тегом, нотаткою",
+    пасує(g, v){
+      const q = String(v).trim().toLowerCase();
+      if(!q) return true;
+      // Шукаємо і за українською, і за оригінальною назвою: половина полиці
+      // тримається в голові англійською.
+      return [g.name, g.nameEn, g.comment, (g.tags || []).join(" ")]
+        .join(" ").toLowerCase().includes(q);
+    },
+  },
+  {
+    ключ: "count", вид: "стрічка", підпис: "Гравців", типово: "all",
+    варіанти: () => [["all", "усі"]].concat(COUNTS.map((c) => [c, CLABEL[c]])),
+    пасує: (g, v) => fitsCount(g, v),
+  },
+  {
+    ключ: "status", вид: "список", підпис: "Статус", типово: "all",
+    варіанти: () => [["all", "усі"]].concat(
+      Object.keys(LABEL).map((k) => [k, LABEL[k]])),
+    пасує: (g, v) => v === "all" || allStats(g).includes(v),
+  },
+];
+
+// Типове значення кожного фільтра оголошене вище — звідси воно й
+// потрапляє в ui, і ніде більше не дублюється.
+ФІЛЬТРИ.forEach((ф) => { ui[ф.ключ] = ф.типово; });
+
+/* Сортування описані так само.
+     значення  що порівнюємо
+     текст     порівнювати як рядки (з українською абеткою), а не числа
+     спадання  типово більше вгорі; для абетки — навпаки
+*/
+const СОРТУВАННЯ = [
+  {ключ: "score", підпис: "за оцінкою", спадання: true, значення: (g) => effScore(g)},
+  {ключ: "name", підпис: "за абеткою", текст: true, значення: (g) => g.name || ""},
+  {ключ: "bgg", підпис: "за оцінкою BGG", спадання: true, значення: (g) => g.bggRating},
+  {ключ: "plays", підпис: "за партіями", спадання: true, значення: (g) => +g.plays || 0},
+  {ключ: "added", підпис: "за датою додавання", текст: true, спадання: true,
+   значення: (g) => g.added || ""},
+  {ключ: "minutes", підпис: "за часом партії", спадання: true, значення: (g) => g.minutes},
+  {ключ: "weight", підпис: "за складністю", спадання: true, значення: (g) => g.weight},
+];
+
 /* ── вибірка й сортування ────────────────────────── */
 function effScore(g){
   if(ui.count === "all") return g.score == null ? null : g.score;
   const v = g.byCount ? g.byCount[ui.count] : null;
   return v == null ? null : v;
 }
-function fitsCount(g){
-  if(ui.count === "all") return true;
-  if(g.byCount && g.byCount[ui.count] != null) return true;
+function fitsCount(g, склад){
+  const с = склад == null ? ui.count : склад;
+  if(с === "all") return true;
+  if(g.byCount && g.byCount[с] != null) return true;
   const mn = g.minP, mx = g.maxP;
   if(mn == null && mx == null) return true;
-  if(ui.count === "5") return mx == null || mx >= 5;
-  const c = +ui.count;
+  if(с === "5") return mx == null || mx >= 5;
+  const c = +с;
   return (mn == null || mn <= c) && (mx == null || mx >= c);
 }
 /** Полиця з урахуванням того, чи сховані доповнення: підсумки мають
     рахуватися по тому самому, що людина бачить у списку. */
 function shelf(){ return ui.noExp ? games.filter((g) => !g.expansion) : games; }
 
-function visible(){
-  const q = ui.q.trim().toLowerCase();
-  let arr = shelf().filter((g) => {
-    if(ui.status !== "all" && !allStats(g).includes(ui.status)) return false;
-    if(!fitsCount(g)) return false;
-    if(!q) return true;
-    // Шукаємо і за українською, і за оригінальною назвою: половина полиці
-    // тримається в голові англійською.
-    const hay = [g.name, g.nameEn, g.comment, (g.tags || []).join(" ")]
-      .join(" ").toLowerCase();
-    return hay.includes(q);
-  });
-  const num = (v) => (v == null || v === "" ? null : +v);
-  // Порожні значення завжди в кінці — і при прямому порядку, і при зворотному:
-  // гра без оцінки не має спливати нагору лише тому, що список перевернули.
-  const бік = ui.rev ? -1 : 1;
-  arr.sort((a, b) => {
-    if(ui.sort === "name") return бік * (a.name || "").localeCompare(b.name || "", "uk");
-    let x, y;
-    if(ui.sort === "score"){ x = effScore(a); y = effScore(b); }
-    else if(ui.sort === "plays"){ x = num(a.plays) || 0; y = num(b.plays) || 0; }
-    else if(ui.sort === "bgg"){ x = num(a.bggRating); y = num(b.bggRating); }
-    else if(ui.sort === "added"){ x = a.added || ""; y = b.added || ""; }
-    else { x = num(a[ui.sort]); y = num(b[ui.sort]); }
-    if(x == null && y == null) return (a.name || "").localeCompare(b.name || "", "uk");
-    if(x == null) return 1;
-    if(y == null) return -1;
-    if(x === y) return (a.name || "").localeCompare(b.name || "", "uk");
-    return бік * (ui.sort === "added" ? (x > y ? -1 : 1) : (y - x));
-  });
-  return arr;
+const заНазвою = (a, b) => (a.name || "").localeCompare(b.name || "", "uk");
+const пусто = (v) => v == null || v === "";
+
+/** Порожні значення завжди в кінці — і при прямому порядку, і при зворотному:
+    гра без оцінки не має спливати нагору лише тому, що список перевернули. */
+function порівняти(a, b){
+  const с = СОРТУВАННЯ.find((x) => x.ключ === ui.sort) || СОРТУВАННЯ[0];
+  const x = с.значення(a), y = с.значення(b);
+  if(пусто(x) && пусто(y)) return заНазвою(a, b);
+  if(пусто(x)) return 1;
+  if(пусто(y)) return -1;
+  let d = с.текст ? String(x).localeCompare(String(y), "uk") : x - y;
+  if(с.спадання) d = -d;
+  return (ui.rev ? -d : d) || заНазвою(a, b);
 }
 
+function visible(){
+  return shelf()
+    .filter((g) => ФІЛЬТРИ.every((ф) => ф.пасує(g, ui[ф.ключ])))
+    .sort(порівняти);
+}
 /* ── малювання ───────────────────────────────────── */
 function render(){ renderStats(); renderList(); renderCmp(); }
 
@@ -1414,24 +1440,75 @@ document.addEventListener("keydown", (e) => {
 });
 
 /* ── панель керування ────────────────────────────── */
-$("q").addEventListener("input", (e) => { ui.q = e.target.value; render(); });
-$("fStatus").addEventListener("change", (e) => { ui.status = e.target.value; render(); });
-$("fSort").addEventListener("change", (e) => { ui.sort = e.target.value; render(); });
+
+/** Малює фільтри з реєстру. Жодного фільтра тут не названо поіменно:
+    щоб додати новий, досить дописати об'єкт у ФІЛЬТРИ. */
+function renderFilters(){
+  $("filters").innerHTML = ФІЛЬТРИ.map((ф) => {
+    const v = ui[ф.ключ];
+    if(ф.вид === "пошук"){
+      return "<div class='fld'><input type='search' data-ф='" + esc(ф.ключ) +
+        "' value='" + esc(v) + "' placeholder='" + esc(ф.держак || "Пошук") +
+        "' aria-label='" + esc(ф.держак || "Пошук") + "'></div>";
+    }
+    if(ф.вид === "стрічка"){
+      return "<div class='seg' data-ф='" + esc(ф.ключ) + "' role='group' aria-label='" +
+        esc(ф.підпис) + "'><span>" + esc(ф.підпис) + "</span>" +
+        ф.варіанти().map(([знач, підпис]) =>
+          "<button data-v='" + esc(знач) + "' aria-pressed='" +
+          (v === знач ? "true" : "false") + "'>" + esc(підпис) + "</button>").join("") +
+        "</div>";
+    }
+    const ід = "f-" + ф.ключ;
+    return "<div class='fld'><label for='" + ід + "'>" + esc(ф.підпис) + "</label>" +
+      "<select id='" + ід + "' data-ф='" + esc(ф.ключ) + "'>" +
+      ф.варіанти().map(([знач, підпис]) =>
+        "<option value='" + esc(знач) + "'" + (v === знач ? " selected" : "") + ">" +
+        esc(підпис) + "</option>").join("") + "</select></div>";
+  }).join("");
+}
+
+/** Один обробник на всі фільтри: клік по стрічці, зміна списку, набір у пошуку. */
+function поставити(ключ, знач){
+  ui[ключ] = знач;
+  renderFilters();
+  render();
+}
+$("filters").addEventListener("input", (e) => {
+  const el = e.target.closest("input[data-ф]"); if(!el) return;
+  // Пошук перемальовувати не можна — фокус вискочить із поля посеред слова.
+  ui[el.dataset["ф"]] = el.value;
+  render();
+});
+$("filters").addEventListener("change", (e) => {
+  const el = e.target.closest("select[data-ф]"); if(!el) return;
+  поставити(el.dataset["ф"], el.value);
+});
+$("filters").addEventListener("click", (e) => {
+  const b = e.target.closest(".seg[data-ф] button"); if(!b) return;
+  поставити(b.closest(".seg").dataset["ф"], b.dataset.v);
+});
+
+$("fSort").innerHTML = СОРТУВАННЯ.map((с) =>
+  "<option value='" + esc(с.ключ) + "'>" + esc(с.підпис) + "</option>").join("");
+$("fSort").value = ui.sort;
+$("fSort").addEventListener("change", (e) => { ui.sort = e.target.value; підказка(); render(); });
 $("fFlip").addEventListener("click", function(){
   ui.rev = !ui.rev;
-  this.textContent = ui.rev ? "↑" : "↓";
-  this.title = ui.sort === "name"
+  підказка();
+  render();
+});
+/** Стрілка й підказка мають казати правду про поточне сортування. */
+function підказка(){
+  const с = СОРТУВАННЯ.find((x) => x.ключ === ui.sort) || СОРТУВАННЯ[0];
+  const вниз = с.спадання !== !!ui.rev;
+  $("fFlip").textContent = ui.rev ? "↑" : "↓";
+  $("fFlip").title = с.текст && !с.спадання
     ? (ui.rev ? "Я → А" : "А → Я")
-    : (ui.rev ? "від меншого" : "від більшого");
-  render();
-});
-$("segCount").addEventListener("click", (e) => {
-  const b = e.target.closest("button"); if(!b) return;
-  ui.count = b.dataset.c;
-  Array.prototype.forEach.call($("segCount").querySelectorAll("button"),
-    (x) => x.setAttribute("aria-pressed", x === b ? "true" : "false"));
-  render();
-});
+    : (вниз ? "від більшого" : "від меншого");
+}
+renderFilters();
+підказка();
 $("expBtn").addEventListener("click", function(){
   ui.noExp = !ui.noExp;
   this.setAttribute("aria-pressed", ui.noExp ? "true" : "false");

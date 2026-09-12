@@ -1,22 +1,73 @@
 /* ── панель керування ────────────────────────────── */
-$("q").addEventListener("input", (e) => { ui.q = e.target.value; render(); });
-$("fStatus").addEventListener("change", (e) => { ui.status = e.target.value; render(); });
-$("fSort").addEventListener("change", (e) => { ui.sort = e.target.value; render(); });
+
+/** Малює фільтри з реєстру. Жодного фільтра тут не названо поіменно:
+    щоб додати новий, досить дописати об'єкт у ФІЛЬТРИ. */
+function renderFilters(){
+  $("filters").innerHTML = ФІЛЬТРИ.map((ф) => {
+    const v = ui[ф.ключ];
+    if(ф.вид === "пошук"){
+      return "<div class='fld'><input type='search' data-ф='" + esc(ф.ключ) +
+        "' value='" + esc(v) + "' placeholder='" + esc(ф.держак || "Пошук") +
+        "' aria-label='" + esc(ф.держак || "Пошук") + "'></div>";
+    }
+    if(ф.вид === "стрічка"){
+      return "<div class='seg' data-ф='" + esc(ф.ключ) + "' role='group' aria-label='" +
+        esc(ф.підпис) + "'><span>" + esc(ф.підпис) + "</span>" +
+        ф.варіанти().map(([знач, підпис]) =>
+          "<button data-v='" + esc(знач) + "' aria-pressed='" +
+          (v === знач ? "true" : "false") + "'>" + esc(підпис) + "</button>").join("") +
+        "</div>";
+    }
+    const ід = "f-" + ф.ключ;
+    return "<div class='fld'><label for='" + ід + "'>" + esc(ф.підпис) + "</label>" +
+      "<select id='" + ід + "' data-ф='" + esc(ф.ключ) + "'>" +
+      ф.варіанти().map(([знач, підпис]) =>
+        "<option value='" + esc(знач) + "'" + (v === знач ? " selected" : "") + ">" +
+        esc(підпис) + "</option>").join("") + "</select></div>";
+  }).join("");
+}
+
+/** Один обробник на всі фільтри: клік по стрічці, зміна списку, набір у пошуку. */
+function поставити(ключ, знач){
+  ui[ключ] = знач;
+  renderFilters();
+  render();
+}
+$("filters").addEventListener("input", (e) => {
+  const el = e.target.closest("input[data-ф]"); if(!el) return;
+  // Пошук перемальовувати не можна — фокус вискочить із поля посеред слова.
+  ui[el.dataset["ф"]] = el.value;
+  render();
+});
+$("filters").addEventListener("change", (e) => {
+  const el = e.target.closest("select[data-ф]"); if(!el) return;
+  поставити(el.dataset["ф"], el.value);
+});
+$("filters").addEventListener("click", (e) => {
+  const b = e.target.closest(".seg[data-ф] button"); if(!b) return;
+  поставити(b.closest(".seg").dataset["ф"], b.dataset.v);
+});
+
+$("fSort").innerHTML = СОРТУВАННЯ.map((с) =>
+  "<option value='" + esc(с.ключ) + "'>" + esc(с.підпис) + "</option>").join("");
+$("fSort").value = ui.sort;
+$("fSort").addEventListener("change", (e) => { ui.sort = e.target.value; підказка(); render(); });
 $("fFlip").addEventListener("click", function(){
   ui.rev = !ui.rev;
-  this.textContent = ui.rev ? "↑" : "↓";
-  this.title = ui.sort === "name"
+  підказка();
+  render();
+});
+/** Стрілка й підказка мають казати правду про поточне сортування. */
+function підказка(){
+  const с = СОРТУВАННЯ.find((x) => x.ключ === ui.sort) || СОРТУВАННЯ[0];
+  const вниз = с.спадання !== !!ui.rev;
+  $("fFlip").textContent = ui.rev ? "↑" : "↓";
+  $("fFlip").title = с.текст && !с.спадання
     ? (ui.rev ? "Я → А" : "А → Я")
-    : (ui.rev ? "від меншого" : "від більшого");
-  render();
-});
-$("segCount").addEventListener("click", (e) => {
-  const b = e.target.closest("button"); if(!b) return;
-  ui.count = b.dataset.c;
-  Array.prototype.forEach.call($("segCount").querySelectorAll("button"),
-    (x) => x.setAttribute("aria-pressed", x === b ? "true" : "false"));
-  render();
-});
+    : (вниз ? "від більшого" : "від меншого");
+}
+renderFilters();
+підказка();
 $("expBtn").addEventListener("click", function(){
   ui.noExp = !ui.noExp;
   this.setAttribute("aria-pressed", ui.noExp ? "true" : "false");

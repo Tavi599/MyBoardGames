@@ -1,52 +1,99 @@
+/* ── реєстр фільтрів і сортувань ──────────────────────────────────────
+   Кожен фільтр описано тут один раз. Панель керування малює себе з цього
+   опису, visible() ходить цим самим списком, стан лежить у ui[ключ].
+   Додати фільтр — це дописати один об'єкт і більше нічого не чіпати.
+
+     ключ     поле в ui, куди лягає вибране
+     вид      "пошук" | "стрічка" | "список"
+     підпис   що написано біля віджета
+     типово   значення, за якого фільтр нічого не відсіює
+     варіанти () => [[значення, підпис], …] — для стрічки й списку
+     пасує    (гра, значення) => чи лишається коробка в списку
+*/
+const ФІЛЬТРИ = [
+  {
+    ключ: "q", вид: "пошук", типово: "",
+    держак: "Пошук за назвою, тегом, нотаткою",
+    пасує(g, v){
+      const q = String(v).trim().toLowerCase();
+      if(!q) return true;
+      // Шукаємо і за українською, і за оригінальною назвою: половина полиці
+      // тримається в голові англійською.
+      return [g.name, g.nameEn, g.comment, (g.tags || []).join(" ")]
+        .join(" ").toLowerCase().includes(q);
+    },
+  },
+  {
+    ключ: "count", вид: "стрічка", підпис: "Гравців", типово: "all",
+    варіанти: () => [["all", "усі"]].concat(COUNTS.map((c) => [c, CLABEL[c]])),
+    пасує: (g, v) => fitsCount(g, v),
+  },
+  {
+    ключ: "status", вид: "список", підпис: "Статус", типово: "all",
+    варіанти: () => [["all", "усі"]].concat(
+      Object.keys(LABEL).map((k) => [k, LABEL[k]])),
+    пасує: (g, v) => v === "all" || allStats(g).includes(v),
+  },
+];
+
+// Типове значення кожного фільтра оголошене вище — звідси воно й
+// потрапляє в ui, і ніде більше не дублюється.
+ФІЛЬТРИ.forEach((ф) => { ui[ф.ключ] = ф.типово; });
+
+/* Сортування описані так само.
+     значення  що порівнюємо
+     текст     порівнювати як рядки (з українською абеткою), а не числа
+     спадання  типово більше вгорі; для абетки — навпаки
+*/
+const СОРТУВАННЯ = [
+  {ключ: "score", підпис: "за оцінкою", спадання: true, значення: (g) => effScore(g)},
+  {ключ: "name", підпис: "за абеткою", текст: true, значення: (g) => g.name || ""},
+  {ключ: "bgg", підпис: "за оцінкою BGG", спадання: true, значення: (g) => g.bggRating},
+  {ключ: "plays", підпис: "за партіями", спадання: true, значення: (g) => +g.plays || 0},
+  {ключ: "added", підпис: "за датою додавання", текст: true, спадання: true,
+   значення: (g) => g.added || ""},
+  {ключ: "minutes", підпис: "за часом партії", спадання: true, значення: (g) => g.minutes},
+  {ключ: "weight", підпис: "за складністю", спадання: true, значення: (g) => g.weight},
+];
+
 /* ── вибірка й сортування ────────────────────────── */
 function effScore(g){
   if(ui.count === "all") return g.score == null ? null : g.score;
   const v = g.byCount ? g.byCount[ui.count] : null;
   return v == null ? null : v;
 }
-function fitsCount(g){
-  if(ui.count === "all") return true;
-  if(g.byCount && g.byCount[ui.count] != null) return true;
+function fitsCount(g, склад){
+  const с = склад == null ? ui.count : склад;
+  if(с === "all") return true;
+  if(g.byCount && g.byCount[с] != null) return true;
   const mn = g.minP, mx = g.maxP;
   if(mn == null && mx == null) return true;
-  if(ui.count === "5") return mx == null || mx >= 5;
-  const c = +ui.count;
+  if(с === "5") return mx == null || mx >= 5;
+  const c = +с;
   return (mn == null || mn <= c) && (mx == null || mx >= c);
 }
 /** Полиця з урахуванням того, чи сховані доповнення: підсумки мають
     рахуватися по тому самому, що людина бачить у списку. */
 function shelf(){ return ui.noExp ? games.filter((g) => !g.expansion) : games; }
 
-function visible(){
-  const q = ui.q.trim().toLowerCase();
-  let arr = shelf().filter((g) => {
-    if(ui.status !== "all" && !allStats(g).includes(ui.status)) return false;
-    if(!fitsCount(g)) return false;
-    if(!q) return true;
-    // Шукаємо і за українською, і за оригінальною назвою: половина полиці
-    // тримається в голові англійською.
-    const hay = [g.name, g.nameEn, g.comment, (g.tags || []).join(" ")]
-      .join(" ").toLowerCase();
-    return hay.includes(q);
-  });
-  const num = (v) => (v == null || v === "" ? null : +v);
-  // Порожні значення завжди в кінці — і при прямому порядку, і при зворотному:
-  // гра без оцінки не має спливати нагору лише тому, що список перевернули.
-  const бік = ui.rev ? -1 : 1;
-  arr.sort((a, b) => {
-    if(ui.sort === "name") return бік * (a.name || "").localeCompare(b.name || "", "uk");
-    let x, y;
-    if(ui.sort === "score"){ x = effScore(a); y = effScore(b); }
-    else if(ui.sort === "plays"){ x = num(a.plays) || 0; y = num(b.plays) || 0; }
-    else if(ui.sort === "bgg"){ x = num(a.bggRating); y = num(b.bggRating); }
-    else if(ui.sort === "added"){ x = a.added || ""; y = b.added || ""; }
-    else { x = num(a[ui.sort]); y = num(b[ui.sort]); }
-    if(x == null && y == null) return (a.name || "").localeCompare(b.name || "", "uk");
-    if(x == null) return 1;
-    if(y == null) return -1;
-    if(x === y) return (a.name || "").localeCompare(b.name || "", "uk");
-    return бік * (ui.sort === "added" ? (x > y ? -1 : 1) : (y - x));
-  });
-  return arr;
+const заНазвою = (a, b) => (a.name || "").localeCompare(b.name || "", "uk");
+const пусто = (v) => v == null || v === "";
+
+/** Порожні значення завжди в кінці — і при прямому порядку, і при зворотному:
+    гра без оцінки не має спливати нагору лише тому, що список перевернули. */
+function порівняти(a, b){
+  const с = СОРТУВАННЯ.find((x) => x.ключ === ui.sort) || СОРТУВАННЯ[0];
+  const x = с.значення(a), y = с.значення(b);
+  if(пусто(x) && пусто(y)) return заНазвою(a, b);
+  if(пусто(x)) return 1;
+  if(пусто(y)) return -1;
+  let d = с.текст ? String(x).localeCompare(String(y), "uk") : x - y;
+  if(с.спадання) d = -d;
+  return (ui.rev ? -d : d) || заНазвою(a, b);
 }
 
+function visible(){
+  return shelf()
+    .filter((g) => ФІЛЬТРИ.every((ф) => ф.пасує(g, ui[ф.ключ])))
+    .sort(порівняти);
+}

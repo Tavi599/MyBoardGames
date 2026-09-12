@@ -6,36 +6,10 @@
   </header>
 
   <div class="tools">
-    <div class="fld"><input id="q" type="search" placeholder="Пошук за назвою, тегом, нотаткою" aria-label="Пошук"></div>
-    <div class="seg" id="segCount" role="group" aria-label="Кількість гравців">
-      <span>Гравців</span>
-      <button data-c="all" aria-pressed="true">усі</button>
-      <button data-c="2" aria-pressed="false">2</button>
-      <button data-c="3" aria-pressed="false">3</button>
-      <button data-c="4" aria-pressed="false">4</button>
-      <button data-c="5" aria-pressed="false">5+</button>
-    </div>
-    <div class="fld"><label for="fStatus">Статус</label>
-      <select id="fStatus">
-        <option value="all">усі</option>
-        <option value="хочу">хочу зіграти</option>
-        <option value="колекція">у колекції</option>
-        <option value="улюблена">улюблена</option>
-        <option value="онлайн">лише онлайн</option>
-        <option value="незіграна">ще не зіграна</option>
-        <option value="відклав">відклав</option>
-        <option value="позбувся">позбувся</option>
-      </select></div>
+    <!-- Фільтри й сортування малюються з реєстру в «03-вибірка.js». -->
+    <div class="filters" id="filters"></div>
     <div class="fld"><label for="fSort">Сортувати</label>
-      <select id="fSort">
-        <option value="score">за оцінкою</option>
-        <option value="name">за абеткою</option>
-        <option value="bgg">за оцінкою BGG</option>
-        <option value="plays">за партіями</option>
-        <option value="added">за датою додавання</option>
-        <option value="minutes">за часом партії</option>
-        <option value="weight">за складністю</option>
-      </select>
+      <select id="fSort"></select>
       <button class="flip" id="fFlip" aria-label="Перевернути порядок">↓</button></div>
     <div class="spacer"></div>
     <span class="chip" id="chip" title="Де зберігаються оцінки"></span>

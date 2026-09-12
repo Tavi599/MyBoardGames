@@ -27,8 +27,10 @@ function коробка(що){
 /** Ставить полицю й стан панелі, повертає назви того, що видно. */
 function видно(набір, стан){
   games = набір;
-  Object.assign(ui, {q:"", count:"all", status:"all", sort:"score", rev:false,
-                     noExp:false}, стан || {});
+  // Типові значення беремо з реєстру, а не переписуємо тут: додасться
+  // фільтр — тести самі почнуть його скидати.
+  ФІЛЬТРИ.forEach((ф) => { ui[ф.ключ] = ф.типово; });
+  Object.assign(ui, {sort:"score", rev:false, noExp:false}, стан || {});
   return visible().map((g) => g.name);
 }
 
