@@ -150,6 +150,7 @@ button{cursor:pointer}
 .badge{flex:none; padding:2px 6px; border:1px solid var(--amber); border-radius:4px;
   color:var(--amber); font:600 9px/1.3 "IBM Plex Mono",ui-monospace,monospace;
   letter-spacing:.08em; text-transform:uppercase}
+.badge.plus{border-color:var(--petrol); color:var(--petrol)}
 .pick{display:flex; align-items:center; justify-content:center}
 .pick input{width:16px; height:16px; accent-color:var(--petrol); margin:0}
 .open{border:0; background:none; padding:0; text-align:left; min-width:0; display:block; width:100%}
@@ -232,6 +233,13 @@ button{cursor:pointer}
 .line .fld input{width:100%}
 .num-in{width:100%; background:none; border:0; height:34px; font-size:14px;
   font-variant-numeric:tabular-nums}
+.picks{display:flex; flex-direction:column; gap:2px}
+.pickrow{display:flex; align-items:center; gap:9px; padding:7px 9px; border-radius:6px;
+  background:var(--paper); border:1px solid var(--rule-soft); font-size:14px; cursor:pointer}
+.pickrow:hover{border-color:var(--ink-faint)}
+.pickrow input{width:16px; height:16px; margin:0; accent-color:var(--amber); flex:none}
+.pickrow span{min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+
 .toggle{height:36px; padding:0 14px; border:1px solid var(--rule); border-radius:7px;
   background:var(--paper); font-size:14px; font-weight:500; color:var(--ink-soft)}
 .toggle:hover{border-color:var(--ink-faint)}
@@ -443,6 +451,13 @@ textarea:focus{outline:none; border-color:var(--petrol)}
       <legend>Оцінка за складом столу</legend>
       <div class="pad" id="pad"></div>
       <p class="hint">Та сама гра на двох і на п'ятьох — часто дві різні гри. Порожній рядок означає «не грав таким складом».</p>
+    </fieldset>
+
+    <fieldset class="grp" id="expGrp">
+      <legend>Завжди грається з доповненнями</legend>
+      <div class="picks" id="cWith"></div>
+      <p class="hint">Познач ті коробки, які ти вже не виймаєш зі столу. Доповнення,
+        що інколи в грі, а інколи ні, лишай непозначеним — у нього своя оцінка.</p>
     </fieldset>
 
     <fieldset class="grp">
@@ -966,6 +981,7 @@ function renderList(){
 
   list.innerHTML = arr.map((g) => {
     const s = effScore(g), b = band(s);
+    const разом = withNames(g);
     const meta = [];
     meta.push(STATUS[g.status] || g.status || "");
     if(g.minP || g.maxP) meta.push((g.minP || "?") + "–" + (g.maxP || "?") + " гравців");
@@ -985,7 +1001,9 @@ function renderList(){
         (ui.picked.has(g.id) ? "checked" : "") + " aria-label='Порівняти " + esc(g.name) + "'></label>" : "<span></span>") +
       "<button class='open' data-open='" + esc(g.id) + "'>" +
         "<span class='nm'><i class='dot'></i>" + esc(g.name) +
-          (g.expansion ? "<span class='badge'>доп.</span>" : "") + "</span>" +
+          (g.expansion ? "<span class='badge'>доп.</span>" : "") +
+          (разом.length ? "<span class='badge plus' title='Завжди з: " + esc(разом.join(", ")) +
+            "'>+" + разом.length + " доп.</span>" : "") + "</span>" +
         "<span class='meta'>" + esc(meta.filter(Boolean).join(" · ")) + "</span>" +
         (g.comment ? "<span class='note'>" + esc(g.comment) + "</span>" : "") +
       "</button>" +
@@ -1027,6 +1045,7 @@ function renderCmp(){
     ["На 4", (g) => pick(g, "4"), true],
     ["На 5+", (g) => pick(g, "5"), true],
     ["Тип коробки", (g) => (g.expansion ? "доповнення" : "основна"), false],
+    ["Завжди з", (g) => withNames(g).join(", "), false],
     ["Складність", (g) => g.weight, false],
     ["Партій", (g) => g.plays || 0, false],
     ["Гравців", (g) => (g.minP || g.maxP) ? (g.minP || "?") + "–" + (g.maxP || "?") : null, false],
@@ -1101,6 +1120,32 @@ function paintScale(host){
   });
 }
 
+/** Список доповнень, які ця база завжди тягне за собою. У картці самого
+    доповнення блок не потрібен, тому ховається. */
+function renderWith(g){
+  $("expGrp").hidden = !!g.expansion;
+  if(g.expansion) return;
+  const host = $("cWith");
+  const доп = games.filter((x) => x.expansion && x.id !== g.id)
+                   .sort((a, b) => (a.name || "").localeCompare(b.name || "", "uk"));
+  if(!доп.length){
+    host.innerHTML = "<p class='hint'>Жодної коробки ще не позначено як доповнення. " +
+      "Відкрий доповнення й натисни там «Це доповнення» — після цього воно з'явиться тут.</p>";
+    return;
+  }
+  const обрані = new Set(g.withExp || []);
+  host.innerHTML = доп.map((x) =>
+    "<label class='pickrow'><input type='checkbox' data-exp='" + esc(x.id) + "'" +
+    (обрані.has(x.id) ? " checked" : "") + "><span>" + esc(x.name) + "</span></label>"
+  ).join("");
+}
+/** Назви доповнень, прив'язаних до гри; зниклі коробки просто випадають. */
+function withNames(g){
+  return (g.withExp || [])
+    .map((id) => (games.find((x) => x.id === id) || {}).name)
+    .filter(Boolean);
+}
+
 function openCard(id){
   ui.open = id;
   const g = current(); if(!g) return;
@@ -1111,6 +1156,7 @@ function openCard(id){
   $("cMax").value = g.maxP == null ? "" : g.maxP;
   $("cMinutes").value = g.minutes == null ? "" : g.minutes;
   $("cExp").setAttribute("aria-pressed", g.expansion ? "true" : "false");
+  renderWith(g);
   $("cTags").value = (g.tags || []).join(", ");
   $("cNote").value = g.comment || "";
   $("cSaved").textContent = "";
@@ -1225,6 +1271,16 @@ $("expBtn").addEventListener("click", function(){
   this.setAttribute("aria-pressed", ui.noExp ? "true" : "false");
   this.textContent = ui.noExp ? "Показати доповнення" : "Без доповнень";
   render();
+});
+$("cWith").addEventListener("change", (e) => {
+  const el = e.target.closest("[data-exp]"); if(!el) return;
+  const g = current(); if(!g) return;
+  if(!canEdit()){ el.checked = !el.checked; return; }
+  const набір = new Set(g.withExp || []);
+  if(el.checked) набір.add(el.dataset.exp); else набір.delete(el.dataset.exp);
+  g.withExp = Array.from(набір);
+  if(!g.withExp.length) delete g.withExp;
+  touch();
 });
 $("cExp").addEventListener("click", function(){
   const g = current(); if(!g) return;
