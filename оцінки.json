@@ -1,7 +1,7 @@
 {
   "app": "полиця настілок",
   "version": 2,
-  "saved": "2026-09-12T20:10:04.992Z",
+  "saved": "2026-09-12T20:10:38.002Z",
   "games": [
     {
       "added": "2026-09-12",
@@ -2651,7 +2651,11 @@
       "bggId": "14996",
       "bggRank": 180,
       "bggRating": 7.5,
-      "byCount": {},
+      "byCount": {
+        "2": 5,
+        "3": 6,
+        "4": 6.5
+      },
       "comment": "",
       "cover": "https://cf.geekdo-images.com/EQJZDO1Jq8KL-HxmWLwL-Q__square200/img/57UisWMU6B8z4rB2WWWycIyJ00U=/200x200/filters:strip_icc()/pic9580918.jpg",
       "id": "g-ttr-europe",
@@ -2668,13 +2672,13 @@
           "url": "https://geekach.com.ua/content/files/pravila-nastlno-gri-kvitok-na-pozd-evropa-ticket-to-ride.-europe-ukranskou-movou-46211690.pdf"
         }
       ],
-      "score": null,
+      "score": 6,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T17:37:13.835Z",
+      "updated": "2026-09-12T20:10:28.495Z",
       "weight": null
     },
     {
