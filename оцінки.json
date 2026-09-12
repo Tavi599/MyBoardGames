@@ -1,7 +1,7 @@
 {
   "app": "полиця настілок",
   "version": 2,
-  "saved": "2026-09-12T19:50:08.726Z",
+  "saved": "2026-09-12T19:50:33.367Z",
   "games": [
     {
       "added": "2026-09-12",
@@ -665,7 +665,11 @@
       "bggId": "244522",
       "bggRank": 203,
       "bggRating": 7.5,
-      "byCount": {},
+      "byCount": {
+        "2": 7,
+        "3": 8,
+        "4": 7
+      },
       "comment": "",
       "cover": "https://cf.geekdo-images.com/u1EZSUC5n8k4g4OFPkn3ow__square200/img/V8mrcajnGdDbYPtFs7VFzC6uxA8=/200x200/filters:strip_icc()/pic8014078.jpg",
       "id": "g-clever",
@@ -682,13 +686,13 @@
           "url": "https://geekach.com.ua/content/files/pravila-nastlno-gri-vluchniy-xd-thats-pretty-clever-ukranskou-movou-84849382.pdf"
         }
       ],
-      "score": null,
+      "score": 7.5,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T17:20:03.076Z",
+      "updated": "2026-09-12T19:50:24.204Z",
       "weight": null
     },
     {
