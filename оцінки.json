@@ -1,7 +1,7 @@
 {
   "app": "полиця настілок",
   "version": 2,
-  "saved": "2026-09-12T20:14:56.279Z",
+  "saved": "2026-09-12T20:15:39.128Z",
   "games": [
     {
       "added": "2026-09-12",
@@ -1128,7 +1128,10 @@
       "added": "2026-09-12",
       "bggId": "421978",
       "bggRating": 7.6,
-      "byCount": {},
+      "byCount": {
+        "2": 7,
+        "3": 7
+      },
       "comment": "",
       "cover": "https://cf.geekdo-images.com/qa_LGJYcE-b2HPxqWSYYPw__square200/img/adEshhzx5tkwVNBF8sw2KUjidXw=/200x200/filters:strip_icc()/pic8281406.png",
       "id": "g-honey",
@@ -1137,7 +1140,7 @@
       "minutes": null,
       "name": "Медова пригода",
       "nameEn": "Once Upon a Honey",
-      "plays": 0,
+      "plays": 4,
       "rules": [
         {
           "kind": "офіційні",
@@ -1145,14 +1148,14 @@
           "url": "https://geekach.com.ua/content/files/pravila-nastlno-gri-medova-prigoda-91687406.pdf"
         }
       ],
-      "score": null,
+      "score": 7,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T17:20:03.076Z",
-      "weight": null
+      "updated": "2026-09-12T20:15:29.831Z",
+      "weight": 1
     },
     {
       "added": "2026-09-12",
@@ -1437,7 +1440,11 @@
       "bggId": "143884",
       "bggRank": 1405,
       "bggRating": 6.6,
-      "byCount": {},
+      "byCount": {
+        "2": 5,
+        "3": 6,
+        "4": 6.5
+      },
       "comment": "Правила взято від «Мачі Коро 2» — окремих для цієї коробки немає, різниця невелика.",
       "cover": "https://cf.geekdo-images.com/_lI2eUDHfesfe5SswJiFAg__square200/img/wCEwsJYv0H3lKHUkkX4naqWkjRk=/200x200/filters:strip_icc()/pic4783831.png",
       "id": "g-machi-koro",
@@ -1446,7 +1453,7 @@
       "minutes": null,
       "name": "Мачі Коро",
       "nameEn": "Machi Koro",
-      "plays": 0,
+      "plays": 4,
       "rules": [
         {
           "kind": "інше",
@@ -1454,14 +1461,14 @@
           "url": "https://desktopgames.com.ua/games/8508/machi_koro_rules_ua.pdf"
         }
       ],
-      "score": null,
-      "status": "колекція",
+      "score": 6,
+      "status": "позбувся",
       "statuses": [
-        "колекція"
+        "позбувся"
       ],
       "tags": [],
-      "updated": "2026-09-12T17:54:05.874Z",
-      "weight": null
+      "updated": "2026-09-12T20:15:16.879Z",
+      "weight": 1.5
     },
     {
       "added": "2026-09-12",
