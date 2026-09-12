@@ -155,6 +155,13 @@ button{cursor:pointer}
 .cov b{font:600 16px/1 "IBM Plex Sans","Segoe UI",sans-serif; color:var(--ink-faint)}
 .cov.big{width:64px; height:64px; flex:none}
 .cov.big b{font-size:22px}
+/* Скільки записів показано — і вихід, коли їх раптом нуль. */
+.found{display:flex; align-items:baseline; gap:12px; padding:2px 4px 8px;
+  font:600 10px/1.4 "IBM Plex Mono",ui-monospace,monospace;
+  letter-spacing:.14em; text-transform:uppercase; color:var(--ink-faint)}
+.link{border:0; background:none; padding:0; color:var(--petrol); font:inherit;
+  letter-spacing:.1em; text-decoration:underline; text-underline-offset:3px}
+.link:hover{color:var(--ink)}
 .head-row{padding:0 4px 7px; border-bottom:1px solid var(--rule)}
 .head-row span{font:600 10px/1.4 "IBM Plex Mono",ui-monospace,monospace;
   letter-spacing:.14em; text-transform:uppercase; color:var(--ink-faint)}
@@ -180,8 +187,8 @@ button{cursor:pointer}
   letter-spacing:-.01em; min-width:0}
 .nm > .txt{min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
 .dot{width:7px; height:7px; border-radius:50%; background:var(--ink-faint); flex:none}
-.s-хочу .dot{background:var(--amber)} .s-колекція .dot{background:var(--petrol-dim)}
-.s-улюблена .dot{background:var(--petrol)} .s-відклав .dot{background:var(--ink-faint)}
+.s-колекція .dot{background:var(--petrol-dim)}
+.s-улюблена .dot{background:var(--petrol)} .s-чужа .dot{background:var(--amber)}
 .s-позбувся .dot{background:var(--rust)} .s-онлайн .dot{background:var(--sage)}
 /* Кнопка правил у рядку: маленька, але з нормальною зоною дотику. */
 .rules-btn{display:grid; place-items:center; width:30px; height:30px; flex:none;
@@ -485,6 +492,14 @@ textarea:focus{outline:none; border-color:var(--petrol)}
 
   <div id="cmpBox"></div>
 
+  <!-- Скільки записів показано просто зараз. Стоїть над списком, а не в
+       шапці: шапка на телефоні ховається, а відповідь на «скільки їх?»
+       потрібна саме тоді, коли щось відфільтровано. -->
+  <div class="found" id="found">
+    <span id="foundN"></span>
+    <button class="link" id="resetBtn" type="button" hidden>Скинути всі фільтри</button>
+  </div>
+
   <div class="head-row" id="headRow">
     <span></span><span></span><span>Гра</span><span></span>
     <span class="h-counts">За складом столу</span>
@@ -662,12 +677,14 @@ const ЖАНРИ = {"abstract-strategy": "абстрактна стратегі�
    залежав від стелі, зміна даних на BGG перейменовувала б чужі оцінки. */
 const COUNTS = ["1","2","3","4","5","5+"];
 const CLABEL = {"1":"1","2":"2","3":"3","4":"4","5":"5","5+":"6+"};
-const STATUS = {"хочу":"хочу зіграти","колекція":"у колекції","улюблена":"улюблена",
-                "онлайн":"онлайн","відклав":"відклав","позбувся":"позбувся"};
-/* Коробка або стоїть на полиці, або її вже нема: «у колекції» й «позбувся»
-   разом не бувають, тож увімкнення одного гасить інший. Решта статусів
-   поєднується вільно — позбувся коробки, а грати онлайн не перестав. */
-const НЕСУМІСНІ = [["колекція", "позбувся"]];
+/* Порядок тут — це порядок чипів у картці й порядок у самому записі.
+   «чужа» — коробка є, але не твоя: граєш у неї в друзів або на роботі. */
+const STATUS = {"колекція":"у колекції","улюблена":"улюблена","онлайн":"онлайн",
+                "чужа":"інший власник","позбувся":"позбувся"};
+/* Коробка або стоїть у тебе, або ні: «у колекції» не тримається разом ані
+   з «позбувся», ані з «інший власник», і вмикання одного гасить друге.
+   Решта поєднується вільно — позбувся коробки, а грати онлайн не перестав. */
+const НЕСУМІСНІ = [["колекція", "позбувся"], ["колекція", "чужа"]];
 // Похідний статус: його не ставлять руками, він випливає з лічильника партій
 // і сам зникає після першої зіграної. Тримати його окремо від STATUS, щоб
 // він ніколи не потрапив у збережені дані.
@@ -827,7 +844,7 @@ function stamp(g){ g.updated = new Date().toISOString(); return g; }
 
    Додаючи поле: підніми ВЕРСІЯ, допиши сюди функцію, яка доводить давній
    запис до нового вигляду, і не чіпай нічого більше. */
-const ВЕРСІЯ = 2;
+const ВЕРСІЯ = 3;
 const МІГРАЦІЇ = [
   // 1 → 2: один статус став списком статусів.
   function статусиСписком(g){
@@ -835,6 +852,16 @@ const МІГРАЦІЇ = [
       g.statuses = g.status ? [g.status] : (g.deleted ? [] : ["колекція"]);
     }
     if(g.statuses.length) g.status = g.statuses[0]; else delete g.status;
+  },
+  // 2 → 3: «хочу зіграти» й «відклав» прибрано з полиці. Записи з ними
+  // приїжджають і далі — з кеша телефона, з давнього експорту, — тож
+  // невідомий статус просто випадає, а не валить решту запису.
+  function безСкасованихСтатусів(g){
+    if(!Array.isArray(g.statuses)) return;
+    const лишились = g.statuses.filter((k) => Object.prototype.hasOwnProperty.call(STATUS, k));
+    if(лишились.length === g.statuses.length) return;
+    g.statuses = лишились;
+    if(лишились.length) g.status = лишились[0]; else delete g.status;
   },
 ];
 
@@ -1306,9 +1333,14 @@ const ФІЛЬТРИ = [
   },
   {
     ключ: "status", вид: "список", підпис: "Статус", типово: "all",
+    // «Доповнення» стоїть тут же, хоч і не статус: шукають його разом зі
+    // статусами й у тому самому місці. В AUTO його класти не можна —
+    // там живе лише те, що виводиться саме, а доповнення ставлять руками.
     варіанти: () => [["all", "усі"]].concat(
-      Object.keys(LABEL).map((k) => [k, LABEL[k]])),
-    пасує: (g, v) => v === "all" || allStats(g).includes(v),
+      Object.keys(LABEL).map((k) => [k, LABEL[k]]), [["доповнення", "доповнення"]]),
+    пасує: (g, v) => v === "all" ? true
+      : v === "доповнення" ? !!g.expansion
+      : allStats(g).indexOf(v) >= 0,
   },
 ];
 
@@ -1390,6 +1422,13 @@ function порівняти(a, b){
   return (ui.rev ? -d : d) || заНазвою(a, b);
 }
 
+/** Чи звужує щось полицю просто зараз: фільтр, пошук або «Приховати».
+    Живе тут, поруч із реєстром: додасться фільтр — і це саме його врахує,
+    без жодної правки в кнопці «скинути». */
+function звужено(){
+  return ui.hide.size > 0 || ФІЛЬТРИ.some((ф) => ui[ф.ключ] !== ф.типово);
+}
+
 function visible(){
   return shelf()
     .filter((g) => ФІЛЬТРИ.every((ф) => ф.пасує(g, ui[ф.ключ])))
@@ -1400,36 +1439,53 @@ function render(){ оновитиСтрічки(); renderStats(); renderList(); 
 
 function renderStats(){
   const games = shelf();
-  const доповнень = games.filter((g) => g.expansion).length;
+  // «На полиці» — це те, що справді стоїть удома. Позбуті коробки й чужі
+  // сюди не рахуються, хоч і лишаються в списку зі своїми оцінками.
+  const свої = games.filter((g) => stats(g).indexOf("колекція") >= 0);
+  const доповнень = свої.filter((g) => g.expansion).length;
+  // «Онлайн» — тільки те, чого вдома немає. Гра, що стоїть на полиці й
+  // паралельно йде онлайн, — це все одно гра з полиці, і рахувати її
+  // двічі означало б, що сума перестане сходитись.
+  const мережеві = games.filter((g) => stats(g).indexOf("онлайн") >= 0
+                                    && stats(g).indexOf("колекція") < 0).length;
   const rated = games.filter((g) => g.score != null);
-  const avg = rated.length
-    ? fmt(+(rated.reduce((s, g) => s + g.score, 0) / rated.length).toFixed(2)) : "—";
   const plays = games.reduce((s, g) => s + (+g.plays || 0), 0);
-  let extra;
-  if(ui.count === "all"){
-    const top = rated.slice().sort((a, b) => b.score - a.score)[0];
-    extra = ["Перша в списку", top ? esc(top.name) : "—"];
-  } else {
-    const list = games.filter((g) => g.byCount && g.byCount[ui.count] != null)
-                      .sort((a, b) => b.byCount[ui.count] - a.byCount[ui.count]);
-    extra = ["Краща на " + CLABEL[ui.count],
-             list.length ? esc(list[0].name) + " <small>" + fmt(list[0].byCount[ui.count]) + "</small>" : "—"];
-  }
   $("stats").innerHTML =
     cell("Ігор на полиці", доповнень
-      ? (games.length - доповнень) + " <small>+ " + доповнень + " доп.</small>"
-      : games.length) +
+      ? (свої.length - доповнень) + " <small>+ " + доповнень + " доп.</small>"
+      : свої.length) +
+    cell("Ігор онлайн", мережеві) +
     cell("Оцінено", rated.length + " <small>з " + games.length + "</small>") +
-    cell("Середня оцінка", avg) +
-    cell("Партій зіграно", plays) +
-    cell(extra[0], extra[1]);
+    cell("Партій зіграно", plays);
   function cell(t, v){ return "<div><dt>" + t + "</dt><dd>" + v + "</dd></div>"; }
+}
+
+/** Скидає всі фільтри, пошук і приховані групи до типового. Сортування
+    не чіпаємо: це не звуження полиці, а спосіб на неї дивитися. */
+function скинутиФільтри(){
+  ФІЛЬТРИ.forEach((ф) => { ui[ф.ключ] = ф.типово; });
+  ui.hide.clear();
+  renderFilters();
+  renderHide();
+  render();
+}
+function renderFound(arr){
+  const усього = games.length;
+  // Поки полиця їде з бази, рахувати нічого: «0 коробок» злякало б дарма.
+  $("found").hidden = !ready;
+  if(!ready) return;
+  $("foundN").textContent = звужено()
+    ? arr.length + " " + plural(arr.length, "коробка", "коробки", "коробок") +
+      " з " + усього
+    : усього + " " + plural(усього, "коробка", "коробки", "коробок");
+  $("resetBtn").hidden = !звужено();
 }
 
 function renderList(){
   const list = $("list"), arr = visible();
   document.documentElement.style.setProperty("--pick", ui.cmp ? "26px" : "0px");
   $("hScore").textContent = ui.count === "all" ? "Оцінка" : "На " + CLABEL[ui.count];
+  renderFound(arr);
 
   if(!ready){
     list.innerHTML = ""; $("headRow").hidden = true;
@@ -1917,421 +1973,213 @@ $("cRules").addEventListener("click", (e) => {
 });
 /* ── панель керування ────────────────────────────── */
 
-
-
 /** Підпис і кнопки однієї стрічки. Окремо, бо їх малюють двоє: повна
-
     побудова панелі й оновлення стрічки, чиї варіанти залежать від даних. */
-
 function нутрощіСтрічки(ф){
-
   return "<span>" + esc(ф.підпис) + "</span>" +
-
     ф.варіанти().map(([знач, підпис]) =>
-
       "<button data-v='" + esc(знач) + "' aria-pressed='" +
-
       (ui[ф.ключ] === знач ? "true" : "false") + "'>" + esc(підпис) + "</button>").join("");
-
 }
-
-
 
 /** Варіанти стрічки можуть залежати від даних: жанри беруться з самої
-
     полиці, а полиця приїжджає вже після того, як панель намальовано —
-
     і з мережі, і з кеша, і кількома заходами. Тому перед кожним показом
-
     звіряємо набір кнопок і перемальовуємо саме ту стрічку, у якої він
-
     змінився. Панель цілком не чіпаємо навмисне: у ній живе поле пошуку,
-
     і повне перемальовування висмикує з нього фокус посеред слова. */
-
 function оновитиСтрічки(){
-
   ФІЛЬТРИ.forEach((ф) => {
-
     if(ф.вид !== "стрічка") return;
-
     const вузол = $("filters").querySelector(".seg[data-ф='" + ф.ключ + "']");
-
     if(!вузол) return;
-
     const треба = ф.варіанти().map((в) => в[0]);
-
     const є = Array.prototype.map.call(вузол.querySelectorAll("button"), (b) => b.dataset.v);
-
     // Порівнюємо поелементно, а не склеєними рядками: будь-який роздільник
-
     // рано чи пізно трапиться всередині самого значення.
-
     if(є.length === треба.length && є.every((v, i) => v === треба[i])) return;
-
     // Обране могло зникнути разом зі своєю кнопкою — тоді вертаємось до
-
     // типового, інакше список мовчки лишився б порожнім назавжди.
-
     if(треба.indexOf(ui[ф.ключ]) < 0) ui[ф.ключ] = ф.типово;
-
     вузол.innerHTML = нутрощіСтрічки(ф);
-
   });
-
 }
-
-
 
 /** Малює фільтри з реєстру. Жодного фільтра тут не названо поіменно:
-
     щоб додати новий, досить дописати об'єкт у ФІЛЬТРИ. */
-
 function renderFilters(){
-
   $("filters").innerHTML = ФІЛЬТРИ.map((ф) => {
-
     const v = ui[ф.ключ];
-
     if(ф.вид === "пошук"){
-
       return "<div class='fld'><input type='search' data-ф='" + esc(ф.ключ) +
-
         "' value='" + esc(v) + "' placeholder='" + esc(ф.держак || "Пошук") +
-
         "' aria-label='" + esc(ф.держак || "Пошук") + "'></div>";
-
     }
-
     if(ф.вид === "стрічка"){
-
       return "<div class='seg" + (ф.широка ? " wrap" : "") + "' data-ф='" +
-
         esc(ф.ключ) + "' role='group' aria-label='" +
-
         esc(ф.підпис) + "'>" + нутрощіСтрічки(ф) + "</div>";
-
     }
-
     const ід = "f-" + ф.ключ;
-
     return "<div class='fld'><label for='" + ід + "'>" + esc(ф.підпис) + "</label>" +
-
       "<select id='" + ід + "' data-ф='" + esc(ф.ключ) + "'>" +
-
       ф.варіанти().map(([знач, підпис]) =>
-
         "<option value='" + esc(знач) + "'" + (v === знач ? " selected" : "") + ">" +
-
         esc(підпис) + "</option>").join("") + "</select></div>";
-
   }).join("");
-
 }
-
-
 
 /** Один обробник на всі фільтри: клік по стрічці, зміна списку, набір у пошуку. */
-
 function поставити(ключ, знач){
-
   ui[ключ] = знач;
-
   // Перемальовуємо лише стрічку — вона показує стан кнопками. Список і поле
-
   // пошуку тримають вибране самі, а повна перемальовка щоразу висмикувала б
-
   // фокус із віджета просто посеред роботи.
-
   const стрічка = $("filters").querySelector(".seg[data-ф='" + ключ + "']");
-
   if(стрічка){
-
     Array.prototype.forEach.call(стрічка.querySelectorAll("button"), (b) =>
-
       b.setAttribute("aria-pressed", b.dataset.v === знач ? "true" : "false"));
-
   }
-
   render();
-
 }
-
 $("filters").addEventListener("input", (e) => {
-
   const el = e.target.closest("input[data-ф]"); if(!el) return;
-
   // Пошук перемальовувати не можна — фокус вискочить із поля посеред слова.
-
   ui[el.dataset["ф"]] = el.value;
-
   render();
-
 });
-
 $("filters").addEventListener("change", (e) => {
-
   const el = e.target.closest("select[data-ф]"); if(!el) return;
-
   поставити(el.dataset["ф"], el.value);
-
 });
-
 $("filters").addEventListener("click", (e) => {
-
   const b = e.target.closest(".seg[data-ф] button"); if(!b) return;
-
   поставити(b.closest(".seg").dataset["ф"], b.dataset.v);
-
 });
-
-
 
 $("fSort").innerHTML = СОРТУВАННЯ.map((с) =>
-
   "<option value='" + esc(с.ключ) + "'>" + esc(с.підпис) + "</option>").join("");
-
 $("fSort").value = ui.sort;
-
 $("fSort").addEventListener("change", (e) => { ui.sort = e.target.value; підказка(); render(); });
-
 $("fFlip").addEventListener("click", function(){
-
   ui.rev = !ui.rev;
-
   підказка();
-
   render();
-
 });
-
 /** Стрілка й підказка мають казати правду про поточне сортування. */
-
 function підказка(){
-
   const с = СОРТУВАННЯ.find((x) => x.ключ === ui.sort) || СОРТУВАННЯ[0];
-
   const вниз = с.спадання !== !!ui.rev;
-
   $("fFlip").textContent = ui.rev ? "↑" : "↓";
-
   $("fFlip").title = с.текст && !с.спадання
-
     ? (ui.rev ? "Я → А" : "А → Я")
-
     : (вниз ? "від більшого" : "від меншого");
-
 }
-
 renderFilters();
-
 підказка();
-
 /* ── приховати цілі групи ─────────────────────────────────────────────
-
    Раніше тут була одна кнопка «Без доповнень». Причин не хотіти бачити
-
    коробку в списку виявилося більше однієї, і вони не виключають одна
-
    одну, тож замість кнопки — перелік із позначками: скільки треба,
-
    стільки й познач. Сам перелік малюється з ХОВАНОК. */
-
 function renderHide(){
-
   $("hidePick").innerHTML = ХОВАНКИ.map((п) =>
-
     "<label class='pickrow'><input type='checkbox' data-hide='" + esc(п.ключ) + "'" +
-
     (ui.hide.has(п.ключ) ? " checked" : "") + "><span>" + esc(п.підпис) +
-
     "</span></label>").join("");
-
   const скільки = ui.hide.size;
-
   const кн = $("hideBtn");
-
   кн.textContent = скільки ? "Приховано: " + скільки : "Приховати";
-
   кн.setAttribute("aria-pressed", скільки ? "true" : "false");
-
 }
-
+$("resetBtn").addEventListener("click", скинутиФільтри);
 function закритиХованки(){
-
   $("hidePick").hidden = true;
-
   $("hideBtn").setAttribute("aria-expanded", "false");
-
 }
-
 renderHide();
-
 $("hideBtn").addEventListener("click", () => {
-
   const відкрити = $("hidePick").hidden;
-
   hideMenu();                       // чуже меню поруч — геть
-
   $("hidePick").hidden = !відкрити;
-
   $("hideBtn").setAttribute("aria-expanded", відкрити ? "true" : "false");
-
 });
-
 $("hidePick").addEventListener("change", (e) => {
-
   const el = e.target.closest("[data-hide]"); if(!el) return;
-
   if(el.checked) ui.hide.add(el.dataset.hide); else ui.hide.delete(el.dataset.hide);
-
   renderHide();
-
   render();
-
 });
-
 // Клік усередині переліку його не закриває: позначок ставлять кілька підряд.
-
 document.addEventListener("click", (e) => {
-
   if(!$("hidePick").hidden && !e.target.closest("#hideWrap")) закритиХованки();
-
 });
-
 $("cWith").addEventListener("change", (e) => {
-
   const el = e.target.closest("[data-exp]"); if(!el) return;
-
   const g = current(); if(!g) return;
-
   if(!canEdit()){ el.checked = !el.checked; return; }
-
   tie(g, el.dataset.exp, el.checked);
-
 });
-
 /** Прив'язати або відв'язати доповнення й перемалювати чипи. */
-
 function tie(g, id, треба){
-
   const набір = new Set(g.withExp || []);
-
   if(треба) набір.add(id); else набір.delete(id);
-
   g.withExp = Array.from(набір).sort();
-
   if(!g.withExp.length) delete g.withExp;
-
   renderWith(g);
-
   render();
-
   touch();
-
 }
-
 $("cTied").addEventListener("click", (e) => {
-
   const b = e.target.closest("[data-untie]"); if(!b) return;
-
   const g = current(); if(!g || !canEdit()) return;
-
   tie(g, b.dataset.untie, false);
-
 });
-
 $("cWithAdd").addEventListener("click", () => {
-
   const відкрито = $("cWithPick").hidden;
-
   $("cWithPick").hidden = !відкрито;
-
   $("cWithAdd").setAttribute("aria-expanded", відкрито ? "true" : "false");
-
   if(відкрито) $("cWithQ").focus();
-
 });
-
 $("cWithQ").addEventListener("input", () => {
-
   const g = current(); if(g) renderPick(g);
-
 });
-
 $("cExp").addEventListener("click", function(){
-
   const g = current(); if(!g) return;
-
   if(!canEdit()) return;
-
   g.expansion = !g.expansion;
-
   if(!g.expansion) delete g.expansion;
-
   this.setAttribute("aria-pressed", g.expansion ? "true" : "false");
-
   touch();
-
 });
-
 $("cmpBtn").addEventListener("click", function(){
-
   ui.cmp = !ui.cmp;
-
   this.setAttribute("aria-pressed", ui.cmp ? "true" : "false");
-
   if(!ui.cmp) ui.picked.clear();
-
   render();
-
 });
-
 $("list").addEventListener("click", (e) => {
-
   const o = e.target.closest("[data-open]");
-
   if(o){ openCard(o.dataset.open); return; }
-
 });
-
 $("list").addEventListener("change", (e) => {
-
   const p = e.target.closest("[data-pick]"); if(!p) return;
-
   const id = p.dataset.pick;
-
   if(p.checked){
-
     if(ui.picked.size >= 4){ p.checked = false; toast("Більше чотирьох поруч уже не читається."); return; }
-
     ui.picked.add(id);
-
   } else ui.picked.delete(id);
-
   render();
-
 });
-
 $("lockedKey").addEventListener("click", openKey);
-
 $("addBtn").addEventListener("click", async () => {
-
   if(!canEdit()) return;
-
   const g = Object.assign(blank(""), {id:newId()});
-
   games.push(g);
-
   if(!db) localSave();
-
   render(); openCard(g.id);
-
   if(db) await persist(g);
-
 });
-
-
 
 /* ── меню, обмін даними ──────────────────────────── */
 function hideMenu(){ $("menu").hidden = true; $("menuBtn").setAttribute("aria-expanded", "false"); }

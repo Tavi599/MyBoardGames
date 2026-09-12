@@ -3,36 +3,53 @@ function render(){ оновитиСтрічки(); renderStats(); renderList(); 
 
 function renderStats(){
   const games = shelf();
-  const доповнень = games.filter((g) => g.expansion).length;
+  // «На полиці» — це те, що справді стоїть удома. Позбуті коробки й чужі
+  // сюди не рахуються, хоч і лишаються в списку зі своїми оцінками.
+  const свої = games.filter((g) => stats(g).indexOf("колекція") >= 0);
+  const доповнень = свої.filter((g) => g.expansion).length;
+  // «Онлайн» — тільки те, чого вдома немає. Гра, що стоїть на полиці й
+  // паралельно йде онлайн, — це все одно гра з полиці, і рахувати її
+  // двічі означало б, що сума перестане сходитись.
+  const мережеві = games.filter((g) => stats(g).indexOf("онлайн") >= 0
+                                    && stats(g).indexOf("колекція") < 0).length;
   const rated = games.filter((g) => g.score != null);
-  const avg = rated.length
-    ? fmt(+(rated.reduce((s, g) => s + g.score, 0) / rated.length).toFixed(2)) : "—";
   const plays = games.reduce((s, g) => s + (+g.plays || 0), 0);
-  let extra;
-  if(ui.count === "all"){
-    const top = rated.slice().sort((a, b) => b.score - a.score)[0];
-    extra = ["Перша в списку", top ? esc(top.name) : "—"];
-  } else {
-    const list = games.filter((g) => g.byCount && g.byCount[ui.count] != null)
-                      .sort((a, b) => b.byCount[ui.count] - a.byCount[ui.count]);
-    extra = ["Краща на " + CLABEL[ui.count],
-             list.length ? esc(list[0].name) + " <small>" + fmt(list[0].byCount[ui.count]) + "</small>" : "—"];
-  }
   $("stats").innerHTML =
     cell("Ігор на полиці", доповнень
-      ? (games.length - доповнень) + " <small>+ " + доповнень + " доп.</small>"
-      : games.length) +
+      ? (свої.length - доповнень) + " <small>+ " + доповнень + " доп.</small>"
+      : свої.length) +
+    cell("Ігор онлайн", мережеві) +
     cell("Оцінено", rated.length + " <small>з " + games.length + "</small>") +
-    cell("Середня оцінка", avg) +
-    cell("Партій зіграно", plays) +
-    cell(extra[0], extra[1]);
+    cell("Партій зіграно", plays);
   function cell(t, v){ return "<div><dt>" + t + "</dt><dd>" + v + "</dd></div>"; }
+}
+
+/** Скидає всі фільтри, пошук і приховані групи до типового. Сортування
+    не чіпаємо: це не звуження полиці, а спосіб на неї дивитися. */
+function скинутиФільтри(){
+  ФІЛЬТРИ.forEach((ф) => { ui[ф.ключ] = ф.типово; });
+  ui.hide.clear();
+  renderFilters();
+  renderHide();
+  render();
+}
+function renderFound(arr){
+  const усього = games.length;
+  // Поки полиця їде з бази, рахувати нічого: «0 коробок» злякало б дарма.
+  $("found").hidden = !ready;
+  if(!ready) return;
+  $("foundN").textContent = звужено()
+    ? arr.length + " " + plural(arr.length, "коробка", "коробки", "коробок") +
+      " з " + усього
+    : усього + " " + plural(усього, "коробка", "коробки", "коробок");
+  $("resetBtn").hidden = !звужено();
 }
 
 function renderList(){
   const list = $("list"), arr = visible();
   document.documentElement.style.setProperty("--pick", ui.cmp ? "26px" : "0px");
   $("hScore").textContent = ui.count === "all" ? "Оцінка" : "На " + CLABEL[ui.count];
+  renderFound(arr);
 
   if(!ready){
     list.innerHTML = ""; $("headRow").hidden = true;

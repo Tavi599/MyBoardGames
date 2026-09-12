@@ -132,6 +132,13 @@ button{cursor:pointer}
 .cov b{font:600 16px/1 "IBM Plex Sans","Segoe UI",sans-serif; color:var(--ink-faint)}
 .cov.big{width:64px; height:64px; flex:none}
 .cov.big b{font-size:22px}
+/* Скільки записів показано — і вихід, коли їх раптом нуль. */
+.found{display:flex; align-items:baseline; gap:12px; padding:2px 4px 8px;
+  font:600 10px/1.4 "IBM Plex Mono",ui-monospace,monospace;
+  letter-spacing:.14em; text-transform:uppercase; color:var(--ink-faint)}
+.link{border:0; background:none; padding:0; color:var(--petrol); font:inherit;
+  letter-spacing:.1em; text-decoration:underline; text-underline-offset:3px}
+.link:hover{color:var(--ink)}
 .head-row{padding:0 4px 7px; border-bottom:1px solid var(--rule)}
 .head-row span{font:600 10px/1.4 "IBM Plex Mono",ui-monospace,monospace;
   letter-spacing:.14em; text-transform:uppercase; color:var(--ink-faint)}
@@ -157,8 +164,8 @@ button{cursor:pointer}
   letter-spacing:-.01em; min-width:0}
 .nm > .txt{min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
 .dot{width:7px; height:7px; border-radius:50%; background:var(--ink-faint); flex:none}
-.s-хочу .dot{background:var(--amber)} .s-колекція .dot{background:var(--petrol-dim)}
-.s-улюблена .dot{background:var(--petrol)} .s-відклав .dot{background:var(--ink-faint)}
+.s-колекція .dot{background:var(--petrol-dim)}
+.s-улюблена .dot{background:var(--petrol)} .s-чужа .dot{background:var(--amber)}
 .s-позбувся .dot{background:var(--rust)} .s-онлайн .dot{background:var(--sage)}
 /* Кнопка правил у рядку: маленька, але з нормальною зоною дотику. */
 .rules-btn{display:grid; place-items:center; width:30px; height:30px; flex:none;

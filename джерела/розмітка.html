@@ -49,6 +49,14 @@
 
   <div id="cmpBox"></div>
 
+  <!-- Скільки записів показано просто зараз. Стоїть над списком, а не в
+       шапці: шапка на телефоні ховається, а відповідь на «скільки їх?»
+       потрібна саме тоді, коли щось відфільтровано. -->
+  <div class="found" id="found">
+    <span id="foundN"></span>
+    <button class="link" id="resetBtn" type="button" hidden>Скинути всі фільтри</button>
+  </div>
+
   <div class="head-row" id="headRow">
     <span></span><span></span><span>Гра</span><span></span>
     <span class="h-counts">За складом столу</span>
