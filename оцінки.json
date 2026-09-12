@@ -1,7 +1,7 @@
 {
   "app": "полиця настілок",
   "version": 2,
-  "saved": "2026-09-12T20:20:21.484Z",
+  "saved": "2026-09-12T20:21:09.917Z",
   "games": [
     {
       "added": "2026-09-12",
@@ -1387,7 +1387,12 @@
       "bggId": "348096",
       "bggRank": 1742,
       "bggRating": 6.8,
-      "byCount": {},
+      "byCount": {
+        "2": 6,
+        "3": 7,
+        "4": 7.5,
+        "5": 7
+      },
       "comment": "",
       "cover": "https://cf.geekdo-images.com/TIEYwnIRV6kvAEnFkYe2OA__square200/img/YNmcVic7N2ymvrqtbycFat1YCUA=/200x200/filters:strip_icc()/pic6858706.png",
       "id": "g-kites",
@@ -1396,7 +1401,7 @@
       "minutes": null,
       "name": "Повітряні змії",
       "nameEn": "Kites",
-      "plays": 0,
+      "plays": 8,
       "rules": [
         {
           "kind": "офіційні",
@@ -1404,14 +1409,14 @@
           "url": "https://geekach.com.ua/content/files/pravila-nastlno-gri-povtrjan-zm-kites-38737209.pdf"
         }
       ],
-      "score": null,
+      "score": 7,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T17:20:03.076Z",
-      "weight": null
+      "updated": "2026-09-12T20:21:00.338Z",
+      "weight": 1
     },
     {
       "added": "2026-09-12",
