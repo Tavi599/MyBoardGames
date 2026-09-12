@@ -1,7 +1,7 @@
 <title>Полиця настілок</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Onest:wght@400;500;600&family=Unbounded:wght@400;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
 
 <style>
 :root{
@@ -40,7 +40,7 @@
 *{box-sizing:border-box}
 body{
   margin:0; background:var(--paper); color:var(--ink);
-  font:400 16px/1.5 "Onest", "Segoe UI", system-ui, sans-serif;
+  font:400 16px/1.5 "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
   -webkit-font-smoothing:antialiased;
 }
 button,input,select,textarea{font:inherit; color:inherit}
@@ -51,8 +51,8 @@ button{cursor:pointer}
 
 /* ── шапка ─────────────────────────────────────────── */
 .top{padding:34px 0 18px}
-.brand{display:flex; align-items:baseline; gap:.4em; font-family:"Unbounded","Onest",sans-serif}
-.brand b{font-weight:600; font-size:clamp(26px,4.4vw,38px); letter-spacing:-.03em}
+.brand{display:flex; align-items:baseline; gap:.4em; font-family:"IBM Plex Sans","Segoe UI",system-ui,sans-serif}
+.brand b{font-weight:600; font-size:clamp(26px,4.4vw,38px); letter-spacing:-.015em}
 .brand span{font-weight:400; font-size:clamp(15px,2.4vw,20px); color:var(--ink-faint); letter-spacing:-.02em}
 .tagline{margin:10px 0 0; max-width:52ch; color:var(--ink-soft); font-size:15px}
 
@@ -60,11 +60,11 @@ button{cursor:pointer}
   border-top:1px solid var(--rule); border-bottom:1px solid var(--rule)}
 .stats div{flex:1 1 120px; padding:12px 16px 13px; border-left:1px solid var(--rule-soft)}
 .stats div:first-child{border-left:0; padding-left:0}
-.stats dt{margin:0; font:600 10px/1.4 "JetBrains Mono",ui-monospace,monospace;
+.stats dt{margin:0; font:600 10px/1.4 "IBM Plex Mono",ui-monospace,monospace;
   letter-spacing:.14em; text-transform:uppercase; color:var(--ink-faint)}
-.stats dd{margin:3px 0 0; font-family:"Unbounded","Onest",sans-serif; font-weight:400;
+.stats dd{margin:3px 0 0; font-family:"IBM Plex Sans","Segoe UI",system-ui,sans-serif; font-weight:600;
   font-size:20px; letter-spacing:-.02em; font-variant-numeric:tabular-nums}
-.stats dd small{font-size:12px; color:var(--ink-faint); font-family:"Onest",sans-serif}
+.stats dd small{font-size:12px; color:var(--ink-faint); font-family:"IBM Plex Sans",sans-serif}
 
 /* ── панель керування ──────────────────────────────── */
 .tools{display:flex; flex-wrap:wrap; gap:8px; align-items:center; padding:16px 0 10px; position:sticky; top:0;
@@ -77,16 +77,16 @@ button{cursor:pointer}
    темі виходить світлий текст на білому — читати неможливо. */
 .fld select{padding-right:2px; background-color:var(--sheet); color:var(--ink)}
 .fld select option{background-color:var(--sheet); color:var(--ink)}
-.fld label{font:600 10px/1 "JetBrains Mono",ui-monospace,monospace; letter-spacing:.12em;
+.fld label{font:600 10px/1 "IBM Plex Mono",ui-monospace,monospace; letter-spacing:.12em;
   text-transform:uppercase; color:var(--ink-faint)}
 .flip{width:26px; height:26px; margin-left:2px; border:1px solid var(--rule-soft);
   border-radius:5px; background:var(--paper); color:var(--ink-soft);
-  font:600 13px/1 "JetBrains Mono",ui-monospace,monospace; padding:0}
+  font:600 13px/1 "IBM Plex Mono",ui-monospace,monospace; padding:0}
 .flip:hover{border-color:var(--ink-faint); color:var(--ink)}
 
 .seg{display:flex; align-items:center; gap:2px; background:var(--sheet); border:1px solid var(--rule);
   border-radius:7px; padding:3px; height:36px}
-.seg > span{font:600 10px/1 "JetBrains Mono",ui-monospace,monospace; letter-spacing:.12em;
+.seg > span{font:600 10px/1 "IBM Plex Mono",ui-monospace,monospace; letter-spacing:.12em;
   text-transform:uppercase; color:var(--ink-faint); padding:0 7px 0 5px}
 .seg button{border:0; background:none; border-radius:5px; padding:0 9px; height:28px;
   font-size:13px; font-weight:500; color:var(--ink-soft)}
@@ -99,7 +99,7 @@ button{cursor:pointer}
 .spacer{flex:1}
 .chip{display:inline-flex; align-items:center; gap:6px; height:36px; padding:0 11px;
   border:1px solid var(--rule-soft); border-radius:7px; background:var(--sheet);
-  font:600 10px/1 "JetBrains Mono",ui-monospace,monospace; letter-spacing:.1em;
+  font:600 10px/1 "IBM Plex Mono",ui-monospace,monospace; letter-spacing:.1em;
   text-transform:uppercase; color:var(--ink-faint); white-space:nowrap}
 .chip::before{content:""; width:6px; height:6px; border-radius:50%; background:var(--ink-faint)}
 .chip.ok::before{background:var(--petrol)}
@@ -117,7 +117,7 @@ button{cursor:pointer}
 .head-row,.row{display:grid; align-items:center;
   grid-template-columns:var(--pick,0px) minmax(0,1fr) auto auto; gap:14px}
 .head-row{padding:0 4px 7px; border-bottom:1px solid var(--rule)}
-.head-row span{font:600 10px/1.4 "JetBrains Mono",ui-monospace,monospace;
+.head-row span{font:600 10px/1.4 "IBM Plex Mono",ui-monospace,monospace;
   letter-spacing:.14em; text-transform:uppercase; color:var(--ink-faint)}
 .head-row .h-counts{width:152px}
 .head-row .h-score{width:78px; text-align:right}
@@ -134,7 +134,7 @@ button{cursor:pointer}
 .s-хочу .dot{background:var(--amber)} .s-колекція .dot{background:var(--petrol-dim)}
 .s-улюблена .dot{background:var(--petrol)} .s-відклав .dot{background:var(--ink-faint)}
 .s-позбувся .dot{background:var(--rust)}
-.meta{margin:3px 0 0; font:400 12.5px/1.45 "Onest",sans-serif; color:var(--ink-faint);
+.meta{margin:3px 0 0; font:400 12.5px/1.45 "IBM Plex Sans",sans-serif; color:var(--ink-faint);
   white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
 .note{margin:3px 0 0; font-size:13px; color:var(--ink-soft); white-space:nowrap;
   overflow:hidden; text-overflow:ellipsis; max-width:60ch}
@@ -142,15 +142,15 @@ button{cursor:pointer}
 .counts{display:grid; grid-template-columns:repeat(4,34px); gap:4px; width:152px}
 .cnt{border:1px solid var(--rule-soft); border-radius:5px; background:var(--sheet);
   height:38px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:0}
-.cnt b{font:600 14px/1 "JetBrains Mono",ui-monospace,monospace; color:var(--band,var(--ink))}
-.cnt i{font:400 9px/1.4 "JetBrains Mono",ui-monospace,monospace; font-style:normal;
+.cnt b{font:600 14px/1 "IBM Plex Mono",ui-monospace,monospace; color:var(--band,var(--ink))}
+.cnt i{font:400 9px/1.4 "IBM Plex Mono",ui-monospace,monospace; font-style:normal;
   letter-spacing:.06em; color:var(--ink-faint)}
 .cnt.void b{color:var(--rule)}
 .cnt.now{border-color:var(--petrol); box-shadow:inset 0 0 0 1px var(--petrol)}
 
 .score{width:78px; text-align:right}
-.score .num{font-family:"Unbounded","Onest",sans-serif; font-weight:400; font-size:26px;
-  letter-spacing:-.04em; font-variant-numeric:tabular-nums; color:var(--band,var(--ink-faint))}
+.score .num{font-family:"IBM Plex Sans","Segoe UI",system-ui,sans-serif; font-weight:600; font-size:26px;
+  letter-spacing:-.02em; font-variant-numeric:tabular-nums; color:var(--band,var(--ink-faint))}
 .score .num.none{font-size:20px; color:var(--rule)}
 .meter{display:block; height:3px; margin-top:5px; background:var(--sunk); border-radius:2px; overflow:hidden}
 .meter i{display:block; height:100%; background:var(--band,var(--ink-faint))}
@@ -159,7 +159,7 @@ button{cursor:pointer}
 .b-good{--band:var(--sage)} .b-top{--band:var(--petrol)}
 
 .blank{padding:54px 4px; color:var(--ink-faint); text-align:center}
-.blank b{display:block; font-family:"Unbounded","Onest",sans-serif; font-weight:400;
+.blank b{display:block; font-family:"IBM Plex Sans","Segoe UI",system-ui,sans-serif; font-weight:600;
   font-size:18px; color:var(--ink-soft); margin-bottom:6px}
 
 /* ── порівняння ────────────────────────────────────── */
@@ -167,18 +167,18 @@ button{cursor:pointer}
   background:var(--sheet); overflow:hidden}
 .cmp-head{display:flex; align-items:center; justify-content:space-between; gap:12px;
   padding:12px 14px; border-bottom:1px solid var(--rule)}
-.cmp-head h2{margin:0; font:600 12px/1 "JetBrains Mono",ui-monospace,monospace;
+.cmp-head h2{margin:0; font:600 12px/1 "IBM Plex Mono",ui-monospace,monospace;
   letter-spacing:.14em; text-transform:uppercase; color:var(--ink-faint)}
 .cmp-scroll{overflow-x:auto}
 .cmp table{border-collapse:collapse; width:100%; min-width:520px}
 .cmp th,.cmp td{padding:9px 14px; text-align:left; border-bottom:1px solid var(--rule-soft);
   vertical-align:top; font-size:14px}
-.cmp thead th{font-family:"Unbounded","Onest",sans-serif; font-weight:400; font-size:15px;
+.cmp thead th{font-family:"IBM Plex Sans","Segoe UI",system-ui,sans-serif; font-weight:600; font-size:15px;
   letter-spacing:-.02em; border-bottom:1px solid var(--rule)}
-.cmp tbody th{font:600 10px/1.5 "JetBrains Mono",ui-monospace,monospace; letter-spacing:.12em;
+.cmp tbody th{font:600 10px/1.5 "IBM Plex Mono",ui-monospace,monospace; letter-spacing:.12em;
   text-transform:uppercase; color:var(--ink-faint); width:150px; white-space:nowrap}
 .cmp td.v{font-variant-numeric:tabular-nums}
-.cmp td.v b{font:600 15px/1 "JetBrains Mono",ui-monospace,monospace; color:var(--band,var(--ink-faint))}
+.cmp td.v b{font:600 15px/1 "IBM Plex Mono",ui-monospace,monospace; color:var(--band,var(--ink-faint))}
 .cmp td.best{background:color-mix(in srgb, var(--petrol) 11%, transparent)}
 .cmp .bar{display:block; height:3px; margin-top:5px; max-width:110px;
   background:var(--sunk); border-radius:2px; overflow:hidden}
@@ -194,14 +194,14 @@ button{cursor:pointer}
 .c-head{display:flex; align-items:flex-start; gap:10px; padding:16px 16px 12px;
   border-bottom:1px solid var(--rule)}
 .c-name{flex:1; min-width:0; background:none; border:0; border-bottom:1px dashed var(--rule);
-  padding:2px 0 5px; font-family:"Unbounded","Onest",sans-serif; font-weight:400; font-size:19px;
+  padding:2px 0 5px; font-family:"IBM Plex Sans","Segoe UI",system-ui,sans-serif; font-weight:600; font-size:19px;
   letter-spacing:-.025em}
 .c-name:focus{outline:none; border-bottom-color:var(--petrol)}
 .icon{width:32px; height:32px; flex:none; border:1px solid var(--rule); border-radius:7px;
   background:var(--paper); font-size:14px; line-height:1; display:grid; place-items:center}
 .c-body{flex:1; overflow-y:auto; padding:16px; display:flex; flex-direction:column; gap:20px}
 .grp{display:flex; flex-direction:column; gap:9px; border:0; margin:0; padding:0}
-.grp > legend, .lbl{font:600 10px/1.4 "JetBrains Mono",ui-monospace,monospace;
+.grp > legend, .lbl{font:600 10px/1.4 "IBM Plex Mono",ui-monospace,monospace;
   letter-spacing:.14em; text-transform:uppercase; color:var(--ink-faint); padding:0}
 .line{display:flex; flex-wrap:wrap; gap:8px; align-items:center}
 .line .fld{flex:1 1 92px; min-width:0}
@@ -212,20 +212,22 @@ button{cursor:pointer}
   background:var(--paper); height:36px; overflow:hidden}
 .step button{width:32px; height:34px; border:0; background:none; font-size:16px; color:var(--ink-soft)}
 .step button:hover{background:var(--sunk)}
-.step b{min-width:34px; text-align:center; font:600 14px/1 "JetBrains Mono",ui-monospace,monospace}
+.step b{min-width:34px; text-align:center; font:600 14px/1 "IBM Plex Mono",ui-monospace,monospace}
 
 .scale{display:grid; gap:3px}
 .scale.s10{grid-template-columns:repeat(10,1fr)}
 .scale.s5{grid-template-columns:repeat(5,1fr); max-width:190px}
 .scale button{height:30px; border:1px solid var(--rule-soft); border-radius:4px;
-  background:var(--paper); font:600 12px/1 "JetBrains Mono",ui-monospace,monospace;
+  background:var(--paper); font:600 12px/1 "IBM Plex Mono",ui-monospace,monospace;
   color:var(--ink-faint); padding:0}
 .scale button:hover{border-color:var(--ink-faint)}
 .scale button.on{background:var(--band); border-color:var(--band); color:var(--on-accent)}
+.scale button.half{border-color:var(--band); color:var(--ink);
+  background:linear-gradient(90deg, var(--band) 50%, var(--paper) 50%)}
 .scale.big button{height:36px; font-size:13px}
 
 .pad{display:grid; grid-template-columns:34px 1fr; gap:6px 8px; align-items:center}
-.pad .who{font:600 12px/1 "JetBrains Mono",ui-monospace,monospace; color:var(--ink-soft); text-align:right}
+.pad .who{font:600 12px/1 "IBM Plex Mono",ui-monospace,monospace; color:var(--ink-soft); text-align:right}
 .pad .who small{display:block; font-size:8px; letter-spacing:.1em; color:var(--ink-faint); margin-top:3px}
 
 textarea{width:100%; min-height:96px; resize:vertical; background:var(--paper);
@@ -234,26 +236,26 @@ textarea:focus{outline:none; border-color:var(--petrol)}
 .hint{font-size:12px; color:var(--ink-faint); margin:0}
 .c-foot{display:flex; align-items:center; gap:8px; padding:12px 16px;
   border-top:1px solid var(--rule); background:var(--sheet)}
-.c-foot .saved{flex:1; font:400 12px/1 "Onest",sans-serif; color:var(--ink-faint)}
+.c-foot .saved{flex:1; font:400 12px/1 "IBM Plex Sans",sans-serif; color:var(--ink-faint)}
 .danger{border-color:var(--rust); color:var(--rust); background:none}
 
 .locked{display:flex; gap:14px; align-items:center; flex-wrap:wrap; margin:12px 0 4px;
   padding:13px 15px; border:1px solid var(--amber); border-radius:10px;
   background:color-mix(in srgb, var(--amber) 9%, transparent)}
 .locked div{flex:1 1 320px; font-size:13.5px; line-height:1.5; color:var(--ink-soft)}
-.locked b{display:block; font:600 10px/1.6 "JetBrains Mono",ui-monospace,monospace;
+.locked b{display:block; font:600 10px/1.6 "IBM Plex Mono",ui-monospace,monospace;
   letter-spacing:.14em; text-transform:uppercase; color:var(--amber)}
 
 .keybox{position:fixed; z-index:21; top:50%; left:50%; transform:translate(-50%,-50%);
   width:min(460px,92vw); max-height:86vh; overflow-y:auto; background:var(--sheet);
   border:1px solid var(--rule); border-radius:12px; box-shadow:var(--shadow); padding:18px}
-.keybox h2{margin:0 0 10px; font-family:"Unbounded","Onest",sans-serif; font-weight:400;
+.keybox h2{margin:0 0 10px; font-family:"IBM Plex Sans","Segoe UI",system-ui,sans-serif; font-weight:600;
   font-size:18px; letter-spacing:-.025em}
 .keybox p{margin:0 0 10px; font-size:14px; line-height:1.55; color:var(--ink-soft)}
 .keybox .hint{font-size:12.5px; color:var(--ink-faint)}
 .keybox input{width:100%; height:38px; padding:0 10px; margin:4px 0 14px;
   background:var(--paper); border:1px solid var(--rule); border-radius:7px;
-  font:400 13px/1 "JetBrains Mono",ui-monospace,monospace}
+  font:400 13px/1 "IBM Plex Mono",ui-monospace,monospace}
 .keybox input:focus{outline:none; border-color:var(--petrol)}
 .keyRow{display:flex; gap:8px; align-items:center}
 
@@ -398,6 +400,7 @@ textarea:focus{outline:none; border-color:var(--petrol)}
     <fieldset class="grp">
       <legend>Загальна оцінка</legend>
       <div class="scale s10 big" id="sMain"></div>
+      <p class="hint">Та сама цифра вдруге — пів бала менше (7 → 6,5), утретє — порожньо.</p>
     </fieldset>
 
     <fieldset class="grp">
@@ -452,6 +455,8 @@ const esc = (s) => String(s == null ? "" : s).replace(/[&<>"]/g, (c) =>
   ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]));
 
 function band(v){ return v == null ? "" : v <= 3 ? "b-low" : v <= 6 ? "b-mid" : v <= 8 ? "b-good" : "b-top"; }
+/** 6.5 → «6,5», 7 → «7». Кома, бо українською десяткова кома. */
+function fmt(v){ return v == null ? "" : String(v).replace(".", ","); }
 function blank(name){
   return {name:name, status:"колекція", minP:null, maxP:null, minutes:null, weight:null,
           plays:0, score:null, byCount:{}, tags:[], comment:"",
@@ -874,7 +879,8 @@ function render(){ renderStats(); renderList(); renderCmp(); }
 
 function renderStats(){
   const rated = games.filter((g) => g.score != null);
-  const avg = rated.length ? (rated.reduce((s, g) => s + g.score, 0) / rated.length).toFixed(1) : "—";
+  const avg = rated.length
+    ? fmt(+(rated.reduce((s, g) => s + g.score, 0) / rated.length).toFixed(2)) : "—";
   const plays = games.reduce((s, g) => s + (+g.plays || 0), 0);
   let extra;
   if(ui.count === "all"){
@@ -884,7 +890,7 @@ function renderStats(){
     const list = games.filter((g) => g.byCount && g.byCount[ui.count] != null)
                       .sort((a, b) => b.byCount[ui.count] - a.byCount[ui.count]);
     extra = ["Краща на " + CLABEL[ui.count],
-             list.length ? esc(list[0].name) + " <small>" + list[0].byCount[ui.count] + "</small>" : "—"];
+             list.length ? esc(list[0].name) + " <small>" + fmt(list[0].byCount[ui.count]) + "</small>" : "—"];
   }
   $("stats").innerHTML =
     cell("Ігор на полиці", games.length) +
@@ -926,7 +932,7 @@ function renderList(){
     const cells = COUNTS.map((c) => {
       const v = g.byCount ? g.byCount[c] : null;
       return "<span class='cnt " + (v == null ? "void " : "") + band(v) +
-        (ui.count === c ? " now" : "") + "'><b>" + (v == null ? "·" : v) +
+        (ui.count === c ? " now" : "") + "'><b>" + (v == null ? "·" : fmt(v)) +
         "</b><i>" + CLABEL[c] + "</i></span>";
     }).join("");
     return "<li class='row s-" + esc(g.status) + (ui.picked.has(g.id) ? " picked" : "") + "' data-id='" + esc(g.id) + "'>" +
@@ -939,7 +945,7 @@ function renderList(){
       "</button>" +
       "<div class='counts'>" + cells + "</div>" +
       "<div class='score " + b + "'><span class='num" + (s == null ? " none" : "") + "'>" +
-        (s == null ? "—" : s) + "</span>" +
+        (s == null ? "—" : fmt(s)) + "</span>" +
         "<span class='meter'><i style='width:" + (s == null ? 0 : s * 10) + "%'></i></span></div>" +
     "</li>";
   }).join("");
@@ -991,7 +997,7 @@ function renderCmp(){
       if(r[2]){
         const cls = band(v) + (v != null && v === best && best > 0 && vals.filter((x) => x === best).length < gs.length ? " best" : "");
         return "<td class='v " + cls + "'>" + (v == null ? "<b style='color:var(--rule)'>—</b>" :
-          "<b>" + v + "</b><span class='bar'><i style='width:" + v * 10 + "%'></i></span>") + "</td>";
+          "<b>" + fmt(v) + "</b><span class='bar'><i style='width:" + v * 10 + "%'></i></span>") + "</td>";
       }
       return "<td>" + (v == null || v === "" ? "<span style='color:var(--rule)'>—</span>" : esc(v)) + "</td>";
     }).join("");
@@ -1015,7 +1021,7 @@ function scale(host, max, get, set){
   host.innerHTML = "";
   for(let i = 1; i <= max; i++){
     const b = document.createElement("button");
-    b.type = "button"; b.textContent = i;
+    b.type = "button"; b.textContent = i; b.dataset.n = i;
     b.setAttribute("aria-label", "оцінка " + i);
     host.appendChild(b);
   }
@@ -1024,8 +1030,11 @@ function scale(host, max, get, set){
   host.onclick = (e) => {
     const b = e.target.closest("button"); if(!b) return;
     if(!canEdit()) return;
-    const v = +b.textContent;
-    set(get() === v ? null : v);
+    const n = +b.dataset.n, було = get();
+    // Три стани на одній цифрі: ціле → пів бала менше → порожньо.
+    // Так півбали доступні і мишею, і пальцем, без крихітних мішеней.
+    const стане = було === n ? n - 0.5 : (було === n - 0.5 ? null : n);
+    set(стане);
     paintScale(host);
     touch();
   };
@@ -1036,9 +1045,12 @@ function paintScale(host){
   const cls = max === 10 ? band(v) : "b-top";
   host.className = host.className.replace(/\bb-(low|mid|good|top)\b/g, "").trim() + " " + (v == null ? "" : cls);
   Array.prototype.forEach.call(host.children, (b, i) => {
-    const on = v != null && i < v;
-    b.classList.toggle("on", on);
-    b.setAttribute("aria-pressed", on ? "true" : "false");
+    const n = i + 1;
+    const повна = v != null && v >= n;
+    const пів = v != null && !повна && v > n - 1;
+    b.classList.toggle("on", повна);
+    b.classList.toggle("half", пів);
+    b.setAttribute("aria-pressed", повна || пів ? "true" : "false");
   });
 }
 
