@@ -76,13 +76,30 @@
       "name": "Арідник",
       "nameEn": "Aridnyk",
       "plays": 0,
+      "rules": [
+        {
+          "kind": "офіційні",
+          "title": "Правила",
+          "url": "https://desktopgames.com.ua/games/7989/aridnuk_rules_ua_compressed.pdf"
+        },
+        {
+          "kind": "інше",
+          "title": "Правила сімейної гри",
+          "url": "https://desktopgames.com.ua/games/7989/aridnyk_family_rules_ua.pdf"
+        },
+        {
+          "kind": "соло",
+          "title": "Соло та кооператив",
+          "url": "https://desktopgames.com.ua/games/7989/aridnyk_storybook_compressed.pdf"
+        }
+      ],
       "score": null,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T16:01:36.850Z",
+      "updated": "2026-09-12T17:40:57.486Z",
       "weight": null
     },
     {
@@ -415,13 +432,20 @@
       "name": "Буп",
       "nameEn": "Boop",
       "plays": 0,
+      "rules": [
+        {
+          "kind": "офіційні",
+          "title": "Правила",
+          "url": "https://desktopgames.com.ua/games/7985/boop_rules_ua.pdf"
+        }
+      ],
       "score": null,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T16:01:36.850Z",
+      "updated": "2026-09-12T17:40:57.486Z",
       "weight": null
     },
     {
@@ -439,13 +463,20 @@
       "name": "Супер Бос-монстер",
       "nameEn": "Super Boss Monster",
       "plays": 0,
+      "rules": [
+        {
+          "kind": "інше",
+          "title": "Правила (англійською)",
+          "url": "https://desktopgames.com.ua/games/1356/boss-monster-rules-en.pdf"
+        }
+      ],
       "score": null,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T16:01:36.850Z",
+      "updated": "2026-09-12T17:40:57.486Z",
       "weight": null
     },
     {
@@ -494,13 +525,20 @@
       "name": "Каліко",
       "nameEn": "Calico",
       "plays": 0,
+      "rules": [
+        {
+          "kind": "офіційні",
+          "title": "Правила",
+          "url": "https://desktopgames.com.ua/games/6474/calico_rules_ua.pdf"
+        }
+      ],
       "score": null,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T16:01:36.850Z",
+      "updated": "2026-09-12T17:40:57.486Z",
       "weight": null
     },
     {
@@ -642,13 +680,20 @@
       "name": "Ктулху. Смерть може вмерти",
       "nameEn": "Cthulhu: Death May Die",
       "plays": 0,
+      "rules": [
+        {
+          "kind": "інше",
+          "title": "Правила (англійською)",
+          "url": "https://desktopgames.com.ua/games/4079/DMD_WIP_Rulebook.pdf"
+        }
+      ],
       "score": null,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T16:01:36.850Z",
+      "updated": "2026-09-12T17:40:57.486Z",
       "weight": null
     },
     {
@@ -697,13 +742,25 @@
       "name": "Діксіт",
       "nameEn": "Dixit",
       "plays": 0,
+      "rules": [
+        {
+          "kind": "офіційні",
+          "title": "Правила",
+          "url": "https://desktopgames.com.ua/games/5814/DIXIT_REFRESH_RULES_UA_BD.pdf"
+        },
+        {
+          "kind": "інше",
+          "title": "Правила (англійською)",
+          "url": "https://desktopgames.com.ua/games/5814/Dixit_rules.pdf"
+        }
+      ],
       "score": null,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T17:32:39.926Z",
+      "updated": "2026-09-12T17:40:57.486Z",
       "weight": null
     },
     {
@@ -912,13 +969,20 @@
       "name": "Курочки",
       "nameEn": "Hens",
       "plays": 0,
+      "rules": [
+        {
+          "kind": "офіційні",
+          "title": "Правила",
+          "url": "https://desktopgames.com.ua/games/7115/Hens_Rules.pdf"
+        }
+      ],
       "score": null,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T16:01:36.850Z",
+      "updated": "2026-09-12T17:40:57.486Z",
       "weight": null
     },
     {
@@ -1862,13 +1926,25 @@
       "name": "Голем",
       "nameEn": "Golem",
       "plays": 0,
+      "rules": [
+        {
+          "kind": "офіційні",
+          "title": "Правила",
+          "url": "https://desktopgames.com.ua/games/6711/golem_rules_ua.pdf"
+        },
+        {
+          "kind": "соло",
+          "title": "Правила автоми",
+          "url": "https://desktopgames.com.ua/games/6711/golem_automa_rules_ua.pdf"
+        }
+      ],
       "score": null,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T16:01:36.850Z",
+      "updated": "2026-09-12T17:40:57.486Z",
       "weight": null
     },
     {
@@ -2087,13 +2163,25 @@
       "name": "Темна гавань. Щелепи Лева",
       "nameEn": "Gloomhaven: Jaws of the Lion",
       "plays": 0,
+      "rules": [
+        {
+          "kind": "інше",
+          "title": "Трекер",
+          "url": "https://desktopgames.com.ua/games/4341/Gloomhaven_Jaws_of_the_Lion_Trek.pdf"
+        },
+        {
+          "kind": "інше",
+          "title": "Планшет персонажа",
+          "url": "https://desktopgames.com.ua/games/4341/Gloomhaven_Jaws_of_the_Lion_Plan.pdf"
+        }
+      ],
       "score": null,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T16:01:36.850Z",
+      "updated": "2026-09-12T17:40:57.486Z",
       "weight": null
     },
     {
@@ -2552,13 +2640,20 @@
       "name": "Уно",
       "nameEn": "UNO",
       "plays": 0,
+      "rules": [
+        {
+          "kind": "офіційні",
+          "title": "Правила",
+          "url": "https://desktopgames.com.ua/games/101/uno.pdf"
+        }
+      ],
       "score": null,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T16:01:36.850Z",
+      "updated": "2026-09-12T17:40:57.486Z",
       "weight": null
     },
     {
@@ -2739,6 +2834,6 @@
       "weight": null
     }
   ],
-  "saved": "2026-09-12T17:37:44.367Z",
+  "saved": "2026-09-12T17:40:57.486Z",
   "version": 2
 }
