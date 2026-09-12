@@ -1,0 +1,233 @@
+/* ── картка гри ──────────────────────────────────── */
+let saveTimer = null;
+function current(){ return games.find((g) => g.id === ui.open) || null; }
+
+function scale(host, max, get, set){
+  host.innerHTML = "";
+  for(let i = 1; i <= max; i++){
+    const b = document.createElement("button");
+    b.type = "button"; b.textContent = i; b.dataset.n = i;
+    b.setAttribute("aria-label", "оцінка " + i);
+    host.appendChild(b);
+  }
+  host.dataset.max = max;
+  host._get = get; host._set = set;
+  host.onclick = (e) => {
+    const b = e.target.closest("button"); if(!b) return;
+    if(!canEdit()) return;
+    const n = +b.dataset.n, було = get();
+    // Три стани на одній цифрі: ціле → пів бала менше → порожньо.
+    // Так півбали доступні і мишею, і пальцем, без крихітних мішеней.
+    const стане = було === n ? n - 0.5 : (було === n - 0.5 ? null : n);
+    set(стане);
+    paintScale(host);
+    touch();
+  };
+  paintScale(host);
+}
+function paintScale(host){
+  const v = host._get(), max = +host.dataset.max;
+  const cls = max === 10 ? band(v) : "b-top";
+  host.className = host.className.replace(/\bb-(low|mid|good|top)\b/g, "").trim() + " " + (v == null ? "" : cls);
+  Array.prototype.forEach.call(host.children, (b, i) => {
+    const n = i + 1;
+    const повна = v != null && v >= n;
+    const пів = v != null && !повна && v > n - 1;
+    b.classList.toggle("on", повна);
+    b.classList.toggle("half", пів);
+    b.setAttribute("aria-pressed", повна || пів ? "true" : "false");
+  });
+}
+
+/** Статуси картки. Похідний «ще не зіграна» показуємо разом із рештою, але
+    мертвим чипом: його вимикає перша партія, а не палець. */
+function renderStatus(g){
+  const є = new Set(stats(g));
+  const ручні = Object.keys(STATUS).map((k) =>
+    "<button type='button' class='chip' data-st='" + esc(k) + "' aria-pressed='" +
+    (є.has(k) ? "true" : "false") + "'>" + esc(STATUS[k]) + "</button>");
+  const авто = autoStats(g).map((k) =>
+    "<span class='chip auto' title='Знімається сам після першої партії'>" +
+    esc(AUTO[k]) + "</span>");
+  $("cStatus").innerHTML = ручні.concat(авто).join("");
+}
+
+/** Доповнення, які ця база завжди тягне за собою. Прив'язані видно чипами,
+    а весь перелік ховається за кнопкою: коли доповнень на полиці півтора
+    десятка, показувати їх усі в кожній картці — знущання.
+    У картці самого доповнення блок не потрібен, тому ховається. */
+function renderWith(g){
+  $("expGrp").hidden = !!g.expansion;
+  if(g.expansion) return;
+  $("cTied").innerHTML = (g.withExp || [])
+    .map((id) => games.find((x) => x.id === id))
+    .filter(Boolean)
+    .map((x) => "<button type='button' class='chip tied' data-untie='" + esc(x.id) +
+      "' aria-label='Відв’язати " + esc(x.name) + "'>" + esc(x.name) + "<b>✕</b></button>")
+    .join("") || "<span class='hint'>Жодного не прив'язано.</span>";
+  renderPick(g);
+}
+
+/** Перелік у розкривачці. Спершу ті, чия назва починається так само, як
+    у базової гри, — «Ходу героям нема. Великий сплячий» має бути під рукою
+    саме в «Ходу героям нема». */
+function renderPick(g){
+  const host = $("cWith");
+  const q = $("cWithQ").value.trim().toLowerCase();
+  const корінь = (g.name || "").split(/[.:–—(]/)[0].trim().toLowerCase();
+  const свій = (x) => корінь && (x.name || "").toLowerCase().startsWith(корінь) ? 0 : 1;
+  const доп = games
+    .filter((x) => x.expansion && x.id !== g.id)
+    .filter((x) => !q || [x.name, x.nameEn].join(" ").toLowerCase().includes(q))
+    .sort((a, b) => свій(a) - свій(b) ||
+                    (a.name || "").localeCompare(b.name || "", "uk"));
+  if(!доп.length){
+    host.innerHTML = "<p class='hint'>" + (q
+      ? "Нічого не знайшлося."
+      : "Жодної коробки ще не позначено як доповнення. Відкрий доповнення й " +
+        "натисни там «Це доповнення» — після цього воно з'явиться тут.") + "</p>";
+    return;
+  }
+  const обрані = new Set(g.withExp || []);
+  host.innerHTML = доп.map((x) =>
+    "<label class='pickrow'><input type='checkbox' data-exp='" + esc(x.id) + "'" +
+    (обрані.has(x.id) ? " checked" : "") + "><span>" + esc(x.name) + "</span></label>"
+  ).join("");
+}
+/** Назви доповнень, прив'язаних до гри; зниклі коробки просто випадають. */
+function withNames(g){
+  return (g.withExp || [])
+    .map((id) => (games.find((x) => x.id === id) || {}).name)
+    .filter(Boolean);
+}
+
+function openCard(id){
+  ui.open = id;
+  const g = current(); if(!g) return;
+  $("cName").value = g.name || "";
+  $("cAlt").value = g.nameEn || "";
+  renderStatus(g);
+  $("pVal").textContent = g.plays || 0;
+  $("cMin").value = g.minP == null ? "" : g.minP;
+  $("cMax").value = g.maxP == null ? "" : g.maxP;
+  $("cMinutes").value = g.minutes == null ? "" : g.minutes;
+  $("cExp").setAttribute("aria-pressed", g.expansion ? "true" : "false");
+  // Розкривачка доповнень щоразу починається згорнутою й без старого пошуку.
+  $("cWithQ").value = "";
+  $("cWithPick").hidden = true;
+  $("cWithAdd").setAttribute("aria-expanded", "false");
+  renderWith(g);
+  $("cCover").value = g.cover || "";
+  paintCover(g);
+  $("cTags").value = (g.tags || []).join(", ");
+  $("cNote").value = g.comment || "";
+  $("cSaved").textContent = "";
+  $("cDel").textContent = "Видалити";
+
+  scale($("sMain"), 10, () => current() && current().score, (v) => { current().score = v; });
+  scale($("sWeight"), 5, () => current() && current().weight, (v) => { current().weight = v; });
+  const pad = $("pad"); pad.innerHTML = "";
+  COUNTS.forEach((c) => {
+    const who = document.createElement("div");
+    who.className = "who";
+    who.innerHTML = CLABEL[c] + "<small>ГР.</small>";
+    const row = document.createElement("div");
+    row.className = "scale s10";
+    pad.appendChild(who); pad.appendChild(row);
+    scale(row, 10,
+      () => { const g2 = current(); return g2 && g2.byCount ? g2.byCount[c] : null; },
+      (v) => {
+        const g2 = current(); if(!g2) return;
+        g2.byCount = g2.byCount || {};
+        if(v == null) delete g2.byCount[c]; else g2.byCount[c] = v;
+      });
+  });
+
+  $("scrim").hidden = false; $("card").hidden = false;
+  requestAnimationFrame(() => $("card").classList.add("on"));
+  $("cName").focus();
+}
+function closeCard(){
+  ui.open = null;
+  $("card").classList.remove("on");
+  $("card").hidden = true; $("scrim").hidden = true;
+}
+function touch(){
+  const g = current(); if(!g) return;
+  stamp(g);
+  render();
+  clearTimeout(saveTimer);
+  $("cSaved").textContent = "…";
+  saveTimer = setTimeout(async () => {
+    await persist(g);
+    $("cSaved").textContent = "збережено";
+    setTimeout(() => { if($("cSaved").textContent === "збережено") $("cSaved").textContent = ""; }, 1600);
+  }, 350);
+}
+function bindField(el, apply, ev, restore){
+  el.addEventListener(ev || "input", () => {
+    const g = current(); if(!g) return;
+    if(!canEdit()){ if(restore) el.value = restore(g); return; }
+    apply(g, el.value);
+    touch();
+  });
+}
+const порожньо = (v) => (v == null ? "" : v);
+bindField($("cName"), (g, v) => { g.name = v; }, "input", (g) => g.name || "");
+bindField($("cAlt"), (g, v) => { g.nameEn = v; }, "input", (g) => g.nameEn || "");
+function paintCover(g){
+  $("cCovPrev").innerHTML = g.cover
+    ? "<img src='" + esc(g.cover) + "' alt='' referrerpolicy='no-referrer'>"
+    : "<b>" + esc((g.name || "?").trim().charAt(0).toUpperCase()) + "</b>";
+}
+bindField($("cCover"), (g, v) => {
+  const u = v.trim();
+  if(u) g.cover = u; else delete g.cover;
+  paintCover(g);
+}, "input", (g) => g.cover || "");
+$("cStatus").addEventListener("click", (e) => {
+  const b = e.target.closest("[data-st]"); if(!b) return;
+  const g = current(); if(!g || !canEdit()) return;
+  const k = b.dataset.st, набір = new Set(stats(g));
+  if(набір.has(k)) набір.delete(k); else набір.add(k);
+  setStats(g, набір);
+  renderStatus(g);
+  render();
+  touch();
+});
+bindField($("cMin"), (g, v) => { g.minP = v === "" ? null : +v; }, "input", (g) => порожньо(g.minP));
+bindField($("cMax"), (g, v) => { g.maxP = v === "" ? null : +v; }, "input", (g) => порожньо(g.maxP));
+bindField($("cMinutes"), (g, v) => { g.minutes = v === "" ? null : +v; }, "input", (g) => порожньо(g.minutes));
+bindField($("cNote"), (g, v) => { g.comment = v; }, "input", (g) => g.comment || "");
+bindField($("cTags"), (g, v) => {
+  g.tags = v.split(",").map((s) => s.trim()).filter(Boolean);
+}, "input", (g) => (g.tags || []).join(", "));
+$("pPlus").onclick = () => bumpPlays(1);
+$("pMinus").onclick = () => bumpPlays(-1);
+function bumpPlays(d){
+  const g = current(); if(!g) return;
+  if(!canEdit()) return;
+  g.plays = Math.max(0, (+g.plays || 0) + d);
+  $("pVal").textContent = g.plays;
+  renderStatus(g);   // перша партія знімає «ще не зіграна», нуль — повертає
+  touch();
+}
+$("cDone").onclick = closeCard;
+$("cClose").onclick = closeCard;
+$("scrim").onclick = closeCard;
+$("cDel").onclick = function(){
+  const g = current(); if(!g) return;
+  if(!canEdit()) return;
+  if(this.textContent !== "Точно видалити?"){ this.textContent = "Точно видалити?"; return; }
+  const id = g.id, name = g.name;
+  closeCard(); drop(id); toast("«" + name + "» знято з полиці.");
+};
+document.addEventListener("keydown", (e) => {
+  if(e.key === "Escape"){
+    if(!$("bggBox").hidden) closeBgg();
+    else if(!$("keyBox").hidden) closeKey();
+    else if(ui.open) closeCard();
+    else if(!$("menu").hidden) hideMenu();
+  }
+});
+

@@ -30,7 +30,7 @@ from pathlib import Path
 
 ТЕКА = Path(__file__).parent
 ДАНІ = ТЕКА / "оцінки.json"
-ДЖЕРЕЛО = ТЕКА / "сторінка.html"
+ДЖЕРЕЛА = ТЕКА / "джерела"
 ЗІБРАНЕ = ТЕКА / "index.html"
 СТАТИКА = {
     "/manifest.webmanifest": "application/manifest+json; charset=utf-8",
@@ -133,9 +133,11 @@ def запланувати_коміт() -> None:
 def зібрати_сторінку() -> bytes:
     """Тримаємо зібраний файл свіжим, щоб офлайнова копія й та, що віддається
     в мережу, ніколи не розходились."""
-    if ЗБІРКА.exists() and ДЖЕРЕЛО.exists():
-        свіже = not ЗІБРАНЕ.exists() or ЗІБРАНЕ.stat().st_mtime < ДЖЕРЕЛО.stat().st_mtime
-        if свіже:
+    if ЗБІРКА.exists() and ДЖЕРЕЛА.is_dir():
+        # Джерел тепер багато — дивимось на найсвіжіше з них.
+        правлено = max((ф.stat().st_mtime for ф in ДЖЕРЕЛА.rglob("*") if ф.is_file()),
+                       default=0)
+        if not ЗІБРАНЕ.exists() or ЗІБРАНЕ.stat().st_mtime < правлено:
             subprocess.run([sys.executable, str(ЗБІРКА)], cwd=ТЕКА, capture_output=True)
     return ЗІБРАНЕ.read_bytes()
 
