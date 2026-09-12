@@ -613,19 +613,22 @@
     },
     {
       "added": "2026-09-12",
+      "bggId": "421978",
+      "bggRating": 7.6,
       "byCount": {},
       "comment": "",
+      "cover": "https://cf.geekdo-images.com/qa_LGJYcE-b2HPxqWSYYPw__square200/img/adEshhzx5tkwVNBF8sw2KUjidXw=/200x200/filters:strip_icc()/pic8281406.png",
       "id": "g-honey",
       "maxP": null,
       "minP": null,
       "minutes": null,
       "name": "Медова пригода",
-      "nameEn": "",
+      "nameEn": "Once Upon a Honey",
       "plays": 0,
       "score": null,
       "status": "колекція",
       "tags": [],
-      "updated": "2026-09-12T13:16:12.465Z",
+      "updated": "2026-09-12T15:50:57.836Z",
       "weight": null
     },
     {
@@ -1830,5 +1833,5 @@
       "weight": null
     }
   ],
-  "saved": "2026-09-12T15:50:09.080Z"
+  "saved": "2026-09-12T15:50:57.836Z"
 }
