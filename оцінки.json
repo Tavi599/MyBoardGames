@@ -1,7 +1,7 @@
 {
   "app": "полиця настілок",
   "version": 2,
-  "saved": "2026-09-12T20:21:09.917Z",
+  "saved": "2026-09-12T20:23:08.598Z",
   "games": [
     {
       "added": "2026-09-12",
@@ -611,13 +611,13 @@
           "url": "https://desktopgames.com.ua/games/6474/calico_rules_ua.pdf"
         }
       ],
-      "score": null,
+      "score": 7.5,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:09:55.936Z",
+      "updated": "2026-09-12T20:22:59.251Z",
       "weight": 2.5
     },
     {
@@ -1450,13 +1450,13 @@
           "url": "https://geekach.com.ua/content/files/errata-dlja-nastlno-gri-listi-zakoxanix-love-letters-ukranskou-movou-85552309.pdf"
         }
       ],
-      "score": null,
+      "score": 7,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:14:46.930Z",
+      "updated": "2026-09-12T20:23:07.828Z",
       "weight": 1
     },
     {
