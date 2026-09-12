@@ -1,7 +1,7 @@
 {
   "app": "полиця настілок",
   "version": 2,
-  "saved": "2026-09-12T20:19:38.269Z",
+  "saved": "2026-09-12T20:20:21.484Z",
   "games": [
     {
       "added": "2026-09-12",
@@ -830,7 +830,12 @@
       "bggId": "39856",
       "bggRank": 435,
       "bggRating": 7.2,
-      "byCount": {},
+      "byCount": {
+        "2": 5,
+        "3": 5,
+        "4": 7,
+        "5": 7
+      },
       "comment": "",
       "cover": "https://cf.geekdo-images.com/J0PlHArkZDJ57H-brXW2Fw__square200/img/ktQHsr6NDb8LY0wEf2iqwGJ9JzQ=/200x200/filters:strip_icc()/pic6738336.jpg",
       "id": "g-dixit",
@@ -839,7 +844,7 @@
       "minutes": null,
       "name": "Діксіт",
       "nameEn": "Dixit",
-      "plays": 0,
+      "plays": 8,
       "rules": [
         {
           "kind": "офіційні",
@@ -852,14 +857,14 @@
           "url": "https://desktopgames.com.ua/games/5814/Dixit_rules.pdf"
         }
       ],
-      "score": null,
+      "score": 6.5,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T17:40:57.486Z",
-      "weight": null
+      "updated": "2026-09-12T20:20:12.296Z",
+      "weight": 1
     },
     {
       "added": "2026-09-12",
