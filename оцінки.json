@@ -1,7 +1,7 @@
 {
   "app": "полиця настілок",
   "version": 2,
-  "saved": "2026-09-12T20:08:23.776Z",
+  "saved": "2026-09-12T20:08:48.313Z",
   "games": [
     {
       "added": "2026-09-12",
@@ -2512,7 +2512,9 @@
       "bggId": "147020",
       "bggRank": 178,
       "bggRating": 7.5,
-      "byCount": {},
+      "byCount": {
+        "2": 6.5
+      },
       "comment": "",
       "cover": "https://cf.geekdo-images.com/EsJqPL5CB_TMt0MYL-lnVg__square200/img/AvKeTylgREPEwlpsoIXwpU1Onbw=/200x200/filters:strip_icc()/pic1903816.jpg",
       "id": "g-star-realms",
@@ -2521,7 +2523,7 @@
       "minutes": null,
       "name": "Зоряні битви",
       "nameEn": "Star Realms",
-      "plays": 0,
+      "plays": 8,
       "rules": [
         {
           "kind": "офіційні",
@@ -2529,14 +2531,14 @@
           "url": "https://geekach.com.ua/content/files/pravila-nastlno-gri-zorjan-bitvi-star-realms-50507202.pdf"
         }
       ],
-      "score": null,
+      "score": 6.5,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T17:20:03.076Z",
-      "weight": null
+      "updated": "2026-09-12T20:08:38.911Z",
+      "weight": 1
     },
     {
       "added": "2026-09-12",
