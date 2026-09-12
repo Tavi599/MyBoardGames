@@ -1171,6 +1171,11 @@
       "plays": 0,
       "rules": [
         {
+          "kind": "переклад",
+          "title": "Наш переклад",
+          "url": "https://github.com/Tavi599/MyBoardGames-rules/blob/main/ходу-героям-нема/Ходу_героям_нема_Битви_з_босами_UA.pdf"
+        },
+        {
           "kind": "інше",
           "title": "Правила (англійською)",
           "url": "https://boardgamegeek.com/filepage/272882/boss-battles-rulebook-085"
@@ -1182,7 +1187,7 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T17:57:22.686Z",
+      "updated": "2026-09-12T18:37:04.219Z",
       "weight": null
     },
     {
@@ -1231,13 +1236,20 @@
       "name": "Ходу героям нема. Sparkling Guardian",
       "nameEn": "Keep the Heroes Out!: Sparkling Guardian",
       "plays": 0,
+      "rules": [
+        {
+          "kind": "переклад",
+          "title": "Наш переклад",
+          "url": "https://github.com/Tavi599/MyBoardGames-rules/blob/main/ходу-героям-нема/Ходу_героям_нема_Sparkling_Guardian_UA.pdf"
+        }
+      ],
       "score": null,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T16:01:36.850Z",
+      "updated": "2026-09-12T18:37:04.219Z",
       "weight": null
     },
     {
@@ -2963,6 +2975,6 @@
       "weight": null
     }
   ],
-  "saved": "2026-09-12T18:31:20.466Z",
+  "saved": "2026-09-12T18:37:04.219Z",
   "version": 2
 }
