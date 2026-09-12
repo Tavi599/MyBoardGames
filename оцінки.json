@@ -1,7 +1,7 @@
 {
   "app": "полиця настілок",
   "version": 2,
-  "saved": "2026-09-12T20:17:15.807Z",
+  "saved": "2026-09-12T20:18:09.207Z",
   "games": [
     {
       "added": "2026-09-12",
@@ -1845,7 +1845,11 @@
       "bggId": "314971",
       "bggRank": 7516,
       "bggRating": 6.9,
-      "byCount": {},
+      "byCount": {
+        "2": 6,
+        "3": 6,
+        "4": 7
+      },
       "comment": "",
       "cover": "https://cf.geekdo-images.com/GI_7QfgwhhnmCaGfhOK4gQ__square200/img/YZ4cmDXCnX49Y5ZGo9MVQykAKa8=/200x200/filters:strip_icc()/pic5545298.png",
       "id": "g-ramen",
@@ -1854,7 +1858,7 @@
       "minutes": null,
       "name": "Рамен! Рамен!",
       "nameEn": "Ramen! Ramen!",
-      "plays": 0,
+      "plays": 6,
       "rules": [
         {
           "kind": "офіційні",
@@ -1862,14 +1866,14 @@
           "url": "https://geekach.com.ua/content/files/pravila-nastlno-gri-ramen-ramen-ramen-ramen-ukranskou-movou-4232891.pdf"
         }
       ],
-      "score": null,
+      "score": 6,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T17:20:03.076Z",
-      "weight": null
+      "updated": "2026-09-12T20:17:35.797Z",
+      "weight": 1
     },
     {
       "added": "2026-09-12",
@@ -2505,7 +2509,11 @@
       "bggId": "148228",
       "bggRank": 244,
       "bggRating": 7.4,
-      "byCount": {},
+      "byCount": {
+        "2": 7,
+        "3": 7,
+        "4": 7
+      },
       "comment": "",
       "cover": "https://cf.geekdo-images.com/vNFe4JkhKAERzi4T0Ntwpw__square200/img/GwddOGnRbOKcppnaCyo-tC9yXIU=/200x200/filters:strip_icc()/pic8234167.png",
       "id": "g-splendor",
@@ -2514,7 +2522,7 @@
       "minutes": null,
       "name": "Розкіш",
       "nameEn": "Splendor",
-      "plays": 0,
+      "plays": 3,
       "rules": [
         {
           "kind": "офіційні",
@@ -2522,14 +2530,14 @@
           "url": "https://geekach.com.ua/content/files/pravila-nastlno-gri-rozksh-ukranskou-movou-38886594.pdf"
         }
       ],
-      "score": null,
+      "score": 7,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T17:20:03.076Z",
-      "weight": null
+      "updated": "2026-09-12T20:17:59.849Z",
+      "weight": 1.5
     },
     {
       "added": "2026-09-12",
