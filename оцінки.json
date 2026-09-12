@@ -1,7 +1,7 @@
 {
   "app": "полиця настілок",
   "version": 2,
-  "saved": "2026-09-12T19:48:01.665Z",
+  "saved": "2026-09-12T19:48:33.649Z",
   "games": [
     {
       "added": "2026-09-12",
@@ -472,7 +472,9 @@
       "bggId": "355433",
       "bggRank": 1317,
       "bggRating": 7,
-      "byCount": {},
+      "byCount": {
+        "2": 7
+      },
       "comment": "",
       "cover": "https://cf.geekdo-images.com/LPZHyg3KP_JI0x5CRut9lQ__square200/img/R12nhKeixxfeyUwTiX8n4vDaKa0=/200x200/filters:strip_icc()/pic6643190.png",
       "id": "g-boop",
@@ -481,7 +483,7 @@
       "minutes": null,
       "name": "Буп",
       "nameEn": "Boop",
-      "plays": 0,
+      "plays": 3,
       "rules": [
         {
           "kind": "офіційні",
@@ -489,14 +491,14 @@
           "url": "https://desktopgames.com.ua/games/7985/boop_rules_ua.pdf"
         }
       ],
-      "score": null,
+      "score": 7,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T17:40:57.486Z",
-      "weight": null
+      "updated": "2026-09-12T19:48:11.968Z",
+      "weight": 2
     },
     {
       "added": "2026-09-12",
@@ -1720,7 +1722,9 @@
       "bggId": "180974",
       "bggRank": 603,
       "bggRating": 7.1,
-      "byCount": {},
+      "byCount": {
+        "2": 3
+      },
       "comment": "",
       "cover": "https://cf.geekdo-images.com/vwjYMFporFhvAU48k73MIw__square200/img/lKhO8dqRZMech0gUUd8C46Roh2U=/200x200/filters:strip_icc()/pic7298696.jpg",
       "id": "g-potion-explosion",
@@ -1729,7 +1733,7 @@
       "minutes": null,
       "name": "Вибухові зілля",
       "nameEn": "Potion Explosion",
-      "plays": 0,
+      "plays": 1,
       "rules": [
         {
           "kind": "офіційні",
@@ -1737,13 +1741,13 @@
           "url": "https://geekach.com.ua/content/files/pravila-nastlno-gri-vibuxov-zllja-potion-explosion-32129438.pdf"
         }
       ],
-      "score": null,
+      "score": 3,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T17:20:03.076Z",
+      "updated": "2026-09-12T19:48:24.338Z",
       "weight": null
     },
     {
