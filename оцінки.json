@@ -1,7 +1,7 @@
 {
   "app": "полиця настілок",
   "version": 2,
-  "saved": "2026-09-12T20:13:55.390Z",
+  "saved": "2026-09-12T20:14:31.270Z",
   "games": [
     {
       "added": "2026-09-12",
@@ -960,7 +960,9 @@
       "bggId": "288169",
       "bggRank": 1517,
       "bggRating": 7,
-      "byCount": {},
+      "byCount": {
+        "2": 6
+      },
       "comment": "",
       "cover": "https://cf.geekdo-images.com/1uTAJoAdG3UC6N0G7UMeTA__square200/img/Yzupp5tGzfGlclaWuqObZ6G9W3w=/200x200/filters:strip_icc()/pic4942502.jpg",
       "id": "g-fox-duet",
@@ -969,7 +971,7 @@
       "minutes": null,
       "name": "Лис та Ліс. Дуель",
       "nameEn": "The Fox in the Forest Duet",
-      "plays": 0,
+      "plays": 4,
       "rules": [
         {
           "kind": "офіційні",
@@ -977,14 +979,14 @@
           "url": "https://geekach.com.ua/content/files/pravila-nastlno-gri-lis-ta-ls-duet-the-fox-in-the-forest-duet-ukranskou-movou-92982726.pdf"
         }
       ],
-      "score": null,
+      "score": 6,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T17:37:13.835Z",
-      "weight": null
+      "updated": "2026-09-12T20:14:22.013Z",
+      "weight": 1
     },
     {
       "added": "2026-09-12",
@@ -1058,7 +1060,11 @@
       "bggId": "348447",
       "bggRank": 3250,
       "bggRating": 6.8,
-      "byCount": {},
+      "byCount": {
+        "2": 7,
+        "3": 7,
+        "4": 7
+      },
       "comment": "",
       "cover": "https://cf.geekdo-images.com/h_bVZGn0gcOq1BLse8mpug__square200/img/qFw-_HfDi1M0QJIbXAGo05xv4WI=/200x200/filters:strip_icc()/pic6431805.jpg",
       "id": "g-hens",
@@ -1067,7 +1073,7 @@
       "minutes": null,
       "name": "Курочки",
       "nameEn": "Hens",
-      "plays": 0,
+      "plays": 6,
       "rules": [
         {
           "kind": "офіційні",
@@ -1081,8 +1087,8 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:13:54.111Z",
-      "weight": null
+      "updated": "2026-09-12T20:14:06.180Z",
+      "weight": 1.5
     },
     {
       "added": "2026-09-12",
