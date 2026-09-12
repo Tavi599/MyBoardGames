@@ -1,7 +1,7 @@
 {
   "app": "полиця настілок",
   "version": 2,
-  "saved": "2026-09-12T20:24:19.383Z",
+  "saved": "2026-09-12T20:25:02.912Z",
   "games": [
     {
       "added": "2026-09-12",
@@ -1247,7 +1247,12 @@
       "added": "2026-09-12",
       "bggId": "394150",
       "bggRating": 8.6,
-      "byCount": {},
+      "byCount": {
+        "2": 9,
+        "3": 9,
+        "4": 7,
+        "5": 7
+      },
       "comment": "",
       "cover": "https://cf.geekdo-images.com/aW6ZfL4494d930euj-MGAw__square200/img/bi2ixYGuafLJ4U3HpR25bmyVNoA=/200x200/filters:strip_icc()/pic7793981.jpg",
       "expansion": true,
@@ -1257,7 +1262,7 @@
       "minutes": null,
       "name": "Ходу героям нема. Битви з босами",
       "nameEn": "Keep the Heroes Out!: Boss Battles",
-      "plays": 0,
+      "plays": 5,
       "rules": [
         {
           "kind": "переклад",
@@ -1270,14 +1275,14 @@
           "url": "https://boardgamegeek.com/filepage/272882/boss-battles-rulebook-085"
         }
       ],
-      "score": null,
+      "score": 9,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T18:37:04.219Z",
-      "weight": null
+      "updated": "2026-09-12T20:24:53.619Z",
+      "weight": 3
     },
     {
       "added": "2026-09-12",
