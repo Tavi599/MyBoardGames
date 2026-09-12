@@ -1,5 +1,7 @@
 {
   "app": "полиця настілок",
+  "version": 2,
+  "saved": "2026-09-12T22:04:17.360Z",
   "games": [
     {
       "added": "2026-09-12",
@@ -1061,7 +1063,7 @@
       ],
       "bggTimeMax": 30,
       "bggTimeMin": 15,
-      "bggWeight": 2.0,
+      "bggWeight": 2,
       "byCount": {},
       "comment": "",
       "cover": "https://cf.geekdo-images.com/UVTPVAE3v_Czlo0zx0zHDA__square200/img/r8SFhWvGIjX1GUe2QTvE2hqRT-M=/200x200/filters:strip_icc()/pic6549741.jpg",
@@ -1841,7 +1843,7 @@
       ],
       "bggTimeMax": 20,
       "bggTimeMin": 10,
-      "bggWeight": 1.0,
+      "bggWeight": 1,
       "byCount": {
         "2": 7,
         "3": 7
@@ -2668,6 +2670,64 @@
         5
       ],
       "bggFamily": [
+        "family-games"
+      ],
+      "bggGenres": [
+        "card-game"
+      ],
+      "bggId": "12942",
+      "bggMax": 7,
+      "bggMin": 3,
+      "bggRank": 561,
+      "bggRating": 7.1,
+      "bggRec": [
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "bggTimeMax": 20,
+      "bggTimeMin": 20,
+      "bggWeight": 1.1,
+      "byCount": {},
+      "comment": "",
+      "cover": "https://cf.geekdo-images.com/JSAs8aMopjf8P9JXwTMV7w__square200/img/nul7GiZtKsW3kmNphB30YGwjZCI=/200x200/filters:strip_icc()/pic9005058.png",
+      "id": "g-no-thanks",
+      "maxP": null,
+      "minP": null,
+      "minutes": null,
+      "name": "Шл#к би трафив!",
+      "nameEn": "No Thanks!",
+      "plays": 0,
+      "rules": [
+        {
+          "kind": "офіційні",
+          "title": "Правила",
+          "url": "https://desktopgames.com.ua/games/6977/no_thanks_rules_ua.pdf"
+        },
+        {
+          "kind": "інше",
+          "title": "Правила (англійською)",
+          "url": "https://desktopgames.com.ua/games/6977/18414_014_NoThanks_Manual_001_L.pdf"
+        }
+      ],
+      "score": null,
+      "status": "колекція",
+      "statuses": [
+        "колекція"
+      ],
+      "tags": [],
+      "updated": "2026-09-12T21:32:21.571Z",
+      "weight": null
+    },
+    {
+      "added": "2026-09-12",
+      "bggBest": [
+        4,
+        5
+      ],
+      "bggFamily": [
         "strategy-games"
       ],
       "bggGenres": [
@@ -2691,7 +2751,7 @@
       ],
       "bggTimeMax": 45,
       "bggTimeMin": 30,
-      "bggWeight": 2.0,
+      "bggWeight": 2,
       "byCount": {},
       "comment": "",
       "cover": "https://cf.geekdo-images.com/2nPAI9x1rOjj2fq30qRFvQ__square200/img/HWwoZVpEcH-TmVddUz8Zb-cnWUI=/200x200/filters:strip_icc()/pic3118416.jpg",
@@ -3514,7 +3574,7 @@
       ],
       "bggTimeMax": 120,
       "bggTimeMin": 90,
-      "bggWeight": 4.0,
+      "bggWeight": 4,
       "byCount": {},
       "comment": "",
       "cover": "https://cf.geekdo-images.com/9wDd5YVER3lwpGO3v5EkTA__square200/img/HkDaA9SmD98zXUpqTEt5OTqC0b4=/200x200/filters:strip_icc()/pic5374175.jpg",
@@ -3797,7 +3857,7 @@
       ],
       "bggTimeMax": 600,
       "bggTimeMin": 60,
-      "bggWeight": 3.0,
+      "bggWeight": 3,
       "byCount": {
         "2": 10,
         "3": 9
@@ -4043,7 +4103,7 @@
       "minutes": null,
       "name": "Ходу героям нема",
       "nameEn": "Keep the Heroes Out!",
-      "plays": 0,
+      "plays": 12,
       "rules": [
         {
           "kind": "офіційні",
@@ -4067,7 +4127,7 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T21:32:21.571Z",
+      "updated": "2026-09-12T22:04:08.347Z",
       "weight": 3,
       "withExp": [
         "g-khn-boss",
@@ -4155,7 +4215,7 @@
       ],
       "bggTimeMax": 30,
       "bggTimeMin": 30,
-      "bggWeight": 2.0,
+      "bggWeight": 2,
       "byCount": {
         "2": 7.5
       },
@@ -5150,66 +5210,6 @@
       "tags": [],
       "updated": "2026-09-12T21:32:21.571Z",
       "weight": null
-    },
-    {
-      "added": "2026-09-12",
-      "bggBest": [
-        4,
-        5
-      ],
-      "bggFamily": [
-        "family-games"
-      ],
-      "bggGenres": [
-        "card-game"
-      ],
-      "bggId": "12942",
-      "bggMax": 7,
-      "bggMin": 3,
-      "bggRank": 561,
-      "bggRating": 7.1,
-      "bggRec": [
-        3,
-        4,
-        5,
-        6,
-        7
-      ],
-      "bggTimeMax": 20,
-      "bggTimeMin": 20,
-      "bggWeight": 1.1,
-      "byCount": {},
-      "comment": "",
-      "cover": "https://cf.geekdo-images.com/JSAs8aMopjf8P9JXwTMV7w__square200/img/nul7GiZtKsW3kmNphB30YGwjZCI=/200x200/filters:strip_icc()/pic9005058.png",
-      "id": "g-no-thanks",
-      "maxP": null,
-      "minP": null,
-      "minutes": null,
-      "name": "Шл#к би трафив!",
-      "nameEn": "No Thanks!",
-      "plays": 0,
-      "rules": [
-        {
-          "kind": "офіційні",
-          "title": "Правила",
-          "url": "https://desktopgames.com.ua/games/6977/no_thanks_rules_ua.pdf"
-        },
-        {
-          "kind": "інше",
-          "title": "Правила (англійською)",
-          "url": "https://desktopgames.com.ua/games/6977/18414_014_NoThanks_Manual_001_L.pdf"
-        }
-      ],
-      "score": null,
-      "status": "колекція",
-      "statuses": [
-        "колекція"
-      ],
-      "tags": [],
-      "updated": "2026-09-12T21:32:21.571Z",
-      "weight": null
     }
-  ],
-  "saved": "2026-09-12T21:32:21.571Z",
-  "version": 2
+  ]
 }
