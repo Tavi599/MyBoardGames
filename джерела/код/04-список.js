@@ -76,7 +76,7 @@ function renderList(){
         ? "<img src='" + esc(g.cover) + "' alt='' loading='lazy' referrerpolicy='no-referrer'>"
         : "<b>" + esc((g.name || "?").trim().charAt(0).toUpperCase()) + "</b>") + "</span>" +
       "<button class='open' data-open='" + esc(g.id) + "'>" +
-        "<span class='nm'><i class='dot'></i>" + esc(g.name) +
+        "<span class='nm'><i class='dot'></i><span class='txt'>" + esc(g.name) + "</span>" +
           (g.expansion ? "<span class='badge'>доп.</span>" : "") +
           (разом.length ? "<span class='badge plus' title='Завжди з: " + esc(разом.join(", ")) +
             "'>+" + разом.length + " доп.</span>" : "") + "</span>" +

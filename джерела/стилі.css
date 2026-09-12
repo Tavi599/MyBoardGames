@@ -68,7 +68,11 @@ button{cursor:pointer}
 .filters{display:contents}
 .fld{display:flex; align-items:center; gap:6px; background:var(--sheet);
   border:1px solid var(--rule); border-radius:7px; padding:0 10px; height:36px}
-.fld input,.fld select{background:none; border:0; height:34px; font-size:14px}
+/* min-width:0 обов'язковий: без нього select тримає свою «природну»
+   ширину, вилазить із коробки й лягає на сусідню кнопку. */
+.fld input,.fld select{background:none; border:0; height:34px; font-size:14px;
+  min-width:0; max-width:100%}
+.line .fld select{width:100%}
 .fld input{width:170px}
 /* Нативний список браузер малює власним тлом. Без цих двох правил у темній
    темі виходить світлий текст на білому — читати неможливо. */
@@ -141,7 +145,9 @@ button{cursor:pointer}
 .pick{display:flex; align-items:center; justify-content:center}
 .pick input{width:16px; height:16px; accent-color:var(--petrol); margin:0}
 .open{border:0; background:none; padding:0; text-align:left; min-width:0; display:block; width:100%}
-.nm{display:flex; align-items:center; gap:7px; font-size:16px; font-weight:500; letter-spacing:-.01em}
+.nm{display:flex; align-items:center; gap:7px; font-size:16px; font-weight:500;
+  letter-spacing:-.01em; min-width:0}
+.nm > .txt{min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
 .dot{width:7px; height:7px; border-radius:50%; background:var(--ink-faint); flex:none}
 .s-хочу .dot{background:var(--amber)} .s-колекція .dot{background:var(--petrol-dim)}
 .s-улюблена .dot{background:var(--petrol)} .s-відклав .dot{background:var(--ink-faint)}
@@ -166,12 +172,14 @@ button{cursor:pointer}
 .rule .rm{flex:none; border:0; background:none; color:var(--ink-faint); padding:0 2px}
 .rule .rm:hover{color:var(--rust)}
 
-.meta{margin:3px 0 0; font:400 12.5px/1.45 "IBM Plex Sans",sans-serif; color:var(--ink-faint);
-  white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
-.alt{display:block; margin:2px 0 0; font-size:12.5px; color:var(--ink-faint);
-  white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
-.note{margin:3px 0 0; font-size:13px; color:var(--ink-soft); white-space:nowrap;
-  overflow:hidden; text-overflow:ellipsis; max-width:60ch}
+/* display:block тут не окраса, а умова роботи: на рядковому елементі
+   overflow:hidden і text-overflow:ellipsis не діють зовсім, і довгий
+   рядок лізе поверх сусідніх клітинок. */
+.meta,.alt,.note{display:block; white-space:nowrap; overflow:hidden;
+  text-overflow:ellipsis; min-width:0}
+.meta{margin:3px 0 0; font:400 12.5px/1.45 "IBM Plex Sans",sans-serif; color:var(--ink-faint)}
+.alt{margin:2px 0 0; font-size:12.5px; color:var(--ink-faint)}
+.note{margin:3px 0 0; font-size:13px; color:var(--ink-soft); max-width:60ch}
 
 .counts{display:grid; grid-template-columns:repeat(4,34px); gap:4px; width:152px}
 .cnt{border:1px solid var(--rule-soft); border-radius:5px; background:var(--sheet);
@@ -252,9 +260,11 @@ button{cursor:pointer}
 .chip:hover{border-color:var(--ink-faint)}
 .chip[aria-pressed="true"]{background:var(--petrol); border-color:var(--petrol);
   color:var(--on-accent)}
-/* Похідний статус: видно, але не натиснеш — його веде лічильник партій. */
-.chip.auto{display:inline-flex; align-items:center; background:none;
-  border-style:dashed; color:var(--ink-faint); cursor:default}
+/* Похідний статус не має вигляду кнопки взагалі: усе, що схоже на
+   чип, читається як натискне, а цей веде лічильник партій. */
+.auto-note{display:flex; align-items:center; gap:7px}
+.auto-note::before{content:""; width:5px; height:5px; border-radius:50%;
+  background:var(--ink-faint); flex:none}
 /* Прив'язане доповнення: чип із хрестиком, який його відв'язує. */
 .chip.tied{background:var(--sunk); color:var(--ink); border-style:dashed}
 .chip.tied b{margin-left:7px; color:var(--ink-faint); font-weight:600}

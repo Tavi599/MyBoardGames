@@ -46,10 +46,12 @@ function renderStatus(g){
   const ручні = Object.keys(STATUS).map((k) =>
     "<button type='button' class='chip' data-st='" + esc(k) + "' aria-pressed='" +
     (є.has(k) ? "true" : "false") + "'>" + esc(STATUS[k]) + "</button>");
-  const авто = autoStats(g).map((k) =>
-    "<span class='chip auto' title='Знімається сам після першої партії'>" +
-    esc(AUTO[k]) + "</span>");
-  $("cStatus").innerHTML = ручні.concat(авто).join("");
+  $("cStatus").innerHTML = ручні.join("");
+  const авто = autoStats(g).map((k) => AUTO[k]);
+  $("cAuto").hidden = !авто.length;
+  $("cAuto").textContent = авто.length
+    ? авто.join(" · ") + " — зникне саме після першої партії"
+    : "";
 }
 
 /** Правила гри: список посилань із хрестиком і рядок для нового. */
