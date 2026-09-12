@@ -142,7 +142,14 @@ button{cursor:pointer}
 .sheet{list-style:none; margin:0; padding:0}
 .row{padding:11px 4px; border-bottom:1px solid var(--rule-soft)}
 .row:hover{background:var(--sheet)}
+/* Доповнення видно з першого погляду: тепла підкладка й позначка біля назви. */
+.row.exp{background:color-mix(in srgb, var(--amber) 7%, transparent);
+  box-shadow:inset 2px 0 0 var(--amber)}
+.row.exp:hover{background:color-mix(in srgb, var(--amber) 13%, transparent)}
 .row.picked{background:var(--sheet); box-shadow:inset 3px 0 0 var(--petrol)}
+.badge{flex:none; padding:2px 6px; border:1px solid var(--amber); border-radius:4px;
+  color:var(--amber); font:600 9px/1.3 "IBM Plex Mono",ui-monospace,monospace;
+  letter-spacing:.08em; text-transform:uppercase}
 .pick{display:flex; align-items:center; justify-content:center}
 .pick input{width:16px; height:16px; accent-color:var(--petrol); margin:0}
 .open{border:0; background:none; padding:0; text-align:left; min-width:0; display:block; width:100%}
@@ -225,6 +232,12 @@ button{cursor:pointer}
 .line .fld input{width:100%}
 .num-in{width:100%; background:none; border:0; height:34px; font-size:14px;
   font-variant-numeric:tabular-nums}
+.toggle{height:36px; padding:0 14px; border:1px solid var(--rule); border-radius:7px;
+  background:var(--paper); font-size:14px; font-weight:500; color:var(--ink-soft)}
+.toggle:hover{border-color:var(--ink-faint)}
+.toggle[aria-pressed="true"]{background:var(--amber); border-color:var(--amber);
+  color:var(--on-accent)}
+
 .step{display:flex; align-items:center; gap:0; border:1px solid var(--rule); border-radius:7px;
   background:var(--paper); height:36px; overflow:hidden}
 .step button{width:32px; height:34px; border:0; background:none; font-size:16px; color:var(--ink-soft)}
@@ -329,6 +342,8 @@ textarea:focus{outline:none; border-color:var(--petrol)}
       <button class="flip" id="fFlip" aria-label="Перевернути порядок">↓</button></div>
     <div class="spacer"></div>
     <span class="chip" id="chip" title="Де зберігаються оцінки"></span>
+    <button class="btn" id="expBtn" aria-pressed="false"
+            title="Показувати лише основні коробки">Без доповнень</button>
     <button class="btn" id="cmpBtn" aria-pressed="false">Порівняти</button>
     <button class="btn pri" id="addBtn">Додати гру</button>
     <div class="menu-wrap">
@@ -409,6 +424,10 @@ textarea:focus{outline:none; border-color:var(--petrol)}
     </div>
 
     <div class="line">
+      <button class="toggle" id="cExp" type="button" aria-pressed="false">Це доповнення</button>
+    </div>
+
+    <div class="line">
       <div class="fld"><label for="cMin">Від</label><input class="num-in" id="cMin" type="number" min="1" max="20" inputmode="numeric"></div>
       <div class="fld"><label for="cMax">До</label><input class="num-in" id="cMax" type="number" min="1" max="20" inputmode="numeric"></div>
       <div class="fld"><label for="cMinutes">Хвилин</label><input class="num-in" id="cMinutes" type="number" min="5" max="600" step="5" inputmode="numeric"></div>
@@ -465,7 +484,7 @@ let games = [];
 let db = null;
 let ready = false;
 const ui = {q:"", count:"all", status:"all", sort:"score", rev:false,
-            cmp:false, picked:new Set(), open:null};
+            noExp:false, cmp:false, picked:new Set(), open:null};
 
 const $ = (id) => document.getElementById(id);
 const esc = (s) => String(s == null ? "" : s).replace(/[&<>"]/g, (c) =>
@@ -862,9 +881,13 @@ function fitsCount(g){
   const c = +ui.count;
   return (mn == null || mn <= c) && (mx == null || mx >= c);
 }
+/** Полиця з урахуванням того, чи сховані доповнення: підсумки мають
+    рахуватися по тому самому, що людина бачить у списку. */
+function shelf(){ return ui.noExp ? games.filter((g) => !g.expansion) : games; }
+
 function visible(){
   const q = ui.q.trim().toLowerCase();
-  let arr = games.filter((g) => {
+  let arr = shelf().filter((g) => {
     if(ui.status !== "all" && g.status !== ui.status) return false;
     if(!fitsCount(g)) return false;
     if(!q) return true;
@@ -895,6 +918,8 @@ function visible(){
 function render(){ renderStats(); renderList(); renderCmp(); }
 
 function renderStats(){
+  const games = shelf();
+  const доповнень = games.filter((g) => g.expansion).length;
   const rated = games.filter((g) => g.score != null);
   const avg = rated.length
     ? fmt(+(rated.reduce((s, g) => s + g.score, 0) / rated.length).toFixed(2)) : "—";
@@ -910,7 +935,9 @@ function renderStats(){
              list.length ? esc(list[0].name) + " <small>" + fmt(list[0].byCount[ui.count]) + "</small>" : "—"];
   }
   $("stats").innerHTML =
-    cell("Ігор на полиці", games.length) +
+    cell("Ігор на полиці", доповнень
+      ? (games.length - доповнень) + " <small>+ " + доповнень + " доп.</small>"
+      : games.length) +
     cell("Оцінено", rated.length + " <small>з " + games.length + "</small>") +
     cell("Середня оцінка", avg) +
     cell("Партій зіграно", plays) +
@@ -952,11 +979,13 @@ function renderList(){
         (ui.count === c ? " now" : "") + "'><b>" + (v == null ? "·" : fmt(v)) +
         "</b><i>" + CLABEL[c] + "</i></span>";
     }).join("");
-    return "<li class='row s-" + esc(g.status) + (ui.picked.has(g.id) ? " picked" : "") + "' data-id='" + esc(g.id) + "'>" +
+    return "<li class='row s-" + esc(g.status) + (g.expansion ? " exp" : "") +
+      (ui.picked.has(g.id) ? " picked" : "") + "' data-id='" + esc(g.id) + "'>" +
       (ui.cmp ? "<label class='pick'><input type='checkbox' data-pick='" + esc(g.id) + "' " +
         (ui.picked.has(g.id) ? "checked" : "") + " aria-label='Порівняти " + esc(g.name) + "'></label>" : "<span></span>") +
       "<button class='open' data-open='" + esc(g.id) + "'>" +
-        "<span class='nm'><i class='dot'></i>" + esc(g.name) + "</span>" +
+        "<span class='nm'><i class='dot'></i>" + esc(g.name) +
+          (g.expansion ? "<span class='badge'>доп.</span>" : "") + "</span>" +
         "<span class='meta'>" + esc(meta.filter(Boolean).join(" · ")) + "</span>" +
         (g.comment ? "<span class='note'>" + esc(g.comment) + "</span>" : "") +
       "</button>" +
@@ -997,6 +1026,7 @@ function renderCmp(){
     ["На 3", (g) => pick(g, "3"), true],
     ["На 4", (g) => pick(g, "4"), true],
     ["На 5+", (g) => pick(g, "5"), true],
+    ["Тип коробки", (g) => (g.expansion ? "доповнення" : "основна"), false],
     ["Складність", (g) => g.weight, false],
     ["Партій", (g) => g.plays || 0, false],
     ["Гравців", (g) => (g.minP || g.maxP) ? (g.minP || "?") + "–" + (g.maxP || "?") : null, false],
@@ -1080,6 +1110,7 @@ function openCard(id){
   $("cMin").value = g.minP == null ? "" : g.minP;
   $("cMax").value = g.maxP == null ? "" : g.maxP;
   $("cMinutes").value = g.minutes == null ? "" : g.minutes;
+  $("cExp").setAttribute("aria-pressed", g.expansion ? "true" : "false");
   $("cTags").value = (g.tags || []).join(", ");
   $("cNote").value = g.comment || "";
   $("cSaved").textContent = "";
@@ -1188,6 +1219,20 @@ $("segCount").addEventListener("click", (e) => {
   Array.prototype.forEach.call($("segCount").querySelectorAll("button"),
     (x) => x.setAttribute("aria-pressed", x === b ? "true" : "false"));
   render();
+});
+$("expBtn").addEventListener("click", function(){
+  ui.noExp = !ui.noExp;
+  this.setAttribute("aria-pressed", ui.noExp ? "true" : "false");
+  this.textContent = ui.noExp ? "Показати доповнення" : "Без доповнень";
+  render();
+});
+$("cExp").addEventListener("click", function(){
+  const g = current(); if(!g) return;
+  if(!canEdit()) return;
+  g.expansion = !g.expansion;
+  if(!g.expansion) delete g.expansion;
+  this.setAttribute("aria-pressed", g.expansion ? "true" : "false");
+  touch();
 });
 $("cmpBtn").addEventListener("click", function(){
   ui.cmp = !ui.cmp;
