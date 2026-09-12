@@ -1,7 +1,7 @@
 {
   "app": "полиця настілок",
   "version": 2,
-  "saved": "2026-09-12T19:52:35.986Z",
+  "saved": "2026-09-12T19:52:59.931Z",
   "games": [
     {
       "added": "2026-09-12",
@@ -246,7 +246,7 @@
       "minutes": null,
       "name": "Загублені руїни Арнаку",
       "nameEn": "Lost Ruins of Arnak",
-      "plays": 0,
+      "plays": 4,
       "rules": [
         {
           "kind": "офіційні",
@@ -270,8 +270,8 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T19:52:26.811Z",
-      "weight": null,
+      "updated": "2026-09-12T19:52:50.750Z",
+      "weight": 3,
       "withExp": [
         "g-arnak-promo"
       ]
