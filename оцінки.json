@@ -1174,13 +1174,20 @@
       "name": "Ходу героям нема. Великий сплячий",
       "nameEn": "Keep the Heroes Out!: The Great Dreamer",
       "plays": 0,
+      "rules": [
+        {
+          "kind": "офіційні",
+          "title": "Правила",
+          "url": "https://geekach.com.ua/content/files/pravila-nastlno-gri-xodu-gerojam-nema.-velikiy-spljachiy-ukranskou-movou-90112148.pdf"
+        }
+      ],
       "score": null,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T16:01:36.850Z",
+      "updated": "2026-09-12T17:54:05.874Z",
       "weight": null
     },
     {
@@ -1222,13 +1229,25 @@
       "name": "Ходу героям нема. Помста магістра гільдії",
       "nameEn": "Keep the Heroes Out!: Guild Master's Revenge",
       "plays": 0,
+      "rules": [
+        {
+          "kind": "офіційні",
+          "title": "Правила",
+          "url": "https://desktopgames.com.ua/games/6831/rulebook_guild_master_UA.pdf"
+        },
+        {
+          "kind": "інше",
+          "title": "Правила (англійською)",
+          "url": "https://desktopgames.com.ua/games/6831/rulebook_0.98.pdf"
+        }
+      ],
       "score": null,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T16:01:36.850Z",
+      "updated": "2026-09-12T17:54:05.874Z",
       "weight": null
     },
     {
@@ -1304,7 +1323,7 @@
       "bggRank": 1405,
       "bggRating": 6.6,
       "byCount": {},
-      "comment": "",
+      "comment": "Правила взято від «Мачі Коро 2» — окремих для цієї коробки немає, різниця невелика.",
       "cover": "https://cf.geekdo-images.com/_lI2eUDHfesfe5SswJiFAg__square200/img/wCEwsJYv0H3lKHUkkX4naqWkjRk=/200x200/filters:strip_icc()/pic4783831.png",
       "id": "g-machi-koro",
       "maxP": null,
@@ -1313,13 +1332,20 @@
       "name": "Мачі Коро",
       "nameEn": "Machi Koro",
       "plays": 0,
+      "rules": [
+        {
+          "kind": "інше",
+          "title": "Правила Мачі Коро 2",
+          "url": "https://desktopgames.com.ua/games/8508/machi_koro_rules_ua.pdf"
+        }
+      ],
       "score": null,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T16:01:36.850Z",
+      "updated": "2026-09-12T17:54:05.874Z",
       "weight": null
     },
     {
@@ -1327,7 +1353,7 @@
       "bggId": "160154",
       "bggRating": 6.7,
       "byCount": {},
-      "comment": "",
+      "comment": "Правила взято від «Мачі Коро 2» — окремих для цієї коробки немає, різниця невелика.",
       "cover": "https://cf.geekdo-images.com/5SWmP8J_Xif6nAxTL0k4qw__square200/img/RTgkm0lptXMbtojVoSuF1PT12r0=/200x200/filters:strip_icc()/pic4278304.jpg",
       "expansion": true,
       "id": "g-machi-koro-sharp",
@@ -1337,13 +1363,20 @@
       "name": "Мачі Коро: Шарп",
       "nameEn": "Machi Koro: Millionaire's Row",
       "plays": 0,
+      "rules": [
+        {
+          "kind": "інше",
+          "title": "Правила Мачі Коро 2",
+          "url": "https://desktopgames.com.ua/games/8508/machi_koro_rules_ua.pdf"
+        }
+      ],
       "score": null,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T16:01:36.850Z",
+      "updated": "2026-09-12T17:54:05.874Z",
       "weight": null
     },
     {
@@ -1707,13 +1740,20 @@
       "name": "Паперові океани",
       "nameEn": "Sea Salt & Paper",
       "plays": 0,
+      "rules": [
+        {
+          "kind": "офіційні",
+          "title": "Правила",
+          "url": "https://desktopgames.com.ua/games/7982/SSAP_rulebook_UA_Web.pdf"
+        }
+      ],
       "score": null,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T16:01:36.850Z",
+      "updated": "2026-09-12T17:54:05.874Z",
       "weight": null
     },
     {
@@ -2187,14 +2227,14 @@
       "plays": 0,
       "rules": [
         {
-          "kind": "інше",
-          "title": "Трекер",
-          "url": "https://desktopgames.com.ua/games/4341/Gloomhaven_Jaws_of_the_Lion_Trek.pdf"
+          "kind": "офіційні",
+          "title": "Правила",
+          "url": "https://desktopgames.com.ua/games/7587/pravila_nastlno_gri_temna_gavan.-shelepi-leva-gloomhaven-jaws-of-the-lion-ukranskou-movou-6363431.pdf"
         },
         {
           "kind": "інше",
-          "title": "Планшет персонажа",
-          "url": "https://desktopgames.com.ua/games/4341/Gloomhaven_Jaws_of_the_Lion_Plan.pdf"
+          "title": "Довідник правил",
+          "url": "https://desktopgames.com.ua/games/7587/dovdnik_pravil_ukranskou_movou_8.pdf"
         }
       ],
       "score": null,
@@ -2203,7 +2243,7 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T17:40:57.486Z",
+      "updated": "2026-09-12T17:54:05.874Z",
       "weight": null
     },
     {
@@ -2251,13 +2291,30 @@
       "name": "Ходу героям нема",
       "nameEn": "Keep the Heroes Out!",
       "plays": 0,
+      "rules": [
+        {
+          "kind": "офіційні",
+          "title": "Правила",
+          "url": "https://desktopgames.com.ua/games/6829/rulebook_6_UA.pdf"
+        },
+        {
+          "kind": "інше",
+          "title": "Сценарії",
+          "url": "https://desktopgames.com.ua/games/6829/rulebook_scenarios_v3_UA.pdf"
+        },
+        {
+          "kind": "інше",
+          "title": "Правила (англійською)",
+          "url": "https://desktopgames.com.ua/games/6829/Keep_the_Heroes_Out_Rulebook_.pdf"
+        }
+      ],
       "score": null,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T16:01:36.850Z",
+      "updated": "2026-09-12T17:54:05.874Z",
       "weight": null,
       "withExp": [
         "g-khn-boss",
@@ -2856,6 +2913,6 @@
       "weight": null
     }
   ],
-  "saved": "2026-09-12T17:49:01.934Z",
+  "saved": "2026-09-12T17:54:05.874Z",
   "version": 2
 }
