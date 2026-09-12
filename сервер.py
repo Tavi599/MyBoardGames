@@ -39,6 +39,10 @@ from pathlib import Path
 }
 ЗБІРКА = ТЕКА / "збірка.py"
 
+# Формат даних. Міграції живуть у сторінці («01-основа.js»); сервер лише
+# не дає номеру загубитися при перезаписі файла.
+ВЕРСІЯ_ДАНИХ = 2
+
 ПАУЗА_ДО_КОМІТУ = 90        # секунд тиші після останньої правки
 замок = threading.Lock()
 таймер: threading.Timer | None = None
@@ -53,7 +57,8 @@ def зараз() -> str:
 
 def прочитати() -> dict:
     if not ДАНІ.exists():
-        return {"app": "полиця настілок", "saved": зараз(), "games": []}
+        return {"app": "полиця настілок", "version": ВЕРСІЯ_ДАНИХ,
+                "saved": зараз(), "games": []}
     try:
         return json.loads(ДАНІ.read_text(encoding="utf-8"))
     except json.JSONDecodeError as помилка:
@@ -63,6 +68,7 @@ def прочитати() -> dict:
 
 
 def записати(стан: dict) -> None:
+    стан["version"] = ВЕРСІЯ_ДАНИХ
     стан["saved"] = зараз()
     стан["games"] = sorted(стан.get("games", []), key=lambda г: г.get("id", ""))
     текст = json.dumps(стан, ensure_ascii=False, indent=2, sort_keys=True) + "\n"

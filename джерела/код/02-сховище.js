@@ -16,7 +16,7 @@ function localSave(){
 function localLoad(){
   try{
     const raw = localStorage.getItem(LSKEY);
-    if(raw) return JSON.parse(raw);
+    if(raw) return прийняти(JSON.parse(raw));
   }catch(e){}
   return null;
 }
@@ -26,7 +26,7 @@ function queueSave(){
 function queueLoad(){
   try{
     const raw = localStorage.getItem(QKEY);
-    queue = raw ? (JSON.parse(raw) || []) : [];
+    queue = raw ? прийняти(JSON.parse(raw)) : [];
   }catch(e){ queue = []; }
 }
 function enqueue(list){
@@ -53,7 +53,7 @@ function cacheSave(){ try{ localStorage.setItem(CKEY, JSON.stringify(games)); }c
 function cacheLoad(){
   try{
     const raw = localStorage.getItem(CKEY);
-    return raw ? JSON.parse(raw) : null;
+    return raw ? прийняти(JSON.parse(raw)) : null;
   }catch(e){ return null; }
 }
 function tokenLoad(){ try{ token = localStorage.getItem(TKEY) || ""; }catch(e){ token = ""; } }
@@ -98,11 +98,12 @@ async function ghRead(){
   const body = await res.json();
   ghSha = body.sha;
   const state = JSON.parse(b64dec(body.content));
-  return state.games || [];
+  return прийняти(state.games);
 }
 async function ghWrite(all, note){
   const state = {
     app:"полиця настілок",
+    version:ВЕРСІЯ,
     saved:new Date().toISOString(),
     games: all.slice().sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0))
   };
@@ -247,7 +248,7 @@ async function sync(list){
     if(!res.ok) throw new Error("HTTP " + res.status);
     const state = await res.json();
     queue = []; queueSave();
-    mergeIn(state.games || []);
+    mergeIn(прийняти(state.games));
     if(ui.open && !games.some((g) => g.id === ui.open)) closeCard();
     badge(); render();
     return true;
@@ -329,7 +330,7 @@ async function boot(){
     }catch(e){}
     if(state){
       mode = "server";
-      games = state.games || [];
+      games = прийняти(state.games);
       ready = true; badge(); render();
       if(queue.length) sync([]);
       setInterval(() => { if(queue.length) sync([]); }, 30000);
@@ -355,7 +356,7 @@ async function boot(){
   db = d; mode = "cloud"; badge();
   db.collection("games").onSnapshot(
     (snap) => {
-      games = snap.docs.map((doc) => Object.assign({id:doc.id}, doc.data()));
+      games = прийняти(snap.docs.map((doc) => Object.assign({id:doc.id}, doc.data())));
       ready = true; render();
       if(ui.open && !games.some((g) => g.id === ui.open)) closeCard();
     },

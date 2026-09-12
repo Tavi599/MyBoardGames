@@ -565,6 +565,38 @@ function blank(name){
 }
 function stamp(g){ g.updated = new Date().toISOString(); return g; }
 
+/* ── міграції даних ───────────────────────────────────────────────────
+   Формат запису змінюється, а дані живуть довго й лежать одразу в
+   кількох місцях: у репозиторії, в кеші телефона, в черзі незбережених
+   змін. Тому кожна міграція — це функція над однією коробкою, і вона
+   мусить бути безпечною для повторного запуску: коробка давнішого
+   зразка може приїхати з іншого пристрою будь-коли, а не лише при
+   першому завантаженні файла.
+
+   Додаючи поле: підніми ВЕРСІЯ, допиши сюди функцію, яка доводить давній
+   запис до нового вигляду, і не чіпай нічого більше. */
+const ВЕРСІЯ = 2;
+const МІГРАЦІЇ = [
+  // 1 → 2: один статус став списком статусів.
+  function статусиСписком(g){
+    if(!Array.isArray(g.statuses)){
+      g.statuses = g.status ? [g.status] : (g.deleted ? [] : ["колекція"]);
+    }
+    if(g.statuses.length) g.status = g.statuses[0]; else delete g.status;
+  },
+];
+
+/** Одна коробка, доведена до поточного формату. */
+function підняти(g){
+  if(!g || typeof g !== "object") return g;
+  if(!g.deleted) МІГРАЦІЇ.forEach((м) => м(g));
+  return g;
+}
+/** Усе, що приходить ззовні — з мережі, з кеша, з файла, — проходить сюди. */
+function прийняти(список){
+  return Array.isArray(список) ? список.map(підняти) : [];
+}
+
 /** Статусів у коробки може бути кілька. Записи давнішого зразка тримали
     рівно один — у полі `status`; читаємо і їх. */
 function stats(g){
@@ -602,7 +634,7 @@ function localSave(){
 function localLoad(){
   try{
     const raw = localStorage.getItem(LSKEY);
-    if(raw) return JSON.parse(raw);
+    if(raw) return прийняти(JSON.parse(raw));
   }catch(e){}
   return null;
 }
@@ -612,7 +644,7 @@ function queueSave(){
 function queueLoad(){
   try{
     const raw = localStorage.getItem(QKEY);
-    queue = raw ? (JSON.parse(raw) || []) : [];
+    queue = raw ? прийняти(JSON.parse(raw)) : [];
   }catch(e){ queue = []; }
 }
 function enqueue(list){
@@ -639,7 +671,7 @@ function cacheSave(){ try{ localStorage.setItem(CKEY, JSON.stringify(games)); }c
 function cacheLoad(){
   try{
     const raw = localStorage.getItem(CKEY);
-    return raw ? JSON.parse(raw) : null;
+    return raw ? прийняти(JSON.parse(raw)) : null;
   }catch(e){ return null; }
 }
 function tokenLoad(){ try{ token = localStorage.getItem(TKEY) || ""; }catch(e){ token = ""; } }
@@ -684,11 +716,12 @@ async function ghRead(){
   const body = await res.json();
   ghSha = body.sha;
   const state = JSON.parse(b64dec(body.content));
-  return state.games || [];
+  return прийняти(state.games);
 }
 async function ghWrite(all, note){
   const state = {
     app:"полиця настілок",
+    version:ВЕРСІЯ,
     saved:new Date().toISOString(),
     games: all.slice().sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0))
   };
@@ -833,7 +866,7 @@ async function sync(list){
     if(!res.ok) throw new Error("HTTP " + res.status);
     const state = await res.json();
     queue = []; queueSave();
-    mergeIn(state.games || []);
+    mergeIn(прийняти(state.games));
     if(ui.open && !games.some((g) => g.id === ui.open)) closeCard();
     badge(); render();
     return true;
@@ -915,7 +948,7 @@ async function boot(){
     }catch(e){}
     if(state){
       mode = "server";
-      games = state.games || [];
+      games = прийняти(state.games);
       ready = true; badge(); render();
       if(queue.length) sync([]);
       setInterval(() => { if(queue.length) sync([]); }, 30000);
@@ -941,7 +974,7 @@ async function boot(){
   db = d; mode = "cloud"; badge();
   db.collection("games").onSnapshot(
     (snap) => {
-      games = snap.docs.map((doc) => Object.assign({id:doc.id}, doc.data()));
+      games = прийняти(snap.docs.map((doc) => Object.assign({id:doc.id}, doc.data())));
       ready = true; render();
       if(ui.open && !games.some((g) => g.id === ui.open)) closeCard();
     },
@@ -1592,7 +1625,10 @@ $("menuBtn").addEventListener("click", (e) => {
 document.addEventListener("click", (e) => {
   if(!$("menu").hidden && !e.target.closest(".menu-wrap")) hideMenu();
 });
-function dump(){ return JSON.stringify({app:"полиця настілок", saved:new Date().toISOString(), games:games}, null, 2); }
+function dump(){
+  return JSON.stringify({app:"полиця настілок", version:ВЕРСІЯ,
+                        saved:new Date().toISOString(), games:games}, null, 2);
+}
 $("mExport").addEventListener("click", async () => {
   hideMenu();
   const name = "полиця-" + new Date().toISOString().slice(0, 10) + ".json";
@@ -1732,7 +1768,7 @@ $("fileIn").addEventListener("change", async (e) => {
   let data;
   try{ data = JSON.parse(await f.text()); }
   catch(err){ toast("Це не схоже на JSON із полиці."); return; }
-  const arr = Array.isArray(data) ? data : data.games;
+  const arr = прийняти(Array.isArray(data) ? data : data.games);
   if(!Array.isArray(arr)){ toast("У файлі немає списку ігор."); return; }
   let added = 0, upd = 0;
   for(const raw of arr){

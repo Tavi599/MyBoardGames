@@ -15,6 +15,7 @@ sys.stdout.reconfigure(encoding="utf-8")
 import перевірка
 
 ЗРАЗОК = {
+    "version": перевірка.ВЕРСІЯ_ДАНИХ,
     "saved": "2026-09-12T10:00:00.000Z",
     "games": [
         {
@@ -72,6 +73,8 @@ import перевірка
     ("теги не списком", lambda с: с["games"][0].update(tags="євро"), "tags"),
     ("expansion рядком", lambda с: с["games"][1].update(expansion="так"), "true/false"),
     ("немає games", lambda с: с.pop("games"), "games"),
+    ("немає version", lambda с: с.pop("version"), "version"),
+    ("version із майбутнього", lambda с: с.update(version=99), "чекає"),
 ]
 
 

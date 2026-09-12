@@ -8,7 +8,10 @@ $("menuBtn").addEventListener("click", (e) => {
 document.addEventListener("click", (e) => {
   if(!$("menu").hidden && !e.target.closest(".menu-wrap")) hideMenu();
 });
-function dump(){ return JSON.stringify({app:"полиця настілок", saved:new Date().toISOString(), games:games}, null, 2); }
+function dump(){
+  return JSON.stringify({app:"полиця настілок", version:ВЕРСІЯ,
+                        saved:new Date().toISOString(), games:games}, null, 2);
+}
 $("mExport").addEventListener("click", async () => {
   hideMenu();
   const name = "полиця-" + new Date().toISOString().slice(0, 10) + ".json";
@@ -148,7 +151,7 @@ $("fileIn").addEventListener("change", async (e) => {
   let data;
   try{ data = JSON.parse(await f.text()); }
   catch(err){ toast("Це не схоже на JSON із полиці."); return; }
-  const arr = Array.isArray(data) ? data : data.games;
+  const arr = прийняти(Array.isArray(data) ? data : data.games);
   if(!Array.isArray(arr)){ toast("У файлі немає списку ігор."); return; }
   let added = 0, upd = 0;
   for(const raw of arr){
