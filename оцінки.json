@@ -1,7 +1,7 @@
 {
   "app": "полиця настілок",
   "version": 2,
-  "saved": "2026-09-12T20:13:27.835Z",
+  "saved": "2026-09-12T20:13:45.223Z",
   "games": [
     {
       "added": "2026-09-12",
@@ -760,7 +760,11 @@
       "bggId": "253344",
       "bggRank": 54,
       "bggRating": 8.2,
-      "byCount": {},
+      "byCount": {
+        "2": 8.5,
+        "3": 8,
+        "4": 7
+      },
       "comment": "",
       "cover": "https://cf.geekdo-images.com/SPpzri7fwLRgVWMKOocHxw__square200/img/G7NDTea1O6DjOTL7d2PyoEgkuAo=/200x200/filters:strip_icc()/pic9712872.png",
       "id": "g-cthulhu",
@@ -769,7 +773,7 @@
       "minutes": null,
       "name": "Ктулху. Смерть може вмерти",
       "nameEn": "Cthulhu: Death May Die",
-      "plays": 0,
+      "plays": 4,
       "rules": [
         {
           "kind": "інше",
@@ -783,7 +787,7 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T17:40:57.486Z",
+      "updated": "2026-09-12T20:13:44.657Z",
       "weight": null
     },
     {
