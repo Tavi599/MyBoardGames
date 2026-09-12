@@ -317,13 +317,25 @@
       "name": "Звір",
       "nameEn": "Beast",
       "plays": 0,
+      "rules": [
+        {
+          "kind": "офіційні",
+          "title": "Правила",
+          "url": "https://geekach.com.ua/content/files/pravila-nastlno-gri-zvr-beast-ukranskou-movou-41996484.pdf"
+        },
+        {
+          "kind": "інше",
+          "title": "Поширені питання",
+          "url": "https://geekach.com.ua/content/files/zvr-poshiren-pitannja-vdpovd-1.2-3438524.pdf"
+        }
+      ],
       "score": null,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T16:01:36.850Z",
+      "updated": "2026-09-12T17:37:13.835Z",
       "weight": null
     },
     {
@@ -672,6 +684,30 @@
     },
     {
       "added": "2026-09-12",
+      "bggId": "39856",
+      "bggRank": 435,
+      "bggRating": 7.2,
+      "byCount": {},
+      "comment": "",
+      "cover": "https://cf.geekdo-images.com/J0PlHArkZDJ57H-brXW2Fw__square200/img/ktQHsr6NDb8LY0wEf2iqwGJ9JzQ=/200x200/filters:strip_icc()/pic6738336.jpg",
+      "id": "g-dixit",
+      "maxP": null,
+      "minP": null,
+      "minutes": null,
+      "name": "Діксіт",
+      "nameEn": "Dixit",
+      "plays": 0,
+      "score": null,
+      "status": "колекція",
+      "statuses": [
+        "колекція"
+      ],
+      "tags": [],
+      "updated": "2026-09-12T17:32:39.926Z",
+      "weight": null
+    },
+    {
+      "added": "2026-09-12",
       "bggId": "172225",
       "bggRank": 4046,
       "bggRating": 6.1,
@@ -685,13 +721,20 @@
       "name": "Вибухові кошенята",
       "nameEn": "Exploding Kittens",
       "plays": 0,
+      "rules": [
+        {
+          "kind": "офіційні",
+          "title": "Правила",
+          "url": "https://geekach.com.ua/content/files/pravila-nastlno-gri-vibuxov-koshenjata-orignalne-vidannja-exploding-kittens-original-edition-49711487.pdf"
+        }
+      ],
       "score": null,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T16:01:36.850Z",
+      "updated": "2026-09-12T17:37:44.367Z",
       "weight": null
     },
     {
@@ -771,13 +814,20 @@
       "name": "Лис та Ліс. Дуель",
       "nameEn": "The Fox in the Forest Duet",
       "plays": 0,
+      "rules": [
+        {
+          "kind": "офіційні",
+          "title": "Правила",
+          "url": "https://geekach.com.ua/content/files/pravila-nastlno-gri-lis-ta-ls-duet-the-fox-in-the-forest-duet-ukranskou-movou-92982726.pdf"
+        }
+      ],
       "score": null,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T16:01:36.850Z",
+      "updated": "2026-09-12T17:37:13.835Z",
       "weight": null
     },
     {
@@ -1836,13 +1886,20 @@
       "name": "Земля",
       "nameEn": "Earth",
       "plays": 0,
+      "rules": [
+        {
+          "kind": "офіційні",
+          "title": "Правила",
+          "url": "https://geekach.com.ua/content/files/pravila-nastlno-gri-zemlja-earth-79790244.pdf"
+        }
+      ],
       "score": null,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T16:01:36.850Z",
+      "updated": "2026-09-12T17:37:13.835Z",
       "weight": null
     },
     {
@@ -2291,6 +2348,37 @@
     },
     {
       "added": "2026-09-12",
+      "bggId": "14996",
+      "bggRank": 180,
+      "bggRating": 7.5,
+      "byCount": {},
+      "comment": "",
+      "cover": "https://cf.geekdo-images.com/EQJZDO1Jq8KL-HxmWLwL-Q__square200/img/57UisWMU6B8z4rB2WWWycIyJ00U=/200x200/filters:strip_icc()/pic9580918.jpg",
+      "id": "g-ttr-europe",
+      "maxP": null,
+      "minP": null,
+      "minutes": null,
+      "name": "Квиток на поїзд. Європа",
+      "nameEn": "Ticket to Ride: Europe",
+      "plays": 0,
+      "rules": [
+        {
+          "kind": "офіційні",
+          "title": "Правила",
+          "url": "https://geekach.com.ua/content/files/pravila-nastlno-gri-kvitok-na-pozd-evropa-ticket-to-ride.-europe-ukranskou-movou-46211690.pdf"
+        }
+      ],
+      "score": null,
+      "status": "колекція",
+      "statuses": [
+        "колекція"
+      ],
+      "tags": [],
+      "updated": "2026-09-12T17:37:13.835Z",
+      "weight": null
+    },
+    {
+      "added": "2026-09-12",
       "bggId": "403221",
       "bggRank": 5738,
       "bggRating": 7.0,
@@ -2651,6 +2739,6 @@
       "weight": null
     }
   ],
-  "saved": "2026-09-12T17:20:03.076Z",
+  "saved": "2026-09-12T17:37:44.367Z",
   "version": 2
 }
