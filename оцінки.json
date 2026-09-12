@@ -1,7 +1,7 @@
 {
   "app": "полиця настілок",
   "version": 2,
-  "saved": "2026-09-12T20:25:02.912Z",
+  "saved": "2026-09-12T20:25:36.804Z",
   "games": [
     {
       "added": "2026-09-12",
@@ -1288,7 +1288,12 @@
       "added": "2026-09-12",
       "bggId": "351549",
       "bggRating": 8.2,
-      "byCount": {},
+      "byCount": {
+        "2": 8,
+        "3": 8,
+        "4": 8,
+        "5": 8
+      },
       "comment": "",
       "cover": "https://cf.geekdo-images.com/pZsA-RFd8w1bg33xoyQQkw__square200/img/qeamKvmT3OZwViwvikSvz3KiWDQ=/200x200/filters:strip_icc()/pic6985344.jpg",
       "expansion": true,
@@ -1298,7 +1303,7 @@
       "minutes": null,
       "name": "Ходу героям нема. Великий сплячий",
       "nameEn": "Keep the Heroes Out!: The Great Dreamer",
-      "plays": 0,
+      "plays": 1,
       "rules": [
         {
           "kind": "офіційні",
@@ -1306,20 +1311,25 @@
           "url": "https://geekach.com.ua/content/files/pravila-nastlno-gri-xodu-gerojam-nema.-velikiy-spljachiy-ukranskou-movou-90112148.pdf"
         }
       ],
-      "score": null,
+      "score": 8,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T17:54:05.874Z",
-      "weight": null
+      "updated": "2026-09-12T20:25:16.915Z",
+      "weight": 1.5
     },
     {
       "added": "2026-09-12",
       "bggId": "404357",
       "bggRating": 8,
-      "byCount": {},
+      "byCount": {
+        "2": 8,
+        "3": 8,
+        "4": 8,
+        "5": 8
+      },
       "comment": "",
       "cover": "https://cf.geekdo-images.com/Wc8AZj2TKP4lPupQkRwYIQ__square200/img/vTBH00sK_B9Pe5lF4s0ZgWciSw8=/200x200/filters:strip_icc()/pic7998936.jpg",
       "expansion": true,
@@ -1329,7 +1339,7 @@
       "minutes": null,
       "name": "Ходу героям нема. Sparkling Guardian",
       "nameEn": "Keep the Heroes Out!: Sparkling Guardian",
-      "plays": 0,
+      "plays": 1,
       "rules": [
         {
           "kind": "переклад",
@@ -1337,14 +1347,14 @@
           "url": "https://github.com/Tavi599/MyBoardGames-rules/blob/main/ходу-героям-нема/Ходу_героям_нема_Sparkling_Guardian_UA.pdf"
         }
       ],
-      "score": null,
+      "score": 8,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T18:37:04.219Z",
-      "weight": null
+      "updated": "2026-09-12T20:25:27.667Z",
+      "weight": 1.5
     },
     {
       "added": "2026-09-12",
