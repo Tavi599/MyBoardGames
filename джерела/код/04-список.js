@@ -46,6 +46,8 @@ function renderFound(arr){
 
 function renderList(){
   const list = $("list"), arr = visible();
+  const сітка = ui.view === "grid";
+  list.classList.toggle("grid", сітка);
   document.documentElement.style.setProperty("--pick", ui.cmp ? "26px" : "0px");
   $("hScore").textContent = ui.count === "all" ? "Оцінка" : "На " + CLABEL[ui.count];
   renderFound(arr);
@@ -55,7 +57,7 @@ function renderList(){
     show("Хвилинку", "Дістаю полицю з бази.");
     return;
   }
-  $("headRow").hidden = arr.length === 0;
+  $("headRow").hidden = arr.length === 0 || сітка;
   if(!arr.length){
     list.innerHTML = "";
     if(!games.length) show("Полиця порожня", "Натисни «Додати гру» — і почнеться.");
@@ -63,15 +65,51 @@ function renderList(){
     return;
   }
   $("blank").hidden = true;
+  list.innerHTML = arr.map(сітка ? плитка : рядок).join("");
 
-  list.innerHTML = arr.map((g) => {
-    const s = effScore(g), b = band(s);
+  /* Спільне для обох виглядів: обкладинка, позначка порівняння й кнопка
+     правил. Різниця між рядком і плиткою — у тому, скільки тексту навколо
+     них, а не в тому, з чого вони складені. */
+  function класи(g){
+    return "s-" + esc(stats(g)[0] || "") + (g.expansion ? " exp" : "") +
+      (stats(g).indexOf("продаж") >= 0 ? " sale" : "") +
+      (ui.picked.has(g.id) ? " picked" : "");
+  }
+  function обкладинка(g){
+    return "<span class='cov'>" + (g.cover
+      ? "<img src='" + esc(g.cover) + "' alt='' loading='lazy' referrerpolicy='no-referrer'>"
+      : "<b>" + esc((g.name || "?").trim().charAt(0).toUpperCase()) + "</b>") + "</span>";
+  }
+  function позначка(g){
+    return ui.cmp
+      ? "<label class='pick'><input type='checkbox' data-pick='" + esc(g.id) + "' " +
+        (ui.picked.has(g.id) ? "checked" : "") + " aria-label='Порівняти " +
+        esc(g.name) + "'></label>"
+      : "<span class='pick'></span>";
+  }
+  // Швидкий виклик правил: суперечка за столом трапляється саме тоді,
+  // коли лізти в картку ніколи.
+  function кнопкаПравил(g){
+    const перше = перші(g);
+    if(!перше) return "<span class='rules-btn ghost'></span>";
+    return "<a class='rules-btn' href='" + esc(перше.url) + "' target='_blank'" +
+      " rel='noopener noreferrer' title='" + esc(rules(g).map((п) =>
+        ВИДИ_ПРАВИЛ[п.kind] || п.kind).join(" · ")) +
+      "' aria-label='Правила: " + esc(g.name) + "'>П</a>";
+  }
+  function оцінка(g){
+    const s = effScore(g);
+    return "<div class='score " + band(s) + "'><span class='num" +
+      (s == null ? " none" : "") + "'>" + (s == null ? "—" : fmt(s)) + "</span>" +
+      "<span class='meter'><i style='width:" + (s == null ? 0 : s * 10) + "%'></i></span>" +
+      (g.bggRating ? "<span class='bgg'>BGG " + fmt(g.bggRating) + "</span>" : "") + "</div>";
+  }
+
+  function рядок(g){
     const разом = withNames(g);
     const meta = [];
     const назви = statNames(g);
     if(назви.length) meta.push(назви.join(" · "));
-    // У рядок іде тільки родина — одне слово. Дрібні жанри чекають у картці:
-    // «фентезі · тварини · карткова · пригоди» в рядку списку — це шум.
     // Родина плюс перші три ключові жанри. Усі двадцять два в рядок не
     // влазять і не мусять — решта чекає в картці.
     const рід = familyNames(g).concat(keyGenreNames(g).slice(0, 3));
@@ -81,7 +119,6 @@ function renderList(){
     if(g.plays) meta.push(g.plays + " " + plural(g.plays, "партія", "партії", "партій"));
     const вага = складність(g); if(вага) meta.push("складність " + fmt(вага));
     if(g.tags && g.tags.length) meta.push(g.tags.join(" · "));
-    const перше = перші(g);
     // У рядку — тільки ті склади, за які оцінка вже стоїть. Порожні
     // клітинки з'їдали половину ширини й відсували назву гри; решта
     // складів чекає в картці, і щойно там з'явиться оцінка — клітинка
@@ -92,14 +129,8 @@ function renderList(){
         "'><b>" + fmt(v) + "</b><i>" + esc(countLabel(g, c)) + "</i></span>";
     }).join("");
     // Крапка біля назви фарбується за першим статусом — він же найважливіший.
-    return "<li class='row s-" + esc(stats(g)[0] || "") + (g.expansion ? " exp" : "") +
-      (stats(g).indexOf("продаж") >= 0 ? " sale" : "") +
-      (ui.picked.has(g.id) ? " picked" : "") + "' data-id='" + esc(g.id) + "'>" +
-      (ui.cmp ? "<label class='pick'><input type='checkbox' data-pick='" + esc(g.id) + "' " +
-        (ui.picked.has(g.id) ? "checked" : "") + " aria-label='Порівняти " + esc(g.name) + "'></label>" : "<span class='pick'></span>") +
-      "<span class='cov'>" + (g.cover
-        ? "<img src='" + esc(g.cover) + "' alt='' loading='lazy' referrerpolicy='no-referrer'>"
-        : "<b>" + esc((g.name || "?").trim().charAt(0).toUpperCase()) + "</b>") + "</span>" +
+    return "<li class='row " + класи(g) + "' data-id='" + esc(g.id) + "'>" +
+      позначка(g) + обкладинка(g) +
       "<button class='open' data-open='" + esc(g.id) + "'>" +
         "<span class='nm'><i class='dot'></i><span class='txt'>" + esc(g.name) + "</span>" +
           (g.expansion ? "<span class='badge'>доп.</span>" : "") +
@@ -109,22 +140,29 @@ function renderList(){
         "<span class='meta'>" + esc(meta.filter(Boolean).join(" · ")) + "</span>" +
         (g.comment ? "<span class='note'>" + esc(g.comment) + "</span>" : "") +
       "</button>" +
-      // Швидкий виклик правил: суперечка за столом трапляється саме тоді,
-      // коли лізти в картку ніколи.
-      (перше ? "<a class='rules-btn' href='" + esc(перше.url) + "' target='_blank'" +
-        " rel='noopener noreferrer' title='" + esc(rules(g).map((п) =>
-          ВИДИ_ПРАВИЛ[п.kind] || п.kind).join(" · ")) +
-        "' aria-label='Правила: " + esc(g.name) + "'>П</a>" : "<span class='rules-btn ghost'></span>") +
+      кнопкаПравил(g) +
       "<div class='counts'>" + cells + "</div>" +
       // Оцінка BGG живе в колонці оцінки, а не в кінці рядка метаданих:
       // там її з'їдало обрізання, щойно перед нею набиралося досить тексту.
       // Тут вона стоїть просто під твоєю оцінкою — і видно, чи ви згодні.
-      "<div class='score " + b + "'><span class='num" + (s == null ? " none" : "") + "'>" +
-        (s == null ? "—" : fmt(s)) + "</span>" +
-        "<span class='meter'><i style='width:" + (s == null ? 0 : s * 10) + "%'></i></span>" +
-        (g.bggRating ? "<span class='bgg'>BGG " + fmt(g.bggRating) + "</span>" : "") + "</div>" +
+      оцінка(g) +
     "</li>";
-  }).join("");
+  }
+
+  /* Плитка: обкладинка на всю ширину, оцінка кутиком на ній, назва під
+     нею — і більше нічого. Решта дізнається дотиком по самій плитці.
+     Саме тому все, крім назви, лежить поверх обкладинки: інакше «мінімум
+     тексту» перетворюється на той самий рядок, лише вужчий. */
+  function плитка(g){
+    return "<li class='tile " + класи(g) + "' data-id='" + esc(g.id) + "'>" +
+      "<button class='open' data-open='" + esc(g.id) + "' title='" + esc(g.name) + "'>" +
+        обкладинка(g) +
+        "<span class='nm'><i class='dot'></i><span class='txt'>" + esc(g.name) + "</span>" +
+          (g.expansion ? "<span class='badge'>доп.</span>" : "") + "</span>" +
+      "</button>" +
+      оцінка(g) + кнопкаПравил(g) + позначка(g) +
+    "</li>";
+  }
 
   function show(t, sub){
     const el = $("blank"); el.hidden = false;

@@ -169,6 +169,16 @@ function plural(n, one, few, many){
 }
 
 const LSKEY = "polytsia.games.v1";
+/* Вигляд списку — річ пристрою, а не полиці: на телефоні зручніша сітка,
+   за столом — список. Тому він лежить у пам'яті цього браузера й ніколи
+   не їде в репозиторій разом з оцінками; на іншому пристрої свій. */
+const VKEY = "polytsia.view";
+function збереженийВигляд(){
+  // Приватне вікно й заборонені куки кидають виняток просто на читанні,
+  // тож без try тут не обійтися — сторінка мусить відкритися і в них.
+  try{ return localStorage.getItem(VKEY) === "grid" ? "grid" : "list"; }
+  catch(e){ return "list"; }
+}
 
 const SEED = ["Картографи","Magic Maze","Planet B","Unmatched: Битва легенд, ч. 2",
   "Кіт у коробці","Інорі","Голем","Земля","Зомбі-кошенята","Мандалорець","Палео",
@@ -181,6 +191,7 @@ let ready = false;
 // Поля фільтрів сюди дописує реєстр із «03-вибірка.js» — щоб типове
 // значення кожного фільтра жило в одному місці, а не в двох.
 const ui = {sort:"score", rev:false, hide:new Set(), cmp:false,
+            view:збереженийВигляд(),
             picked:new Set(), open:null};
 
 const $ = (id) => document.getElementById(id);

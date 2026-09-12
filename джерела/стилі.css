@@ -146,6 +146,50 @@ button{cursor:pointer}
 .head-row .h-score{width:78px; text-align:right}
 
 .sheet{list-style:none; margin:0; padding:0}
+
+/* ── сітка ─────────────────────────────────────────────
+   Обкладинка на всю ширину плитки, назва під нею, решта — кутиками
+   поверх обкладинки. Усе, що не вміщається сюди, дізнаєшся дотиком:
+   у цьому й сенс окремого вигляду. auto-fill від 150 px сам вирішує,
+   скільки плиток стане в ряд: на телефоні дві, на широкому — шість. */
+.sheet.grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
+  gap:14px; align-items:start}
+.tile{position:relative; border:1px solid var(--rule-soft); border-radius:10px;
+  background:var(--sheet); overflow:hidden}
+.tile:hover{border-color:var(--ink-faint)}
+/* Позначки коробки тут несе рамка: смуга збоку в плитці не читається. */
+.tile.exp{border-color:var(--amber)}
+.tile.sale{border-color:var(--rust)}
+.tile.picked{box-shadow:0 0 0 2px var(--petrol)}
+.tile > .open{display:block; width:100%; border:0; background:none; padding:0; text-align:left}
+.tile .cov{display:block; width:100%; height:auto; aspect-ratio:1;
+  border:0; border-radius:0; background:var(--sunk)}
+.tile .cov b{font-size:30px}
+.tile .nm{display:flex; gap:6px; align-items:flex-start; padding:8px 9px 9px;
+  font-size:13.5px; line-height:1.3; font-weight:500}
+.tile .nm .dot{margin-top:5px}
+/* Назва в дві стрічки: третя вже перетворює сітку на список. */
+.tile .nm > .txt{display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical;
+  overflow:hidden; white-space:normal}
+/* Оцінка кутиком на обкладинці. Смужка й рядок BGG тут зайві — це той
+   самий «мінімум тексту», заради якого сітку й роблять. */
+.tile > .score{position:absolute; top:6px; right:6px; width:auto; padding:1px 7px 2px;
+  border-radius:7px; background:color-mix(in srgb, var(--paper) 88%, transparent);
+  border:1px solid var(--rule-soft)}
+.tile > .score .num{font-size:16px}
+.tile > .score .num.none{font-size:13px}
+.tile > .score .meter,.tile > .score .bgg{display:none}
+/* Кнопка правил — у нижньому куті, на смузі з назвою: на обкладинці їй
+   тісно поруч з оцінкою, а тут вона під великим пальцем. Назва звільняє
+   для неї місце відступом, інакше вони наклалися б. */
+.tile > .rules-btn{position:absolute; right:6px; bottom:6px; width:26px; height:26px}
+.tile > .rules-btn.ghost{display:none}
+.tile .nm{padding-right:38px}
+.tile > .pick{position:absolute; left:6px; top:6px; width:24px; height:24px;
+  border-radius:6px; background:color-mix(in srgb, var(--paper) 88%, transparent);
+  border:1px solid var(--rule-soft)}
+/* Порожній слот потрібен лише рядкові — там він тримає колонку. */
+.tile > .pick:empty{display:none}
 .row{padding:11px 4px; border-bottom:1px solid var(--rule-soft)}
 .row:hover{background:var(--sheet)}
 /* Доповнення видно з першого погляду: тепла підкладка й позначка біля назви. */

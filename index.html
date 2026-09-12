@@ -169,6 +169,50 @@ button{cursor:pointer}
 .head-row .h-score{width:78px; text-align:right}
 
 .sheet{list-style:none; margin:0; padding:0}
+
+/* ── сітка ─────────────────────────────────────────────
+   Обкладинка на всю ширину плитки, назва під нею, решта — кутиками
+   поверх обкладинки. Усе, що не вміщається сюди, дізнаєшся дотиком:
+   у цьому й сенс окремого вигляду. auto-fill від 150 px сам вирішує,
+   скільки плиток стане в ряд: на телефоні дві, на широкому — шість. */
+.sheet.grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
+  gap:14px; align-items:start}
+.tile{position:relative; border:1px solid var(--rule-soft); border-radius:10px;
+  background:var(--sheet); overflow:hidden}
+.tile:hover{border-color:var(--ink-faint)}
+/* Позначки коробки тут несе рамка: смуга збоку в плитці не читається. */
+.tile.exp{border-color:var(--amber)}
+.tile.sale{border-color:var(--rust)}
+.tile.picked{box-shadow:0 0 0 2px var(--petrol)}
+.tile > .open{display:block; width:100%; border:0; background:none; padding:0; text-align:left}
+.tile .cov{display:block; width:100%; height:auto; aspect-ratio:1;
+  border:0; border-radius:0; background:var(--sunk)}
+.tile .cov b{font-size:30px}
+.tile .nm{display:flex; gap:6px; align-items:flex-start; padding:8px 9px 9px;
+  font-size:13.5px; line-height:1.3; font-weight:500}
+.tile .nm .dot{margin-top:5px}
+/* Назва в дві стрічки: третя вже перетворює сітку на список. */
+.tile .nm > .txt{display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical;
+  overflow:hidden; white-space:normal}
+/* Оцінка кутиком на обкладинці. Смужка й рядок BGG тут зайві — це той
+   самий «мінімум тексту», заради якого сітку й роблять. */
+.tile > .score{position:absolute; top:6px; right:6px; width:auto; padding:1px 7px 2px;
+  border-radius:7px; background:color-mix(in srgb, var(--paper) 88%, transparent);
+  border:1px solid var(--rule-soft)}
+.tile > .score .num{font-size:16px}
+.tile > .score .num.none{font-size:13px}
+.tile > .score .meter,.tile > .score .bgg{display:none}
+/* Кнопка правил — у нижньому куті, на смузі з назвою: на обкладинці їй
+   тісно поруч з оцінкою, а тут вона під великим пальцем. Назва звільняє
+   для неї місце відступом, інакше вони наклалися б. */
+.tile > .rules-btn{position:absolute; right:6px; bottom:6px; width:26px; height:26px}
+.tile > .rules-btn.ghost{display:none}
+.tile .nm{padding-right:38px}
+.tile > .pick{position:absolute; left:6px; top:6px; width:24px; height:24px;
+  border-radius:6px; background:color-mix(in srgb, var(--paper) 88%, transparent);
+  border:1px solid var(--rule-soft)}
+/* Порожній слот потрібен лише рядкові — там він тримає колонку. */
+.tile > .pick:empty{display:none}
 .row{padding:11px 4px; border-bottom:1px solid var(--rule-soft)}
 .row:hover{background:var(--sheet)}
 /* Доповнення видно з першого погляду: тепла підкладка й позначка біля назви. */
@@ -479,6 +523,7 @@ textarea:focus{outline:none; border-color:var(--petrol)}
               aria-pressed="false" title="Прибрати з полиці цілі групи коробок">Приховати</button>
       <div class="menu" id="hidePick" hidden></div>
     </div>
+    <button class="btn" id="viewBtn" aria-pressed="false">Сіткою</button>
     <button class="btn" id="cmpBtn" aria-pressed="false">Порівняти</button>
     <button class="btn pri" id="addBtn">Додати гру</button>
     <div class="menu-wrap">
@@ -868,6 +913,16 @@ function plural(n, one, few, many){
 }
 
 const LSKEY = "polytsia.games.v1";
+/* Вигляд списку — річ пристрою, а не полиці: на телефоні зручніша сітка,
+   за столом — список. Тому він лежить у пам'яті цього браузера й ніколи
+   не їде в репозиторій разом з оцінками; на іншому пристрої свій. */
+const VKEY = "polytsia.view";
+function збереженийВигляд(){
+  // Приватне вікно й заборонені куки кидають виняток просто на читанні,
+  // тож без try тут не обійтися — сторінка мусить відкритися і в них.
+  try{ return localStorage.getItem(VKEY) === "grid" ? "grid" : "list"; }
+  catch(e){ return "list"; }
+}
 
 const SEED = ["Картографи","Magic Maze","Planet B","Unmatched: Битва легенд, ч. 2",
   "Кіт у коробці","Інорі","Голем","Земля","Зомбі-кошенята","Мандалорець","Палео",
@@ -880,6 +935,7 @@ let ready = false;
 // Поля фільтрів сюди дописує реєстр із «03-вибірка.js» — щоб типове
 // значення кожного фільтра жило в одному місці, а не в двох.
 const ui = {sort:"score", rev:false, hide:new Set(), cmp:false,
+            view:збереженийВигляд(),
             picked:new Set(), open:null};
 
 const $ = (id) => document.getElementById(id);
@@ -1568,6 +1624,8 @@ function renderFound(arr){
 
 function renderList(){
   const list = $("list"), arr = visible();
+  const сітка = ui.view === "grid";
+  list.classList.toggle("grid", сітка);
   document.documentElement.style.setProperty("--pick", ui.cmp ? "26px" : "0px");
   $("hScore").textContent = ui.count === "all" ? "Оцінка" : "На " + CLABEL[ui.count];
   renderFound(arr);
@@ -1577,7 +1635,7 @@ function renderList(){
     show("Хвилинку", "Дістаю полицю з бази.");
     return;
   }
-  $("headRow").hidden = arr.length === 0;
+  $("headRow").hidden = arr.length === 0 || сітка;
   if(!arr.length){
     list.innerHTML = "";
     if(!games.length) show("Полиця порожня", "Натисни «Додати гру» — і почнеться.");
@@ -1585,15 +1643,51 @@ function renderList(){
     return;
   }
   $("blank").hidden = true;
+  list.innerHTML = arr.map(сітка ? плитка : рядок).join("");
 
-  list.innerHTML = arr.map((g) => {
-    const s = effScore(g), b = band(s);
+  /* Спільне для обох виглядів: обкладинка, позначка порівняння й кнопка
+     правил. Різниця між рядком і плиткою — у тому, скільки тексту навколо
+     них, а не в тому, з чого вони складені. */
+  function класи(g){
+    return "s-" + esc(stats(g)[0] || "") + (g.expansion ? " exp" : "") +
+      (stats(g).indexOf("продаж") >= 0 ? " sale" : "") +
+      (ui.picked.has(g.id) ? " picked" : "");
+  }
+  function обкладинка(g){
+    return "<span class='cov'>" + (g.cover
+      ? "<img src='" + esc(g.cover) + "' alt='' loading='lazy' referrerpolicy='no-referrer'>"
+      : "<b>" + esc((g.name || "?").trim().charAt(0).toUpperCase()) + "</b>") + "</span>";
+  }
+  function позначка(g){
+    return ui.cmp
+      ? "<label class='pick'><input type='checkbox' data-pick='" + esc(g.id) + "' " +
+        (ui.picked.has(g.id) ? "checked" : "") + " aria-label='Порівняти " +
+        esc(g.name) + "'></label>"
+      : "<span class='pick'></span>";
+  }
+  // Швидкий виклик правил: суперечка за столом трапляється саме тоді,
+  // коли лізти в картку ніколи.
+  function кнопкаПравил(g){
+    const перше = перші(g);
+    if(!перше) return "<span class='rules-btn ghost'></span>";
+    return "<a class='rules-btn' href='" + esc(перше.url) + "' target='_blank'" +
+      " rel='noopener noreferrer' title='" + esc(rules(g).map((п) =>
+        ВИДИ_ПРАВИЛ[п.kind] || п.kind).join(" · ")) +
+      "' aria-label='Правила: " + esc(g.name) + "'>П</a>";
+  }
+  function оцінка(g){
+    const s = effScore(g);
+    return "<div class='score " + band(s) + "'><span class='num" +
+      (s == null ? " none" : "") + "'>" + (s == null ? "—" : fmt(s)) + "</span>" +
+      "<span class='meter'><i style='width:" + (s == null ? 0 : s * 10) + "%'></i></span>" +
+      (g.bggRating ? "<span class='bgg'>BGG " + fmt(g.bggRating) + "</span>" : "") + "</div>";
+  }
+
+  function рядок(g){
     const разом = withNames(g);
     const meta = [];
     const назви = statNames(g);
     if(назви.length) meta.push(назви.join(" · "));
-    // У рядок іде тільки родина — одне слово. Дрібні жанри чекають у картці:
-    // «фентезі · тварини · карткова · пригоди» в рядку списку — це шум.
     // Родина плюс перші три ключові жанри. Усі двадцять два в рядок не
     // влазять і не мусять — решта чекає в картці.
     const рід = familyNames(g).concat(keyGenreNames(g).slice(0, 3));
@@ -1603,7 +1697,6 @@ function renderList(){
     if(g.plays) meta.push(g.plays + " " + plural(g.plays, "партія", "партії", "партій"));
     const вага = складність(g); if(вага) meta.push("складність " + fmt(вага));
     if(g.tags && g.tags.length) meta.push(g.tags.join(" · "));
-    const перше = перші(g);
     // У рядку — тільки ті склади, за які оцінка вже стоїть. Порожні
     // клітинки з'їдали половину ширини й відсували назву гри; решта
     // складів чекає в картці, і щойно там з'явиться оцінка — клітинка
@@ -1614,14 +1707,8 @@ function renderList(){
         "'><b>" + fmt(v) + "</b><i>" + esc(countLabel(g, c)) + "</i></span>";
     }).join("");
     // Крапка біля назви фарбується за першим статусом — він же найважливіший.
-    return "<li class='row s-" + esc(stats(g)[0] || "") + (g.expansion ? " exp" : "") +
-      (stats(g).indexOf("продаж") >= 0 ? " sale" : "") +
-      (ui.picked.has(g.id) ? " picked" : "") + "' data-id='" + esc(g.id) + "'>" +
-      (ui.cmp ? "<label class='pick'><input type='checkbox' data-pick='" + esc(g.id) + "' " +
-        (ui.picked.has(g.id) ? "checked" : "") + " aria-label='Порівняти " + esc(g.name) + "'></label>" : "<span class='pick'></span>") +
-      "<span class='cov'>" + (g.cover
-        ? "<img src='" + esc(g.cover) + "' alt='' loading='lazy' referrerpolicy='no-referrer'>"
-        : "<b>" + esc((g.name || "?").trim().charAt(0).toUpperCase()) + "</b>") + "</span>" +
+    return "<li class='row " + класи(g) + "' data-id='" + esc(g.id) + "'>" +
+      позначка(g) + обкладинка(g) +
       "<button class='open' data-open='" + esc(g.id) + "'>" +
         "<span class='nm'><i class='dot'></i><span class='txt'>" + esc(g.name) + "</span>" +
           (g.expansion ? "<span class='badge'>доп.</span>" : "") +
@@ -1631,22 +1718,29 @@ function renderList(){
         "<span class='meta'>" + esc(meta.filter(Boolean).join(" · ")) + "</span>" +
         (g.comment ? "<span class='note'>" + esc(g.comment) + "</span>" : "") +
       "</button>" +
-      // Швидкий виклик правил: суперечка за столом трапляється саме тоді,
-      // коли лізти в картку ніколи.
-      (перше ? "<a class='rules-btn' href='" + esc(перше.url) + "' target='_blank'" +
-        " rel='noopener noreferrer' title='" + esc(rules(g).map((п) =>
-          ВИДИ_ПРАВИЛ[п.kind] || п.kind).join(" · ")) +
-        "' aria-label='Правила: " + esc(g.name) + "'>П</a>" : "<span class='rules-btn ghost'></span>") +
+      кнопкаПравил(g) +
       "<div class='counts'>" + cells + "</div>" +
       // Оцінка BGG живе в колонці оцінки, а не в кінці рядка метаданих:
       // там її з'їдало обрізання, щойно перед нею набиралося досить тексту.
       // Тут вона стоїть просто під твоєю оцінкою — і видно, чи ви згодні.
-      "<div class='score " + b + "'><span class='num" + (s == null ? " none" : "") + "'>" +
-        (s == null ? "—" : fmt(s)) + "</span>" +
-        "<span class='meter'><i style='width:" + (s == null ? 0 : s * 10) + "%'></i></span>" +
-        (g.bggRating ? "<span class='bgg'>BGG " + fmt(g.bggRating) + "</span>" : "") + "</div>" +
+      оцінка(g) +
     "</li>";
-  }).join("");
+  }
+
+  /* Плитка: обкладинка на всю ширину, оцінка кутиком на ній, назва під
+     нею — і більше нічого. Решта дізнається дотиком по самій плитці.
+     Саме тому все, крім назви, лежить поверх обкладинки: інакше «мінімум
+     тексту» перетворюється на той самий рядок, лише вужчий. */
+  function плитка(g){
+    return "<li class='tile " + класи(g) + "' data-id='" + esc(g.id) + "'>" +
+      "<button class='open' data-open='" + esc(g.id) + "' title='" + esc(g.name) + "'>" +
+        обкладинка(g) +
+        "<span class='nm'><i class='dot'></i><span class='txt'>" + esc(g.name) + "</span>" +
+          (g.expansion ? "<span class='badge'>доп.</span>" : "") + "</span>" +
+      "</button>" +
+      оцінка(g) + кнопкаПравил(g) + позначка(g) +
+    "</li>";
+  }
 
   function show(t, sub){
     const el = $("blank"); el.hidden = false;
@@ -2207,6 +2301,21 @@ function renderHide(){
   кн.textContent = скільки ? "Приховано: " + скільки : "Приховати";
   кн.setAttribute("aria-pressed", скільки ? "true" : "false");
 }
+/** Перемикач вигляду. Запам'ятовується для кожного пристрою окремо. */
+function paintView(){
+  const сітка = ui.view === "grid";
+  const кн = $("viewBtn");
+  кн.textContent = сітка ? "Списком" : "Сіткою";
+  кн.setAttribute("aria-pressed", сітка ? "true" : "false");
+  кн.title = сітка ? "Показати списком" : "Показати сіткою — кілька ігор у ряд";
+}
+paintView();
+$("viewBtn").addEventListener("click", () => {
+  ui.view = ui.view === "grid" ? "list" : "grid";
+  try{ localStorage.setItem(VKEY, ui.view); }catch(e){}
+  paintView();
+  render();
+});
 $("resetBtn").addEventListener("click", скинутиФільтри);
 function закритиХованки(){
   $("hidePick").hidden = true;

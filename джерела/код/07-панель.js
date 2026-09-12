@@ -119,6 +119,21 @@ function renderHide(){
   кн.textContent = скільки ? "Приховано: " + скільки : "Приховати";
   кн.setAttribute("aria-pressed", скільки ? "true" : "false");
 }
+/** Перемикач вигляду. Запам'ятовується для кожного пристрою окремо. */
+function paintView(){
+  const сітка = ui.view === "grid";
+  const кн = $("viewBtn");
+  кн.textContent = сітка ? "Списком" : "Сіткою";
+  кн.setAttribute("aria-pressed", сітка ? "true" : "false");
+  кн.title = сітка ? "Показати списком" : "Показати сіткою — кілька ігор у ряд";
+}
+paintView();
+$("viewBtn").addEventListener("click", () => {
+  ui.view = ui.view === "grid" ? "list" : "grid";
+  try{ localStorage.setItem(VKEY, ui.view); }catch(e){}
+  paintView();
+  render();
+});
 $("resetBtn").addEventListener("click", скинутиФільтри);
 function закритиХованки(){
   $("hidePick").hidden = true;
