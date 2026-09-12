@@ -1,7 +1,7 @@
 {
   "app": "полиця настілок",
   "version": 2,
-  "saved": "2026-09-12T20:16:59.525Z",
+  "saved": "2026-09-12T20:17:15.807Z",
   "games": [
     {
       "added": "2026-09-12",
@@ -1798,14 +1798,14 @@
           "url": "https://geekach.com.ua/content/files/pravila-nastlno-gri-planeta-planet-47334005.pdf"
         }
       ],
-      "score": 7,
+      "score": 6.5,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:16:58.998Z",
-      "weight": null
+      "updated": "2026-09-12T20:17:06.910Z",
+      "weight": 1
     },
     {
       "added": "2026-09-12",
