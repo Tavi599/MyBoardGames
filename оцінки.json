@@ -1,7 +1,7 @@
 {
   "app": "полиця настілок",
   "version": 2,
-  "saved": "2026-09-12T19:52:59.931Z",
+  "saved": "2026-09-12T19:53:23.991Z",
   "games": [
     {
       "added": "2026-09-12",
@@ -2959,7 +2959,9 @@
       "bggId": "410201",
       "bggRank": 123,
       "bggRating": 7.9,
-      "byCount": {},
+      "byCount": {
+        "2": 9
+      },
       "comment": "",
       "cover": "https://cf.geekdo-images.com/cNc-FMsYo-mcRTGaXV2qcQ__square200/img/CyTrkKg-UcJlKfG4mX6HO_J0o_E=/200x200/filters:strip_icc()/pic8894992.jpg",
       "id": "g-wyrmspan",
@@ -2981,13 +2983,13 @@
           "url": "https://geekach.com.ua/content/files/pravila-solo-rezhimu-85372596.pdf"
         }
       ],
-      "score": null,
+      "score": 10,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T17:20:03.076Z",
+      "updated": "2026-09-12T19:53:23.294Z",
       "weight": null
     },
     {
