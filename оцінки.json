@@ -1,7 +1,7 @@
 {
   "app": "полиця настілок",
   "version": 2,
-  "saved": "2026-09-12T19:42:36.196Z",
+  "saved": "2026-09-12T19:42:55.286Z",
   "games": [
     {
       "added": "2026-09-12",
@@ -1832,7 +1832,12 @@
       "bggId": "263918",
       "bggRank": 185,
       "bggRating": 7.5,
-      "byCount": {},
+      "byCount": {
+        "2": 7,
+        "3": 7,
+        "4": 7,
+        "5": 7
+      },
       "comment": "",
       "cover": "https://cf.geekdo-images.com/GifbnAmsA4lfEcDkeaC9VA__square200/img/TVN7rhkwJmTqjTdzh8sSMbZ6hgU=/200x200/filters:strip_icc()/pic4397932.png",
       "id": "g-seed-01",
@@ -1855,7 +1860,7 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T17:20:03.076Z",
+      "updated": "2026-09-12T19:42:46.268Z",
       "weight": null
     },
     {
