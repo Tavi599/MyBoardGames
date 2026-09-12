@@ -31,7 +31,12 @@ from pathlib import Path
 ТЕКА = Path(__file__).parent
 ДАНІ = ТЕКА / "оцінки.json"
 ДЖЕРЕЛО = ТЕКА / "сторінка.html"
-ЗІБРАНЕ = ТЕКА / "Полиця настілок.html"
+ЗІБРАНЕ = ТЕКА / "index.html"
+СТАТИКА = {
+    "/manifest.webmanifest": "application/manifest+json; charset=utf-8",
+    "/icon-192.png": "image/png",
+    "/icon-512.png": "image/png",
+}
 ЗБІРКА = ТЕКА / "збірка.py"
 
 ПАУЗА_ДО_КОМІТУ = 90        # секунд тиші після останньої правки
@@ -167,6 +172,12 @@ class Обробник(BaseHTTPRequestHandler):
         elif шлях == "/api/state":
             with замок:
                 self._json({"games": живі(прочитати().get("games", []))})
+        elif шлях in СТАТИКА:
+            файл = ТЕКА / шлях.lstrip("/")
+            if файл.exists():
+                self._відповісти(200, файл.read_bytes(), СТАТИКА[шлях])
+            else:
+                self._відповісти(404, b"nope", "text/plain")
         else:
             self._відповісти(404, b"nope", "text/plain")
 
