@@ -1,7 +1,7 @@
 {
   "app": "полиця настілок",
   "version": 2,
-  "saved": "2026-09-12T20:09:15.519Z",
+  "saved": "2026-09-12T20:09:51.975Z",
   "games": [
     {
       "added": "2026-09-12",
@@ -2549,7 +2549,11 @@
       "bggId": "34635",
       "bggRank": 189,
       "bggRating": 7.5,
-      "byCount": {},
+      "byCount": {
+        "2": 7.5,
+        "3": 7.5,
+        "4": 7
+      },
       "comment": "",
       "cover": "https://cf.geekdo-images.com/elmZegVZ6gp4_5izUgxGQQ__square200/img/amNueNB79Z2bXi0yX1TGp4dsETo=/200x200/filters:strip_icc()/pic1632539.jpg",
       "id": "g-stone-age",
@@ -2558,7 +2562,7 @@
       "minutes": null,
       "name": "Кам'яна доба",
       "nameEn": "Stone Age",
-      "plays": 0,
+      "plays": 4,
       "rules": [
         {
           "kind": "офіційні",
@@ -2566,14 +2570,14 @@
           "url": "https://geekach.com.ua/content/files/pravila-nastlno-gri-kamjana-doba-stone-age-20798679.pdf"
         }
       ],
-      "score": null,
+      "score": 7.5,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T17:20:03.076Z",
-      "weight": null
+      "updated": "2026-09-12T20:09:42.350Z",
+      "weight": 2
     },
     {
       "added": "2026-09-12",
