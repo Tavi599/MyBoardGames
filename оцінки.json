@@ -1,7 +1,7 @@
 {
   "app": "полиця настілок",
   "version": 2,
-  "saved": "2026-09-12T20:16:16.971Z",
+  "saved": "2026-09-12T20:16:40.261Z",
   "games": [
     {
       "added": "2026-09-12",
@@ -1741,7 +1741,12 @@
       "bggId": "362164",
       "bggRank": 4112,
       "bggRating": 7.1,
-      "byCount": {},
+      "byCount": {
+        "2": 8,
+        "3": 8,
+        "4": 8,
+        "5": 8
+      },
       "comment": "",
       "cover": "https://cf.geekdo-images.com/zFtCdg2K7NEV9BPaEzgAbQ__square200/img/lQOUwb_SiuTjkECP1L4l4Pwzx30=/200x200/filters:strip_icc()/pic6842458.png",
       "id": "g-pioneer-rails",
@@ -1750,7 +1755,7 @@
       "minutes": null,
       "name": "Перші залізниці",
       "nameEn": "Pioneer Rails",
-      "plays": 0,
+      "plays": 6,
       "rules": [
         {
           "kind": "офіційні",
@@ -1758,14 +1763,14 @@
           "url": "https://geekach.com.ua/content/files/pravila-nastlno-gri-persh-zalznic-pioneer-rails-73146248.pdf"
         }
       ],
-      "score": null,
+      "score": 8,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T17:20:03.076Z",
-      "weight": null
+      "updated": "2026-09-12T20:16:30.967Z",
+      "weight": 1.5
     },
     {
       "added": "2026-09-12",
@@ -1781,7 +1786,7 @@
       "minutes": null,
       "name": "Планета",
       "nameEn": "Planet",
-      "plays": 0,
+      "plays": 2,
       "rules": [
         {
           "kind": "офіційні",
@@ -1795,7 +1800,7 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T17:20:03.076Z",
+      "updated": "2026-09-12T20:16:39.153Z",
       "weight": null
     },
     {
