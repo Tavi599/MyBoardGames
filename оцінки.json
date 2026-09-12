@@ -1,7 +1,7 @@
 {
   "app": "полиця настілок",
   "version": 2,
-  "saved": "2026-09-12T19:36:55.964Z",
+  "saved": "2026-09-12T19:40:56.217Z",
   "games": [
     {
       "added": "2026-09-12",
@@ -2186,7 +2186,10 @@
       "bggId": "358320",
       "bggRank": 820,
       "bggRating": 8.3,
-      "byCount": {},
+      "byCount": {
+        "2": 10,
+        "3": 9
+      },
       "comment": "",
       "cover": "https://cf.geekdo-images.com/r72BZoC3whophBzKi45Rgg__square200/img/TPdjs6tQHryeGybC3XTU6j6liXU=/200x200/filters:strip_icc()/pic6737677.jpg",
       "id": "g-seed-12",
@@ -2208,13 +2211,13 @@
           "url": "https://geekach.com.ua/content/files/vstupniy-komks-80400913.pdf"
         }
       ],
-      "score": 9,
+      "score": 10,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T19:35:37.522Z",
+      "updated": "2026-09-12T19:40:46.611Z",
       "weight": null
     },
     {
