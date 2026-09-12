@@ -814,25 +814,28 @@
       "score": null,
       "status": "колекція",
       "tags": [],
-      "updated": "2026-09-12T13:47:45.799Z",
+      "updated": "2026-09-12T15:50:09.080Z",
       "weight": null
     },
     {
       "added": "2026-09-12",
+      "bggId": "160154",
+      "bggRating": 6.7,
       "byCount": {},
       "comment": "",
+      "cover": "https://cf.geekdo-images.com/5SWmP8J_Xif6nAxTL0k4qw__square200/img/RTgkm0lptXMbtojVoSuF1PT12r0=/200x200/filters:strip_icc()/pic4278304.jpg",
       "expansion": true,
       "id": "g-machi-koro-sharp",
       "maxP": null,
       "minP": null,
       "minutes": null,
       "name": "Мачі Коро: Шарп",
-      "nameEn": "Machi Koro: Sharp",
+      "nameEn": "Machi Koro: Millionaire's Row",
       "plays": 0,
       "score": null,
       "status": "колекція",
       "tags": [],
-      "updated": "2026-09-12T13:41:44.133Z",
+      "updated": "2026-09-12T15:49:56.079Z",
       "weight": null
     },
     {
@@ -1827,5 +1830,5 @@
       "weight": null
     }
   ],
-  "saved": "2026-09-12T15:49:05.730Z"
+  "saved": "2026-09-12T15:50:09.080Z"
 }
