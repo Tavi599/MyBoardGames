@@ -152,6 +152,8 @@ button{cursor:pointer}
   color:var(--ink-soft); text-decoration:none;
   font:600 12px/1 "IBM Plex Mono",ui-monospace,monospace}
 .rules-btn:hover{border-color:var(--petrol); color:var(--petrol)}
+/* Коробка без правил лишає порожнє місце: без нього сусіди з'їжджають. */
+.rules-btn.ghost{border:0; background:none; pointer-events:none}
 
 /* Правила в картці */
 .rules{display:flex; flex-direction:column; gap:4px}
@@ -327,9 +329,16 @@ textarea:focus{outline:none; border-color:var(--petrol)}
 
 @media (max-width:720px){
   .head-row{display:none}
+  /* Кожній дитині — своя клітинка. Авторозміщення тут ламалося: оцінка,
+     прибита до першого рядка, поверталася в перший стовпчик і лягала
+     просто на обкладинку разом із назвою. */
   .row{grid-template-columns:var(--pick,0px) 46px minmax(0,1fr) auto auto; row-gap:9px}
-  .counts{grid-column:2 / -1; grid-template-columns:repeat(4,1fr); width:auto}
-  .score{grid-row:1; width:64px}
+  .row > .pick{grid-area:1 / 1}
+  .row > .cov{grid-area:1 / 2}
+  .row > .open{grid-area:1 / 3}
+  .row > .rules-btn{grid-area:1 / 4}
+  .row > .score{grid-area:1 / 5; width:64px}
+  .row > .counts{grid-area:2 / 2 / 3 / -1; grid-template-columns:repeat(4,1fr); width:auto}
   .card{border-left:0}
   .note{max-width:none}
 }

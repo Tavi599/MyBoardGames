@@ -71,7 +71,7 @@ function renderList(){
     return "<li class='row s-" + esc(stats(g)[0] || "") + (g.expansion ? " exp" : "") +
       (ui.picked.has(g.id) ? " picked" : "") + "' data-id='" + esc(g.id) + "'>" +
       (ui.cmp ? "<label class='pick'><input type='checkbox' data-pick='" + esc(g.id) + "' " +
-        (ui.picked.has(g.id) ? "checked" : "") + " aria-label='Порівняти " + esc(g.name) + "'></label>" : "<span></span>") +
+        (ui.picked.has(g.id) ? "checked" : "") + " aria-label='Порівняти " + esc(g.name) + "'></label>" : "<span class='pick'></span>") +
       "<span class='cov'>" + (g.cover
         ? "<img src='" + esc(g.cover) + "' alt='' loading='lazy' referrerpolicy='no-referrer'>"
         : "<b>" + esc((g.name || "?").trim().charAt(0).toUpperCase()) + "</b>") + "</span>" +
@@ -89,7 +89,7 @@ function renderList(){
       (перше ? "<a class='rules-btn' href='" + esc(перше.url) + "' target='_blank'" +
         " rel='noopener noreferrer' title='" + esc(rules(g).map((п) =>
           ВИДИ_ПРАВИЛ[п.kind] || п.kind).join(" · ")) +
-        "' aria-label='Правила: " + esc(g.name) + "'>П</a>" : "<span></span>") +
+        "' aria-label='Правила: " + esc(g.name) + "'>П</a>" : "<span class='rules-btn ghost'></span>") +
       "<div class='counts'>" + cells + "</div>" +
       "<div class='score " + b + "'><span class='num" + (s == null ? " none" : "") + "'>" +
         (s == null ? "—" : fmt(s)) + "</span>" +
