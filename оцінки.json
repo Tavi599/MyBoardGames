@@ -1,7 +1,7 @@
 {
   "app": "полиця настілок",
   "version": 2,
-  "saved": "2026-09-12T19:58:20.985Z",
+  "saved": "2026-09-12T19:58:59.752Z",
   "games": [
     {
       "added": "2026-09-12",
@@ -1480,7 +1480,10 @@
       "bggId": "387378",
       "bggRank": 976,
       "bggRating": 7.1,
-      "byCount": {},
+      "byCount": {
+        "2": 5,
+        "3": 6
+      },
       "comment": "",
       "cover": "https://cf.geekdo-images.com/CQ9o1kqExmBpHcPMVk0qwQ__square200/img/7d93pnyTawhyzQ-RwwF1xRXxYKY=/200x200/filters:strip_icc()/pic7926071.jpg",
       "id": "g-mlem",
@@ -1489,7 +1492,7 @@
       "minutes": null,
       "name": "MLEM. Космічне агентство",
       "nameEn": "MLEM: Space Agency",
-      "plays": 0,
+      "plays": 10,
       "rules": [
         {
           "kind": "офіційні",
@@ -1497,13 +1500,14 @@
           "url": "https://geekach.com.ua/content/files/pravila-nastlno-gri-mlem.-kosmchne-agentstvo-mlem-space-agency-88195889.pdf"
         }
       ],
-      "score": null,
+      "score": 7,
       "status": "колекція",
       "statuses": [
-        "колекція"
+        "колекція",
+        "улюблена"
       ],
       "tags": [],
-      "updated": "2026-09-12T17:20:03.076Z",
+      "updated": "2026-09-12T19:58:50.513Z",
       "weight": null
     },
     {
