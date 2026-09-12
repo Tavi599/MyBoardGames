@@ -1,7 +1,7 @@
 {
   "app": "полиця настілок",
   "version": 2,
-  "saved": "2026-09-12T20:10:38.002Z",
+  "saved": "2026-09-12T20:10:51.566Z",
   "games": [
     {
       "added": "2026-09-12",
@@ -2678,15 +2678,17 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:10:28.495Z",
-      "weight": null
+      "updated": "2026-09-12T20:10:42.452Z",
+      "weight": 1.5
     },
     {
       "added": "2026-09-12",
       "bggId": "403221",
       "bggRank": 5738,
       "bggRating": 7,
-      "byCount": {},
+      "byCount": {
+        "2": 7
+      },
       "comment": "",
       "cover": "https://cf.geekdo-images.com/6hLMSDvAPpt4rdNqBnJ1yw__square200/img/5L7h_uypne1wa7SEeRiCezKn-8M=/200x200/filters:strip_icc()/pic8006476.jpg",
       "id": "g-ttr-paris",
@@ -2703,13 +2705,13 @@
           "url": "https://geekach.com.ua/content/files/pravila-nastlno-gri-kvitok-na-potjag-parizh-ticket-to-ride-paris-4774380.pdf"
         }
       ],
-      "score": null,
+      "score": 6.5,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T17:20:03.076Z",
+      "updated": "2026-09-12T20:10:51.511Z",
       "weight": null
     },
     {
