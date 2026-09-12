@@ -52,6 +52,20 @@ function renderStatus(g){
   $("cStatus").innerHTML = ручні.concat(авто).join("");
 }
 
+/** Правила гри: список посилань із хрестиком і рядок для нового. */
+function renderRules(g){
+  const список = rules(g);
+  $("cRules").innerHTML = список.length
+    ? список.map((п) =>
+        "<div class='rule'>" +
+        "<a href='" + esc(п.url) + "' target='_blank' rel='noopener noreferrer'>" +
+        esc(п.title || ВИДИ_ПРАВИЛ[п.kind] || "правила") + "</a>" +
+        "<i>" + esc(ВИДИ_ПРАВИЛ[п.kind] || п.kind || "") + "</i>" +
+        "<button type='button' class='rm' data-rule='" + esc(п.url) +
+        "' aria-label='Прибрати'>✕</button></div>").join("")
+    : "<p class='hint'>Правил ще немає.</p>";
+}
+
 /** Доповнення, які ця база завжди тягне за собою. Прив'язані видно чипами,
     а весь перелік ховається за кнопкою: коли доповнень на полиці півтора
     десятка, показувати їх усі в кожній картці — знущання.
@@ -113,6 +127,8 @@ function openCard(id){
   $("cMinutes").value = g.minutes == null ? "" : g.minutes;
   $("cExp").setAttribute("aria-pressed", g.expansion ? "true" : "false");
   // Розкривачка доповнень щоразу починається згорнутою й без старого пошуку.
+  renderRules(g);
+  $("cRuleUrl").value = "";
   $("cWithQ").value = "";
   $("cWithPick").hidden = true;
   $("cWithAdd").setAttribute("aria-expanded", "false");
@@ -231,3 +247,34 @@ document.addEventListener("keydown", (e) => {
   }
 });
 
+/* ── правила ─────────────────────────────────────── */
+$("cRuleKind").innerHTML = Object.keys(ВИДИ_ПРАВИЛ).map((k) =>
+  "<option value='" + esc(k) + "'>" + esc(ВИДИ_ПРАВИЛ[k]) + "</option>").join("");
+
+$("cRuleAdd").addEventListener("click", () => {
+  const g = current(); if(!g || !canEdit()) return;
+  const url = $("cRuleUrl").value.trim();
+  if(!/^https?:\/\//i.test(url)){
+    toast("Потрібне посилання, що починається з http");
+    return;
+  }
+  const kind = $("cRuleKind").value;
+  g.rules = (g.rules || []).filter((п) => п.url !== url);
+  g.rules.push({title: ВИДИ_ПРАВИЛ[kind], url: url, kind: kind});
+  $("cRuleUrl").value = "";
+  renderRules(g);
+  render();
+  touch();
+});
+$("cRuleUrl").addEventListener("keydown", (e) => {
+  if(e.key === "Enter"){ e.preventDefault(); $("cRuleAdd").click(); }
+});
+$("cRules").addEventListener("click", (e) => {
+  const b = e.target.closest("[data-rule]"); if(!b) return;
+  const g = current(); if(!g || !canEdit()) return;
+  g.rules = (g.rules || []).filter((п) => п.url !== b.dataset.rule);
+  if(!g.rules.length) delete g.rules;
+  renderRules(g);
+  render();
+  touch();
+});

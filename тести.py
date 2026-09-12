@@ -28,6 +28,8 @@ import перевірка
             "cover": "https://example.test/a.jpg",
             "bggId": "1", "bggRating": 7.6, "bggRank": 120,
             "withExp": ["g-exp"],
+            "rules": [{"title": "Правила", "kind": "офіційні",
+                       "url": "https://example.test/rules.pdf"}],
             "added": "2026-09-01", "updated": "2026-09-12T10:00:00.000Z",
         },
         {
@@ -75,6 +77,17 @@ import перевірка
     ("немає games", lambda с: с.pop("games"), "games"),
     ("немає version", lambda с: с.pop("version"), "version"),
     ("version із майбутнього", lambda с: с.update(version=99), "чекає"),
+    ("правила не списком", lambda с: с["games"][0].update(rules={}), "rules"),
+    ("правила без посилання",
+     lambda с: с["games"][0]["rules"][0].pop("url"), "потрібне посилання"),
+    ("правила на файл із диска",
+     lambda с: с["games"][0]["rules"][0].update(url="file:///C:/rules.pdf"),
+     "потрібне посилання"),
+    ("вигаданий вид правил",
+     lambda с: с["games"][0]["rules"][0].update(kind="шпаргалка"), "невідомий вид"),
+    ("те саме посилання двічі",
+     lambda с: с["games"][0]["rules"].append(dict(с["games"][0]["rules"][0])),
+     "вже є"),
 ]
 
 

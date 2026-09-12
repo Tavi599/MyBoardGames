@@ -30,7 +30,10 @@ sys.stdout.reconfigure(encoding="utf-8")
     "id", "name", "nameEn", "statuses", "status", "score", "byCount", "weight",
     "plays", "minP", "maxP", "minutes", "tags", "comment", "cover", "expansion",
     "withExp", "bggId", "bggRating", "bggRank", "added", "updated", "deleted",
+    "rules",
 }
+
+ВИДИ_ПРАВИЛ = {"офіційні", "соло", "памʼятка", "переклад", "інше"}
 
 помилки: list[str] = []
 застереження: list[str] = []
@@ -184,6 +187,30 @@ def _перевірити(стан):
 
         if "expansion" in г and not isinstance(г["expansion"], bool):
             біда(де, "expansion має бути true/false")
+
+        пр = г.get("rules")
+        if пр is not None:
+            if not isinstance(пр, list):
+                біда(де, "rules має бути списком")
+            else:
+                адреси = set()
+                for н, п in enumerate(пр):
+                    хто = f"{де} rules[{н}]"
+                    if not isinstance(п, dict):
+                        біда(хто, "не об'єкт")
+                        continue
+                    зайві = set(п) - {"title", "url", "kind"}
+                    if зайві:
+                        увага(хто, "невідомі поля: " + ", ".join(sorted(зайві)))
+                    url = п.get("url")
+                    if not isinstance(url, str) or not url.startswith(("http://", "https://")):
+                        біда(хто, f"url = {url!r}: потрібне посилання http(s)")
+                    elif url in адреси:
+                        біда(хто, "те саме посилання вже є в цієї гри")
+                    else:
+                        адреси.add(url)
+                    if п.get("kind") not in ВИДИ_ПРАВИЛ:
+                        біда(хто, f"невідомий вид правил: {п.get('kind')!r}")
 
         мить(де, "updated", г.get("updated"), обов=True)
         мить(де, "added", г.get("added"), обов=False)

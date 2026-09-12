@@ -112,7 +112,7 @@ button{cursor:pointer}
 
 /* ── аркуш зі списком ──────────────────────────────── */
 .head-row,.row{display:grid; align-items:center;
-  grid-template-columns:var(--pick,0px) 46px minmax(0,1fr) auto auto; gap:14px}
+  grid-template-columns:var(--pick,0px) 46px minmax(0,1fr) auto auto auto; gap:14px}
 /* Немає обкладинки — на її місці монограма, щоб рядки не «стрибали». */
 .cov{width:46px; height:46px; border-radius:6px; overflow:hidden; background:var(--sunk);
   border:1px solid var(--rule-soft); display:grid; place-items:center}
@@ -146,6 +146,24 @@ button{cursor:pointer}
 .s-хочу .dot{background:var(--amber)} .s-колекція .dot{background:var(--petrol-dim)}
 .s-улюблена .dot{background:var(--petrol)} .s-відклав .dot{background:var(--ink-faint)}
 .s-позбувся .dot{background:var(--rust)} .s-онлайн .dot{background:var(--sage)}
+/* Кнопка правил у рядку: маленька, але з нормальною зоною дотику. */
+.rules-btn{display:grid; place-items:center; width:30px; height:30px; flex:none;
+  border:1px solid var(--rule); border-radius:7px; background:var(--sheet);
+  color:var(--ink-soft); text-decoration:none;
+  font:600 12px/1 "IBM Plex Mono",ui-monospace,monospace}
+.rules-btn:hover{border-color:var(--petrol); color:var(--petrol)}
+
+/* Правила в картці */
+.rules{display:flex; flex-direction:column; gap:4px}
+.rule{display:flex; align-items:center; gap:9px; padding:6px 9px; border-radius:6px;
+  background:var(--sheet); border:1px solid var(--rule-soft)}
+.rule a{color:var(--petrol); font-weight:500; min-width:0; overflow:hidden;
+  text-overflow:ellipsis; white-space:nowrap}
+.rule i{margin-left:auto; flex:none; font:600 10px/1 "IBM Plex Mono",ui-monospace,monospace;
+  letter-spacing:.1em; text-transform:uppercase; color:var(--ink-faint); font-style:normal}
+.rule .rm{flex:none; border:0; background:none; color:var(--ink-faint); padding:0 2px}
+.rule .rm:hover{color:var(--rust)}
+
 .meta{margin:3px 0 0; font:400 12.5px/1.45 "IBM Plex Sans",sans-serif; color:var(--ink-faint);
   white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
 .alt{display:block; margin:2px 0 0; font-size:12.5px; color:var(--ink-faint);
@@ -309,7 +327,7 @@ textarea:focus{outline:none; border-color:var(--petrol)}
 
 @media (max-width:720px){
   .head-row{display:none}
-  .row{grid-template-columns:var(--pick,0px) 46px minmax(0,1fr) auto; row-gap:9px}
+  .row{grid-template-columns:var(--pick,0px) 46px minmax(0,1fr) auto auto; row-gap:9px}
   .counts{grid-column:2 / -1; grid-template-columns:repeat(4,1fr); width:auto}
   .score{grid-row:1; width:64px}
   .card{border-left:0}

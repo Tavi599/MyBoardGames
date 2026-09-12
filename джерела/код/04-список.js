@@ -60,6 +60,7 @@ function renderList(){
     if(g.weight) meta.push("складність " + fmt(g.weight));
     if(g.bggRating) meta.push("BGG " + fmt(g.bggRating));
     if(g.tags && g.tags.length) meta.push(g.tags.join(" · "));
+    const перше = перші(g);
     const cells = COUNTS.map((c) => {
       const v = g.byCount ? g.byCount[c] : null;
       return "<span class='cnt " + (v == null ? "void " : "") + band(v) +
@@ -83,6 +84,12 @@ function renderList(){
         "<span class='meta'>" + esc(meta.filter(Boolean).join(" · ")) + "</span>" +
         (g.comment ? "<span class='note'>" + esc(g.comment) + "</span>" : "") +
       "</button>" +
+      // Швидкий виклик правил: суперечка за столом трапляється саме тоді,
+      // коли лізти в картку ніколи.
+      (перше ? "<a class='rules-btn' href='" + esc(перше.url) + "' target='_blank'" +
+        " rel='noopener noreferrer' title='" + esc(rules(g).map((п) =>
+          ВИДИ_ПРАВИЛ[п.kind] || п.kind).join(" · ")) +
+        "' aria-label='Правила: " + esc(g.name) + "'>П</a>" : "<span></span>") +
       "<div class='counts'>" + cells + "</div>" +
       "<div class='score " + b + "'><span class='num" + (s == null ? " none" : "") + "'>" +
         (s == null ? "—" : fmt(s)) + "</span>" +

@@ -135,7 +135,7 @@ button{cursor:pointer}
 
 /* ── аркуш зі списком ──────────────────────────────── */
 .head-row,.row{display:grid; align-items:center;
-  grid-template-columns:var(--pick,0px) 46px minmax(0,1fr) auto auto; gap:14px}
+  grid-template-columns:var(--pick,0px) 46px minmax(0,1fr) auto auto auto; gap:14px}
 /* Немає обкладинки — на її місці монограма, щоб рядки не «стрибали». */
 .cov{width:46px; height:46px; border-radius:6px; overflow:hidden; background:var(--sunk);
   border:1px solid var(--rule-soft); display:grid; place-items:center}
@@ -169,6 +169,24 @@ button{cursor:pointer}
 .s-хочу .dot{background:var(--amber)} .s-колекція .dot{background:var(--petrol-dim)}
 .s-улюблена .dot{background:var(--petrol)} .s-відклав .dot{background:var(--ink-faint)}
 .s-позбувся .dot{background:var(--rust)} .s-онлайн .dot{background:var(--sage)}
+/* Кнопка правил у рядку: маленька, але з нормальною зоною дотику. */
+.rules-btn{display:grid; place-items:center; width:30px; height:30px; flex:none;
+  border:1px solid var(--rule); border-radius:7px; background:var(--sheet);
+  color:var(--ink-soft); text-decoration:none;
+  font:600 12px/1 "IBM Plex Mono",ui-monospace,monospace}
+.rules-btn:hover{border-color:var(--petrol); color:var(--petrol)}
+
+/* Правила в картці */
+.rules{display:flex; flex-direction:column; gap:4px}
+.rule{display:flex; align-items:center; gap:9px; padding:6px 9px; border-radius:6px;
+  background:var(--sheet); border:1px solid var(--rule-soft)}
+.rule a{color:var(--petrol); font-weight:500; min-width:0; overflow:hidden;
+  text-overflow:ellipsis; white-space:nowrap}
+.rule i{margin-left:auto; flex:none; font:600 10px/1 "IBM Plex Mono",ui-monospace,monospace;
+  letter-spacing:.1em; text-transform:uppercase; color:var(--ink-faint); font-style:normal}
+.rule .rm{flex:none; border:0; background:none; color:var(--ink-faint); padding:0 2px}
+.rule .rm:hover{color:var(--rust)}
+
 .meta{margin:3px 0 0; font:400 12.5px/1.45 "IBM Plex Sans",sans-serif; color:var(--ink-faint);
   white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
 .alt{display:block; margin:2px 0 0; font-size:12.5px; color:var(--ink-faint);
@@ -332,7 +350,7 @@ textarea:focus{outline:none; border-color:var(--petrol)}
 
 @media (max-width:720px){
   .head-row{display:none}
-  .row{grid-template-columns:var(--pick,0px) 46px minmax(0,1fr) auto; row-gap:9px}
+  .row{grid-template-columns:var(--pick,0px) 46px minmax(0,1fr) auto auto; row-gap:9px}
   .counts{grid-column:2 / -1; grid-template-columns:repeat(4,1fr); width:auto}
   .score{grid-row:1; width:64px}
   .card{border-left:0}
@@ -390,7 +408,7 @@ textarea:focus{outline:none; border-color:var(--petrol)}
   <div id="cmpBox"></div>
 
   <div class="head-row" id="headRow">
-    <span></span><span></span><span>Гра</span>
+    <span></span><span></span><span>Гра</span><span></span>
     <span class="h-counts">За складом столу</span>
     <span class="h-score" id="hScore">Оцінка</span>
   </div>
@@ -458,6 +476,19 @@ textarea:focus{outline:none; border-color:var(--petrol)}
       <div class="chips" id="cStatus"></div>
       <p class="hint">Статусів може бути кілька: «улюблена» не скасовує «у колекції».
         «Лише онлайн» — грав, але коробки на полиці немає.</p>
+    </fieldset>
+
+    <fieldset class="grp">
+      <legend>Правила</legend>
+      <div class="rules" id="cRules"></div>
+      <div class="line">
+        <div class="fld" style="flex:1 1 180px"><input id="cRuleUrl"
+             placeholder="Посилання на правила" aria-label="Посилання на правила"></div>
+        <div class="fld"><label for="cRuleKind">Вид</label><select id="cRuleKind"></select></div>
+        <button class="btn" id="cRuleAdd" type="button">Додати</button>
+      </div>
+      <p class="hint">Посилання, а не файл: правила лишаються у видавця й не важать
+        нічого. Кнопка «П» у рядку списку відкриває перші з них одним дотиком.</p>
     </fieldset>
 
     <div class="line">
@@ -535,6 +566,25 @@ const STATUS = {"хочу":"хочу зіграти","колекція":"у ко
 // він ніколи не потрапив у збережені дані.
 const AUTO = {"незіграна":"ще не зіграна"};
 const LABEL = Object.assign({}, STATUS, AUTO);
+/* Правила зберігаються посиланнями: файли лишаються у видавця, у
+   репозиторії — тільки адреси. Порядок видів тут же й порядок показу:
+   офіційні правила мають відкриватися першими. */
+const ВИДИ_ПРАВИЛ = {
+  "офіційні": "офіційні правила",
+  "соло": "соло-правила",
+  "памʼятка": "памʼятка",
+  "переклад": "наш переклад",
+  "інше": "інше",
+};
+/** Правила гри, впорядковані так, як їх варто відкривати. */
+function rules(g){
+  const порядок = Object.keys(ВИДИ_ПРАВИЛ);
+  return (g.rules || []).slice().sort(
+    (a, b) => порядок.indexOf(a.kind) - порядок.indexOf(b.kind));
+}
+/** Ті, що відкриються з рядка списку одним дотиком. */
+function перші(g){ return rules(g)[0] || null; }
+
 const LSKEY = "polytsia.games.v1";
 
 const SEED = ["Картографи","Magic Maze","Planet B","Unmatched: Битва легенд, ч. 2",
@@ -1013,6 +1063,14 @@ const ФІЛЬТРИ = [
     пасує: (g, v) => fitsCount(g, v),
   },
   {
+    ключ: "rules", вид: "список", підпис: "Правила", типово: "all",
+    варіанти: () => [["all", "усі"], ["є", "є правила"], ["нема", "без правил"]],
+    пасує(g, v){
+      if(v === "all") return true;
+      return rules(g).length > 0 === (v === "є");
+    },
+  },
+  {
     ключ: "status", вид: "список", підпис: "Статус", типово: "all",
     варіанти: () => [["all", "усі"]].concat(
       Object.keys(LABEL).map((k) => [k, LABEL[k]])),
@@ -1143,6 +1201,7 @@ function renderList(){
     if(g.weight) meta.push("складність " + fmt(g.weight));
     if(g.bggRating) meta.push("BGG " + fmt(g.bggRating));
     if(g.tags && g.tags.length) meta.push(g.tags.join(" · "));
+    const перше = перші(g);
     const cells = COUNTS.map((c) => {
       const v = g.byCount ? g.byCount[c] : null;
       return "<span class='cnt " + (v == null ? "void " : "") + band(v) +
@@ -1166,6 +1225,12 @@ function renderList(){
         "<span class='meta'>" + esc(meta.filter(Boolean).join(" · ")) + "</span>" +
         (g.comment ? "<span class='note'>" + esc(g.comment) + "</span>" : "") +
       "</button>" +
+      // Швидкий виклик правил: суперечка за столом трапляється саме тоді,
+      // коли лізти в картку ніколи.
+      (перше ? "<a class='rules-btn' href='" + esc(перше.url) + "' target='_blank'" +
+        " rel='noopener noreferrer' title='" + esc(rules(g).map((п) =>
+          ВИДИ_ПРАВИЛ[п.kind] || п.kind).join(" · ")) +
+        "' aria-label='Правила: " + esc(g.name) + "'>П</a>" : "<span></span>") +
       "<div class='counts'>" + cells + "</div>" +
       "<div class='score " + b + "'><span class='num" + (s == null ? " none" : "") + "'>" +
         (s == null ? "—" : fmt(s)) + "</span>" +
@@ -1293,6 +1358,20 @@ function renderStatus(g){
   $("cStatus").innerHTML = ручні.concat(авто).join("");
 }
 
+/** Правила гри: список посилань із хрестиком і рядок для нового. */
+function renderRules(g){
+  const список = rules(g);
+  $("cRules").innerHTML = список.length
+    ? список.map((п) =>
+        "<div class='rule'>" +
+        "<a href='" + esc(п.url) + "' target='_blank' rel='noopener noreferrer'>" +
+        esc(п.title || ВИДИ_ПРАВИЛ[п.kind] || "правила") + "</a>" +
+        "<i>" + esc(ВИДИ_ПРАВИЛ[п.kind] || п.kind || "") + "</i>" +
+        "<button type='button' class='rm' data-rule='" + esc(п.url) +
+        "' aria-label='Прибрати'>✕</button></div>").join("")
+    : "<p class='hint'>Правил ще немає.</p>";
+}
+
 /** Доповнення, які ця база завжди тягне за собою. Прив'язані видно чипами,
     а весь перелік ховається за кнопкою: коли доповнень на полиці півтора
     десятка, показувати їх усі в кожній картці — знущання.
@@ -1354,6 +1433,8 @@ function openCard(id){
   $("cMinutes").value = g.minutes == null ? "" : g.minutes;
   $("cExp").setAttribute("aria-pressed", g.expansion ? "true" : "false");
   // Розкривачка доповнень щоразу починається згорнутою й без старого пошуку.
+  renderRules(g);
+  $("cRuleUrl").value = "";
   $("cWithQ").value = "";
   $("cWithPick").hidden = true;
   $("cWithAdd").setAttribute("aria-expanded", "false");
@@ -1472,6 +1553,37 @@ document.addEventListener("keydown", (e) => {
   }
 });
 
+/* ── правила ─────────────────────────────────────── */
+$("cRuleKind").innerHTML = Object.keys(ВИДИ_ПРАВИЛ).map((k) =>
+  "<option value='" + esc(k) + "'>" + esc(ВИДИ_ПРАВИЛ[k]) + "</option>").join("");
+
+$("cRuleAdd").addEventListener("click", () => {
+  const g = current(); if(!g || !canEdit()) return;
+  const url = $("cRuleUrl").value.trim();
+  if(!/^https?:\/\//i.test(url)){
+    toast("Потрібне посилання, що починається з http");
+    return;
+  }
+  const kind = $("cRuleKind").value;
+  g.rules = (g.rules || []).filter((п) => п.url !== url);
+  g.rules.push({title: ВИДИ_ПРАВИЛ[kind], url: url, kind: kind});
+  $("cRuleUrl").value = "";
+  renderRules(g);
+  render();
+  touch();
+});
+$("cRuleUrl").addEventListener("keydown", (e) => {
+  if(e.key === "Enter"){ e.preventDefault(); $("cRuleAdd").click(); }
+});
+$("cRules").addEventListener("click", (e) => {
+  const b = e.target.closest("[data-rule]"); if(!b) return;
+  const g = current(); if(!g || !canEdit()) return;
+  g.rules = (g.rules || []).filter((п) => п.url !== b.dataset.rule);
+  if(!g.rules.length) delete g.rules;
+  renderRules(g);
+  render();
+  touch();
+});
 /* ── панель керування ────────────────────────────── */
 
 /** Малює фільтри з реєстру. Жодного фільтра тут не названо поіменно:

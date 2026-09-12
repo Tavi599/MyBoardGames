@@ -47,7 +47,7 @@
   <div id="cmpBox"></div>
 
   <div class="head-row" id="headRow">
-    <span></span><span></span><span>Гра</span>
+    <span></span><span></span><span>Гра</span><span></span>
     <span class="h-counts">За складом столу</span>
     <span class="h-score" id="hScore">Оцінка</span>
   </div>
@@ -115,6 +115,19 @@
       <div class="chips" id="cStatus"></div>
       <p class="hint">Статусів може бути кілька: «улюблена» не скасовує «у колекції».
         «Лише онлайн» — грав, але коробки на полиці немає.</p>
+    </fieldset>
+
+    <fieldset class="grp">
+      <legend>Правила</legend>
+      <div class="rules" id="cRules"></div>
+      <div class="line">
+        <div class="fld" style="flex:1 1 180px"><input id="cRuleUrl"
+             placeholder="Посилання на правила" aria-label="Посилання на правила"></div>
+        <div class="fld"><label for="cRuleKind">Вид</label><select id="cRuleKind"></select></div>
+        <button class="btn" id="cRuleAdd" type="button">Додати</button>
+      </div>
+      <p class="hint">Посилання, а не файл: правила лишаються у видавця й не важать
+        нічого. Кнопка «П» у рядку списку відкриває перші з них одним дотиком.</p>
     </fieldset>
 
     <div class="line">
