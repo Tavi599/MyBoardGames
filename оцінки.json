@@ -1,7 +1,7 @@
 {
   "app": "полиця настілок",
   "version": 2,
-  "saved": "2026-09-12T20:12:25.291Z",
+  "saved": "2026-09-12T20:13:27.835Z",
   "games": [
     {
       "added": "2026-09-12",
@@ -549,7 +549,11 @@
       "bggId": "184921",
       "bggRank": 393,
       "bggRating": 7.4,
-      "byCount": {},
+      "byCount": {
+        "2": 8,
+        "3": 8.5,
+        "4": 8
+      },
       "comment": "",
       "cover": "https://cf.geekdo-images.com/Noz8-u1ba828WUv69pTXKg__square200/img/x_o72ndBZWBaW73qjzBYWyRyEwc=/200x200/filters:strip_icc()/pic3613444.jpg",
       "id": "g-bunny-kingdom",
@@ -566,14 +570,16 @@
           "url": "https://geekach.com.ua/content/files/pravila-nastlno-gri-korolvstvo-krolikv-bunny-kingdom-43982461.pdf"
         }
       ],
-      "score": null,
+      "score": 8,
       "status": "колекція",
       "statuses": [
-        "колекція"
+        "колекція",
+        "улюблена",
+        "онлайн"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:12:16.256Z",
-      "weight": null
+      "updated": "2026-09-12T20:12:54.778Z",
+      "weight": 1.5
     },
     {
       "added": "2026-09-12",
@@ -2963,7 +2969,11 @@
       "bggId": "266192",
       "bggRank": 38,
       "bggRating": 8,
-      "byCount": {},
+      "byCount": {
+        "2": 7.5,
+        "3": 7.5,
+        "4": 7.5
+      },
       "comment": "",
       "cover": "https://cf.geekdo-images.com/yLZJCVLlIx4c7eJEWUNJ7w__square200/img/BuUGdo8iEnHLPKZvyttszIdBNOU=/200x200/filters:strip_icc()/pic4458123.jpg",
       "id": "g-wingspan",
@@ -2972,7 +2982,7 @@
       "minutes": null,
       "name": "Крила",
       "nameEn": "Wingspan",
-      "plays": 0,
+      "plays": 4,
       "rules": [
         {
           "kind": "офіційні",
@@ -2980,14 +2990,14 @@
           "url": "https://geekach.com.ua/content/files/pravila-nastlno-gri-krila-wingspan-ukranskou-movou-94317401.pdf"
         }
       ],
-      "score": null,
+      "score": 7.5,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T17:20:03.076Z",
-      "weight": null
+      "updated": "2026-09-12T20:13:18.471Z",
+      "weight": 2
     },
     {
       "added": "2026-09-12",
