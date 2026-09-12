@@ -167,6 +167,7 @@ button{cursor:pointer}
 .tile:hover{border-color:var(--ink-faint)}
 /* Позначки коробки тут несе рамка: смуга збоку в плитці не читається. */
 .tile.exp{border-color:var(--amber)}
+.tile.other{border-color:var(--sage)}
 .tile.sale{border-color:var(--rust)}
 .tile.picked{box-shadow:0 0 0 2px var(--petrol)}
 .tile > .open{display:block; width:100%; border:0; background:none; padding:0; text-align:left}
@@ -204,6 +205,13 @@ button{cursor:pointer}
 .row.exp{background:color-mix(in srgb, var(--amber) 7%, transparent);
   box-shadow:inset 2px 0 0 var(--amber)}
 .row.exp:hover{background:color-mix(in srgb, var(--amber) 13%, transparent)}
+/* Чужа коробка: граєш, але вона не твоя. Правило стоїть після .exp —
+   чиє це, важливіше за те, що воно доповнення. З «на продаж» не
+   перетинається зовсім: продавати чуже нема як, і статуси це знають. */
+.row.other{background:color-mix(in srgb, var(--sage) 8%, transparent);
+  box-shadow:inset 2px 0 0 var(--sage)}
+.row.other:hover{background:color-mix(in srgb, var(--sage) 15%, transparent)}
+
 /* Кандидат на продаж: коробка ще твоя, але вже на виході. Правило стоїть
    після .exp навмисне — коли на продаж виставлене доповнення, важливіше
    друге, і саме воно має фарбувати рядок. */
@@ -223,7 +231,7 @@ button{cursor:pointer}
 .nm > .txt{min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
 .dot{width:7px; height:7px; border-radius:50%; background:var(--ink-faint); flex:none}
 .s-колекція .dot{background:var(--petrol-dim)}
-.s-улюблена .dot{background:var(--petrol)} .s-чужа .dot{background:var(--amber)}
+.s-улюблена .dot{background:var(--petrol)} .s-чужа .dot{background:var(--sage)}
 .s-продаж .dot{background:var(--rust)}
 .s-позбувся .dot{background:var(--rust)} .s-онлайн .dot{background:var(--sage)}
 /* Кнопка правил у рядку: маленька, але з нормальною зоною дотику. */
