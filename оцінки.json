@@ -1,7 +1,7 @@
 {
   "app": "полиця настілок",
   "version": 2,
-  "saved": "2026-09-12T19:49:09.020Z",
+  "saved": "2026-09-12T19:50:08.726Z",
   "games": [
     {
       "added": "2026-09-12",
@@ -825,7 +825,12 @@
       "bggId": "172225",
       "bggRank": 4046,
       "bggRating": 6.1,
-      "byCount": {},
+      "byCount": {
+        "2": 4,
+        "3": 6,
+        "4": 8,
+        "5": 8
+      },
       "comment": "",
       "cover": "https://cf.geekdo-images.com/N8bL53-pRU7zaXDTrEaYrw__square200/img/t8FLFsxuthr79x87K4evHO-G2OU=/200x200/filters:strip_icc()/pic2691976.png",
       "id": "g-exploding-kittens",
@@ -834,7 +839,7 @@
       "minutes": null,
       "name": "Вибухові кошенята",
       "nameEn": "Exploding Kittens",
-      "plays": 0,
+      "plays": 20,
       "rules": [
         {
           "kind": "офіційні",
@@ -842,14 +847,14 @@
           "url": "https://geekach.com.ua/content/files/pravila-nastlno-gri-vibuxov-koshenjata-orignalne-vidannja-exploding-kittens-original-edition-49711487.pdf"
         }
       ],
-      "score": null,
+      "score": 7,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T17:37:44.367Z",
-      "weight": null
+      "updated": "2026-09-12T19:49:41.018Z",
+      "weight": 1
     },
     {
       "added": "2026-09-12",
@@ -2813,7 +2818,11 @@
       "bggId": "183394",
       "bggRank": 44,
       "bggRating": 8,
-      "byCount": {},
+      "byCount": {
+        "2": 6,
+        "3": 8,
+        "4": 7
+      },
       "comment": "",
       "cover": "https://cf.geekdo-images.com/l_PRU2lVlX9seScRFcvFlA__square200/img/q8oiJvSqse6aDn9xMKya2Fo4G80=/200x200/filters:strip_icc()/pic6500949.jpg",
       "id": "g-viticulture",
@@ -2830,14 +2839,14 @@
           "url": "https://geekach.com.ua/content/files/pravila-gri-vinorobstvo-ukranskou-movou-7747939.pdf"
         }
       ],
-      "score": null,
+      "score": 7.5,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T17:20:03.076Z",
-      "weight": null
+      "updated": "2026-09-12T19:49:59.549Z",
+      "weight": 2
     },
     {
       "added": "2026-09-12",
