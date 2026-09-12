@@ -1,7 +1,7 @@
 {
   "app": "полиця настілок",
   "version": 2,
-  "saved": "2026-09-12T22:04:38.858Z",
+  "saved": "2026-09-12T22:04:59.295Z",
   "games": [
     {
       "added": "2026-09-12",
@@ -2699,7 +2699,7 @@
       "minutes": null,
       "name": "Шл#к би трафив!",
       "nameEn": "No Thanks!",
-      "plays": 0,
+      "plays": 1,
       "rules": [
         {
           "kind": "офіційні",
@@ -2712,13 +2712,13 @@
           "url": "https://desktopgames.com.ua/games/6977/18414_014_NoThanks_Manual_001_L.pdf"
         }
       ],
-      "score": null,
+      "score": 7,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T21:32:21.571Z",
+      "updated": "2026-09-12T22:04:58.431Z",
       "weight": null
     },
     {
