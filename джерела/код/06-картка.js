@@ -116,6 +116,19 @@ function renderBgg(g){
   $("bggGrp").hidden = !рядки.length && !мітки.length;
 }
 
+/** Вибір власного жанру. Порожній варіант означає «як на BGG» і показує,
+    що саме там стоїть, — щоб було видно, чи є від чого відступати. */
+function renderFamily(g){
+  const чуже = (g.bggFamily || []).map((k) => РОДИНИ[k] || k).join(" · ");
+  const своє = (g.family || [])[0] || "";
+  $("cFamily").innerHTML =
+    "<option value=''>" + esc(чуже ? "як на BGG — " + чуже : "не вказано") + "</option>" +
+    Object.keys(РОДИНИ).map((k) =>
+      "<option value='" + esc(k) + "'" + (своє === k ? " selected" : "") + ">" +
+      esc(РОДИНИ[k]) + "</option>").join("");
+  $("cFamily").value = своє;
+}
+
 /** Правила гри: список посилань із хрестиком і рядок для нового. */
 function renderRules(g){
   const список = rules(g);
@@ -191,6 +204,7 @@ function openCard(id){
   $("cMinutes").value = g.minutes == null ? "" : g.minutes;
   $("cExp").setAttribute("aria-pressed", g.expansion ? "true" : "false");
   renderBgg(g);
+  renderFamily(g);
   // Розкривачка доповнень щоразу починається згорнутою й без старого пошуку.
   renderRules(g);
   $("cRuleUrl").value = "";
@@ -268,6 +282,14 @@ bindField($("cMin"), (g, v) => { g.minP = v === "" ? null : +v; renderPad(g); },
 bindField($("cMax"), (g, v) => { g.maxP = v === "" ? null : +v; renderPad(g); },
   "input", (g) => порожньо(g.maxP));
 bindField($("cMinutes"), (g, v) => { g.minutes = v === "" ? null : +v; }, "input", (g) => порожньо(g.minutes));
+$("cFamily").addEventListener("change", (e) => {
+  const g = current(); if(!g) return;
+  if(!canEdit()){ renderFamily(g); return; }
+  if(e.target.value) g.family = [e.target.value]; else delete g.family;
+  renderBgg(g);      // чипи вгорі картки показують родину першою
+  render();
+  touch();
+});
 bindField($("cNote"), (g, v) => { g.comment = v; }, "input", (g) => g.comment || "");
 bindField($("cTags"), (g, v) => {
   g.tags = v.split(",").map((s) => s.trim()).filter(Boolean);

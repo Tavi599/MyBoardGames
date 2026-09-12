@@ -26,7 +26,8 @@ sys.stdout.reconfigure(encoding="utf-8")
 
 # «хочу зіграти» й «відклав» скасовано на версії 3; «чужа» — коробка є,
 # але не твоя. Міграція на сторінці викидає скасовані з давніх записів.
-СТАТУСИ = {"колекція", "улюблена", "продаж", "онлайн", "чужа", "позбувся"}
+СТАТУСИ = {"колекція", "улюблена", "філер", "продаж", "онлайн", "чужа",
+           "позбувся"}
 # «5+» — це «більше за п'ятьох, скільки коробка дозволяє»; підпис до нього
 # сторінка бере з bggMax кожної гри окремо. Ключ навмисне сталий: якби він
 # залежав від стелі, зміна даних на BGG перейменовувала б чужі оцінки.
@@ -38,7 +39,7 @@ sys.stdout.reconfigure(encoding="utf-8")
     "plays", "minP", "maxP", "minutes", "tags", "comment", "cover", "expansion",
     "withExp", "bggId", "bggRating", "bggRank", "added", "updated", "deleted",
     "rules", "bggMin", "bggMax", "bggBest", "bggRec", "bggTimeMin", "bggTimeMax",
-    "bggWeight", "bggFamily", "bggGenres",
+    "bggWeight", "bggFamily", "bggGenres", "family",
 }
 
 # Підписи жанрів живуть в одному файлі зі сторінкою: «збірка.py» вкладає
@@ -233,6 +234,10 @@ def _перевірити(стан):
         ціле(де, "bggTimeMax", г.get("bggTimeMax"), 1, 6000)
         опитування(де, "bggBest", г.get("bggBest"), г.get("bggMax"))
         опитування(де, "bggRec", г.get("bggRec"), г.get("bggMax"))
+        # Своя родина перевіряється тим самим словником, що й чужа:
+        # вигаданий слуг тут був би так само невидимий у стрічці.
+        жанри(де, "family", г.get("family"), відомі_жанри and
+              {"family": відомі_жанри["bggFamily"]})
         жанри(де, "bggFamily", г.get("bggFamily"), відомі_жанри)
         жанри(де, "bggGenres", г.get("bggGenres"), відомі_жанри)
         for менше, більше in (("minP", "maxP"), ("bggMin", "bggMax"),

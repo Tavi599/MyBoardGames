@@ -1,7 +1,5 @@
 {
   "app": "полиця настілок",
-  "version": 3,
-  "saved": "2026-09-12T22:56:47.403Z",
   "games": [
     {
       "added": "2026-09-12",
@@ -509,6 +507,9 @@
       "comment": "Просто додаткові картки — власних правил не мають.",
       "cover": "https://cf.geekdo-images.com/6GqH14TJJhza86BX5HCLEQ__square200/img/tyxj64Wz6GWL1X-jfnsg3tnaWV4=/200x200/filters:strip_icc()/pic5674958.jpg",
       "expansion": true,
+      "family": [
+        "strategy-games"
+      ],
       "id": "g-arnak-promo",
       "maxP": null,
       "minP": null,
@@ -522,7 +523,7 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:27:08.630Z",
+      "updated": "2026-09-12T22:59:10.062Z",
       "weight": 3
     },
     {
@@ -674,6 +675,9 @@
       },
       "comment": "",
       "cover": "https://cf.geekdo-images.com/Yi4JKIcyzJUoTfaFBogu9w__square200/img/dy6A8mTbYMl3zWZBTSztHG223Yo=/200x200/filters:strip_icc()/pic7479534.png",
+      "family": [
+        "party-games"
+      ],
       "id": "g-beaver-creek",
       "maxP": null,
       "minP": null,
@@ -695,7 +699,7 @@
         "улюблена"
       ],
       "tags": [],
-      "updated": "2026-09-12T21:32:21.571Z",
+      "updated": "2026-09-12T22:59:10.062Z",
       "weight": 1
     },
     {
@@ -731,6 +735,9 @@
       },
       "comment": "",
       "cover": "https://cf.geekdo-images.com/RQjk743e2jCOynyi8MzjLA__square200/img/81cn_-k4c27l0V_HRi_s7mAmq60=/200x200/filters:strip_icc()/pic3107195.jpg",
+      "family": [
+        "family-games"
+      ],
       "id": "g-behind-throne",
       "maxP": null,
       "minP": null,
@@ -752,7 +759,7 @@
         "продаж"
       ],
       "tags": [],
-      "updated": "2026-09-12T22:49:07.480Z",
+      "updated": "2026-09-12T22:59:10.062Z",
       "weight": 1.5
     },
     {
@@ -1854,6 +1861,9 @@
       },
       "comment": "",
       "cover": "https://cf.geekdo-images.com/qa_LGJYcE-b2HPxqWSYYPw__square200/img/adEshhzx5tkwVNBF8sw2KUjidXw=/200x200/filters:strip_icc()/pic8281406.png",
+      "family": [
+        "family-games"
+      ],
       "id": "g-honey",
       "maxP": null,
       "minP": null,
@@ -1874,7 +1884,7 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T21:32:21.571Z",
+      "updated": "2026-09-12T22:59:10.062Z",
       "weight": 1
     },
     {
@@ -1903,6 +1913,9 @@
       "byCount": {},
       "comment": "",
       "cover": "https://cf.geekdo-images.com/s8nB_bnCj_nBdwMJZqsptA__square200/img/0dT9LLAJSC0oz_KYUfp9rr44sck=/200x200/filters:strip_icc()/pic8332322.png",
+      "family": [
+        "thematic-games"
+      ],
       "id": "g-hurtohrai",
       "maxP": null,
       "minP": null,
@@ -1923,7 +1936,7 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T21:32:21.571Z",
+      "updated": "2026-09-12T22:59:10.062Z",
       "weight": null
     },
     {
@@ -3099,6 +3112,9 @@
       },
       "comment": "",
       "cover": "https://cf.geekdo-images.com/GI_7QfgwhhnmCaGfhOK4gQ__square200/img/YZ4cmDXCnX49Y5ZGo9MVQykAKa8=/200x200/filters:strip_icc()/pic5545298.png",
+      "family": [
+        "family-games"
+      ],
       "id": "g-ramen",
       "maxP": null,
       "minP": null,
@@ -3119,7 +3135,7 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T21:32:21.571Z",
+      "updated": "2026-09-12T22:59:10.062Z",
       "weight": 1
     },
     {
@@ -3487,6 +3503,9 @@
       },
       "comment": "",
       "cover": "https://cf.geekdo-images.com/hKCfrhDRpKoKhjY0c6Y1kA__square200/img/DhHjHIf-PuAzsMrAQMjMPPyNX-M=/200x200/filters:strip_icc()/pic6110612.jpg",
+      "family": [
+        "family-games"
+      ],
       "id": "g-seed-05",
       "maxP": null,
       "minP": null,
@@ -3507,7 +3526,7 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T21:32:21.571Z",
+      "updated": "2026-09-12T22:59:10.062Z",
       "weight": 2
     },
     {
@@ -4564,6 +4583,9 @@
       },
       "comment": "",
       "cover": "https://cf.geekdo-images.com/6hLMSDvAPpt4rdNqBnJ1yw__square200/img/5L7h_uypne1wa7SEeRiCezKn-8M=/200x200/filters:strip_icc()/pic8006476.jpg",
+      "family": [
+        "family-games"
+      ],
       "id": "g-ttr-paris",
       "maxP": null,
       "minP": null,
@@ -4585,7 +4607,7 @@
         "продаж"
       ],
       "tags": [],
-      "updated": "2026-09-12T22:48:20.246Z",
+      "updated": "2026-09-12T22:59:10.062Z",
       "weight": 1.5
     },
     {
@@ -5076,6 +5098,9 @@
       },
       "comment": "",
       "cover": "https://cf.geekdo-images.com/TksQfRZfS3cVO5qO7kTNsw__square200/img/1vAmM1NjEYz6U9NvT1uBX2FV4IY=/200x200/filters:strip_icc()/pic8419452.jpg",
+      "family": [
+        "strategy-games"
+      ],
       "id": "g-witcher",
       "maxP": null,
       "minP": null,
@@ -5101,7 +5126,7 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T21:32:21.571Z",
+      "updated": "2026-09-12T22:59:10.062Z",
       "weight": null
     },
     {
@@ -5231,5 +5256,7 @@
       "updated": "2026-09-12T21:32:21.571Z",
       "weight": null
     }
-  ]
+  ],
+  "saved": "2026-09-12T22:59:10.062Z",
+  "version": 3
 }

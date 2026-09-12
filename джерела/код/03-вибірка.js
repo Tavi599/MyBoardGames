@@ -22,7 +22,7 @@ const ФІЛЬТРИ = [
       // «фентезі» й «fantasy» мають знаходити те саме.
       return [g.name, g.nameEn, g.comment, (g.tags || []).join(" "),
               familyNames(g).join(" "), genreNames(g).join(" "),
-              (g.bggFamily || []).join(" "), (g.bggGenres || []).join(" ")]
+              familyOf(g).join(" "), (g.bggGenres || []).join(" ")]
         .join(" ").toLowerCase().includes(q);
     },
   },
@@ -32,18 +32,18 @@ const ФІЛЬТРИ = [
     // «воєнна» лише займала б місце й обіцяла неіснуюче.
     варіанти(){
       const є = new Set();
-      games.forEach((g) => (g.bggFamily || []).forEach((k) => є.add(k)));
+      games.forEach((g) => familyOf(g).forEach((k) => є.add(k)));
       const свої = Object.keys(РОДИНИ).filter((k) => є.has(k))
         .sort((a, b) => РОДИНИ[a].localeCompare(РОДИНИ[b], "uk"))
         .map((k) => [k, РОДИНИ[k]]);
       // «Без родини» — не примха: BGG не встиг розсортувати частину новинок,
       // і без цієї кнопки вони були б недосяжні жодним жанром.
-      const безрідні = games.some((g) => !(g.bggFamily || []).length);
+      const безрідні = games.some((g) => !familyOf(g).length);
       return [["all", "усі"]].concat(свої, безрідні ? [["нема", "без жанру"]] : []);
     },
     пасує(g, v){
       if(v === "all") return true;
-      const р = g.bggFamily || [];
+      const р = familyOf(g);
       return v === "нема" ? !р.length : р.indexOf(v) >= 0;
     },
   },
@@ -128,6 +128,8 @@ const ХОВАНКИ = [
    пасує: (g) => stats(g).indexOf("позбувся") >= 0},
   {ключ: "онлайн", підпис: "лише онлайн",
    пасує: (g) => stats(g).indexOf("онлайн") >= 0},
+  {ключ: "філер", підпис: "маленькі філери",
+   пасує: (g) => stats(g).indexOf("філер") >= 0},
 ];
 function shelf(){
   const х = ui.hide;

@@ -415,6 +415,13 @@ textarea:focus{outline:none; border-color:var(--petrol)}
      розтане на 74%, нижні кнопки лежали просто поверх рядків. Хай їде
      разом зі сторінкою. */
   .tools{position:static; background:none; padding-bottom:14px}
+  /* Випадайки прибиті до правого краю своєї кнопки. На широкому екрані
+     кнопки стоять скраю, і це правильно; на телефоні ряд переноситься,
+     кнопка опиняється посеред екрана — і меню на 210 пікселів вилазило
+     за лівий край (у «···» видно було −33). Тут якорем стає лівий край
+     кнопки: вона ніколи не буває правішою за середину ряду, тож місця
+     праворуч завжди досить. */
+  .menu{left:0; right:auto; min-width:190px; max-width:calc(100vw - 40px)}
   .head-row{display:none}
   /* Кожній дитині — своя клітинка. Авторозміщення тут ламалося: оцінка,
      прибита до першого рядка, поверталася в перший стовпчик і лягала
@@ -656,6 +663,14 @@ textarea:focus{outline:none; border-color:var(--petrol)}
     </div>
 
     <div class="grp">
+      <label class="lbl" for="cFamily">Жанр на полиці</label>
+      <div class="fld" style="width:100%"><select id="cFamily" style="flex:1"></select></div>
+      <p class="hint">Типово беремо родину з BGG. Але підрозділ там проставляють
+        адміністратори руками, і частину коробок ще ніхто не розсортував — тоді
+        постав жанр сам, і стрічка вгорі почне цю гру знаходити.</p>
+    </div>
+
+    <div class="grp">
       <label class="lbl" for="cTags">Теги</label>
       <div class="fld" style="width:100%"><input id="cTags" placeholder="кооп, євро, філер — через кому" style="width:100%"></div>
     </div>
@@ -686,10 +701,11 @@ const COUNTS = ["1","2","3","4","5","5+"];
 const CLABEL = {"1":"1","2":"2","3":"3","4":"4","5":"5","5+":"6+"};
 /* Порядок тут — це порядок чипів у картці й порядок у самому записі.
    «чужа» — коробка є, але не твоя: граєш у неї в друзів або на роботі.
-   «продаж» — ще твоя, але вже на виході. */
+   «продаж» — ще твоя, але вже на виході. «філер» — коробка на
+   чверть години, яку витягають між великими партіями. */
 const STATUS = {"колекція":"у колекції","улюблена":"улюблена",
-                "продаж":"кандидат на продаж","онлайн":"онлайн",
-                "чужа":"інший власник","позбувся":"позбувся"};
+                "філер":"маленький філер","продаж":"кандидат на продаж",
+                "онлайн":"онлайн","чужа":"інший власник","позбувся":"позбувся"};
 /* Статуси, яких більше немає. Міграція знає їх поіменно — див. МІГРАЦІЇ. */
 const СКАСОВАНІ_СТАТУСИ = ["хочу", "відклав"];
 /* Де коробка — питання з однією відповіддю: вона або твоя, або чужа, або
@@ -729,8 +745,18 @@ function перші(g){ return rules(g)[0] || null; }
    Родин на весь BGG вісім, тому вони й стали навігацією. Жанрів вісім
    десятків — вони живуть у картці й знаходяться пошуком. */
 
+/** Родина коробки: своя, якщо поставлена, інакше та, що каже BGG.
+
+    Своє поле тут потрібне не про запас. Підрозділ на BGG проставляють
+    адміністратори руками, і це не залежить ні від віку гри, ні від
+    кількості голосів: «Кіт у коробці» зібрав понад тисячу оцінок і досі
+    не має родини, а «Арідник» зі 169 має. Без власного поля такі коробки
+    назавжди лишалися б поза жанровою навігацією. */
+function familyOf(g){
+  return (g.family && g.family.length) ? g.family : (g.bggFamily || []);
+}
 /** Слуг без підпису показуємо як є: незвичне слово краще за порожнє місце. */
-function familyNames(g){ return (g.bggFamily || []).map((k) => РОДИНИ[k] || k); }
+function familyNames(g){ return familyOf(g).map((k) => РОДИНИ[k] || k); }
 function genreNames(g){ return (g.bggGenres || []).map((k) => ЖАНРИ[k] || k); }
 
 /* ── числа з BGG ──────────────────────────────────────────────────────
@@ -1311,7 +1337,7 @@ const ФІЛЬТРИ = [
       // «фентезі» й «fantasy» мають знаходити те саме.
       return [g.name, g.nameEn, g.comment, (g.tags || []).join(" "),
               familyNames(g).join(" "), genreNames(g).join(" "),
-              (g.bggFamily || []).join(" "), (g.bggGenres || []).join(" ")]
+              familyOf(g).join(" "), (g.bggGenres || []).join(" ")]
         .join(" ").toLowerCase().includes(q);
     },
   },
@@ -1321,18 +1347,18 @@ const ФІЛЬТРИ = [
     // «воєнна» лише займала б місце й обіцяла неіснуюче.
     варіанти(){
       const є = new Set();
-      games.forEach((g) => (g.bggFamily || []).forEach((k) => є.add(k)));
+      games.forEach((g) => familyOf(g).forEach((k) => є.add(k)));
       const свої = Object.keys(РОДИНИ).filter((k) => є.has(k))
         .sort((a, b) => РОДИНИ[a].localeCompare(РОДИНИ[b], "uk"))
         .map((k) => [k, РОДИНИ[k]]);
       // «Без родини» — не примха: BGG не встиг розсортувати частину новинок,
       // і без цієї кнопки вони були б недосяжні жодним жанром.
-      const безрідні = games.some((g) => !(g.bggFamily || []).length);
+      const безрідні = games.some((g) => !familyOf(g).length);
       return [["all", "усі"]].concat(свої, безрідні ? [["нема", "без жанру"]] : []);
     },
     пасує(g, v){
       if(v === "all") return true;
-      const р = g.bggFamily || [];
+      const р = familyOf(g);
       return v === "нема" ? !р.length : р.indexOf(v) >= 0;
     },
   },
@@ -1417,6 +1443,8 @@ const ХОВАНКИ = [
    пасує: (g) => stats(g).indexOf("позбувся") >= 0},
   {ключ: "онлайн", підпис: "лише онлайн",
    пасує: (g) => stats(g).indexOf("онлайн") >= 0},
+  {ключ: "філер", підпис: "маленькі філери",
+   пасує: (g) => stats(g).indexOf("філер") >= 0},
 ];
 function shelf(){
   const х = ui.hide;
@@ -1461,11 +1489,10 @@ function renderStats(){
   // сюди не рахуються, хоч і лишаються в списку зі своїми оцінками.
   const свої = games.filter((g) => stats(g).indexOf("колекція") >= 0);
   const доповнень = свої.filter((g) => g.expansion).length;
-  // «Онлайн» — тільки те, чого вдома немає. Гра, що стоїть на полиці й
-  // паралельно йде онлайн, — це все одно гра з полиці, і рахувати її
-  // двічі означало б, що сума перестане сходитись.
-  const мережеві = games.filter((g) => stats(g).indexOf("онлайн") >= 0
-                                    && stats(g).indexOf("колекція") < 0).length;
+  // «Онлайн» рахує все, у що граєш онлайн, — і те, що стоїть удома теж.
+  // Це не частка від полиці, а окреме питання «скільки ігор доступні
+  // мені в мережі», тож перетин із «на полиці» тут доречний.
+  const мережеві = games.filter((g) => stats(g).indexOf("онлайн") >= 0).length;
   const rated = games.filter((g) => g.score != null);
   const plays = games.reduce((s, g) => s + (+g.plays || 0), 0);
   $("stats").innerHTML =
@@ -1758,6 +1785,19 @@ function renderBgg(g){
   $("bggGrp").hidden = !рядки.length && !мітки.length;
 }
 
+/** Вибір власного жанру. Порожній варіант означає «як на BGG» і показує,
+    що саме там стоїть, — щоб було видно, чи є від чого відступати. */
+function renderFamily(g){
+  const чуже = (g.bggFamily || []).map((k) => РОДИНИ[k] || k).join(" · ");
+  const своє = (g.family || [])[0] || "";
+  $("cFamily").innerHTML =
+    "<option value=''>" + esc(чуже ? "як на BGG — " + чуже : "не вказано") + "</option>" +
+    Object.keys(РОДИНИ).map((k) =>
+      "<option value='" + esc(k) + "'" + (своє === k ? " selected" : "") + ">" +
+      esc(РОДИНИ[k]) + "</option>").join("");
+  $("cFamily").value = своє;
+}
+
 /** Правила гри: список посилань із хрестиком і рядок для нового. */
 function renderRules(g){
   const список = rules(g);
@@ -1833,6 +1873,7 @@ function openCard(id){
   $("cMinutes").value = g.minutes == null ? "" : g.minutes;
   $("cExp").setAttribute("aria-pressed", g.expansion ? "true" : "false");
   renderBgg(g);
+  renderFamily(g);
   // Розкривачка доповнень щоразу починається згорнутою й без старого пошуку.
   renderRules(g);
   $("cRuleUrl").value = "";
@@ -1910,6 +1951,14 @@ bindField($("cMin"), (g, v) => { g.minP = v === "" ? null : +v; renderPad(g); },
 bindField($("cMax"), (g, v) => { g.maxP = v === "" ? null : +v; renderPad(g); },
   "input", (g) => порожньо(g.maxP));
 bindField($("cMinutes"), (g, v) => { g.minutes = v === "" ? null : +v; }, "input", (g) => порожньо(g.minutes));
+$("cFamily").addEventListener("change", (e) => {
+  const g = current(); if(!g) return;
+  if(!canEdit()){ renderFamily(g); return; }
+  if(e.target.value) g.family = [e.target.value]; else delete g.family;
+  renderBgg(g);      // чипи вгорі картки показують родину першою
+  render();
+  touch();
+});
 bindField($("cNote"), (g, v) => { g.comment = v; }, "input", (g) => g.comment || "");
 bindField($("cTags"), (g, v) => {
   g.tags = v.split(",").map((s) => s.trim()).filter(Boolean);
