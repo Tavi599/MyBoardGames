@@ -1,7 +1,7 @@
 {
   "app": "полиця настілок",
   "version": 2,
-  "saved": "2026-09-12T20:23:41.967Z",
+  "saved": "2026-09-12T20:24:02.603Z",
   "games": [
     {
       "added": "2026-09-12",
@@ -1234,13 +1234,13 @@
           "url": "https://geekach.com.ua/content/files/pravila-gri-ostrv-kotv-ukranskou-movou-75533596.pdf"
         }
       ],
-      "score": null,
+      "score": 7.5,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:16:07.800Z",
+      "updated": "2026-09-12T20:23:53.559Z",
       "weight": 2.5
     },
     {
