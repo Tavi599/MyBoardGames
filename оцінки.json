@@ -158,13 +158,30 @@
       "name": "Жах Аркхема. Спадщина Данвіча",
       "nameEn": "Arkham Horror: The Card Game – The Dunwich Legacy",
       "plays": 0,
+      "rules": [
+        {
+          "kind": "офіційні",
+          "title": "Правила кампанії",
+          "url": "https://desktopgames.com.ua/games/5270/Dunwich_Campaign_Guide.pdf"
+        },
+        {
+          "kind": "інше",
+          "title": "Журнал кампанії",
+          "url": "https://desktopgames.com.ua/games/5270/dunwich_journal.pdf"
+        },
+        {
+          "kind": "інше",
+          "title": "Правила базової гри",
+          "url": "https://desktopgames.com.ua/games/5270/AH_Learn_to_Play.pdf"
+        }
+      ],
       "score": null,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T16:01:36.850Z",
+      "updated": "2026-09-12T17:48:38.680Z",
       "weight": null
     },
     {
@@ -276,7 +293,7 @@
     {
       "added": "2026-09-12",
       "byCount": {},
-      "comment": "",
+      "comment": "Просто додаткові картки — власних правил не мають.",
       "cover": "https://cf.geekdo-images.com/6GqH14TJJhza86BX5HCLEQ__square200/img/tyxj64Wz6GWL1X-jfnsg3tnaWV4=/200x200/filters:strip_icc()/pic5674958.jpg",
       "expansion": true,
       "id": "g-arnak-promo",
@@ -292,7 +309,7 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T16:01:36.850Z",
+      "updated": "2026-09-12T17:49:01.934Z",
       "weight": null
     },
     {
@@ -465,9 +482,14 @@
       "plays": 0,
       "rules": [
         {
+          "kind": "офіційні",
+          "title": "Правила",
+          "url": "https://desktopgames.com.ua/games/9075/SBM_rules.pdf"
+        },
+        {
           "kind": "інше",
           "title": "Правила (англійською)",
-          "url": "https://desktopgames.com.ua/games/1356/boss-monster-rules-en.pdf"
+          "url": "https://desktopgames.com.ua/games/9075/Super_Boss_Monster_Rulebook.pdf"
         }
       ],
       "score": null,
@@ -476,7 +498,7 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T17:40:57.486Z",
+      "updated": "2026-09-12T17:48:38.680Z",
       "weight": null
     },
     {
@@ -2834,6 +2856,6 @@
       "weight": null
     }
   ],
-  "saved": "2026-09-12T17:40:57.486Z",
+  "saved": "2026-09-12T17:49:01.934Z",
   "version": 2
 }
