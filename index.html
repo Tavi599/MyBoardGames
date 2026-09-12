@@ -22,6 +22,7 @@ img{max-width:100%}
 
 <style>
 :root{
+  color-scheme:light;
   --paper:#E9EAE5; --sheet:#F5F6F2; --sunk:#DEE0D9;
   --ink:#14181A; --ink-soft:#5A6360; --ink-faint:#8C948F;
   --rule:#CDD2CB; --rule-soft:#DFE3DC;
@@ -32,6 +33,7 @@ img{max-width:100%}
 }
 @media (prefers-color-scheme:dark){
   :root:not([data-theme="light"]){
+    color-scheme:dark;
     --paper:#111512; --sheet:#191E1A; --sunk:#0C100D;
     --ink:#E7EAE3; --ink-soft:#9BA49C; --ink-faint:#6E7871;
     --rule:#293028; --rule-soft:#1F2620;
@@ -42,6 +44,7 @@ img{max-width:100%}
   }
 }
 :root[data-theme="dark"]{
+  color-scheme:dark;
   --paper:#111512; --sheet:#191E1A; --sunk:#0C100D;
   --ink:#E7EAE3; --ink-soft:#9BA49C; --ink-faint:#6E7871;
   --rule:#293028; --rule-soft:#1F2620;
@@ -87,9 +90,17 @@ button{cursor:pointer}
   border:1px solid var(--rule); border-radius:7px; padding:0 10px; height:36px}
 .fld input,.fld select{background:none; border:0; height:34px; font-size:14px}
 .fld input{width:170px}
-.fld select{padding-right:2px}
+/* Нативний список браузер малює власним тлом. Без цих двох правил у темній
+   темі виходить світлий текст на білому — читати неможливо. */
+.fld select{padding-right:2px; background-color:var(--sheet); color:var(--ink)}
+.fld select option{background-color:var(--sheet); color:var(--ink)}
 .fld label{font:600 10px/1 "JetBrains Mono",ui-monospace,monospace; letter-spacing:.12em;
   text-transform:uppercase; color:var(--ink-faint)}
+.flip{width:26px; height:26px; margin-left:2px; border:1px solid var(--rule-soft);
+  border-radius:5px; background:var(--paper); color:var(--ink-soft);
+  font:600 13px/1 "JetBrains Mono",ui-monospace,monospace; padding:0}
+.flip:hover{border-color:var(--ink-faint); color:var(--ink)}
+
 .seg{display:flex; align-items:center; gap:2px; background:var(--sheet); border:1px solid var(--rule);
   border-radius:7px; padding:3px; height:36px}
 .seg > span{font:600 10px/1 "JetBrains Mono",ui-monospace,monospace; letter-spacing:.12em;
@@ -307,12 +318,13 @@ textarea:focus{outline:none; border-color:var(--petrol)}
     <div class="fld"><label for="fSort">Сортувати</label>
       <select id="fSort">
         <option value="score">за оцінкою</option>
-        <option value="name">за назвою</option>
+        <option value="name">за абеткою</option>
         <option value="plays">за партіями</option>
         <option value="added">за датою додавання</option>
         <option value="minutes">за часом партії</option>
         <option value="weight">за складністю</option>
-      </select></div>
+      </select>
+      <button class="flip" id="fFlip" aria-label="Перевернути порядок">↓</button></div>
     <div class="spacer"></div>
     <span class="chip" id="chip" title="Де зберігаються оцінки"></span>
     <button class="btn" id="cmpBtn" aria-pressed="false">Порівняти</button>
@@ -449,7 +461,8 @@ const SEED = ["Картографи","Magic Maze","Planet B","Unmatched: Бит�
 let games = [];
 let db = null;
 let ready = false;
-const ui = {q:"", count:"all", status:"all", sort:"score", cmp:false, picked:new Set(), open:null};
+const ui = {q:"", count:"all", status:"all", sort:"score", rev:false,
+            cmp:false, picked:new Set(), open:null};
 
 const $ = (id) => document.getElementById(id);
 const esc = (s) => String(s == null ? "" : s).replace(/[&<>"]/g, (c) =>
@@ -840,8 +853,11 @@ function visible(){
     return hay.includes(q);
   });
   const num = (v) => (v == null || v === "" ? null : +v);
+  // Порожні значення завжди в кінці — і при прямому порядку, і при зворотному:
+  // гра без оцінки не має спливати нагору лише тому, що список перевернули.
+  const бік = ui.rev ? -1 : 1;
   arr.sort((a, b) => {
-    if(ui.sort === "name") return (a.name || "").localeCompare(b.name || "", "uk");
+    if(ui.sort === "name") return бік * (a.name || "").localeCompare(b.name || "", "uk");
     let x, y;
     if(ui.sort === "score"){ x = effScore(a); y = effScore(b); }
     else if(ui.sort === "plays"){ x = num(a.plays) || 0; y = num(b.plays) || 0; }
@@ -851,7 +867,7 @@ function visible(){
     if(x == null) return 1;
     if(y == null) return -1;
     if(x === y) return (a.name || "").localeCompare(b.name || "", "uk");
-    return ui.sort === "added" ? (x > y ? -1 : 1) : (y - x);
+    return бік * (ui.sort === "added" ? (x > y ? -1 : 1) : (y - x));
   });
   return arr;
 }
@@ -1132,6 +1148,14 @@ document.addEventListener("keydown", (e) => {
 $("q").addEventListener("input", (e) => { ui.q = e.target.value; render(); });
 $("fStatus").addEventListener("change", (e) => { ui.status = e.target.value; render(); });
 $("fSort").addEventListener("change", (e) => { ui.sort = e.target.value; render(); });
+$("fFlip").addEventListener("click", function(){
+  ui.rev = !ui.rev;
+  this.textContent = ui.rev ? "↑" : "↓";
+  this.title = ui.sort === "name"
+    ? (ui.rev ? "Я → А" : "А → Я")
+    : (ui.rev ? "від меншого" : "від більшого");
+  render();
+});
 $("segCount").addEventListener("click", (e) => {
   const b = e.target.closest("button"); if(!b) return;
   ui.count = b.dataset.c;
