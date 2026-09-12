@@ -1,7 +1,7 @@
 {
   "app": "полиця настілок",
   "version": 2,
-  "saved": "2026-09-12T20:26:07.232Z",
+  "saved": "2026-09-12T20:27:17.850Z",
   "games": [
     {
       "added": "2026-09-12",
@@ -313,7 +313,11 @@
     },
     {
       "added": "2026-09-12",
-      "byCount": {},
+      "byCount": {
+        "2": 8,
+        "3": 8,
+        "4": 8
+      },
       "comment": "Просто додаткові картки — власних правил не мають.",
       "cover": "https://cf.geekdo-images.com/6GqH14TJJhza86BX5HCLEQ__square200/img/tyxj64Wz6GWL1X-jfnsg3tnaWV4=/200x200/filters:strip_icc()/pic5674958.jpg",
       "expansion": true,
@@ -323,15 +327,15 @@
       "minutes": null,
       "name": "Загублені руїни Арнаку. Промо-картки",
       "nameEn": "",
-      "plays": 0,
-      "score": null,
+      "plays": 1,
+      "score": 8,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T17:49:01.934Z",
-      "weight": null
+      "updated": "2026-09-12T20:27:08.630Z",
+      "weight": 3
     },
     {
       "added": "2026-09-12",
