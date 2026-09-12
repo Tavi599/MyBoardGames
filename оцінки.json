@@ -1,13 +1,30 @@
 {
   "app": "полиця настілок",
-  "version": 2,
-  "saved": "2026-09-12T20:27:17.850Z",
   "games": [
     {
       "added": "2026-09-12",
+      "bggBest": [
+        5,
+        6
+      ],
       "bggId": "432",
+      "bggMax": 10,
+      "bggMin": 2,
       "bggRank": 674,
       "bggRating": 7,
+      "bggRec": [
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "bggTimeMax": 45,
+      "bggTimeMin": 45,
+      "bggWeight": 1.2,
       "byCount": {
         "3": 5,
         "4": 6,
@@ -35,14 +52,25 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:11:59.802Z",
+      "updated": "2026-09-12T20:47:53.458Z",
       "weight": null
     },
     {
       "added": "2026-09-12",
+      "bggBest": [
+        2
+      ],
       "bggId": "173346",
+      "bggMax": 2,
+      "bggMin": 2,
       "bggRank": 24,
       "bggRating": 8.1,
+      "bggRec": [
+        2
+      ],
+      "bggTimeMax": 30,
+      "bggTimeMin": 30,
+      "bggWeight": 2.2,
       "byCount": {
         "2": 8
       },
@@ -73,14 +101,29 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T19:45:47.068Z",
+      "updated": "2026-09-12T20:47:53.458Z",
       "weight": null
     },
     {
       "added": "2026-09-12",
+      "bggBest": [
+        2,
+        3
+      ],
       "bggId": "403160",
+      "bggMax": 4,
+      "bggMin": 1,
       "bggRank": 7917,
       "bggRating": 8.3,
+      "bggRec": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "bggTimeMax": 60,
+      "bggTimeMin": 40,
+      "bggWeight": 2.3,
       "byCount": {
         "2": 6,
         "3": 7,
@@ -118,14 +161,26 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T19:48:59.714Z",
+      "updated": "2026-09-12T20:47:53.458Z",
       "weight": 2
     },
     {
       "added": "2026-09-12",
+      "bggBest": [
+        2
+      ],
       "bggId": "205637",
+      "bggMax": 2,
+      "bggMin": 1,
       "bggRank": 33,
       "bggRating": 8.1,
+      "bggRec": [
+        1,
+        2
+      ],
+      "bggTimeMax": 120,
+      "bggTimeMin": 60,
+      "bggWeight": 3.6,
       "byCount": {},
       "comment": "",
       "cover": "https://cf.geekdo-images.com/B5F5ulz0UivNgrI9Ky0euA__square200/img/rCOvTBoMid0V821bCAJuY_gLLfc=/200x200/filters:strip_icc()/pic3122349.jpg",
@@ -159,13 +214,25 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T17:20:03.076Z",
+      "updated": "2026-09-12T20:47:53.458Z",
       "weight": null
     },
     {
       "added": "2026-09-12",
+      "bggBest": [
+        2
+      ],
       "bggId": "208545",
+      "bggMax": 2,
+      "bggMin": 1,
       "bggRating": 8.4,
+      "bggRec": [
+        1,
+        2
+      ],
+      "bggTimeMax": 120,
+      "bggTimeMin": 60,
+      "bggWeight": 3.5,
       "byCount": {},
       "comment": "",
       "cover": "https://cf.geekdo-images.com/K-Gm9TAbPmHhA0E7wWvZ8g__square200/img/fJOVOW_8W_D_gjxxLqG2DD9Fd6w=/200x200/filters:strip_icc()/pic3610420.jpg",
@@ -200,13 +267,27 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T19:51:59.189Z",
+      "updated": "2026-09-12T20:47:53.458Z",
       "weight": 5
     },
     {
       "added": "2026-09-12",
+      "bggBest": [
+        2
+      ],
       "bggId": "340035",
+      "bggMax": 4,
+      "bggMin": 1,
       "bggRating": 8.5,
+      "bggRec": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "bggTimeMax": 180,
+      "bggTimeMin": 45,
+      "bggWeight": 3.8,
       "byCount": {},
       "comment": "",
       "cover": "https://cf.geekdo-images.com/zCBeaFMFckzNCwJihcOXLQ__square200/img/YSrBfvWfdr0u3I9gf1_Vy-g_6gs=/200x200/filters:strip_icc()/pic7003509.png",
@@ -231,14 +312,28 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T19:51:56.019Z",
+      "updated": "2026-09-12T20:47:53.458Z",
       "weight": 5
     },
     {
       "added": "2026-09-12",
+      "bggBest": [
+        3
+      ],
       "bggId": "312484",
+      "bggMax": 4,
+      "bggMin": 1,
       "bggRank": 30,
       "bggRating": 8.1,
+      "bggRec": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "bggTimeMax": 120,
+      "bggTimeMin": 30,
+      "bggWeight": 2.9,
       "byCount": {
         "2": 8.5
       },
@@ -274,7 +369,7 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T19:52:50.750Z",
+      "updated": "2026-09-12T20:47:53.458Z",
       "weight": 3,
       "withExp": [
         "g-arnak-promo"
@@ -282,8 +377,24 @@
     },
     {
       "added": "2026-09-12",
+      "bggBest": [
+        1,
+        2,
+        3
+      ],
       "bggId": "439816",
+      "bggMax": 4,
+      "bggMin": 1,
       "bggRating": 8.7,
+      "bggRec": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "bggTimeMax": 120,
+      "bggTimeMin": 30,
+      "bggWeight": 3.3,
       "byCount": {},
       "comment": "",
       "cover": "https://cf.geekdo-images.com/LnwY556xbt_3qHIISdG46Q__square200/img/Ts4mmaAPjcmq_TEtzj-WlNFqPF0=/200x200/filters:strip_icc()/pic9094312.jpg",
@@ -308,7 +419,7 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T17:20:03.076Z",
+      "updated": "2026-09-12T20:47:53.458Z",
       "weight": null
     },
     {
@@ -339,9 +450,20 @@
     },
     {
       "added": "2026-09-12",
+      "bggBest": [
+        2
+      ],
       "bggId": "760",
+      "bggMax": 2,
+      "bggMin": 2,
       "bggRank": 334,
       "bggRating": 7.4,
+      "bggRec": [
+        2
+      ],
+      "bggTimeMax": 30,
+      "bggTimeMin": 30,
+      "bggWeight": 1.9,
       "byCount": {
         "2": 8
       },
@@ -372,14 +494,27 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:04:38.187Z",
+      "updated": "2026-09-12T20:47:53.458Z",
       "weight": 1
     },
     {
       "added": "2026-09-12",
+      "bggBest": [
+        3
+      ],
       "bggId": "281549",
+      "bggMax": 4,
+      "bggMin": 2,
       "bggRank": 973,
       "bggRating": 7.4,
+      "bggRec": [
+        2,
+        3,
+        4
+      ],
+      "bggTimeMax": 120,
+      "bggTimeMin": 60,
+      "bggWeight": 3.1,
       "byCount": {},
       "comment": "",
       "cover": "https://cf.geekdo-images.com/-9NLgO6ASOHgZtMtamqjxw__square200/img/FAhOsxfX6w9eobTUUAe_bFT9_VQ=/200x200/filters:strip_icc()/pic6418160.png",
@@ -408,14 +543,29 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T17:37:13.835Z",
+      "updated": "2026-09-12T20:47:53.458Z",
       "weight": null
     },
     {
       "added": "2026-09-12",
+      "bggBest": [
+        3,
+        4
+      ],
       "bggId": "386018",
+      "bggMax": 5,
+      "bggMin": 1,
       "bggRank": 7713,
       "bggRating": 7,
+      "bggRec": [
+        2,
+        3,
+        4,
+        5
+      ],
+      "bggTimeMax": 30,
+      "bggTimeMin": 15,
+      "bggWeight": 1.1,
       "byCount": {
         "2": 10,
         "3": 10,
@@ -445,14 +595,28 @@
         "улюблена"
       ],
       "tags": [],
-      "updated": "2026-09-12T19:47:15.230Z",
+      "updated": "2026-09-12T20:47:53.458Z",
       "weight": 1
     },
     {
       "added": "2026-09-12",
+      "bggBest": [
+        3,
+        4
+      ],
       "bggId": "175763",
+      "bggMax": 4,
+      "bggMin": 2,
       "bggRank": 9499,
       "bggRating": 6.2,
+      "bggRec": [
+        2,
+        3,
+        4
+      ],
+      "bggTimeMax": 30,
+      "bggTimeMin": 20,
+      "bggWeight": 1.9,
       "byCount": {
         "2": 5,
         "3": 6,
@@ -480,14 +644,25 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:18:41.078Z",
+      "updated": "2026-09-12T20:47:53.458Z",
       "weight": 1.5
     },
     {
       "added": "2026-09-12",
+      "bggBest": [
+        2
+      ],
       "bggId": "355433",
+      "bggMax": 2,
+      "bggMin": 2,
       "bggRank": 1317,
       "bggRating": 7,
+      "bggRec": [
+        2
+      ],
+      "bggTimeMax": 30,
+      "bggTimeMin": 20,
+      "bggWeight": 1.4,
       "byCount": {
         "2": 7
       },
@@ -513,14 +688,28 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T19:48:11.968Z",
+      "updated": "2026-09-12T20:47:53.458Z",
       "weight": 2
     },
     {
       "added": "2026-09-12",
+      "bggBest": [
+        3,
+        4
+      ],
       "bggId": "415524",
+      "bggMax": 4,
+      "bggMin": 1,
       "bggRank": 5419,
       "bggRating": 7.3,
+      "bggRec": [
+        2,
+        3,
+        4
+      ],
+      "bggTimeMax": 30,
+      "bggTimeMin": 30,
+      "bggWeight": 2.3,
       "byCount": {},
       "comment": "",
       "cover": "https://cf.geekdo-images.com/y56BJ_mADO2ORYwLaP8ktA__square200/img/T2Y_cQpd5pHWTm-YJUr8WrwrM-0=/200x200/filters:strip_icc()/pic8058626.png",
@@ -549,14 +738,28 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T17:48:38.680Z",
+      "updated": "2026-09-12T20:47:53.458Z",
       "weight": null
     },
     {
       "added": "2026-09-12",
+      "bggBest": [
+        3,
+        4
+      ],
       "bggId": "184921",
+      "bggMax": 4,
+      "bggMin": 2,
       "bggRank": 393,
       "bggRating": 7.4,
+      "bggRec": [
+        2,
+        3,
+        4
+      ],
+      "bggTimeMax": 60,
+      "bggTimeMin": 40,
+      "bggWeight": 2.3,
       "byCount": {
         "2": 8,
         "3": 8.5,
@@ -586,14 +789,28 @@
         "онлайн"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:12:54.778Z",
+      "updated": "2026-09-12T20:47:53.458Z",
       "weight": 1.5
     },
     {
       "added": "2026-09-12",
+      "bggBest": [
+        2
+      ],
       "bggId": "283155",
+      "bggMax": 4,
+      "bggMin": 1,
       "bggRank": 274,
       "bggRating": 7.5,
+      "bggRec": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "bggTimeMax": 45,
+      "bggTimeMin": 30,
+      "bggWeight": 2.2,
       "byCount": {
         "2": 8,
         "3": 8,
@@ -621,14 +838,27 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:22:59.251Z",
+      "updated": "2026-09-12T20:47:53.458Z",
       "weight": 2.5
     },
     {
       "added": "2026-09-12",
+      "bggBest": [
+        2
+      ],
       "bggId": "416851",
+      "bggMax": 5,
+      "bggMin": 2,
       "bggRank": 208,
       "bggRating": 7.7,
+      "bggRec": [
+        2,
+        3,
+        4
+      ],
+      "bggTimeMax": 25,
+      "bggTimeMin": 10,
+      "bggWeight": 1.7,
       "byCount": {
         "2": 7.5,
         "3": 8.5,
@@ -658,14 +888,26 @@
         "онлайн"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:04:05.069Z",
+      "updated": "2026-09-12T20:47:53.458Z",
       "weight": 2
     },
     {
       "added": "2026-09-12",
+      "bggBest": [
+        2
+      ],
       "bggId": "334307",
+      "bggMax": 2,
+      "bggMin": 1,
       "bggRank": 6168,
       "bggRating": 6.3,
+      "bggRec": [
+        1,
+        2
+      ],
+      "bggTimeMax": 30,
+      "bggTimeMin": 15,
+      "bggWeight": 2.0,
       "byCount": {},
       "comment": "",
       "cover": "https://cf.geekdo-images.com/UVTPVAE3v_Czlo0zx0zHDA__square200/img/r8SFhWvGIjX1GUe2QTvE2hqRT-M=/200x200/filters:strip_icc()/pic6549741.jpg",
@@ -689,14 +931,28 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T17:20:03.076Z",
+      "updated": "2026-09-12T20:47:53.458Z",
       "weight": null
     },
     {
       "added": "2026-09-12",
+      "bggBest": [
+        2
+      ],
       "bggId": "244522",
+      "bggMax": 4,
+      "bggMin": 1,
       "bggRank": 203,
       "bggRating": 7.5,
+      "bggRec": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "bggTimeMax": 30,
+      "bggTimeMin": 30,
+      "bggWeight": 1.9,
       "byCount": {
         "2": 7,
         "3": 8,
@@ -724,14 +980,29 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T19:50:43.958Z",
+      "updated": "2026-09-12T20:47:53.458Z",
       "weight": null
     },
     {
       "added": "2026-09-12",
+      "bggBest": [
+        5,
+        6
+      ],
       "bggId": "158899",
+      "bggMax": 6,
+      "bggMin": 2,
       "bggRank": 565,
       "bggRating": 7.1,
+      "bggRec": [
+        3,
+        4,
+        5,
+        6
+      ],
+      "bggTimeMax": 40,
+      "bggTimeMin": 40,
+      "bggWeight": 1.8,
       "byCount": {
         "2": 4,
         "3": 5,
@@ -760,14 +1031,28 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:11:33.272Z",
+      "updated": "2026-09-12T20:47:53.458Z",
       "weight": 2
     },
     {
       "added": "2026-09-12",
+      "bggBest": [
+        3
+      ],
       "bggId": "253344",
+      "bggMax": 5,
+      "bggMin": 1,
       "bggRank": 54,
       "bggRating": 8.2,
+      "bggRec": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "bggTimeMax": 120,
+      "bggTimeMin": 90,
+      "bggWeight": 2.5,
       "byCount": {
         "2": 8.5,
         "3": 8,
@@ -795,14 +1080,26 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:25:57.582Z",
+      "updated": "2026-09-12T20:47:53.458Z",
       "weight": 4
     },
     {
       "added": "2026-09-12",
+      "bggBest": [
+        2
+      ],
       "bggId": "322703",
+      "bggMax": 2,
+      "bggMin": 1,
       "bggRank": 3475,
       "bggRating": 6.7,
+      "bggRec": [
+        1,
+        2
+      ],
+      "bggTimeMax": 15,
+      "bggTimeMin": 15,
+      "bggWeight": 1.8,
       "byCount": {},
       "comment": "",
       "cover": "https://cf.geekdo-images.com/aDs97Vr3NP_vc-bg-w1jzw__square200/img/bme_iRZQpOSkIhZbEPmSAczTRY4=/200x200/filters:strip_icc()/pic8807033.png",
@@ -826,14 +1123,28 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T17:20:03.076Z",
+      "updated": "2026-09-12T20:47:53.458Z",
       "weight": null
     },
     {
       "added": "2026-09-12",
+      "bggBest": [
+        5,
+        6
+      ],
       "bggId": "39856",
+      "bggMax": 6,
+      "bggMin": 3,
       "bggRank": 435,
       "bggRating": 7.2,
+      "bggRec": [
+        4,
+        5,
+        6
+      ],
+      "bggTimeMax": 30,
+      "bggTimeMin": 30,
+      "bggWeight": 1.2,
       "byCount": {
         "2": 5,
         "3": 5,
@@ -867,14 +1178,28 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:20:12.296Z",
+      "updated": "2026-09-12T20:47:53.458Z",
       "weight": 1
     },
     {
       "added": "2026-09-12",
+      "bggBest": [
+        4,
+        5
+      ],
       "bggId": "172225",
+      "bggMax": 5,
+      "bggMin": 2,
       "bggRank": 4046,
       "bggRating": 6.1,
+      "bggRec": [
+        3,
+        4,
+        5
+      ],
+      "bggTimeMax": 15,
+      "bggTimeMin": 15,
+      "bggWeight": 1.1,
       "byCount": {
         "2": 4,
         "3": 6,
@@ -903,13 +1228,26 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T19:49:41.018Z",
+      "updated": "2026-09-12T20:47:53.458Z",
       "weight": 1
     },
     {
       "added": "2026-09-12",
+      "bggBest": [
+        2
+      ],
       "bggId": "412576",
+      "bggMax": 5,
+      "bggMin": 2,
       "bggRating": 8.2,
+      "bggRec": [
+        2,
+        3,
+        4
+      ],
+      "bggTimeMax": 60,
+      "bggTimeMin": 60,
+      "bggWeight": 2.1,
       "byCount": {},
       "comment": "",
       "cover": "https://cf.geekdo-images.com/DHrlMA2XJr5T5IsO_X0Z3w__square200/img/E81Ht7LG14pDPLH_-YVvNfW1JOk=/200x200/filters:strip_icc()/pic7998961.jpg",
@@ -934,14 +1272,27 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T17:20:03.076Z",
+      "updated": "2026-09-12T20:47:53.458Z",
       "weight": null
     },
     {
       "added": "2026-09-12",
+      "bggBest": [
+        2
+      ],
       "bggId": "391163",
+      "bggMax": 5,
+      "bggMin": 2,
       "bggRank": 150,
       "bggRating": 7.7,
+      "bggRec": [
+        2,
+        3,
+        4
+      ],
+      "bggTimeMax": 60,
+      "bggTimeMin": 40,
+      "bggWeight": 2.2,
       "byCount": {},
       "comment": "",
       "cover": "https://cf.geekdo-images.com/08bC8NviSTNc4Zvur4pueA__square200/img/rxr_L6hd1BjMCgkO8Omt1BAAGH0=/200x200/filters:strip_icc()/pic7578350.jpg",
@@ -965,14 +1316,25 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T17:20:03.076Z",
+      "updated": "2026-09-12T20:47:53.458Z",
       "weight": null
     },
     {
       "added": "2026-09-12",
+      "bggBest": [
+        2
+      ],
       "bggId": "288169",
+      "bggMax": 2,
+      "bggMin": 2,
       "bggRank": 1517,
       "bggRating": 7,
+      "bggRec": [
+        2
+      ],
+      "bggTimeMax": 30,
+      "bggTimeMin": 30,
+      "bggWeight": 1.8,
       "byCount": {
         "2": 6
       },
@@ -998,14 +1360,26 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:14:22.013Z",
+      "updated": "2026-09-12T20:47:53.458Z",
       "weight": 1
     },
     {
       "added": "2026-09-12",
+      "bggBest": [
+        2
+      ],
       "bggId": "182874",
+      "bggMax": 4,
+      "bggMin": 2,
       "bggRank": 69,
       "bggRating": 8,
+      "bggRec": [
+        2,
+        3
+      ],
+      "bggTimeMax": 120,
+      "bggTimeMin": 60,
+      "bggWeight": 3.2,
       "byCount": {},
       "comment": "",
       "cover": "https://cf.geekdo-images.com/PJRaImV8iXGAq2L-6rrn-w__square200/img/jEUyGb2ochXtziGkbgdDqSyvLVQ=/200x200/filters:strip_icc()/pic2649931.jpg",
@@ -1029,14 +1403,31 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T19:51:37.833Z",
+      "updated": "2026-09-12T20:47:53.458Z",
       "weight": 4
     },
     {
       "added": "2026-09-12",
+      "bggBest": [
+        5,
+        6
+      ],
       "bggId": "366013",
+      "bggMax": 6,
+      "bggMin": 1,
       "bggRank": 47,
       "bggRating": 8,
+      "bggRec": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "bggTimeMax": 60,
+      "bggTimeMin": 30,
+      "bggWeight": 2.2,
       "byCount": {
         "2": 5,
         "3": 5,
@@ -1070,14 +1461,29 @@
         "позбувся"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:19:29.124Z",
+      "updated": "2026-09-12T20:47:53.458Z",
       "weight": 1.5
     },
     {
       "added": "2026-09-12",
+      "bggBest": [
+        3,
+        4
+      ],
       "bggId": "348447",
+      "bggMax": 4,
+      "bggMin": 1,
       "bggRank": 3250,
       "bggRating": 6.8,
+      "bggRec": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "bggTimeMax": 20,
+      "bggTimeMin": 15,
+      "bggWeight": 1.8,
       "byCount": {
         "2": 7,
         "3": 7,
@@ -1105,14 +1511,25 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:14:06.180Z",
+      "updated": "2026-09-12T20:47:53.458Z",
       "weight": 1.5
     },
     {
       "added": "2026-09-12",
+      "bggBest": [
+        2
+      ],
       "bggId": "2655",
+      "bggMax": 2,
+      "bggMin": 2,
       "bggRank": 337,
       "bggRating": 7.3,
+      "bggRec": [
+        2
+      ],
+      "bggTimeMax": 20,
+      "bggTimeMin": 20,
+      "bggWeight": 2.3,
       "byCount": {
         "2": 8
       },
@@ -1139,13 +1556,26 @@
         "улюблена"
       ],
       "tags": [],
-      "updated": "2026-09-12T19:59:47.664Z",
+      "updated": "2026-09-12T20:47:53.458Z",
       "weight": 1
     },
     {
       "added": "2026-09-12",
+      "bggBest": [
+        5
+      ],
       "bggId": "421978",
+      "bggMax": 6,
+      "bggMin": 2,
       "bggRating": 7.6,
+      "bggRec": [
+        3,
+        4,
+        5
+      ],
+      "bggTimeMax": 20,
+      "bggTimeMin": 10,
+      "bggWeight": 1.0,
       "byCount": {
         "2": 7,
         "3": 7
@@ -1172,14 +1602,25 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:15:29.831Z",
+      "updated": "2026-09-12T20:47:53.458Z",
       "weight": 1
     },
     {
       "added": "2026-09-12",
+      "bggBest": [
+        1
+      ],
       "bggId": "425505",
+      "bggMax": 1,
+      "bggMin": 1,
       "bggRank": 3075,
       "bggRating": 7.8,
+      "bggRec": [
+        1
+      ],
+      "bggTimeMax": 60,
+      "bggTimeMin": 30,
+      "bggWeight": 2.1,
       "byCount": {},
       "comment": "",
       "cover": "https://cf.geekdo-images.com/s8nB_bnCj_nBdwMJZqsptA__square200/img/0dT9LLAJSC0oz_KYUfp9rr44sck=/200x200/filters:strip_icc()/pic8332322.png",
@@ -1203,14 +1644,28 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T17:20:03.076Z",
+      "updated": "2026-09-12T20:47:53.458Z",
       "weight": null
     },
     {
       "added": "2026-09-12",
+      "bggBest": [
+        3
+      ],
       "bggId": "281259",
+      "bggMax": 4,
+      "bggMin": 1,
       "bggRank": 207,
       "bggRating": 7.6,
+      "bggRec": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "bggTimeMax": 90,
+      "bggTimeMin": 60,
+      "bggWeight": 2.4,
       "byCount": {
         "2": 7.5,
         "3": 7.5,
@@ -1244,13 +1699,26 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:23:53.559Z",
+      "updated": "2026-09-12T20:47:53.458Z",
       "weight": 2.5
     },
     {
       "added": "2026-09-12",
+      "bggBest": [
+        2
+      ],
       "bggId": "394150",
+      "bggMax": 4,
+      "bggMin": 1,
       "bggRating": 8.6,
+      "bggRec": [
+        1,
+        2,
+        3
+      ],
+      "bggTimeMax": 40,
+      "bggTimeMin": 40,
+      "bggWeight": 2.9,
       "byCount": {
         "2": 9,
         "3": 9,
@@ -1285,13 +1753,26 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:24:53.619Z",
+      "updated": "2026-09-12T20:47:53.458Z",
       "weight": 3
     },
     {
       "added": "2026-09-12",
+      "bggBest": [
+        2
+      ],
       "bggId": "351549",
+      "bggMax": 4,
+      "bggMin": 1,
       "bggRating": 8.2,
+      "bggRec": [
+        1,
+        2,
+        3
+      ],
+      "bggTimeMax": 40,
+      "bggTimeMin": 40,
+      "bggWeight": 2.5,
       "byCount": {
         "2": 8,
         "3": 8,
@@ -1321,13 +1802,26 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:25:16.915Z",
+      "updated": "2026-09-12T20:47:53.458Z",
       "weight": 1.5
     },
     {
       "added": "2026-09-12",
+      "bggBest": [
+        2
+      ],
       "bggId": "404357",
+      "bggMax": 4,
+      "bggMin": 1,
       "bggRating": 8,
+      "bggRec": [
+        1,
+        2,
+        3
+      ],
+      "bggTimeMax": 40,
+      "bggTimeMin": 40,
+      "bggWeight": 2.5,
       "byCount": {
         "2": 8,
         "3": 8,
@@ -1357,13 +1851,26 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:25:27.667Z",
+      "updated": "2026-09-12T20:47:53.458Z",
       "weight": 1.5
     },
     {
       "added": "2026-09-12",
+      "bggBest": [
+        3
+      ],
       "bggId": "351550",
+      "bggMax": 5,
+      "bggMin": 1,
       "bggRating": 8.1,
+      "bggRec": [
+        2,
+        3,
+        4
+      ],
+      "bggTimeMax": 40,
+      "bggTimeMin": 40,
+      "bggWeight": 2.6,
       "byCount": {
         "2": 5,
         "3": 7,
@@ -1398,14 +1905,31 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:05:52.207Z",
+      "updated": "2026-09-12T20:47:53.458Z",
       "weight": 3
     },
     {
       "added": "2026-09-12",
+      "bggBest": [
+        4,
+        5,
+        6
+      ],
       "bggId": "348096",
+      "bggMax": 6,
+      "bggMin": 2,
       "bggRank": 1742,
       "bggRating": 6.8,
+      "bggRec": [
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "bggTimeMax": 10,
+      "bggTimeMin": 10,
+      "bggWeight": 1.1,
       "byCount": {
         "2": 6,
         "3": 7,
@@ -1434,14 +1958,28 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:21:00.338Z",
+      "updated": "2026-09-12T20:47:53.458Z",
       "weight": 1
     },
     {
       "added": "2026-09-12",
+      "bggBest": [
+        4
+      ],
       "bggId": "277085",
+      "bggMax": 6,
+      "bggMin": 2,
       "bggRank": 314,
       "bggRating": 7.5,
+      "bggRec": [
+        3,
+        4,
+        5,
+        6
+      ],
+      "bggTimeMax": 20,
+      "bggTimeMin": 20,
+      "bggWeight": 1.1,
       "byCount": {
         "2": 5,
         "3": 6,
@@ -1475,14 +2013,27 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:23:07.828Z",
+      "updated": "2026-09-12T20:47:53.458Z",
       "weight": 1
     },
     {
       "added": "2026-09-12",
+      "bggBest": [
+        4
+      ],
       "bggId": "143884",
+      "bggMax": 4,
+      "bggMin": 2,
       "bggRank": 1405,
       "bggRating": 6.6,
+      "bggRec": [
+        2,
+        3,
+        4
+      ],
+      "bggTimeMax": 30,
+      "bggTimeMin": 30,
+      "bggWeight": 1.5,
       "byCount": {
         "2": 5,
         "3": 6,
@@ -1510,13 +2061,26 @@
         "позбувся"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:15:16.879Z",
+      "updated": "2026-09-12T20:47:53.458Z",
       "weight": 1.5
     },
     {
       "added": "2026-09-12",
+      "bggBest": [
+        4
+      ],
       "bggId": "160154",
+      "bggMax": 4,
+      "bggMin": 2,
       "bggRating": 6.7,
+      "bggRec": [
+        2,
+        3,
+        4
+      ],
+      "bggTimeMax": 30,
+      "bggTimeMin": 30,
+      "bggWeight": 1.8,
       "byCount": {
         "2": 5,
         "3": 6,
@@ -1545,14 +2109,25 @@
         "позбувся"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:23:33.013Z",
+      "updated": "2026-09-12T20:47:53.458Z",
       "weight": 1.5
     },
     {
       "added": "2026-09-12",
+      "bggBest": [
+        2
+      ],
       "bggId": "345584",
+      "bggMax": 2,
+      "bggMin": 2,
       "bggRank": 426,
       "bggRating": 7.5,
+      "bggRec": [
+        2
+      ],
+      "bggTimeMax": 25,
+      "bggTimeMin": 15,
+      "bggWeight": 1.9,
       "byCount": {
         "2": 8
       },
@@ -1578,14 +2153,28 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T19:59:34.343Z",
+      "updated": "2026-09-12T20:47:53.458Z",
       "weight": 1
     },
     {
       "added": "2026-09-12",
+      "bggBest": [
+        4,
+        5
+      ],
       "bggId": "387378",
+      "bggMax": 5,
+      "bggMin": 2,
       "bggRank": 976,
       "bggRating": 7.1,
+      "bggRec": [
+        3,
+        4,
+        5
+      ],
+      "bggTimeMax": 60,
+      "bggTimeMin": 30,
+      "bggWeight": 1.8,
       "byCount": {
         "2": 5,
         "3": 6,
@@ -1615,14 +2204,28 @@
         "улюблена"
       ],
       "tags": [],
-      "updated": "2026-09-12T19:59:13.460Z",
+      "updated": "2026-09-12T20:47:53.458Z",
       "weight": 1
     },
     {
       "added": "2026-09-12",
+      "bggBest": [
+        2
+      ],
       "bggId": "392023",
+      "bggMax": 4,
+      "bggMin": 1,
       "bggRank": 1377,
       "bggRating": 7.4,
+      "bggRec": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "bggTimeMax": 45,
+      "bggTimeMin": 45,
+      "bggWeight": 1.9,
       "byCount": {},
       "comment": "",
       "cover": "https://cf.geekdo-images.com/P8-3HeCgEa_CODQiQxq9SQ__square200/img/URABUnlUKVDr28ko0YiDqNgUwDU=/200x200/filters:strip_icc()/pic7849476.jpg",
@@ -1646,14 +2249,27 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T17:20:03.076Z",
+      "updated": "2026-09-12T20:47:53.458Z",
       "weight": null
     },
     {
       "added": "2026-09-12",
+      "bggBest": [
+        2
+      ],
       "bggId": "194607",
+      "bggMax": 4,
+      "bggMin": 2,
       "bggRank": 604,
       "bggRating": 7.2,
+      "bggRec": [
+        2,
+        3,
+        4
+      ],
+      "bggTimeMax": 45,
+      "bggTimeMin": 45,
+      "bggWeight": 2.3,
       "byCount": {},
       "comment": "",
       "cover": "https://cf.geekdo-images.com/2cf8lebaIrJ8Z62HGEs2wQ__square200/img/cz0beGOxw35-mbbD2LhPIQOrXyE=/200x200/filters:strip_icc()/pic3287905.png",
@@ -1682,14 +2298,30 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T17:20:03.076Z",
+      "updated": "2026-09-12T20:47:53.458Z",
       "weight": null
     },
     {
       "added": "2026-09-12",
+      "bggBest": [
+        4,
+        5
+      ],
       "bggId": "194879",
+      "bggMax": 7,
+      "bggMin": 2,
       "bggRank": 983,
       "bggRating": 7,
+      "bggRec": [
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "bggTimeMax": 45,
+      "bggTimeMin": 30,
+      "bggWeight": 2.0,
       "byCount": {},
       "comment": "",
       "cover": "https://cf.geekdo-images.com/2nPAI9x1rOjj2fq30qRFvQ__square200/img/HWwoZVpEcH-TmVddUz8Zb-cnWUI=/200x200/filters:strip_icc()/pic3118416.jpg",
@@ -1713,13 +2345,31 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T17:20:03.076Z",
+      "updated": "2026-09-12T20:47:53.458Z",
       "weight": null
     },
     {
       "added": "2026-09-12",
+      "bggBest": [
+        4,
+        5,
+        6
+      ],
       "bggId": "222738",
+      "bggMax": 7,
+      "bggMin": 2,
       "bggRating": 7.4,
+      "bggRec": [
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "bggTimeMax": 60,
+      "bggTimeMin": 30,
+      "bggWeight": 2.3,
       "byCount": {},
       "comment": "",
       "cover": "https://cf.geekdo-images.com/bsSAYjs5fL7az9UvtDORUQ__square200/img/Gg0vQfYAbCq9gntu884ToIHdObs=/200x200/filters:strip_icc()/pic3611884.jpg",
@@ -1744,13 +2394,28 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T17:20:03.076Z",
+      "updated": "2026-09-12T20:47:53.458Z",
       "weight": null
     },
     {
       "added": "2026-09-12",
+      "bggBest": [
+        5
+      ],
       "bggId": "222739",
+      "bggMax": 7,
+      "bggMin": 2,
       "bggRating": 7.5,
+      "bggRec": [
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "bggTimeMax": 60,
+      "bggTimeMin": 45,
+      "bggWeight": 3.1,
       "byCount": {},
       "comment": "",
       "cover": "https://cf.geekdo-images.com/lfDInYgrjJA-71_xI8TDBA__square200/img/cX3ZBbdjDSh1ogTAEAbxAGN_9V4=/200x200/filters:strip_icc()/pic4565295.jpg",
@@ -1775,14 +2440,32 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T17:20:03.076Z",
+      "updated": "2026-09-12T20:47:53.458Z",
       "weight": null
     },
     {
       "added": "2026-09-12",
+      "bggBest": [
+        2,
+        3
+      ],
       "bggId": "362164",
+      "bggMax": 80,
+      "bggMin": 1,
       "bggRank": 4112,
       "bggRating": 7.1,
+      "bggRec": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "bggTimeMax": 45,
+      "bggTimeMin": 30,
+      "bggWeight": 1.9,
       "byCount": {
         "2": 8,
         "3": 8,
@@ -1811,14 +2494,27 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:16:30.967Z",
+      "updated": "2026-09-12T20:47:53.458Z",
       "weight": 1.5
     },
     {
       "added": "2026-09-12",
+      "bggBest": [
+        4
+      ],
       "bggId": "252929",
+      "bggMax": 4,
+      "bggMin": 2,
       "bggRank": 1951,
       "bggRating": 6.6,
+      "bggRec": [
+        2,
+        3,
+        4
+      ],
+      "bggTimeMax": 45,
+      "bggTimeMin": 30,
+      "bggWeight": 1.6,
       "byCount": {
         "2": 6,
         "3": 7,
@@ -1846,14 +2542,27 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:17:06.910Z",
+      "updated": "2026-09-12T20:47:53.458Z",
       "weight": 1
     },
     {
       "added": "2026-09-12",
+      "bggBest": [
+        3
+      ],
       "bggId": "180974",
+      "bggMax": 4,
+      "bggMin": 2,
       "bggRank": 603,
       "bggRating": 7.1,
+      "bggRec": [
+        2,
+        3,
+        4
+      ],
+      "bggTimeMax": 45,
+      "bggTimeMin": 30,
+      "bggWeight": 1.8,
       "byCount": {
         "2": 3
       },
@@ -1879,14 +2588,29 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T19:48:24.338Z",
+      "updated": "2026-09-12T20:47:53.458Z",
       "weight": null
     },
     {
       "added": "2026-09-12",
+      "bggBest": [
+        2,
+        3
+      ],
       "bggId": "314971",
+      "bggMax": 4,
+      "bggMin": 1,
       "bggRank": 7516,
       "bggRating": 6.9,
+      "bggRec": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "bggTimeMax": 30,
+      "bggTimeMin": 30,
+      "bggWeight": 1.5,
       "byCount": {
         "2": 6,
         "3": 6,
@@ -1914,14 +2638,27 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:17:35.797Z",
+      "updated": "2026-09-12T20:47:53.458Z",
       "weight": 1
     },
     {
       "added": "2026-09-12",
+      "bggBest": [
+        2
+      ],
       "bggId": "367220",
+      "bggMax": 4,
+      "bggMin": 2,
       "bggRank": 252,
       "bggRating": 7.5,
+      "bggRec": [
+        2,
+        3,
+        4
+      ],
+      "bggTimeMax": 45,
+      "bggTimeMin": 30,
+      "bggWeight": 1.5,
       "byCount": {},
       "comment": "",
       "cover": "https://cf.geekdo-images.com/CIh_rXKoRw9z8K0PJxT8nQ__square200/img/aAoK8OyqIWSLtWHLqEzaZ17n0FY=/200x200/filters:strip_icc()/pic6973911.jpg",
@@ -1945,13 +2682,26 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T17:54:05.874Z",
+      "updated": "2026-09-12T20:47:53.458Z",
       "weight": null
     },
     {
       "added": "2026-09-12",
+      "bggBest": [
+        2
+      ],
       "bggId": "396545",
+      "bggMax": 4,
+      "bggMin": 2,
       "bggRating": 7.8,
+      "bggRec": [
+        2,
+        3,
+        4
+      ],
+      "bggTimeMax": 45,
+      "bggTimeMin": 30,
+      "bggWeight": 1.4,
       "byCount": {},
       "comment": "",
       "cover": "https://cf.geekdo-images.com/9jDNDtPC0s-eATSWly8oEg__square200/img/ruLYAtscHwsjwt3h0SS-OrsD3Sw=/200x200/filters:strip_icc()/pic7731597.jpg",
@@ -1976,14 +2726,33 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T17:20:03.076Z",
+      "updated": "2026-09-12T20:47:53.458Z",
       "weight": null
     },
     {
       "added": "2026-09-10",
+      "bggBest": [
+        3,
+        4
+      ],
       "bggId": "263918",
+      "bggMax": 100,
+      "bggMin": 1,
       "bggRank": 185,
       "bggRating": 7.5,
+      "bggRec": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "bggTimeMax": 45,
+      "bggTimeMin": 30,
+      "bggWeight": 1.9,
       "byCount": {
         "2": 8,
         "3": 8,
@@ -2012,14 +2781,29 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T19:47:34.309Z",
+      "updated": "2026-09-12T20:47:53.458Z",
       "weight": 1
     },
     {
       "added": "2026-09-10",
+      "bggBest": [
+        4
+      ],
       "bggId": "209778",
+      "bggMax": 8,
+      "bggMin": 1,
       "bggRank": 806,
       "bggRating": 6.9,
+      "bggRec": [
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "bggTimeMax": 15,
+      "bggTimeMin": 15,
+      "bggWeight": 1.8,
       "byCount": {
         "2": 3,
         "3": 3
@@ -2046,14 +2830,27 @@
         "позбувся"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:00:09.752Z",
+      "updated": "2026-09-12T20:47:53.458Z",
       "weight": 2
     },
     {
       "added": "2026-09-10",
+      "bggBest": [
+        3
+      ],
       "bggId": "367351",
+      "bggMax": 4,
+      "bggMin": 2,
       "bggRank": 3810,
       "bggRating": 7.2,
+      "bggRec": [
+        2,
+        3,
+        4
+      ],
+      "bggTimeMax": 180,
+      "bggTimeMin": 60,
+      "bggWeight": 3.2,
       "byCount": {
         "2": 6,
         "3": 8
@@ -2080,14 +2877,27 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:00:32.784Z",
+      "updated": "2026-09-12T20:47:53.458Z",
       "weight": 3
     },
     {
       "added": "2026-09-10",
+      "bggBest": [
+        2,
+        4
+      ],
       "bggId": "335764",
+      "bggMax": 4,
+      "bggMin": 2,
       "bggRank": 472,
       "bggRating": 8.2,
+      "bggRec": [
+        2,
+        4
+      ],
+      "bggTimeMax": 40,
+      "bggTimeMin": 20,
+      "bggWeight": 2.1,
       "byCount": {
         "2": 7
       },
@@ -2113,14 +2923,26 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T19:56:10.698Z",
+      "updated": "2026-09-12T20:47:53.458Z",
       "weight": 2
     },
     {
       "added": "2026-09-10",
+      "bggBest": [
+        4
+      ],
       "bggId": "324345",
+      "bggMax": 4,
+      "bggMin": 3,
       "bggRank": 3208,
       "bggRating": 7,
+      "bggRec": [
+        3,
+        4
+      ],
+      "bggTimeMax": 45,
+      "bggTimeMin": 30,
+      "bggWeight": 1.9,
       "byCount": {
         "2": 6,
         "3": 7.5,
@@ -2148,14 +2970,27 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T19:47:52.715Z",
+      "updated": "2026-09-12T20:47:53.458Z",
       "weight": 2
     },
     {
       "added": "2026-09-10",
+      "bggBest": [
+        3
+      ],
       "bggId": "415938",
+      "bggMax": 4,
+      "bggMin": 2,
       "bggRank": 5133,
       "bggRating": 6.8,
+      "bggRec": [
+        2,
+        3,
+        4
+      ],
+      "bggTimeMax": 30,
+      "bggTimeMin": 30,
+      "bggWeight": 2.2,
       "byCount": {
         "2": 7
       },
@@ -2181,14 +3016,29 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T19:47:47.662Z",
+      "updated": "2026-09-12T20:47:53.458Z",
       "weight": 2
     },
     {
       "added": "2026-09-10",
+      "bggBest": [
+        2,
+        3
+      ],
       "bggId": "298383",
+      "bggMax": 4,
+      "bggMin": 1,
       "bggRank": 747,
       "bggRating": 7.5,
+      "bggRec": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "bggTimeMax": 120,
+      "bggTimeMin": 90,
+      "bggWeight": 4.0,
       "byCount": {},
       "comment": "",
       "cover": "https://cf.geekdo-images.com/9wDd5YVER3lwpGO3v5EkTA__square200/img/HkDaA9SmD98zXUpqTEt5OTqC0b4=/200x200/filters:strip_icc()/pic5374175.jpg",
@@ -2217,14 +3067,29 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T17:40:57.486Z",
+      "updated": "2026-09-12T20:47:53.458Z",
       "weight": null
     },
     {
       "added": "2026-09-10",
+      "bggBest": [
+        2,
+        3
+      ],
       "bggId": "350184",
+      "bggMax": 5,
+      "bggMin": 1,
       "bggRank": 212,
       "bggRating": 7.6,
+      "bggRec": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "bggTimeMax": 90,
+      "bggTimeMin": 45,
+      "bggWeight": 2.9,
       "byCount": {},
       "comment": "",
       "cover": "https://cf.geekdo-images.com/0xqF_KyOb7V26Lu5YT3fxw__square200/img/3Sg2feLbyFfnIZt-jyi3fg9d634=/200x200/filters:strip_icc()/pic6699821.jpg",
@@ -2248,14 +3113,27 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T17:37:13.835Z",
+      "updated": "2026-09-12T20:47:53.458Z",
       "weight": null
     },
     {
       "added": "2026-09-10",
+      "bggBest": [
+        4
+      ],
       "bggId": "362202",
+      "bggMax": 5,
+      "bggMin": 2,
       "bggRank": 4520,
       "bggRating": 6.6,
+      "bggRec": [
+        3,
+        4,
+        5
+      ],
+      "bggTimeMax": 15,
+      "bggTimeMin": 15,
+      "bggWeight": 1.2,
       "byCount": {},
       "comment": "",
       "cover": "https://cf.geekdo-images.com/uyE342LSf5ztt9gxPY1nVQ__square200/img/QY_Hl_FML6dCtSN8SZwCsBO-dmU=/200x200/filters:strip_icc()/pic7241989.jpg",
@@ -2279,14 +3157,27 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T17:20:03.076Z",
+      "updated": "2026-09-12T20:47:53.458Z",
       "weight": null
     },
     {
       "added": "2026-09-10",
+      "bggBest": [
+        2
+      ],
       "bggId": "420077",
+      "bggMax": 4,
+      "bggMin": 1,
       "bggRank": 1847,
       "bggRating": 7.5,
+      "bggRec": [
+        1,
+        2,
+        3
+      ],
+      "bggTimeMax": 60,
+      "bggTimeMin": 30,
+      "bggWeight": 2.2,
       "byCount": {},
       "comment": "",
       "cover": "https://cf.geekdo-images.com/lvIHUl0m2wFXACaKcdVrjQ__square200/img/qax4CSYB0K_foFOR1_YFYFLGoIU=/200x200/filters:strip_icc()/pic8172090.jpg",
@@ -2315,14 +3206,29 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T17:20:03.076Z",
+      "updated": "2026-09-12T20:47:53.458Z",
       "weight": null
     },
     {
       "added": "2026-09-10",
+      "bggBest": [
+        2,
+        3
+      ],
       "bggId": "300531",
+      "bggMax": 4,
+      "bggMin": 2,
       "bggRank": 236,
       "bggRating": 7.6,
+      "bggRec": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "bggTimeMax": 60,
+      "bggTimeMin": 45,
+      "bggWeight": 2.7,
       "byCount": {
         "2": 8,
         "3": 9
@@ -2349,14 +3255,28 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T19:47:29.022Z",
+      "updated": "2026-09-12T20:47:53.458Z",
       "weight": 3
     },
     {
       "added": "2026-09-10",
+      "bggBest": [
+        2
+      ],
       "bggId": "358320",
+      "bggMax": 4,
+      "bggMin": 1,
       "bggRank": 820,
       "bggRating": 8.3,
+      "bggRec": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "bggTimeMax": 600,
+      "bggTimeMin": 60,
+      "bggWeight": 3.0,
       "byCount": {
         "2": 10,
         "3": 9
@@ -2388,14 +3308,25 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T19:41:32.301Z",
+      "updated": "2026-09-12T20:47:53.458Z",
       "weight": 3
     },
     {
       "added": "2026-09-10",
+      "bggBest": [
+        1
+      ],
       "bggId": "393672",
+      "bggMax": 1,
+      "bggMin": 1,
       "bggRank": 887,
       "bggRating": 7.5,
+      "bggRec": [
+        1
+      ],
+      "bggTimeMax": 20,
+      "bggTimeMin": 20,
+      "bggWeight": 3.3,
       "byCount": {},
       "comment": "",
       "cover": "https://cf.geekdo-images.com/Z6MMX39UEAZT3-f-DlnHsA__square200/img/-4IgwLO3OOQqlUZ9D5Dc83cF63M=/200x200/filters:strip_icc()/pic8114705.jpg",
@@ -2424,14 +3355,28 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T17:20:03.076Z",
+      "updated": "2026-09-12T20:47:53.458Z",
       "weight": null
     },
     {
       "added": "2026-09-10",
+      "bggBest": [
+        2
+      ],
       "bggId": "291457",
+      "bggMax": 4,
+      "bggMin": 1,
       "bggRank": 12,
       "bggRating": 8.4,
+      "bggRec": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "bggTimeMax": 120,
+      "bggTimeMin": 30,
+      "bggWeight": 3.6,
       "byCount": {},
       "comment": "",
       "cover": "https://cf.geekdo-images.com/_HhIdavYW-hid20Iq3hhmg__square200/img/PAvcImUWC1c5q2TBIbG87fyPfEM=/200x200/filters:strip_icc()/pic5055631.jpg",
@@ -2460,13 +3405,29 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T17:54:05.874Z",
+      "updated": "2026-09-12T20:47:53.458Z",
       "weight": null
     },
     {
       "added": "2026-09-10",
+      "bggBest": [
+        4
+      ],
       "bggId": "202174",
+      "bggMax": 6,
+      "bggMin": 1,
       "bggRating": 8.5,
+      "bggRec": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "bggTimeMax": 150,
+      "bggTimeMin": 60,
+      "bggWeight": 3.3,
       "byCount": {
         "2": 5
       },
@@ -2492,14 +3453,27 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T19:51:20.198Z",
+      "updated": "2026-09-12T20:47:53.458Z",
       "weight": 2
     },
     {
       "added": "2026-09-10",
+      "bggBest": [
+        2
+      ],
       "bggId": "333255",
+      "bggMax": 4,
+      "bggMin": 1,
       "bggRank": 355,
       "bggRating": 7.9,
+      "bggRec": [
+        1,
+        2,
+        3
+      ],
+      "bggTimeMax": 40,
+      "bggTimeMin": 40,
+      "bggWeight": 2.5,
       "byCount": {
         "2": 10,
         "3": 10,
@@ -2538,7 +3512,7 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:06:29.108Z",
+      "updated": "2026-09-12T20:47:53.458Z",
       "weight": 3,
       "withExp": [
         "g-khn-boss",
@@ -2548,9 +3522,22 @@
     },
     {
       "added": "2026-09-12",
+      "bggBest": [
+        3
+      ],
       "bggId": "148228",
+      "bggMax": 4,
+      "bggMin": 2,
       "bggRank": 244,
       "bggRating": 7.4,
+      "bggRec": [
+        2,
+        3,
+        4
+      ],
+      "bggTimeMax": 30,
+      "bggTimeMin": 30,
+      "bggWeight": 1.8,
       "byCount": {
         "2": 7,
         "3": 7,
@@ -2578,14 +3565,25 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:17:59.849Z",
+      "updated": "2026-09-12T20:47:53.458Z",
       "weight": 1.5
     },
     {
       "added": "2026-09-12",
+      "bggBest": [
+        2
+      ],
       "bggId": "364073",
+      "bggMax": 2,
+      "bggMin": 2,
       "bggRank": 111,
       "bggRating": 7.9,
+      "bggRec": [
+        2
+      ],
+      "bggTimeMax": 30,
+      "bggTimeMin": 30,
+      "bggWeight": 2.0,
       "byCount": {
         "2": 7.5
       },
@@ -2611,14 +3609,25 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:24:10.231Z",
+      "updated": "2026-09-12T20:47:53.458Z",
       "weight": 1.5
     },
     {
       "added": "2026-09-12",
+      "bggBest": [
+        2
+      ],
       "bggId": "147020",
+      "bggMax": 2,
+      "bggMin": 2,
       "bggRank": 178,
       "bggRating": 7.5,
+      "bggRec": [
+        2
+      ],
+      "bggTimeMax": 20,
+      "bggTimeMin": 20,
+      "bggWeight": 1.9,
       "byCount": {
         "2": 6.5
       },
@@ -2644,14 +3653,27 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:08:38.911Z",
+      "updated": "2026-09-12T20:47:53.458Z",
       "weight": 1
     },
     {
       "added": "2026-09-12",
+      "bggBest": [
+        4
+      ],
       "bggId": "34635",
+      "bggMax": 4,
+      "bggMin": 2,
       "bggRank": 189,
       "bggRating": 7.5,
+      "bggRec": [
+        2,
+        3,
+        4
+      ],
+      "bggTimeMax": 90,
+      "bggTimeMin": 60,
+      "bggWeight": 2.5,
       "byCount": {
         "2": 7.5,
         "3": 7.5,
@@ -2679,14 +3701,28 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:09:42.350Z",
+      "updated": "2026-09-12T20:47:53.458Z",
       "weight": 2
     },
     {
       "added": "2026-09-12",
+      "bggBest": [
+        2,
+        3
+      ],
       "bggId": "269207",
+      "bggMax": 4,
+      "bggMin": 2,
       "bggRank": 251,
       "bggRating": 7.6,
+      "bggRec": [
+        2,
+        3,
+        4
+      ],
+      "bggTimeMax": 60,
+      "bggTimeMin": 60,
+      "bggWeight": 2.7,
       "byCount": {},
       "comment": "",
       "cover": "https://cf.geekdo-images.com/H-AU-nhjCbaxWlWj_O-eFw__square200/img/57hfgxNekcshLjDy0gTWu-Y0p18=/200x200/filters:strip_icc()/pic4873141.jpg",
@@ -2715,14 +3751,27 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T17:20:03.076Z",
+      "updated": "2026-09-12T20:47:53.458Z",
       "weight": null
     },
     {
       "added": "2026-09-12",
+      "bggBest": [
+        3
+      ],
       "bggId": "362986",
+      "bggMax": 5,
+      "bggMin": 2,
       "bggRank": 1205,
       "bggRating": 7.3,
+      "bggRec": [
+        2,
+        3,
+        4
+      ],
+      "bggTimeMax": 90,
+      "bggTimeMin": 40,
+      "bggWeight": 2.7,
       "byCount": {},
       "comment": "",
       "cover": "https://cf.geekdo-images.com/G_moxnKfgJ4w_NGmr9T6Lg__square200/img/rbr8EjBLYsaiIsW_fEIwokMye3k=/200x200/filters:strip_icc()/pic6871609.jpg",
@@ -2746,14 +3795,28 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T17:20:03.076Z",
+      "updated": "2026-09-12T20:47:53.458Z",
       "weight": null
     },
     {
       "added": "2026-09-12",
+      "bggBest": [
+        4
+      ],
       "bggId": "14996",
+      "bggMax": 5,
+      "bggMin": 2,
       "bggRank": 180,
       "bggRating": 7.5,
+      "bggRec": [
+        2,
+        3,
+        4,
+        5
+      ],
+      "bggTimeMax": 60,
+      "bggTimeMin": 30,
+      "bggWeight": 1.9,
       "byCount": {
         "2": 5,
         "3": 6,
@@ -2781,14 +3844,27 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:10:42.452Z",
+      "updated": "2026-09-12T20:47:53.458Z",
       "weight": 1.5
     },
     {
       "added": "2026-09-12",
+      "bggBest": [
+        3
+      ],
       "bggId": "403221",
+      "bggMax": 4,
+      "bggMin": 2,
       "bggRank": 5738,
       "bggRating": 7,
+      "bggRec": [
+        2,
+        3,
+        4
+      ],
+      "bggTimeMax": 15,
+      "bggTimeMin": 10,
+      "bggWeight": 1.5,
       "byCount": {
         "2": 6.5,
         "3": 6.5
@@ -2815,14 +3891,34 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:11:00.235Z",
+      "updated": "2026-09-12T20:47:53.458Z",
       "weight": 1.5
     },
     {
       "added": "2026-09-12",
+      "bggBest": [
+        3,
+        4,
+        5
+      ],
       "bggId": "283864",
+      "bggMax": 8,
+      "bggMin": 1,
       "bggRank": 809,
       "bggRating": 7.4,
+      "bggRec": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "bggTimeMax": 15,
+      "bggTimeMin": 15,
+      "bggWeight": 1.3,
       "byCount": {},
       "comment": "",
       "cover": "https://cf.geekdo-images.com/y8ifesXfHobUtIgnSuC0DA__square200/img/6Sgtcf0UlSl0OY_Y30A7kmuO88I=/200x200/filters:strip_icc()/pic4860701.jpg",
@@ -2851,14 +3947,27 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T17:20:03.076Z",
+      "updated": "2026-09-12T20:47:53.458Z",
       "weight": null
     },
     {
       "added": "2026-09-12",
+      "bggBest": [
+        2
+      ],
       "bggId": "368036",
+      "bggMax": 6,
+      "bggMin": 1,
       "bggRank": 4085,
       "bggRating": 7.2,
+      "bggRec": [
+        1,
+        2,
+        3
+      ],
+      "bggTimeMax": 30,
+      "bggTimeMin": 30,
+      "bggWeight": 1.8,
       "byCount": {
         "2": 8,
         "3": 8,
@@ -2882,19 +3991,33 @@
         }
       ],
       "score": 8,
+      "status": "позбувся",
       "statuses": [
         "позбувся"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:02:43.854Z",
-      "weight": 2,
-      "status": "позбувся"
+      "updated": "2026-09-12T20:47:53.458Z",
+      "weight": 2
     },
     {
       "added": "2026-09-12",
+      "bggBest": [
+        2
+      ],
       "bggId": "368037",
+      "bggMax": 6,
+      "bggMin": 1,
       "bggRank": 5691,
       "bggRating": 6.7,
+      "bggRec": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "bggTimeMax": 45,
+      "bggTimeMin": 30,
+      "bggWeight": 1.7,
       "byCount": {},
       "comment": "",
       "cover": "https://cf.geekdo-images.com/75CKyZVBkUa3dUOemD27YA__square200/img/TLLmb6ddZRT_6rKlISGUqbJIekg=/200x200/filters:strip_icc()/pic6991242.jpg",
@@ -2918,14 +4041,27 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T17:20:03.076Z",
+      "updated": "2026-09-12T20:47:53.458Z",
       "weight": null
     },
     {
       "added": "2026-09-12",
+      "bggBest": [
+        2
+      ],
       "bggId": "368039",
+      "bggMax": 6,
+      "bggMin": 1,
       "bggRank": 5872,
       "bggRating": 6.5,
+      "bggRec": [
+        1,
+        2,
+        3
+      ],
+      "bggTimeMax": 30,
+      "bggTimeMin": 30,
+      "bggWeight": 1.7,
       "byCount": {},
       "comment": "",
       "cover": "https://cf.geekdo-images.com/cybvdQmzPVANQ-gLyTqMUA__square200/img/9RW1QmmH7UL66C_FFcD7CYtufsY=/200x200/filters:strip_icc()/pic7700501.jpg",
@@ -2949,14 +4085,32 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T17:20:03.076Z",
+      "updated": "2026-09-12T20:47:53.458Z",
       "weight": null
     },
     {
       "added": "2026-09-12",
+      "bggBest": [
+        4,
+        5,
+        6
+      ],
       "bggId": "2223",
+      "bggMax": 10,
+      "bggMin": 2,
       "bggRank": 31155,
       "bggRating": 5.5,
+      "bggRec": [
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "bggTimeMax": 30,
+      "bggTimeMin": 30,
+      "bggWeight": 1.1,
       "byCount": {
         "4": 6.5,
         "5": 6.5
@@ -2983,14 +4137,30 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:07:36.358Z",
+      "updated": "2026-09-12T20:47:53.458Z",
       "weight": 1
     },
     {
       "added": "2026-09-12",
+      "bggBest": [
+        3,
+        4
+      ],
       "bggId": "183394",
+      "bggMax": 6,
+      "bggMin": 1,
       "bggRank": 44,
       "bggRating": 8,
+      "bggRec": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "bggTimeMax": 90,
+      "bggTimeMin": 45,
+      "bggWeight": 2.9,
       "byCount": {
         "2": 6,
         "3": 8,
@@ -3018,14 +4188,28 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T19:55:36.893Z",
+      "updated": "2026-09-12T20:47:53.458Z",
       "weight": 2
     },
     {
       "added": "2026-09-12",
+      "bggBest": [
+        3
+      ],
       "bggId": "371942",
+      "bggMax": 4,
+      "bggMin": 1,
       "bggRank": 72,
       "bggRating": 8,
+      "bggRec": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "bggTimeMax": 80,
+      "bggTimeMin": 80,
+      "bggWeight": 3.1,
       "byCount": {},
       "comment": "",
       "cover": "https://cf.geekdo-images.com/qXT1U-nFh9PE8ujfdmI7dA__square200/img/dhL41LnGHG3_goo6-PGqOIYH-no=/200x200/filters:strip_icc()/pic7754663.jpg",
@@ -3049,14 +4233,28 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T17:20:03.076Z",
+      "updated": "2026-09-12T20:47:53.458Z",
       "weight": null
     },
     {
       "added": "2026-09-12",
+      "bggBest": [
+        3
+      ],
       "bggId": "266192",
+      "bggMax": 5,
+      "bggMin": 1,
       "bggRank": 38,
       "bggRating": 8,
+      "bggRec": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "bggTimeMax": 70,
+      "bggTimeMin": 40,
+      "bggWeight": 2.5,
       "byCount": {
         "2": 7.5,
         "3": 7.5,
@@ -3084,14 +4282,25 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:13:18.471Z",
+      "updated": "2026-09-12T20:47:53.458Z",
       "weight": 2
     },
     {
       "added": "2026-09-12",
+      "bggBest": [
+        2
+      ],
       "bggId": "411861",
+      "bggMax": 3,
+      "bggMin": 2,
       "bggRank": 2705,
       "bggRating": 8.4,
+      "bggRec": [
+        2
+      ],
+      "bggTimeMax": 40,
+      "bggTimeMin": 20,
+      "bggWeight": 2.4,
       "byCount": {
         "2": 6
       },
@@ -3122,14 +4331,28 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T19:55:45.449Z",
+      "updated": "2026-09-12T20:47:53.458Z",
       "weight": null
     },
     {
       "added": "2026-09-12",
+      "bggBest": [
+        3
+      ],
       "bggId": "410201",
+      "bggMax": 5,
+      "bggMin": 1,
       "bggRank": 123,
       "bggRating": 7.9,
+      "bggRec": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "bggTimeMax": 90,
+      "bggTimeMin": 90,
+      "bggWeight": 2.8,
       "byCount": {
         "2": 10,
         "3": 10,
@@ -3163,13 +4386,28 @@
         "улюблена"
       ],
       "tags": [],
-      "updated": "2026-09-12T19:54:22.219Z",
+      "updated": "2026-09-12T20:47:53.458Z",
       "weight": 3
     },
     {
       "added": "2026-09-12",
+      "bggBest": [
+        3
+      ],
       "bggId": "453406",
+      "bggMax": 5,
+      "bggMin": 1,
       "bggRating": 8.4,
+      "bggRec": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "bggTimeMax": 90,
+      "bggTimeMin": 90,
+      "bggWeight": 2.8,
       "byCount": {
         "2": 8,
         "3": 8,
@@ -3204,8 +4442,62 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:08:14.429Z",
+      "updated": "2026-09-12T20:47:53.458Z",
+      "weight": null
+    },
+    {
+      "added": "2026-09-12",
+      "bggBest": [
+        4,
+        5
+      ],
+      "bggId": "12942",
+      "bggMax": 7,
+      "bggMin": 3,
+      "bggRank": 561,
+      "bggRating": 7.1,
+      "bggRec": [
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "bggTimeMax": 20,
+      "bggTimeMin": 20,
+      "bggWeight": 1.1,
+      "byCount": {},
+      "comment": "",
+      "cover": "https://cf.geekdo-images.com/JSAs8aMopjf8P9JXwTMV7w__square200/img/nul7GiZtKsW3kmNphB30YGwjZCI=/200x200/filters:strip_icc()/pic9005058.png",
+      "id": "g-no-thanks",
+      "maxP": null,
+      "minP": null,
+      "minutes": null,
+      "name": "Шл#к би трафив!",
+      "nameEn": "No Thanks!",
+      "plays": 0,
+      "rules": [
+        {
+          "kind": "офіційні",
+          "title": "Правила",
+          "url": "https://desktopgames.com.ua/games/6977/no_thanks_rules_ua.pdf"
+        },
+        {
+          "kind": "інше",
+          "title": "Правила (англійською)",
+          "url": "https://desktopgames.com.ua/games/6977/18414_014_NoThanks_Manual_001_L.pdf"
+        }
+      ],
+      "score": null,
+      "status": "колекція",
+      "statuses": [
+        "колекція"
+      ],
+      "tags": [],
+      "updated": "2026-09-12T20:49:25.661Z",
       "weight": null
     }
-  ]
+  ],
+  "saved": "2026-09-12T20:49:25.661Z",
+  "version": 2
 }

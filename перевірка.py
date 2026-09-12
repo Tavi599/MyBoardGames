@@ -25,12 +25,18 @@ sys.stdout.reconfigure(encoding="utf-8")
 ВЕРСІЯ_ДАНИХ = 2
 
 СТАТУСИ = {"хочу", "колекція", "улюблена", "онлайн", "відклав", "позбувся"}
-СКЛАДИ = {"2", "3", "4", "5"}
+# «5+» — це «більше за п'ятьох, скільки коробка дозволяє»; підпис до нього
+# сторінка бере з bggMax кожної гри окремо. Ключ навмисне сталий: якби він
+# залежав від стелі, зміна даних на BGG перейменовувала б чужі оцінки.
+СКЛАДИ = {"1", "2", "3", "4", "5", "5+"}
+# Опитування спільноти зводиться до складів 1..10 — далі це вже не про стіл.
+СТЕЛЯ_ОПИТУВАННЯ = 10
 ПОЛЯ = {
     "id", "name", "nameEn", "statuses", "status", "score", "byCount", "weight",
     "plays", "minP", "maxP", "minutes", "tags", "comment", "cover", "expansion",
     "withExp", "bggId", "bggRating", "bggRank", "added", "updated", "deleted",
-    "rules",
+    "rules", "bggMin", "bggMax", "bggBest", "bggRec", "bggTimeMin", "bggTimeMax",
+    "bggWeight",
 }
 
 ВИДИ_ПРАВИЛ = {"офіційні", "соло", "памʼятка", "переклад", "інше"}
@@ -59,17 +65,34 @@ def оцінка(де, поле, v, стеля):
         біда(де, f"{поле} = {v}: дозволені лише цілі та половинки")
 
 
-def чужа(де, поле, v):
-    """Оцінка BGG — не твоя: там середнє з тисяч голосів, тож десяткова
+def чужа(де, поле, v, стеля=10):
+    """Число з BGG — не твоє: там середнє з тисяч голосів, тож десяткова
     з одним знаком (7,6), а не половинка."""
     if v is None:
         return
     if not isinstance(v, (int, float)) or isinstance(v, bool):
         return біда(де, f"{поле} має бути числом, а не {type(v).__name__}")
-    if not 0 < v <= 10:
-        біда(де, f"{поле} = {v}, а має бути від 0 до 10")
+    if not 0 < v <= стеля:
+        біда(де, f"{поле} = {v}, а має бути від 0 до {стеля}")
     elif round(v, 1) != v:
         біда(де, f"{поле} = {v}: більше за один знак після коми")
+
+
+def опитування(де, поле, v, стеля):
+    """Склади, які спільнота назвала найкращими чи придатними: зростаючий
+    список без повторів, у межах того, що коробка взагалі дозволяє."""
+    if v is None:
+        return
+    if not isinstance(v, list):
+        return біда(де, f"{поле} має бути списком")
+    if not all(isinstance(x, int) and not isinstance(x, bool) for x in v):
+        return біда(де, f"{поле} має бути списком цілих")
+    if v != sorted(set(v)):
+        біда(де, f"{поле} = {v}: має бути зростаючий список без повторів")
+    межа = min(стеля or СТЕЛЯ_ОПИТУВАННЯ, СТЕЛЯ_ОПИТУВАННЯ)
+    поза = [x for x in v if not 1 <= x <= межа]
+    if поза:
+        біда(де, f"{поле} має склади поза межами 1..{межа}: {поза}")
 
 
 def ціле(де, поле, v, найменше=0, найбільше=None):
@@ -160,14 +183,25 @@ def _перевірити(стан):
         оцінка(де, "score", г.get("score"), 10)
         оцінка(де, "weight", г.get("weight"), 5)
         чужа(де, "bggRating", г.get("bggRating"))
+        чужа(де, "bggWeight", г.get("bggWeight"), 5)
         ціле(де, "plays", г.get("plays"), 0)
         ціле(де, "bggRank", г.get("bggRank"), 1)
         ціле(де, "minP", г.get("minP"), 1, 20)
         ціле(де, "maxP", г.get("maxP"), 1, 20)
         ціле(де, "minutes", г.get("minutes"), 1, 6000)
-        if isinstance(г.get("minP"), int) and isinstance(г.get("maxP"), int) \
-                and г["minP"] > г["maxP"]:
-            біда(де, f"minP {г['minP']} більше за maxP {г['maxP']}")
+        # Стеля тут аж 100: «Картографи» офіційно грають будь-яким натовпом,
+        # і це не помилка даних, а справді така коробка.
+        ціле(де, "bggMin", г.get("bggMin"), 1, 100)
+        ціле(де, "bggMax", г.get("bggMax"), 1, 100)
+        ціле(де, "bggTimeMin", г.get("bggTimeMin"), 1, 6000)
+        ціле(де, "bggTimeMax", г.get("bggTimeMax"), 1, 6000)
+        опитування(де, "bggBest", г.get("bggBest"), г.get("bggMax"))
+        опитування(де, "bggRec", г.get("bggRec"), г.get("bggMax"))
+        for менше, більше in (("minP", "maxP"), ("bggMin", "bggMax"),
+                              ("bggTimeMin", "bggTimeMax")):
+            a, b = г.get(менше), г.get(більше)
+            if isinstance(a, int) and isinstance(b, int) and a > b:
+                біда(де, f"{менше} {a} більше за {більше} {b}")
 
         зк = г.get("byCount")
         if зк is not None:
