@@ -92,8 +92,13 @@ button{cursor:pointer}
 .seg button{border:0; background:none; border-radius:5px; padding:0 9px; height:28px;
   font-size:13px; font-weight:500; color:var(--ink-soft)}
 .seg button[aria-pressed="true"]{background:var(--petrol); color:var(--on-accent)}
+/* Клас вішається і на <button>, і на <a>. Посилання приносить із собою
+   свій колір та підкреслення — гасимо, інакше кнопка виглядає як текст
+   у рамці. inline-flex, бо в <a> немає власного центрування вмісту. */
 .btn{height:36px; padding:0 14px; border-radius:7px; border:1px solid var(--rule);
-  background:var(--sheet); font-size:14px; font-weight:500}
+  background:var(--sheet); font-size:14px; font-weight:500;
+  display:inline-flex; align-items:center; justify-content:center;
+  color:var(--ink); text-decoration:none}
 .btn:hover{border-color:var(--ink-faint)}
 .btn.pri{background:var(--petrol); border-color:var(--petrol); color:var(--on-accent)}
 .btn[aria-pressed="true"]{background:var(--sunk); border-color:var(--ink-faint)}
@@ -181,8 +186,12 @@ button{cursor:pointer}
 .alt{margin:2px 0 0; font-size:12.5px; color:var(--ink-faint)}
 .note{margin:3px 0 0; font-size:13px; color:var(--ink-soft); max-width:60ch}
 
-.counts{display:grid; grid-template-columns:repeat(4,34px); gap:4px; width:152px}
-.cnt{border:1px solid var(--rule-soft); border-radius:5px; background:var(--sheet);
+/* Клітинок тепер від нуля до шести — показуємо лише заповнені, — тож
+   замість сітки на чотири колонки тут гнучкий рядок, притиснутий праворуч.
+   min-width тримає колонку оцінок на місці, коли клітинок мало. */
+.counts{display:flex; flex-wrap:nowrap; gap:4px; justify-content:flex-end; min-width:152px}
+.cnt{flex:none; width:34px; border:1px solid var(--rule-soft); border-radius:5px;
+  background:var(--sheet); overflow:hidden;
   height:38px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:0}
 .cnt b{font:600 14px/1 "IBM Plex Mono",ui-monospace,monospace; color:var(--band,var(--ink))}
 .cnt i{font:400 9px/1.4 "IBM Plex Mono",ui-monospace,monospace; font-style:normal;
@@ -196,6 +205,19 @@ button{cursor:pointer}
 .score .num.none{font-size:20px; color:var(--rule)}
 .meter{display:block; height:3px; margin-top:5px; background:var(--sunk); border-radius:2px; overflow:hidden}
 .meter i{display:block; height:100%; background:var(--band,var(--ink-faint))}
+/* Оцінка BGG стоїть під твоєю, а не в кінці рядка метаданих: там її
+   з'їдало обрізання рівно тоді, коли в гри багато статусів і тегів. */
+.score .bgg{display:block; margin-top:4px; white-space:nowrap;
+  font:600 10px/1 "IBM Plex Mono",ui-monospace,monospace;
+  letter-spacing:.04em; color:var(--ink-faint)}
+
+/* Довідка з BGG в картці: пари «підпис — число» у дві колонки. */
+.bgg-info{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+  gap:8px 14px; margin:0 0 10px}
+.bgg-info > div{display:flex; align-items:baseline; gap:8px; min-width:0}
+.bgg-info dt{flex:none; font:400 12px/1.4 "IBM Plex Sans",sans-serif; color:var(--ink-faint)}
+.bgg-info dd{margin:0; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+  font:600 13px/1.4 "IBM Plex Mono",ui-monospace,monospace; color:var(--ink)}
 
 .b-low{--band:var(--rust)} .b-mid{--band:var(--amber)}
 .b-good{--band:var(--sage)} .b-top{--band:var(--petrol)}
@@ -342,13 +364,38 @@ textarea:focus{outline:none; border-color:var(--petrol)}
   /* Кожній дитині — своя клітинка. Авторозміщення тут ламалося: оцінка,
      прибита до першого рядка, поверталася в перший стовпчик і лягала
      просто на обкладинку разом із назвою. */
-  .row{grid-template-columns:var(--pick,0px) 46px minmax(0,1fr) auto auto; row-gap:9px}
+  /* Панель на телефоні заввишки з третину екрана, тож прибиту згори її
+     тримати не можна: вона з'їдала список і, оскільки її підкладка
+     розтане на 74%, нижні кнопки лежали просто поверх рядків. Хай їде
+     разом зі сторінкою. */
+  .tools{position:static; background:none; padding-bottom:14px}
+  .head-row{display:none}
+  /* Кожній дитині — своя клітинка. Авторозміщення тут ламалося: оцінка,
+     прибита до першого рядка, поверталася в перший стовпчик і лягала
+     просто на обкладинку разом із назвою.
+     Кнопка правил переїхала в другий рядок: у першому вона забирала в
+     назви 44 з тих небагатьох пікселів, що там узагалі є. */
+  .row{grid-template-columns:var(--pick,0px) 46px minmax(0,1fr) auto;
+       gap:10px; row-gap:9px}
   .row > .pick{grid-area:1 / 1}
   .row > .cov{grid-area:1 / 2}
   .row > .open{grid-area:1 / 3}
-  .row > .rules-btn{grid-area:1 / 4}
-  .row > .score{grid-area:1 / 5; width:64px}
-  .row > .counts{grid-area:2 / 2 / 3 / -1; grid-template-columns:repeat(4,1fr); width:auto}
+  .row > .score{grid-area:1 / 4; width:58px}
+  /* Клітинки складу столу йдуть окремим рядком під обкладинкою. Коли
+     жодної оцінки ще нема, рядок не з'являється зовсім: :empty прибирає
+     і сам блок, і порожній проміжок після нього. */
+  .row > .counts{grid-area:2 / 2 / 3 / 4; justify-content:flex-start;
+    min-width:0; flex-wrap:wrap; gap:5px 4px}
+  .row > .counts:empty{display:none}
+  .row > .rules-btn{grid-area:2 / 4; justify-self:end}
+  /* Порожній слот під кнопку правил тримає колонки рівно на широкому
+     екрані; тут колонок немає, і він лише плодить порожній рядок. */
+  .row > .rules-btn.ghost{display:none}
+  /* Метадані переносяться, а не обрізаються: у смужку на 190 пікселів
+     влазила заледве половина рядка, і зникала саме та половина, де
+     стоять склад столу й час. Два рядки — і видно все. */
+  .row .meta{white-space:normal; display:-webkit-box; -webkit-line-clamp:2;
+    -webkit-box-orient:vertical; overflow:hidden}
   .card{border-left:0}
   .note{max-width:none}
 }

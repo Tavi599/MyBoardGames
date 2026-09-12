@@ -60,8 +60,11 @@ const СОРТУВАННЯ = [
   {ключ: "plays", підпис: "за партіями", спадання: true, значення: (g) => +g.plays || 0},
   {ключ: "added", підпис: "за датою додавання", текст: true, спадання: true,
    значення: (g) => g.added || ""},
-  {ключ: "minutes", підпис: "за часом партії", спадання: true, значення: (g) => g.minutes},
-  {ключ: "weight", підпис: "за складністю", спадання: true, значення: (g) => g.weight},
+  // Час і складність беруться з BGG, коли своїх чисел ще немає, — інакше
+  // ці два сортування нічого не роблять, бо руками їх майже не заповнюють.
+  {ключ: "minutes", підпис: "за часом партії", спадання: true,
+   значення: (g) => тривалість(g).від},
+  {ключ: "weight", підпис: "за складністю", спадання: true, значення: складність},
 ];
 
 /* ── вибірка й сортування ────────────────────────── */
@@ -70,13 +73,14 @@ function effScore(g){
   const v = g.byCount ? g.byCount[ui.count] : null;
   return v == null ? null : v;
 }
-function fitsCount(g, склад){
-  const с = склад == null ? ui.count : склад;
+function fitsCount(g, який){
+  const с = який == null ? ui.count : який;
   if(с === "all") return true;
+  // Поставлена оцінка сильніша за межі: якщо ви так грали — воно грається.
   if(g.byCount && g.byCount[с] != null) return true;
-  const mn = g.minP, mx = g.maxP;
+  const {від: mn, до: mx} = склад(g);
   if(mn == null && mx == null) return true;
-  if(с === "5") return mx == null || mx >= 5;
+  if(с === "5+") return mx == null || mx > 5;
   const c = +с;
   return (mn == null || mn <= c) && (mx == null || mx >= c);
 }

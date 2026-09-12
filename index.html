@@ -115,8 +115,13 @@ button{cursor:pointer}
 .seg button{border:0; background:none; border-radius:5px; padding:0 9px; height:28px;
   font-size:13px; font-weight:500; color:var(--ink-soft)}
 .seg button[aria-pressed="true"]{background:var(--petrol); color:var(--on-accent)}
+/* Клас вішається і на <button>, і на <a>. Посилання приносить із собою
+   свій колір та підкреслення — гасимо, інакше кнопка виглядає як текст
+   у рамці. inline-flex, бо в <a> немає власного центрування вмісту. */
 .btn{height:36px; padding:0 14px; border-radius:7px; border:1px solid var(--rule);
-  background:var(--sheet); font-size:14px; font-weight:500}
+  background:var(--sheet); font-size:14px; font-weight:500;
+  display:inline-flex; align-items:center; justify-content:center;
+  color:var(--ink); text-decoration:none}
 .btn:hover{border-color:var(--ink-faint)}
 .btn.pri{background:var(--petrol); border-color:var(--petrol); color:var(--on-accent)}
 .btn[aria-pressed="true"]{background:var(--sunk); border-color:var(--ink-faint)}
@@ -204,8 +209,12 @@ button{cursor:pointer}
 .alt{margin:2px 0 0; font-size:12.5px; color:var(--ink-faint)}
 .note{margin:3px 0 0; font-size:13px; color:var(--ink-soft); max-width:60ch}
 
-.counts{display:grid; grid-template-columns:repeat(4,34px); gap:4px; width:152px}
-.cnt{border:1px solid var(--rule-soft); border-radius:5px; background:var(--sheet);
+/* Клітинок тепер від нуля до шести — показуємо лише заповнені, — тож
+   замість сітки на чотири колонки тут гнучкий рядок, притиснутий праворуч.
+   min-width тримає колонку оцінок на місці, коли клітинок мало. */
+.counts{display:flex; flex-wrap:nowrap; gap:4px; justify-content:flex-end; min-width:152px}
+.cnt{flex:none; width:34px; border:1px solid var(--rule-soft); border-radius:5px;
+  background:var(--sheet); overflow:hidden;
   height:38px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:0}
 .cnt b{font:600 14px/1 "IBM Plex Mono",ui-monospace,monospace; color:var(--band,var(--ink))}
 .cnt i{font:400 9px/1.4 "IBM Plex Mono",ui-monospace,monospace; font-style:normal;
@@ -219,6 +228,19 @@ button{cursor:pointer}
 .score .num.none{font-size:20px; color:var(--rule)}
 .meter{display:block; height:3px; margin-top:5px; background:var(--sunk); border-radius:2px; overflow:hidden}
 .meter i{display:block; height:100%; background:var(--band,var(--ink-faint))}
+/* Оцінка BGG стоїть під твоєю, а не в кінці рядка метаданих: там її
+   з'їдало обрізання рівно тоді, коли в гри багато статусів і тегів. */
+.score .bgg{display:block; margin-top:4px; white-space:nowrap;
+  font:600 10px/1 "IBM Plex Mono",ui-monospace,monospace;
+  letter-spacing:.04em; color:var(--ink-faint)}
+
+/* Довідка з BGG в картці: пари «підпис — число» у дві колонки. */
+.bgg-info{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+  gap:8px 14px; margin:0 0 10px}
+.bgg-info > div{display:flex; align-items:baseline; gap:8px; min-width:0}
+.bgg-info dt{flex:none; font:400 12px/1.4 "IBM Plex Sans",sans-serif; color:var(--ink-faint)}
+.bgg-info dd{margin:0; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+  font:600 13px/1.4 "IBM Plex Mono",ui-monospace,monospace; color:var(--ink)}
 
 .b-low{--band:var(--rust)} .b-mid{--band:var(--amber)}
 .b-good{--band:var(--sage)} .b-top{--band:var(--petrol)}
@@ -365,13 +387,38 @@ textarea:focus{outline:none; border-color:var(--petrol)}
   /* Кожній дитині — своя клітинка. Авторозміщення тут ламалося: оцінка,
      прибита до першого рядка, поверталася в перший стовпчик і лягала
      просто на обкладинку разом із назвою. */
-  .row{grid-template-columns:var(--pick,0px) 46px minmax(0,1fr) auto auto; row-gap:9px}
+  /* Панель на телефоні заввишки з третину екрана, тож прибиту згори її
+     тримати не можна: вона з'їдала список і, оскільки її підкладка
+     розтане на 74%, нижні кнопки лежали просто поверх рядків. Хай їде
+     разом зі сторінкою. */
+  .tools{position:static; background:none; padding-bottom:14px}
+  .head-row{display:none}
+  /* Кожній дитині — своя клітинка. Авторозміщення тут ламалося: оцінка,
+     прибита до першого рядка, поверталася в перший стовпчик і лягала
+     просто на обкладинку разом із назвою.
+     Кнопка правил переїхала в другий рядок: у першому вона забирала в
+     назви 44 з тих небагатьох пікселів, що там узагалі є. */
+  .row{grid-template-columns:var(--pick,0px) 46px minmax(0,1fr) auto;
+       gap:10px; row-gap:9px}
   .row > .pick{grid-area:1 / 1}
   .row > .cov{grid-area:1 / 2}
   .row > .open{grid-area:1 / 3}
-  .row > .rules-btn{grid-area:1 / 4}
-  .row > .score{grid-area:1 / 5; width:64px}
-  .row > .counts{grid-area:2 / 2 / 3 / -1; grid-template-columns:repeat(4,1fr); width:auto}
+  .row > .score{grid-area:1 / 4; width:58px}
+  /* Клітинки складу столу йдуть окремим рядком під обкладинкою. Коли
+     жодної оцінки ще нема, рядок не з'являється зовсім: :empty прибирає
+     і сам блок, і порожній проміжок після нього. */
+  .row > .counts{grid-area:2 / 2 / 3 / 4; justify-content:flex-start;
+    min-width:0; flex-wrap:wrap; gap:5px 4px}
+  .row > .counts:empty{display:none}
+  .row > .rules-btn{grid-area:2 / 4; justify-self:end}
+  /* Порожній слот під кнопку правил тримає колонки рівно на широкому
+     екрані; тут колонок немає, і він лише плодить порожній рядок. */
+  .row > .rules-btn.ghost{display:none}
+  /* Метадані переносяться, а не обрізаються: у смужку на 190 пікселів
+     влазила заледве половина рядка, і зникала саме та половина, де
+     стоять склад столу й час. Два рядки — і видно все. */
+  .row .meta{white-space:normal; display:-webkit-box; -webkit-line-clamp:2;
+    -webkit-box-orient:vertical; overflow:hidden}
   .card{border-left:0}
   .note{max-width:none}
 }
@@ -495,7 +542,18 @@ textarea:focus{outline:none; border-color:var(--petrol)}
       <div class="chips" id="cStatus"></div>
       <p class="hint auto-note" id="cAuto" hidden></p>
       <p class="hint">Статусів може бути кілька: «улюблена» не скасовує «у колекції».
-        «Лише онлайн» — грав, але коробки на полиці немає.</p>
+        «Онлайн» — грав, але коробки на полиці немає, тож він спокійно стоїть
+        поряд із «позбувся». А от «у колекції» й «позбувся» разом не бувають:
+        увімкнеш одне — друге згасне.</p>
+    </fieldset>
+
+    <fieldset class="grp" id="bggGrp">
+      <legend>Що каже BGG</legend>
+      <dl class="bgg-info" id="cBgg"></dl>
+      <p class="hint">Чужі числа, тому тут їх не змінюють. «Найкраще на» й
+        «годиться на» — це опитування гравців, а не те, що написано на коробці.
+        Свої межі став у полях «Від», «До», «Хвилин» — вони лягають зверху.</p>
+      <a class="btn" id="cBggLink" target="_blank" rel="noopener noreferrer">Сторінка на BGG</a>
     </fieldset>
 
     <fieldset class="grp">
@@ -526,7 +584,10 @@ textarea:focus{outline:none; border-color:var(--petrol)}
     <fieldset class="grp">
       <legend>Оцінка за складом столу</legend>
       <div class="pad" id="pad"></div>
-      <p class="hint">Та сама гра на двох і на п'ятьох — часто дві різні гри. Порожній рядок означає «не грав таким складом».</p>
+      <p class="hint">Та сама гра на двох і на п'ятьох — часто дві різні гри. Порожній
+        рядок означає «не грав таким складом», і в списку такий склад не показується
+        зовсім — з'явиться там, щойно поставиш оцінку. Рядки взято з того, на скільки
+        гравців розрахована коробка.</p>
     </fieldset>
 
     <fieldset class="grp" id="expGrp">
@@ -577,10 +638,18 @@ textarea:focus{outline:none; border-color:var(--petrol)}
 
 <script>
 "use strict";
-const COUNTS = ["2","3","4","5"];
-const CLABEL = {"2":"2","3":"3","4":"4","5":"5+"};
+/* Склади столу, за які можна поставити окрему оцінку. «5+» — це «більше
+   за п'ятьох, скільки коробка дозволяє»; ключ навмисне сталий, а підпис
+   до нього кожна гра бере зі своєї стелі («до 6», «до 10»). Якби ключ
+   залежав від стелі, зміна даних на BGG перейменовувала б чужі оцінки. */
+const COUNTS = ["1","2","3","4","5","5+"];
+const CLABEL = {"1":"1","2":"2","3":"3","4":"4","5":"5","5+":"6+"};
 const STATUS = {"хочу":"хочу зіграти","колекція":"у колекції","улюблена":"улюблена",
-                "онлайн":"лише онлайн","відклав":"відклав","позбувся":"позбувся"};
+                "онлайн":"онлайн","відклав":"відклав","позбувся":"позбувся"};
+/* Коробка або стоїть на полиці, або її вже нема: «у колекції» й «позбувся»
+   разом не бувають, тож увімкнення одного гасить інший. Решта статусів
+   поєднується вільно — позбувся коробки, а грати онлайн не перестав. */
+const НЕСУМІСНІ = [["колекція", "позбувся"]];
 // Похідний статус: його не ставлять руками, він випливає з лічильника партій
 // і сам зникає після першої зіграної. Тримати його окремо від STATUS, щоб
 // він ніколи не потрапив у збережені дані.
@@ -604,6 +673,88 @@ function rules(g){
 }
 /** Ті, що відкриються з рядка списку одним дотиком. */
 function перші(g){ return rules(g)[0] || null; }
+
+/* ── числа з BGG ──────────────────────────────────────────────────────
+   Склад столу, тривалість і «вагу» тягне з BGG етап збору даних; свої
+   поля (minP/maxP/minutes/weight) лишаються поверх них. Правило скрізь
+   одне: своє число важить більше за чуже. BGG підказує, ти виправляєш. */
+
+/** {від, до} — на скількох гра розрахована. Будь-яка половина може бути null. */
+function склад(g){
+  return {від: g.minP != null ? g.minP : (g.bggMin != null ? g.bggMin : null),
+          до:  g.maxP != null ? g.maxP : (g.bggMax != null ? g.bggMax : null)};
+}
+/** {від, до} у хвилинах. Свій `minutes` — це одне число, і воно перекриває обидві межі. */
+function тривалість(g){
+  if(g.minutes != null) return {від: g.minutes, до: g.minutes};
+  return {від: g.bggTimeMin != null ? g.bggTimeMin : null,
+          до:  g.bggTimeMax != null ? g.bggTimeMax : null};
+}
+function складність(g){ return g.weight != null ? g.weight : (g.bggWeight != null ? g.bggWeight : null); }
+
+/** Підпис клітинки «5+» знає стелю саме цієї коробки: «до 6», «до 10».
+    Понад дюжину підпис не має сенсу: «Картографи» офіційно грають сотнею
+    людей, і «до 100» у клітинці на 34 пікселі нічого не пояснює. */
+function countLabel(g, c){
+  if(c !== "5+") return CLABEL[c];
+  const до = склад(g).до;
+  return до != null && до > 5 && до <= 12 ? "до " + до : CLABEL["5+"];
+}
+/** Клітинки складу столу, доречні саме цій коробці. Оцінка, що вже стоїть,
+    показується завжди — навіть якщо межі кажуть інакше: те, що людина
+    ввела руками, ніколи не зникає через довідник. */
+function countsOf(g){
+  const {від, до} = склад(g);
+  const мін = від == null ? 1 : від;
+  const свої = g.byCount || {};
+  return COUNTS.filter((c) => {
+    if(свої[c] != null) return true;
+    if(c === "5+") return до != null && до > 5;
+    const n = +c;
+    return n >= мін && (до == null || n <= до);
+  });
+}
+/** Тільки ті склади, за які оцінка вже стоїть, — це те, що йде в рядок списку. */
+function ratedCounts(g){
+  return COUNTS.filter((c) => g.byCount && g.byCount[c] != null);
+}
+/** [2,3,5,6] → «2–3 · 5–6»: суцільні відрізки склеюються, бо «2, 3, 4, 5»
+    читається гірше за «2–5». */
+function ranges(набір){
+  if(!Array.isArray(набір) || !набір.length) return "";
+  const частини = [];
+  let a = набір[0], b = набір[0];
+  for(let i = 1; i < набір.length; i++){
+    if(набір[i] === b + 1){ b = набір[i]; continue; }
+    частини.push(a === b ? String(a) : a + "–" + b);
+    a = b = набір[i];
+  }
+  частини.push(a === b ? String(a) : a + "–" + b);
+  return частини.join(" · ");
+}
+/** «2–4 гравці», «від 3», «1 гравець». Порожньо, якщо не знати нічого. */
+function playersText(g){
+  const {від, до} = склад(g);
+  if(від == null && до == null) return "";
+  if(від == null) return "до " + до + " " + plural(до, "гравця", "гравців", "гравців");
+  if(до == null) return "від " + від;
+  if(від === до) return від + " " + plural(від, "гравець", "гравці", "гравців");
+  return від + "–" + до + " " + plural(до, "гравець", "гравці", "гравців");
+}
+/** «45 хв» або «60–90 хв». */
+function timeText(g){
+  const {від, до} = тривалість(g);
+  if(від == null && до == null) return "";
+  if(від == null || до == null || від === до) return (від == null ? до : від) + " хв";
+  return від + "–" + до + " хв";
+}
+function plural(n, one, few, many){
+  const a = Math.abs(n) % 100, b = a % 10;
+  if(a > 10 && a < 20) return many;
+  if(b === 1) return one;
+  if(b >= 2 && b <= 4) return few;
+  return many;
+}
 
 const LSKEY = "polytsia.games.v1";
 
@@ -680,6 +831,14 @@ function stats(g){
 function setStats(g, набір){
   g.statuses = Object.keys(STATUS).filter((k) => набір.has(k));
   if(g.statuses.length) g.status = g.statuses[0]; else delete g.status;
+}
+/** Гасить статус, несумісний із щойно ввімкненим. Повертає той самий набір. */
+function узгодити(набір, доданий){
+  НЕСУМІСНІ.forEach((пара) => {
+    const і = пара.indexOf(доданий);
+    if(і >= 0) набір.delete(пара[1 - і]);
+  });
+  return набір;
 }
 function autoStats(g){ return g.plays > 0 ? [] : ["незіграна"]; }
 function allStats(g){ return stats(g).concat(autoStats(g)); }
@@ -1114,8 +1273,11 @@ const СОРТУВАННЯ = [
   {ключ: "plays", підпис: "за партіями", спадання: true, значення: (g) => +g.plays || 0},
   {ключ: "added", підпис: "за датою додавання", текст: true, спадання: true,
    значення: (g) => g.added || ""},
-  {ключ: "minutes", підпис: "за часом партії", спадання: true, значення: (g) => g.minutes},
-  {ключ: "weight", підпис: "за складністю", спадання: true, значення: (g) => g.weight},
+  // Час і складність беруться з BGG, коли своїх чисел ще немає, — інакше
+  // ці два сортування нічого не роблять, бо руками їх майже не заповнюють.
+  {ключ: "minutes", підпис: "за часом партії", спадання: true,
+   значення: (g) => тривалість(g).від},
+  {ключ: "weight", підпис: "за складністю", спадання: true, значення: складність},
 ];
 
 /* ── вибірка й сортування ────────────────────────── */
@@ -1124,13 +1286,14 @@ function effScore(g){
   const v = g.byCount ? g.byCount[ui.count] : null;
   return v == null ? null : v;
 }
-function fitsCount(g, склад){
-  const с = склад == null ? ui.count : склад;
+function fitsCount(g, який){
+  const с = який == null ? ui.count : який;
   if(с === "all") return true;
+  // Поставлена оцінка сильніша за межі: якщо ви так грали — воно грається.
   if(g.byCount && g.byCount[с] != null) return true;
-  const mn = g.minP, mx = g.maxP;
+  const {від: mn, до: mx} = склад(g);
   if(mn == null && mx == null) return true;
-  if(с === "5") return mx == null || mx >= 5;
+  if(с === "5+") return mx == null || mx > 5;
   const c = +с;
   return (mn == null || mn <= c) && (mx == null || mx >= c);
 }
@@ -1215,18 +1378,20 @@ function renderList(){
     const meta = [];
     const назви = statNames(g);
     if(назви.length) meta.push(назви.join(" · "));
-    if(g.minP || g.maxP) meta.push((g.minP || "?") + "–" + (g.maxP || "?") + " гравців");
-    if(g.minutes) meta.push(g.minutes + " хв");
+    const хто = playersText(g); if(хто) meta.push(хто);
+    const коли = timeText(g); if(коли) meta.push(коли);
     if(g.plays) meta.push(g.plays + " " + plural(g.plays, "партія", "партії", "партій"));
-    if(g.weight) meta.push("складність " + fmt(g.weight));
-    if(g.bggRating) meta.push("BGG " + fmt(g.bggRating));
+    const вага = складність(g); if(вага) meta.push("складність " + fmt(вага));
     if(g.tags && g.tags.length) meta.push(g.tags.join(" · "));
     const перше = перші(g);
-    const cells = COUNTS.map((c) => {
-      const v = g.byCount ? g.byCount[c] : null;
-      return "<span class='cnt " + (v == null ? "void " : "") + band(v) +
-        (ui.count === c ? " now" : "") + "'><b>" + (v == null ? "·" : fmt(v)) +
-        "</b><i>" + CLABEL[c] + "</i></span>";
+    // У рядку — тільки ті склади, за які оцінка вже стоїть. Порожні
+    // клітинки з'їдали половину ширини й відсували назву гри; решта
+    // складів чекає в картці, і щойно там з'явиться оцінка — клітинка
+    // сама вигулькне тут.
+    const cells = ratedCounts(g).map((c) => {
+      const v = g.byCount[c];
+      return "<span class='cnt " + band(v) + (ui.count === c ? " now" : "") +
+        "'><b>" + fmt(v) + "</b><i>" + esc(countLabel(g, c)) + "</i></span>";
     }).join("");
     // Крапка біля назви фарбується за першим статусом — він же найважливіший.
     return "<li class='row s-" + esc(stats(g)[0] || "") + (g.expansion ? " exp" : "") +
@@ -1252,9 +1417,13 @@ function renderList(){
           ВИДИ_ПРАВИЛ[п.kind] || п.kind).join(" · ")) +
         "' aria-label='Правила: " + esc(g.name) + "'>П</a>" : "<span class='rules-btn ghost'></span>") +
       "<div class='counts'>" + cells + "</div>" +
+      // Оцінка BGG живе в колонці оцінки, а не в кінці рядка метаданих:
+      // там її з'їдало обрізання, щойно перед нею набиралося досить тексту.
+      // Тут вона стоїть просто під твоєю оцінкою — і видно, чи ви згодні.
       "<div class='score " + b + "'><span class='num" + (s == null ? " none" : "") + "'>" +
         (s == null ? "—" : fmt(s)) + "</span>" +
-        "<span class='meter'><i style='width:" + (s == null ? 0 : s * 10) + "%'></i></span></div>" +
+        "<span class='meter'><i style='width:" + (s == null ? 0 : s * 10) + "%'></i></span>" +
+        (g.bggRating ? "<span class='bgg'>BGG " + fmt(g.bggRating) + "</span>" : "") + "</div>" +
     "</li>";
   }).join("");
 
@@ -1262,13 +1431,6 @@ function renderList(){
     const el = $("blank"); el.hidden = false;
     el.innerHTML = "<b>" + t + "</b>" + sub;
   }
-}
-function plural(n, one, few, many){
-  const a = Math.abs(n) % 100, b = a % 10;
-  if(a > 10 && a < 20) return many;
-  if(b === 1) return one;
-  if(b >= 2 && b <= 4) return few;
-  return many;
 }
 
 /* ── порівняння ──────────────────────────────────── */
@@ -1282,23 +1444,26 @@ function renderCmp(){
     return;
   }
   const gs = picked.slice(0, 4);
+  // Рядок на кожен склад столу показуємо тільки тоді, коли бодай одна
+  // з обраних коробок має там оцінку: інакше таблиця на чотири гри
+  // здебільшого складається з прочерків.
+  const склади = COUNTS.filter((c) => gs.some((g) => pick(g, c) != null));
   const rows = [
     ["Загальна", (g) => g.score, true],
-    ["На 2", (g) => pick(g, "2"), true],
-    ["На 3", (g) => pick(g, "3"), true],
-    ["На 4", (g) => pick(g, "4"), true],
-    ["На 5+", (g) => pick(g, "5"), true],
+  ].concat(склади.map((c) => ["На " + CLABEL[c], (g) => pick(g, c), true])).concat([
     ["Оцінка BGG", (g) => (g.bggRating != null ? fmt(g.bggRating) : null), false],
     ["Тип коробки", (g) => (g.expansion ? "доповнення" : "основна"), false],
     ["Завжди з", (g) => withNames(g).join(", "), false],
-    ["Складність", (g) => g.weight, false],
+    ["Складність", (g) => складність(g), false],
     ["Партій", (g) => g.plays || 0, false],
-    ["Гравців", (g) => (g.minP || g.maxP) ? (g.minP || "?") + "–" + (g.maxP || "?") : null, false],
-    ["Час", (g) => g.minutes ? g.minutes + " хв" : null, false],
+    ["Гравців", (g) => playersText(g), false],
+    ["Найкраще на", (g) => ranges(g.bggBest), false],
+    ["Годиться на", (g) => ranges(g.bggRec), false],
+    ["Час", (g) => timeText(g), false],
     ["Статус", (g) => statNames(g).join(", "), false],
     ["Теги", (g) => (g.tags || []).join(", "), false],
     ["Нотатка", (g) => g.comment, false]
-  ];
+  ]);
   function pick(g, c){ return g.byCount ? g.byCount[c] : null; }
 
   const body = rows.map((r) => {
@@ -1380,6 +1545,57 @@ function renderStatus(g){
     : "";
 }
 
+/** Драбинки оцінок за складом столу. У картці показуємо всі склади, на які
+    коробка розрахована, — порожні теж, бо саме тут оцінку й ставлять.
+    Перемальовується щоразу, коли міняються межі «Від»/«До»: інакше
+    клітинка на п'ятьох не з'явиться, доки картку не закрити й не відкрити. */
+function renderPad(g){
+  const pad = $("pad");
+  pad.innerHTML = "";
+  countsOf(g).forEach((c) => {
+    const who = document.createElement("div");
+    who.className = "who";
+    who.innerHTML = esc(countLabel(g, c)) + "<small>ГР.</small>";
+    const row = document.createElement("div");
+    row.className = "scale s10";
+    pad.appendChild(who); pad.appendChild(row);
+    scale(row, 10,
+      () => { const g2 = current(); return g2 && g2.byCount ? g2.byCount[c] : null; },
+      (v) => {
+        const g2 = current(); if(!g2) return;
+        g2.byCount = g2.byCount || {};
+        if(v == null) delete g2.byCount[c]; else g2.byCount[c] = v;
+      });
+  });
+}
+
+/** Що про цю коробку каже BGG. Нічого з цього не редагується: це чужі
+    числа, і правити їх тут означало б удавати, ніби вони твої. Свої —
+    у полях «Від», «До», «Хвилин» і «Складність»: вони лягають зверху. */
+function renderBgg(g){
+  const рядки = [];
+  const дод = (підпис, значення) => { if(значення) рядки.push([підпис, значення]); };
+  дод("Оцінка", g.bggRating ? fmt(g.bggRating) : "");
+  дод("Місце в рейтингу", g.bggRank ? "№ " + g.bggRank : "");
+  дод("Гравців", g.bggMin || g.bggMax
+    ? (g.bggMin || "?") + "–" + (g.bggMax || "?") : "");
+  дод("Найкраще на", ranges(g.bggBest));
+  дод("Годиться на", ranges(g.bggRec));
+  дод("Партія", g.bggTimeMin || g.bggTimeMax
+    ? (g.bggTimeMin === g.bggTimeMax || !g.bggTimeMax
+        ? (g.bggTimeMin || g.bggTimeMax) + " хв"
+        : g.bggTimeMin + "–" + g.bggTimeMax + " хв") : "");
+  дод("Складність", g.bggWeight ? fmt(g.bggWeight) + " з 5" : "");
+
+  $("bggGrp").hidden = !рядки.length;
+  if(!рядки.length) return;
+  $("cBgg").innerHTML = рядки.map(([п, з]) =>
+    "<div><dt>" + esc(п) + "</dt><dd>" + esc(з) + "</dd></div>").join("");
+  const л = $("cBggLink");
+  л.hidden = !g.bggId;
+  if(g.bggId) л.href = "https://boardgamegeek.com/boardgame/" + encodeURIComponent(g.bggId);
+}
+
 /** Правила гри: список посилань із хрестиком і рядок для нового. */
 function renderRules(g){
   const список = rules(g);
@@ -1454,6 +1670,7 @@ function openCard(id){
   $("cMax").value = g.maxP == null ? "" : g.maxP;
   $("cMinutes").value = g.minutes == null ? "" : g.minutes;
   $("cExp").setAttribute("aria-pressed", g.expansion ? "true" : "false");
+  renderBgg(g);
   // Розкривачка доповнень щоразу починається згорнутою й без старого пошуку.
   renderRules(g);
   $("cRuleUrl").value = "";
@@ -1470,22 +1687,7 @@ function openCard(id){
 
   scale($("sMain"), 10, () => current() && current().score, (v) => { current().score = v; });
   scale($("sWeight"), 5, () => current() && current().weight, (v) => { current().weight = v; });
-  const pad = $("pad"); pad.innerHTML = "";
-  COUNTS.forEach((c) => {
-    const who = document.createElement("div");
-    who.className = "who";
-    who.innerHTML = CLABEL[c] + "<small>ГР.</small>";
-    const row = document.createElement("div");
-    row.className = "scale s10";
-    pad.appendChild(who); pad.appendChild(row);
-    scale(row, 10,
-      () => { const g2 = current(); return g2 && g2.byCount ? g2.byCount[c] : null; },
-      (v) => {
-        const g2 = current(); if(!g2) return;
-        g2.byCount = g2.byCount || {};
-        if(v == null) delete g2.byCount[c]; else g2.byCount[c] = v;
-      });
-  });
+  renderPad(g);
 
   $("scrim").hidden = false; $("card").hidden = false;
   requestAnimationFrame(() => $("card").classList.add("on"));
@@ -1533,14 +1735,18 @@ $("cStatus").addEventListener("click", (e) => {
   const b = e.target.closest("[data-st]"); if(!b) return;
   const g = current(); if(!g || !canEdit()) return;
   const k = b.dataset.st, набір = new Set(stats(g));
-  if(набір.has(k)) набір.delete(k); else набір.add(k);
+  if(набір.has(k)) набір.delete(k); else узгодити(набір.add(k), k);
   setStats(g, набір);
   renderStatus(g);
   render();
   touch();
 });
-bindField($("cMin"), (g, v) => { g.minP = v === "" ? null : +v; }, "input", (g) => порожньо(g.minP));
-bindField($("cMax"), (g, v) => { g.maxP = v === "" ? null : +v; }, "input", (g) => порожньо(g.maxP));
+// Межі столу вирішують, які клітинки складу взагалі є, — тож після правки
+// драбинки перемальовуються.
+bindField($("cMin"), (g, v) => { g.minP = v === "" ? null : +v; renderPad(g); },
+  "input", (g) => порожньо(g.minP));
+bindField($("cMax"), (g, v) => { g.maxP = v === "" ? null : +v; renderPad(g); },
+  "input", (g) => порожньо(g.maxP));
 bindField($("cMinutes"), (g, v) => { g.minutes = v === "" ? null : +v; }, "input", (g) => порожньо(g.minutes));
 bindField($("cNote"), (g, v) => { g.comment = v; }, "input", (g) => g.comment || "");
 bindField($("cTags"), (g, v) => {

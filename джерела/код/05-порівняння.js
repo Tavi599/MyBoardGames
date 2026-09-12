@@ -9,23 +9,26 @@ function renderCmp(){
     return;
   }
   const gs = picked.slice(0, 4);
+  // Рядок на кожен склад столу показуємо тільки тоді, коли бодай одна
+  // з обраних коробок має там оцінку: інакше таблиця на чотири гри
+  // здебільшого складається з прочерків.
+  const склади = COUNTS.filter((c) => gs.some((g) => pick(g, c) != null));
   const rows = [
     ["Загальна", (g) => g.score, true],
-    ["На 2", (g) => pick(g, "2"), true],
-    ["На 3", (g) => pick(g, "3"), true],
-    ["На 4", (g) => pick(g, "4"), true],
-    ["На 5+", (g) => pick(g, "5"), true],
+  ].concat(склади.map((c) => ["На " + CLABEL[c], (g) => pick(g, c), true])).concat([
     ["Оцінка BGG", (g) => (g.bggRating != null ? fmt(g.bggRating) : null), false],
     ["Тип коробки", (g) => (g.expansion ? "доповнення" : "основна"), false],
     ["Завжди з", (g) => withNames(g).join(", "), false],
-    ["Складність", (g) => g.weight, false],
+    ["Складність", (g) => складність(g), false],
     ["Партій", (g) => g.plays || 0, false],
-    ["Гравців", (g) => (g.minP || g.maxP) ? (g.minP || "?") + "–" + (g.maxP || "?") : null, false],
-    ["Час", (g) => g.minutes ? g.minutes + " хв" : null, false],
+    ["Гравців", (g) => playersText(g), false],
+    ["Найкраще на", (g) => ranges(g.bggBest), false],
+    ["Годиться на", (g) => ranges(g.bggRec), false],
+    ["Час", (g) => timeText(g), false],
     ["Статус", (g) => statNames(g).join(", "), false],
     ["Теги", (g) => (g.tags || []).join(", "), false],
     ["Нотатка", (g) => g.comment, false]
-  ];
+  ]);
   function pick(g, c){ return g.byCount ? g.byCount[c] : null; }
 
   const body = rows.map((r) => {

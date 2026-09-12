@@ -54,6 +54,57 @@ function renderStatus(g){
     : "";
 }
 
+/** Драбинки оцінок за складом столу. У картці показуємо всі склади, на які
+    коробка розрахована, — порожні теж, бо саме тут оцінку й ставлять.
+    Перемальовується щоразу, коли міняються межі «Від»/«До»: інакше
+    клітинка на п'ятьох не з'явиться, доки картку не закрити й не відкрити. */
+function renderPad(g){
+  const pad = $("pad");
+  pad.innerHTML = "";
+  countsOf(g).forEach((c) => {
+    const who = document.createElement("div");
+    who.className = "who";
+    who.innerHTML = esc(countLabel(g, c)) + "<small>ГР.</small>";
+    const row = document.createElement("div");
+    row.className = "scale s10";
+    pad.appendChild(who); pad.appendChild(row);
+    scale(row, 10,
+      () => { const g2 = current(); return g2 && g2.byCount ? g2.byCount[c] : null; },
+      (v) => {
+        const g2 = current(); if(!g2) return;
+        g2.byCount = g2.byCount || {};
+        if(v == null) delete g2.byCount[c]; else g2.byCount[c] = v;
+      });
+  });
+}
+
+/** Що про цю коробку каже BGG. Нічого з цього не редагується: це чужі
+    числа, і правити їх тут означало б удавати, ніби вони твої. Свої —
+    у полях «Від», «До», «Хвилин» і «Складність»: вони лягають зверху. */
+function renderBgg(g){
+  const рядки = [];
+  const дод = (підпис, значення) => { if(значення) рядки.push([підпис, значення]); };
+  дод("Оцінка", g.bggRating ? fmt(g.bggRating) : "");
+  дод("Місце в рейтингу", g.bggRank ? "№ " + g.bggRank : "");
+  дод("Гравців", g.bggMin || g.bggMax
+    ? (g.bggMin || "?") + "–" + (g.bggMax || "?") : "");
+  дод("Найкраще на", ranges(g.bggBest));
+  дод("Годиться на", ranges(g.bggRec));
+  дод("Партія", g.bggTimeMin || g.bggTimeMax
+    ? (g.bggTimeMin === g.bggTimeMax || !g.bggTimeMax
+        ? (g.bggTimeMin || g.bggTimeMax) + " хв"
+        : g.bggTimeMin + "–" + g.bggTimeMax + " хв") : "");
+  дод("Складність", g.bggWeight ? fmt(g.bggWeight) + " з 5" : "");
+
+  $("bggGrp").hidden = !рядки.length;
+  if(!рядки.length) return;
+  $("cBgg").innerHTML = рядки.map(([п, з]) =>
+    "<div><dt>" + esc(п) + "</dt><dd>" + esc(з) + "</dd></div>").join("");
+  const л = $("cBggLink");
+  л.hidden = !g.bggId;
+  if(g.bggId) л.href = "https://boardgamegeek.com/boardgame/" + encodeURIComponent(g.bggId);
+}
+
 /** Правила гри: список посилань із хрестиком і рядок для нового. */
 function renderRules(g){
   const список = rules(g);
@@ -128,6 +179,7 @@ function openCard(id){
   $("cMax").value = g.maxP == null ? "" : g.maxP;
   $("cMinutes").value = g.minutes == null ? "" : g.minutes;
   $("cExp").setAttribute("aria-pressed", g.expansion ? "true" : "false");
+  renderBgg(g);
   // Розкривачка доповнень щоразу починається згорнутою й без старого пошуку.
   renderRules(g);
   $("cRuleUrl").value = "";
@@ -144,22 +196,7 @@ function openCard(id){
 
   scale($("sMain"), 10, () => current() && current().score, (v) => { current().score = v; });
   scale($("sWeight"), 5, () => current() && current().weight, (v) => { current().weight = v; });
-  const pad = $("pad"); pad.innerHTML = "";
-  COUNTS.forEach((c) => {
-    const who = document.createElement("div");
-    who.className = "who";
-    who.innerHTML = CLABEL[c] + "<small>ГР.</small>";
-    const row = document.createElement("div");
-    row.className = "scale s10";
-    pad.appendChild(who); pad.appendChild(row);
-    scale(row, 10,
-      () => { const g2 = current(); return g2 && g2.byCount ? g2.byCount[c] : null; },
-      (v) => {
-        const g2 = current(); if(!g2) return;
-        g2.byCount = g2.byCount || {};
-        if(v == null) delete g2.byCount[c]; else g2.byCount[c] = v;
-      });
-  });
+  renderPad(g);
 
   $("scrim").hidden = false; $("card").hidden = false;
   requestAnimationFrame(() => $("card").classList.add("on"));
@@ -207,14 +244,18 @@ $("cStatus").addEventListener("click", (e) => {
   const b = e.target.closest("[data-st]"); if(!b) return;
   const g = current(); if(!g || !canEdit()) return;
   const k = b.dataset.st, набір = new Set(stats(g));
-  if(набір.has(k)) набір.delete(k); else набір.add(k);
+  if(набір.has(k)) набір.delete(k); else узгодити(набір.add(k), k);
   setStats(g, набір);
   renderStatus(g);
   render();
   touch();
 });
-bindField($("cMin"), (g, v) => { g.minP = v === "" ? null : +v; }, "input", (g) => порожньо(g.minP));
-bindField($("cMax"), (g, v) => { g.maxP = v === "" ? null : +v; }, "input", (g) => порожньо(g.maxP));
+// Межі столу вирішують, які клітинки складу взагалі є, — тож після правки
+// драбинки перемальовуються.
+bindField($("cMin"), (g, v) => { g.minP = v === "" ? null : +v; renderPad(g); },
+  "input", (g) => порожньо(g.minP));
+bindField($("cMax"), (g, v) => { g.maxP = v === "" ? null : +v; renderPad(g); },
+  "input", (g) => порожньо(g.maxP));
 bindField($("cMinutes"), (g, v) => { g.minutes = v === "" ? null : +v; }, "input", (g) => порожньо(g.minutes));
 bindField($("cNote"), (g, v) => { g.comment = v; }, "input", (g) => g.comment || "");
 bindField($("cTags"), (g, v) => {

@@ -54,18 +54,20 @@ function renderList(){
     const meta = [];
     const назви = statNames(g);
     if(назви.length) meta.push(назви.join(" · "));
-    if(g.minP || g.maxP) meta.push((g.minP || "?") + "–" + (g.maxP || "?") + " гравців");
-    if(g.minutes) meta.push(g.minutes + " хв");
+    const хто = playersText(g); if(хто) meta.push(хто);
+    const коли = timeText(g); if(коли) meta.push(коли);
     if(g.plays) meta.push(g.plays + " " + plural(g.plays, "партія", "партії", "партій"));
-    if(g.weight) meta.push("складність " + fmt(g.weight));
-    if(g.bggRating) meta.push("BGG " + fmt(g.bggRating));
+    const вага = складність(g); if(вага) meta.push("складність " + fmt(вага));
     if(g.tags && g.tags.length) meta.push(g.tags.join(" · "));
     const перше = перші(g);
-    const cells = COUNTS.map((c) => {
-      const v = g.byCount ? g.byCount[c] : null;
-      return "<span class='cnt " + (v == null ? "void " : "") + band(v) +
-        (ui.count === c ? " now" : "") + "'><b>" + (v == null ? "·" : fmt(v)) +
-        "</b><i>" + CLABEL[c] + "</i></span>";
+    // У рядку — тільки ті склади, за які оцінка вже стоїть. Порожні
+    // клітинки з'їдали половину ширини й відсували назву гри; решта
+    // складів чекає в картці, і щойно там з'явиться оцінка — клітинка
+    // сама вигулькне тут.
+    const cells = ratedCounts(g).map((c) => {
+      const v = g.byCount[c];
+      return "<span class='cnt " + band(v) + (ui.count === c ? " now" : "") +
+        "'><b>" + fmt(v) + "</b><i>" + esc(countLabel(g, c)) + "</i></span>";
     }).join("");
     // Крапка біля назви фарбується за першим статусом — він же найважливіший.
     return "<li class='row s-" + esc(stats(g)[0] || "") + (g.expansion ? " exp" : "") +
@@ -91,9 +93,13 @@ function renderList(){
           ВИДИ_ПРАВИЛ[п.kind] || п.kind).join(" · ")) +
         "' aria-label='Правила: " + esc(g.name) + "'>П</a>" : "<span class='rules-btn ghost'></span>") +
       "<div class='counts'>" + cells + "</div>" +
+      // Оцінка BGG живе в колонці оцінки, а не в кінці рядка метаданих:
+      // там її з'їдало обрізання, щойно перед нею набиралося досить тексту.
+      // Тут вона стоїть просто під твоєю оцінкою — і видно, чи ви згодні.
       "<div class='score " + b + "'><span class='num" + (s == null ? " none" : "") + "'>" +
         (s == null ? "—" : fmt(s)) + "</span>" +
-        "<span class='meter'><i style='width:" + (s == null ? 0 : s * 10) + "%'></i></span></div>" +
+        "<span class='meter'><i style='width:" + (s == null ? 0 : s * 10) + "%'></i></span>" +
+        (g.bggRating ? "<span class='bgg'>BGG " + fmt(g.bggRating) + "</span>" : "") + "</div>" +
     "</li>";
   }).join("");
 
@@ -101,12 +107,5 @@ function renderList(){
     const el = $("blank"); el.hidden = false;
     el.innerHTML = "<b>" + t + "</b>" + sub;
   }
-}
-function plural(n, one, few, many){
-  const a = Math.abs(n) % 100, b = a % 10;
-  if(a > 10 && a < 20) return many;
-  if(b === 1) return one;
-  if(b >= 2 && b <= 4) return few;
-  return many;
 }
 
