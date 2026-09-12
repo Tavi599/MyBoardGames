@@ -1,7 +1,7 @@
 {
   "app": "полиця настілок",
   "version": 2,
-  "saved": "2026-09-12T20:25:36.804Z",
+  "saved": "2026-09-12T20:26:07.232Z",
   "games": [
     {
       "added": "2026-09-12",
@@ -785,14 +785,14 @@
           "url": "https://desktopgames.com.ua/games/4079/DMD_WIP_Rulebook.pdf"
         }
       ],
-      "score": null,
+      "score": 8,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:13:44.657Z",
-      "weight": null
+      "updated": "2026-09-12T20:25:57.582Z",
+      "weight": 4
     },
     {
       "added": "2026-09-12",
