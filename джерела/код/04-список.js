@@ -91,6 +91,7 @@ function renderList(){
     }).join("");
     // Крапка біля назви фарбується за першим статусом — він же найважливіший.
     return "<li class='row s-" + esc(stats(g)[0] || "") + (g.expansion ? " exp" : "") +
+      (stats(g).indexOf("продаж") >= 0 ? " sale" : "") +
       (ui.picked.has(g.id) ? " picked" : "") + "' data-id='" + esc(g.id) + "'>" +
       (ui.cmp ? "<label class='pick'><input type='checkbox' data-pick='" + esc(g.id) + "' " +
         (ui.picked.has(g.id) ? "checked" : "") + " aria-label='Порівняти " + esc(g.name) + "'></label>" : "<span class='pick'></span>") +

@@ -175,6 +175,12 @@ button{cursor:pointer}
 .row.exp{background:color-mix(in srgb, var(--amber) 7%, transparent);
   box-shadow:inset 2px 0 0 var(--amber)}
 .row.exp:hover{background:color-mix(in srgb, var(--amber) 13%, transparent)}
+/* Кандидат на продаж: коробка ще твоя, але вже на виході. Правило стоїть
+   після .exp навмисне — коли на продаж виставлене доповнення, важливіше
+   друге, і саме воно має фарбувати рядок. */
+.row.sale{background:color-mix(in srgb, var(--rust) 8%, transparent);
+  box-shadow:inset 2px 0 0 var(--rust)}
+.row.sale:hover{background:color-mix(in srgb, var(--rust) 15%, transparent)}
 .row.picked{background:var(--sheet); box-shadow:inset 3px 0 0 var(--petrol)}
 .badge{flex:none; padding:2px 6px; border:1px solid var(--amber); border-radius:4px;
   color:var(--amber); font:600 9px/1.3 "IBM Plex Mono",ui-monospace,monospace;
@@ -189,6 +195,7 @@ button{cursor:pointer}
 .dot{width:7px; height:7px; border-radius:50%; background:var(--ink-faint); flex:none}
 .s-колекція .dot{background:var(--petrol-dim)}
 .s-улюблена .dot{background:var(--petrol)} .s-чужа .dot{background:var(--amber)}
+.s-продаж .dot{background:var(--rust)}
 .s-позбувся .dot{background:var(--rust)} .s-онлайн .dot{background:var(--sage)}
 /* Кнопка правил у рядку: маленька, але з нормальною зоною дотику. */
 .rules-btn{display:grid; place-items:center; width:30px; height:30px; flex:none;
@@ -678,13 +685,17 @@ const ЖАНРИ = {"abstract-strategy": "абстрактна стратегі�
 const COUNTS = ["1","2","3","4","5","5+"];
 const CLABEL = {"1":"1","2":"2","3":"3","4":"4","5":"5","5+":"6+"};
 /* Порядок тут — це порядок чипів у картці й порядок у самому записі.
-   «чужа» — коробка є, але не твоя: граєш у неї в друзів або на роботі. */
-const STATUS = {"колекція":"у колекції","улюблена":"улюблена","онлайн":"онлайн",
+   «чужа» — коробка є, але не твоя: граєш у неї в друзів або на роботі.
+   «продаж» — ще твоя, але вже на виході. */
+const STATUS = {"колекція":"у колекції","улюблена":"улюблена",
+                "продаж":"кандидат на продаж","онлайн":"онлайн",
                 "чужа":"інший власник","позбувся":"позбувся"};
-/* Коробка або стоїть у тебе, або ні: «у колекції» не тримається разом ані
-   з «позбувся», ані з «інший власник», і вмикання одного гасить друге.
-   Решта поєднується вільно — позбувся коробки, а грати онлайн не перестав. */
-const НЕСУМІСНІ = [["колекція", "позбувся"], ["колекція", "чужа"]];
+/* Статуси, яких більше немає. Міграція знає їх поіменно — див. МІГРАЦІЇ. */
+const СКАСОВАНІ_СТАТУСИ = ["хочу", "відклав"];
+/* Де коробка — питання з однією відповіддю: вона або твоя, або чужа, або
+   її вже нема. Тож ці три гасять одне одного. «улюблена», «онлайн» і
+   «кандидат на продаж» не про це — вони вільно стають поруч із будь-яким. */
+const ВЛАСНІСТЬ = ["колекція", "чужа", "позбувся"];
 // Похідний статус: його не ставлять руками, він випливає з лічильника партій
 // і сам зникає після першої зіграної. Тримати його окремо від STATUS, щоб
 // він ніколи не потрапив у збережені дані.
@@ -854,11 +865,16 @@ const МІГРАЦІЇ = [
     if(g.statuses.length) g.status = g.statuses[0]; else delete g.status;
   },
   // 2 → 3: «хочу зіграти» й «відклав» прибрано з полиці. Записи з ними
-  // приїжджають і далі — з кеша телефона, з давнього експорту, — тож
-  // невідомий статус просто випадає, а не валить решту запису.
+  // приїжджають і далі — з кеша телефона, з давнього експорту.
+  //
+  // Скасовані названі поіменно, і це принципово. Перша редакція викидала
+  // все, чого немає в STATUS, — і тоді сторінка, що застаріла на один
+  // статус, тихо стирала б із чужих записів той статус, якого ще не
+  // знає, а потім розсилала обрізане далі. Міграція має прибирати те,
+  // що ти скасував, а не все, чого вона не впізнала.
   function безСкасованихСтатусів(g){
     if(!Array.isArray(g.statuses)) return;
-    const лишились = g.statuses.filter((k) => Object.prototype.hasOwnProperty.call(STATUS, k));
+    const лишились = g.statuses.filter((k) => СКАСОВАНІ_СТАТУСИ.indexOf(k) < 0);
     if(лишились.length === g.statuses.length) return;
     g.statuses = лишились;
     if(лишились.length) g.status = лишились[0]; else delete g.status;
@@ -890,12 +906,14 @@ function setStats(g, набір){
   g.statuses = Object.keys(STATUS).filter((k) => набір.has(k));
   if(g.statuses.length) g.status = g.statuses[0]; else delete g.status;
 }
-/** Гасить статус, несумісний із щойно ввімкненим. Повертає той самий набір. */
+/** Гасить статуси, несумісні з щойно ввімкненим. Повертає той самий набір. */
 function узгодити(набір, доданий){
-  НЕСУМІСНІ.forEach((пара) => {
-    const і = пара.indexOf(доданий);
-    if(і >= 0) набір.delete(пара[1 - і]);
-  });
+  if(ВЛАСНІСТЬ.indexOf(доданий) >= 0){
+    ВЛАСНІСТЬ.forEach((k) => { if(k !== доданий) набір.delete(k); });
+    // Виставити на продаж можна лише те, що в тебе є. Коробка пішла
+    // до когось або зникла — позначка йде разом із нею.
+    if(доданий !== "колекція") набір.delete("продаж");
+  }
   return набір;
 }
 function autoStats(g){ return g.plays > 0 ? [] : ["незіграна"]; }
@@ -1527,6 +1545,7 @@ function renderList(){
     }).join("");
     // Крапка біля назви фарбується за першим статусом — він же найважливіший.
     return "<li class='row s-" + esc(stats(g)[0] || "") + (g.expansion ? " exp" : "") +
+      (stats(g).indexOf("продаж") >= 0 ? " sale" : "") +
       (ui.picked.has(g.id) ? " picked" : "") + "' data-id='" + esc(g.id) + "'>" +
       (ui.cmp ? "<label class='pick'><input type='checkbox' data-pick='" + esc(g.id) + "' " +
         (ui.picked.has(g.id) ? "checked" : "") + " aria-label='Порівняти " + esc(g.name) + "'></label>" : "<span class='pick'></span>") +
