@@ -148,7 +148,7 @@ button{cursor:pointer}
 .dot{width:7px; height:7px; border-radius:50%; background:var(--ink-faint); flex:none}
 .s-хочу .dot{background:var(--amber)} .s-колекція .dot{background:var(--petrol-dim)}
 .s-улюблена .dot{background:var(--petrol)} .s-відклав .dot{background:var(--ink-faint)}
-.s-позбувся .dot{background:var(--rust)}
+.s-позбувся .dot{background:var(--rust)} .s-онлайн .dot{background:var(--sage)}
 .meta{margin:3px 0 0; font:400 12.5px/1.45 "IBM Plex Sans",sans-serif; color:var(--ink-faint);
   white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
 .alt{display:block; margin:2px 0 0; font-size:12.5px; color:var(--ink-faint);
@@ -229,7 +229,20 @@ button{cursor:pointer}
 .line .fld input{width:100%}
 .num-in{width:100%; background:none; border:0; height:34px; font-size:14px;
   font-variant-numeric:tabular-nums}
-.picks{display:flex; flex-direction:column; gap:2px}
+.chips{display:flex; flex-wrap:wrap; gap:6px}
+.chip{height:30px; padding:0 11px; border:1px solid var(--rule); border-radius:15px;
+  background:var(--sheet); color:var(--ink-soft); font-size:13px; white-space:nowrap}
+.chip:hover{border-color:var(--ink-faint)}
+.chip[aria-pressed="true"]{background:var(--petrol); border-color:var(--petrol);
+  color:var(--on-accent)}
+/* Похідний статус: видно, але не натиснеш — його веде лічильник партій. */
+.chip.auto{display:inline-flex; align-items:center; background:none;
+  border-style:dashed; color:var(--ink-faint); cursor:default}
+/* Прив'язане доповнення: чип із хрестиком, який його відв'язує. */
+.chip.tied{background:var(--sunk); color:var(--ink); border-style:dashed}
+.chip.tied b{margin-left:7px; color:var(--ink-faint); font-weight:600}
+.chip.tied:hover b{color:var(--rust)}
+.picks{display:flex; flex-direction:column; gap:2px; max-height:230px; overflow-y:auto}
 .pickrow{display:flex; align-items:center; gap:9px; padding:7px 9px; border-radius:6px;
   background:var(--paper); border:1px solid var(--rule-soft); font-size:14px; cursor:pointer}
 .pickrow:hover{border-color:var(--ink-faint)}
@@ -331,6 +344,8 @@ textarea:focus{outline:none; border-color:var(--petrol)}
         <option value="хочу">хочу зіграти</option>
         <option value="колекція">у колекції</option>
         <option value="улюблена">улюблена</option>
+        <option value="онлайн">лише онлайн</option>
+        <option value="незіграна">ще не зіграна</option>
         <option value="відклав">відклав</option>
         <option value="позбувся">позбувся</option>
       </select></div>
@@ -435,25 +450,21 @@ textarea:focus{outline:none; border-color:var(--petrol)}
   </div>
   <div class="c-body">
     <div class="line">
-      <div class="fld" style="flex:2 1 150px"><label for="cStatus">Статус</label>
-        <select id="cStatus">
-          <option value="хочу">хочу зіграти</option>
-          <option value="колекція">у колекції</option>
-          <option value="улюблена">улюблена</option>
-          <option value="відклав">відклав</option>
-          <option value="позбувся">позбувся</option>
-        </select></div>
       <div class="step" aria-label="Партій зіграно">
         <button id="pMinus" aria-label="Менше партій">−</button>
         <b id="pVal">0</b>
         <button id="pPlus" aria-label="Ще партія">+</button>
       </div>
       <span class="hint">партій</span>
-    </div>
-
-    <div class="line">
       <button class="toggle" id="cExp" type="button" aria-pressed="false">Це доповнення</button>
     </div>
+
+    <fieldset class="grp">
+      <legend>Статус</legend>
+      <div class="chips" id="cStatus"></div>
+      <p class="hint">Статусів може бути кілька: «улюблена» не скасовує «у колекції».
+        «Лише онлайн» — грав, але коробки на полиці немає.</p>
+    </fieldset>
 
     <div class="line">
       <div class="fld"><label for="cMin">Від</label><input class="num-in" id="cMin" type="number" min="1" max="20" inputmode="numeric"></div>
@@ -475,9 +486,17 @@ textarea:focus{outline:none; border-color:var(--petrol)}
 
     <fieldset class="grp" id="expGrp">
       <legend>Завжди грається з доповненнями</legend>
-      <div class="picks" id="cWith"></div>
-      <p class="hint">Познач ті коробки, які ти вже не виймаєш зі столу. Доповнення,
-        що інколи в грі, а інколи ні, лишай непозначеним — у нього своя оцінка.</p>
+      <div class="chips" id="cTied"></div>
+      <div class="line">
+        <button class="toggle" id="cWithAdd" type="button" aria-expanded="false">＋ прив'язати</button>
+      </div>
+      <div id="cWithPick" hidden>
+        <div class="fld" style="width:100%"><label for="cWithQ">Пошук</label>
+          <input id="cWithQ" style="flex:1" placeholder="Назва доповнення"></div>
+        <div class="picks" id="cWith"></div>
+      </div>
+      <p class="hint">Тільки ті коробки, які ти вже не виймаєш зі столу. Доповнення,
+        що інколи в грі, а інколи ні, не прив'язуй — у нього своя оцінка.</p>
     </fieldset>
 
     <fieldset class="grp">
@@ -516,7 +535,12 @@ textarea:focus{outline:none; border-color:var(--petrol)}
 const COUNTS = ["2","3","4","5"];
 const CLABEL = {"2":"2","3":"3","4":"4","5":"5+"};
 const STATUS = {"хочу":"хочу зіграти","колекція":"у колекції","улюблена":"улюблена",
-                "відклав":"відклав","позбувся":"позбувся"};
+                "онлайн":"лише онлайн","відклав":"відклав","позбувся":"позбувся"};
+// Похідний статус: його не ставлять руками, він випливає з лічильника партій
+// і сам зникає після першої зіграної. Тримати його окремо від STATUS, щоб
+// він ніколи не потрапив у збережені дані.
+const AUTO = {"незіграна":"ще не зіграна"};
+const LABEL = Object.assign({}, STATUS, AUTO);
 const LSKEY = "polytsia.games.v1";
 
 const SEED = ["Картографи","Magic Maze","Planet B","Unmatched: Битва легенд, ч. 2",
@@ -538,11 +562,30 @@ function band(v){ return v == null ? "" : v <= 3 ? "b-low" : v <= 6 ? "b-mid" : 
 /** 6.5 → «6,5», 7 → «7». Кома, бо українською десяткова кома. */
 function fmt(v){ return v == null ? "" : String(v).replace(".", ","); }
 function blank(name){
-  return {name:name, status:"колекція", minP:null, maxP:null, minutes:null, weight:null,
+  return {name:name, statuses:["колекція"], status:"колекція",
+          minP:null, maxP:null, minutes:null, weight:null,
           plays:0, score:null, byCount:{}, tags:[], comment:"",
           added:new Date().toISOString().slice(0,10), updated:new Date().toISOString()};
 }
 function stamp(g){ g.updated = new Date().toISOString(); return g; }
+
+/** Статусів у коробки може бути кілька. Записи давнішого зразка тримали
+    рівно один — у полі `status`; читаємо і їх. */
+function stats(g){
+  if(Array.isArray(g.statuses)) return g.statuses;
+  return g.status ? [g.status] : [];
+}
+/** Порядок статусів завжди той самий, що в STATUS, — щоб рядок у списку
+    не стрибав від того, в якій послідовності їх натискали.
+    `status` лишаємо дзеркалом першого: його ще читає сторінка, що встигла
+    закешуватися на телефоні до цієї зміни. */
+function setStats(g, набір){
+  g.statuses = Object.keys(STATUS).filter((k) => набір.has(k));
+  if(g.statuses.length) g.status = g.statuses[0]; else delete g.status;
+}
+function autoStats(g){ return g.plays > 0 ? [] : ["незіграна"]; }
+function allStats(g){ return stats(g).concat(autoStats(g)); }
+function statNames(g){ return allStats(g).map((k) => LABEL[k] || k); }
 function newId(){ return "g-" + Date.now().toString(36) + "-" + Math.random().toString(36).slice(2,6); }
 
 /* ── зберігання ─────────────────────────────────────────────────────
@@ -932,7 +975,7 @@ function shelf(){ return ui.noExp ? games.filter((g) => !g.expansion) : games; }
 function visible(){
   const q = ui.q.trim().toLowerCase();
   let arr = shelf().filter((g) => {
-    if(ui.status !== "all" && g.status !== ui.status) return false;
+    if(ui.status !== "all" && !allStats(g).includes(ui.status)) return false;
     if(!fitsCount(g)) return false;
     if(!q) return true;
     // Шукаємо і за українською, і за оригінальною назвою: половина полиці
@@ -1016,7 +1059,8 @@ function renderList(){
     const s = effScore(g), b = band(s);
     const разом = withNames(g);
     const meta = [];
-    meta.push(STATUS[g.status] || g.status || "");
+    const назви = statNames(g);
+    if(назви.length) meta.push(назви.join(" · "));
     if(g.minP || g.maxP) meta.push((g.minP || "?") + "–" + (g.maxP || "?") + " гравців");
     if(g.minutes) meta.push(g.minutes + " хв");
     if(g.plays) meta.push(g.plays + " " + plural(g.plays, "партія", "партії", "партій"));
@@ -1029,7 +1073,8 @@ function renderList(){
         (ui.count === c ? " now" : "") + "'><b>" + (v == null ? "·" : fmt(v)) +
         "</b><i>" + CLABEL[c] + "</i></span>";
     }).join("");
-    return "<li class='row s-" + esc(g.status) + (g.expansion ? " exp" : "") +
+    // Крапка біля назви фарбується за першим статусом — він же найважливіший.
+    return "<li class='row s-" + esc(stats(g)[0] || "") + (g.expansion ? " exp" : "") +
       (ui.picked.has(g.id) ? " picked" : "") + "' data-id='" + esc(g.id) + "'>" +
       (ui.cmp ? "<label class='pick'><input type='checkbox' data-pick='" + esc(g.id) + "' " +
         (ui.picked.has(g.id) ? "checked" : "") + " aria-label='Порівняти " + esc(g.name) + "'></label>" : "<span></span>") +
@@ -1089,7 +1134,7 @@ function renderCmp(){
     ["Партій", (g) => g.plays || 0, false],
     ["Гравців", (g) => (g.minP || g.maxP) ? (g.minP || "?") + "–" + (g.maxP || "?") : null, false],
     ["Час", (g) => g.minutes ? g.minutes + " хв" : null, false],
-    ["Статус", (g) => STATUS[g.status] || g.status, false],
+    ["Статус", (g) => statNames(g).join(", "), false],
     ["Теги", (g) => (g.tags || []).join(", "), false],
     ["Нотатка", (g) => g.comment, false]
   ];
@@ -1159,17 +1204,53 @@ function paintScale(host){
   });
 }
 
-/** Список доповнень, які ця база завжди тягне за собою. У картці самого
-    доповнення блок не потрібен, тому ховається. */
+/** Статуси картки. Похідний «ще не зіграна» показуємо разом із рештою, але
+    мертвим чипом: його вимикає перша партія, а не палець. */
+function renderStatus(g){
+  const є = new Set(stats(g));
+  const ручні = Object.keys(STATUS).map((k) =>
+    "<button type='button' class='chip' data-st='" + esc(k) + "' aria-pressed='" +
+    (є.has(k) ? "true" : "false") + "'>" + esc(STATUS[k]) + "</button>");
+  const авто = autoStats(g).map((k) =>
+    "<span class='chip auto' title='Знімається сам після першої партії'>" +
+    esc(AUTO[k]) + "</span>");
+  $("cStatus").innerHTML = ручні.concat(авто).join("");
+}
+
+/** Доповнення, які ця база завжди тягне за собою. Прив'язані видно чипами,
+    а весь перелік ховається за кнопкою: коли доповнень на полиці півтора
+    десятка, показувати їх усі в кожній картці — знущання.
+    У картці самого доповнення блок не потрібен, тому ховається. */
 function renderWith(g){
   $("expGrp").hidden = !!g.expansion;
   if(g.expansion) return;
+  $("cTied").innerHTML = (g.withExp || [])
+    .map((id) => games.find((x) => x.id === id))
+    .filter(Boolean)
+    .map((x) => "<button type='button' class='chip tied' data-untie='" + esc(x.id) +
+      "' aria-label='Відв’язати " + esc(x.name) + "'>" + esc(x.name) + "<b>✕</b></button>")
+    .join("") || "<span class='hint'>Жодного не прив'язано.</span>";
+  renderPick(g);
+}
+
+/** Перелік у розкривачці. Спершу ті, чия назва починається так само, як
+    у базової гри, — «Ходу героям нема. Великий сплячий» має бути під рукою
+    саме в «Ходу героям нема». */
+function renderPick(g){
   const host = $("cWith");
-  const доп = games.filter((x) => x.expansion && x.id !== g.id)
-                   .sort((a, b) => (a.name || "").localeCompare(b.name || "", "uk"));
+  const q = $("cWithQ").value.trim().toLowerCase();
+  const корінь = (g.name || "").split(/[.:–—(]/)[0].trim().toLowerCase();
+  const свій = (x) => корінь && (x.name || "").toLowerCase().startsWith(корінь) ? 0 : 1;
+  const доп = games
+    .filter((x) => x.expansion && x.id !== g.id)
+    .filter((x) => !q || [x.name, x.nameEn].join(" ").toLowerCase().includes(q))
+    .sort((a, b) => свій(a) - свій(b) ||
+                    (a.name || "").localeCompare(b.name || "", "uk"));
   if(!доп.length){
-    host.innerHTML = "<p class='hint'>Жодної коробки ще не позначено як доповнення. " +
-      "Відкрий доповнення й натисни там «Це доповнення» — після цього воно з'явиться тут.</p>";
+    host.innerHTML = "<p class='hint'>" + (q
+      ? "Нічого не знайшлося."
+      : "Жодної коробки ще не позначено як доповнення. Відкрий доповнення й " +
+        "натисни там «Це доповнення» — після цього воно з'явиться тут.") + "</p>";
     return;
   }
   const обрані = new Set(g.withExp || []);
@@ -1190,12 +1271,16 @@ function openCard(id){
   const g = current(); if(!g) return;
   $("cName").value = g.name || "";
   $("cAlt").value = g.nameEn || "";
-  $("cStatus").value = g.status || "колекція";
+  renderStatus(g);
   $("pVal").textContent = g.plays || 0;
   $("cMin").value = g.minP == null ? "" : g.minP;
   $("cMax").value = g.maxP == null ? "" : g.maxP;
   $("cMinutes").value = g.minutes == null ? "" : g.minutes;
   $("cExp").setAttribute("aria-pressed", g.expansion ? "true" : "false");
+  // Розкривачка доповнень щоразу починається згорнутою й без старого пошуку.
+  $("cWithQ").value = "";
+  $("cWithPick").hidden = true;
+  $("cWithAdd").setAttribute("aria-expanded", "false");
   renderWith(g);
   $("cCover").value = g.cover || "";
   paintCover(g);
@@ -1265,7 +1350,16 @@ bindField($("cCover"), (g, v) => {
   if(u) g.cover = u; else delete g.cover;
   paintCover(g);
 }, "input", (g) => g.cover || "");
-bindField($("cStatus"), (g, v) => { g.status = v; }, "change", (g) => g.status);
+$("cStatus").addEventListener("click", (e) => {
+  const b = e.target.closest("[data-st]"); if(!b) return;
+  const g = current(); if(!g || !canEdit()) return;
+  const k = b.dataset.st, набір = new Set(stats(g));
+  if(набір.has(k)) набір.delete(k); else набір.add(k);
+  setStats(g, набір);
+  renderStatus(g);
+  render();
+  touch();
+});
 bindField($("cMin"), (g, v) => { g.minP = v === "" ? null : +v; }, "input", (g) => порожньо(g.minP));
 bindField($("cMax"), (g, v) => { g.maxP = v === "" ? null : +v; }, "input", (g) => порожньо(g.maxP));
 bindField($("cMinutes"), (g, v) => { g.minutes = v === "" ? null : +v; }, "input", (g) => порожньо(g.minutes));
@@ -1280,6 +1374,7 @@ function bumpPlays(d){
   if(!canEdit()) return;
   g.plays = Math.max(0, (+g.plays || 0) + d);
   $("pVal").textContent = g.plays;
+  renderStatus(g);   // перша партія знімає «ще не зіграна», нуль — повертає
   touch();
 }
 $("cDone").onclick = closeCard;
@@ -1330,11 +1425,31 @@ $("cWith").addEventListener("change", (e) => {
   const el = e.target.closest("[data-exp]"); if(!el) return;
   const g = current(); if(!g) return;
   if(!canEdit()){ el.checked = !el.checked; return; }
+  tie(g, el.dataset.exp, el.checked);
+});
+/** Прив'язати або відв'язати доповнення й перемалювати чипи. */
+function tie(g, id, треба){
   const набір = new Set(g.withExp || []);
-  if(el.checked) набір.add(el.dataset.exp); else набір.delete(el.dataset.exp);
-  g.withExp = Array.from(набір);
+  if(треба) набір.add(id); else набір.delete(id);
+  g.withExp = Array.from(набір).sort();
   if(!g.withExp.length) delete g.withExp;
+  renderWith(g);
+  render();
   touch();
+}
+$("cTied").addEventListener("click", (e) => {
+  const b = e.target.closest("[data-untie]"); if(!b) return;
+  const g = current(); if(!g || !canEdit()) return;
+  tie(g, b.dataset.untie, false);
+});
+$("cWithAdd").addEventListener("click", () => {
+  const відкрито = $("cWithPick").hidden;
+  $("cWithPick").hidden = !відкрито;
+  $("cWithAdd").setAttribute("aria-expanded", відкрито ? "true" : "false");
+  if(відкрито) $("cWithQ").focus();
+});
+$("cWithQ").addEventListener("input", () => {
+  const g = current(); if(g) renderPick(g);
 });
 $("cExp").addEventListener("click", function(){
   const g = current(); if(!g) return;
