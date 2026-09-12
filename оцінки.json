@@ -1,7 +1,7 @@
 {
   "app": "полиця настілок",
   "version": 2,
-  "saved": "2026-09-12T19:54:31.352Z",
+  "saved": "2026-09-12T19:55:26.223Z",
   "games": [
     {
       "added": "2026-09-12",
@@ -2923,7 +2923,9 @@
       "bggId": "411861",
       "bggRank": 2705,
       "bggRating": 8.4,
-      "byCount": {},
+      "byCount": {
+        "2": 6
+      },
       "comment": "",
       "cover": "https://cf.geekdo-images.com/TksQfRZfS3cVO5qO7kTNsw__square200/img/1vAmM1NjEYz6U9NvT1uBX2FV4IY=/200x200/filters:strip_icc()/pic8419452.jpg",
       "id": "g-witcher",
@@ -2945,13 +2947,13 @@
           "url": "https://boardgamegeek.com/filepage/312548/unmatched-the-witcher-realms-fall-set-rules-en1"
         }
       ],
-      "score": null,
+      "score": 6,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T17:59:01.052Z",
+      "updated": "2026-09-12T19:55:17.098Z",
       "weight": null
     },
     {
