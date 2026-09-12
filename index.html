@@ -132,7 +132,14 @@ button{cursor:pointer}
 
 /* ── аркуш зі списком ──────────────────────────────── */
 .head-row,.row{display:grid; align-items:center;
-  grid-template-columns:var(--pick,0px) minmax(0,1fr) auto auto; gap:14px}
+  grid-template-columns:var(--pick,0px) 46px minmax(0,1fr) auto auto; gap:14px}
+/* Немає обкладинки — на її місці монограма, щоб рядки не «стрибали». */
+.cov{width:46px; height:46px; border-radius:6px; overflow:hidden; background:var(--sunk);
+  border:1px solid var(--rule-soft); display:grid; place-items:center}
+.cov img{width:100%; height:100%; object-fit:cover; display:block}
+.cov b{font:600 16px/1 "IBM Plex Sans","Segoe UI",sans-serif; color:var(--ink-faint)}
+.cov.big{width:64px; height:64px; flex:none}
+.cov.big b{font-size:22px}
 .head-row{padding:0 4px 7px; border-bottom:1px solid var(--rule)}
 .head-row span{font:600 10px/1.4 "IBM Plex Mono",ui-monospace,monospace;
   letter-spacing:.14em; text-transform:uppercase; color:var(--ink-faint)}
@@ -309,7 +316,7 @@ textarea:focus{outline:none; border-color:var(--petrol)}
 
 @media (max-width:720px){
   .head-row{display:none}
-  .row{grid-template-columns:var(--pick,0px) minmax(0,1fr) auto; row-gap:9px}
+  .row{grid-template-columns:var(--pick,0px) 46px minmax(0,1fr) auto; row-gap:9px}
   .counts{grid-column:2 / -1; grid-template-columns:repeat(4,1fr); width:auto}
   .score{grid-row:1; width:64px}
   .card{border-left:0}
@@ -348,6 +355,7 @@ textarea:focus{outline:none; border-color:var(--petrol)}
       <select id="fSort">
         <option value="score">за оцінкою</option>
         <option value="name">за абеткою</option>
+        <option value="bgg">за оцінкою BGG</option>
         <option value="plays">за партіями</option>
         <option value="added">за датою додавання</option>
         <option value="minutes">за часом партії</option>
@@ -368,6 +376,9 @@ textarea:focus{outline:none; border-color:var(--petrol)}
         <hr>
         <button id="mImport">Імпортувати JSON…</button>
         <hr>
+        <button id="mBgg">Оцінки BGG…</button>
+        <input id="bggIn" type="file" accept=".csv,text/csv" hidden>
+        <hr>
         <button id="mToken">Ключ доступу…</button>
         <input id="fileIn" type="file" accept="application/json,.json" hidden>
       </div>
@@ -387,7 +398,7 @@ textarea:focus{outline:none; border-color:var(--petrol)}
   <div id="cmpBox"></div>
 
   <div class="head-row" id="headRow">
-    <span></span><span>Гра</span>
+    <span></span><span></span><span>Гра</span>
     <span class="h-counts">За складом столу</span>
     <span class="h-score" id="hScore">Оцінка</span>
   </div>
@@ -397,6 +408,23 @@ textarea:focus{outline:none; border-color:var(--petrol)}
 
 <div class="scrim" id="scrim" hidden></div>
 <div class="scrim" id="keyScrim" hidden></div>
+<section class="keybox" id="bggBox" hidden role="dialog" aria-modal="true" aria-labelledby="bggTitle">
+  <h2 id="bggTitle">Оцінки BGG</h2>
+  <p>BGG закрив свій API — тепер він потребує зареєстрованої програми й токена.
+     Але залогінений користувач може просто завантажити файл з оцінками всіх ігор.</p>
+  <p><a class="btn pri" id="bggLink" href="https://boardgamegeek.com/data_dumps/bg_ranks"
+        target="_blank" rel="noopener">Відкрити сторінку вивантаження</a></p>
+  <p class="hint">Там кнопка завантаження файлу <b>boardgames_ranks.csv</b>. Потрібен вхід
+     на BGG. Файл великий (кілька мегабайтів) — це нормально, він містить усі ігри світу.</p>
+  <p>Далі повернись сюди й підсунь той файл — я звірю його з полицею за оригінальними
+     назвами й проставлю середні оцінки.</p>
+  <div class="keyRow">
+    <button class="btn" id="bggClear">Прибрати оцінки BGG</button>
+    <span class="spacer"></span>
+    <button class="btn" id="bggCancel">Закрити</button>
+    <button class="btn pri" id="bggPick">Обрати файл…</button>
+  </div>
+</section>
 <section class="keybox" id="keyBox" hidden role="dialog" aria-modal="true" aria-labelledby="keyTitle">
   <h2 id="keyTitle">Ключ доступу до репозиторію</h2>
   <p>Сторінка пише оцінки просто в <b id="keyRepo"></b>. Щоб їй це дозволили,
@@ -473,6 +501,15 @@ textarea:focus{outline:none; border-color:var(--petrol)}
       <legend>Складність</legend>
       <div class="scale s5" id="sWeight"></div>
     </fieldset>
+
+    <div class="grp">
+      <label class="lbl" for="cCover">Обкладинка</label>
+      <div class="line">
+        <span class="cov big" id="cCovPrev"></span>
+        <div class="fld" style="flex:1"><input id="cCover" placeholder="Посилання на зображення"
+             style="width:100%" spellcheck="false"></div>
+      </div>
+    </div>
 
     <div class="grp">
       <label class="lbl" for="cTags">Теги</label>
@@ -930,6 +967,7 @@ function visible(){
     let x, y;
     if(ui.sort === "score"){ x = effScore(a); y = effScore(b); }
     else if(ui.sort === "plays"){ x = num(a.plays) || 0; y = num(b.plays) || 0; }
+    else if(ui.sort === "bgg"){ x = num(a.bggRating); y = num(b.bggRating); }
     else if(ui.sort === "added"){ x = a.added || ""; y = b.added || ""; }
     else { x = num(a[ui.sort]); y = num(b[ui.sort]); }
     if(x == null && y == null) return (a.name || "").localeCompare(b.name || "", "uk");
@@ -999,7 +1037,8 @@ function renderList(){
     if(g.minP || g.maxP) meta.push((g.minP || "?") + "–" + (g.maxP || "?") + " гравців");
     if(g.minutes) meta.push(g.minutes + " хв");
     if(g.plays) meta.push(g.plays + " " + plural(g.plays, "партія", "партії", "партій"));
-    if(g.weight) meta.push("складність " + g.weight);
+    if(g.weight) meta.push("складність " + fmt(g.weight));
+    if(g.bggRating) meta.push("BGG " + fmt(g.bggRating));
     if(g.tags && g.tags.length) meta.push(g.tags.join(" · "));
     const cells = COUNTS.map((c) => {
       const v = g.byCount ? g.byCount[c] : null;
@@ -1011,6 +1050,9 @@ function renderList(){
       (ui.picked.has(g.id) ? " picked" : "") + "' data-id='" + esc(g.id) + "'>" +
       (ui.cmp ? "<label class='pick'><input type='checkbox' data-pick='" + esc(g.id) + "' " +
         (ui.picked.has(g.id) ? "checked" : "") + " aria-label='Порівняти " + esc(g.name) + "'></label>" : "<span></span>") +
+      "<span class='cov'>" + (g.cover
+        ? "<img src='" + esc(g.cover) + "' alt='' loading='lazy' referrerpolicy='no-referrer'>"
+        : "<b>" + esc((g.name || "?").trim().charAt(0).toUpperCase()) + "</b>") + "</span>" +
       "<button class='open' data-open='" + esc(g.id) + "'>" +
         "<span class='nm'><i class='dot'></i>" + esc(g.name) +
           (g.expansion ? "<span class='badge'>доп.</span>" : "") +
@@ -1057,6 +1099,7 @@ function renderCmp(){
     ["На 3", (g) => pick(g, "3"), true],
     ["На 4", (g) => pick(g, "4"), true],
     ["На 5+", (g) => pick(g, "5"), true],
+    ["Оцінка BGG", (g) => (g.bggRating != null ? fmt(g.bggRating) : null), false],
     ["Тип коробки", (g) => (g.expansion ? "доповнення" : "основна"), false],
     ["Завжди з", (g) => withNames(g).join(", "), false],
     ["Складність", (g) => g.weight, false],
@@ -1171,6 +1214,8 @@ function openCard(id){
   $("cMinutes").value = g.minutes == null ? "" : g.minutes;
   $("cExp").setAttribute("aria-pressed", g.expansion ? "true" : "false");
   renderWith(g);
+  $("cCover").value = g.cover || "";
+  paintCover(g);
   $("cTags").value = (g.tags || []).join(", ");
   $("cNote").value = g.comment || "";
   $("cSaved").textContent = "";
@@ -1227,6 +1272,16 @@ function bindField(el, apply, ev, restore){
 const порожньо = (v) => (v == null ? "" : v);
 bindField($("cName"), (g, v) => { g.name = v; }, "input", (g) => g.name || "");
 bindField($("cAlt"), (g, v) => { g.nameEn = v; }, "input", (g) => g.nameEn || "");
+function paintCover(g){
+  $("cCovPrev").innerHTML = g.cover
+    ? "<img src='" + esc(g.cover) + "' alt='' referrerpolicy='no-referrer'>"
+    : "<b>" + esc((g.name || "?").trim().charAt(0).toUpperCase()) + "</b>";
+}
+bindField($("cCover"), (g, v) => {
+  const u = v.trim();
+  if(u) g.cover = u; else delete g.cover;
+  paintCover(g);
+}, "input", (g) => g.cover || "");
 bindField($("cStatus"), (g, v) => { g.status = v; }, "change", (g) => g.status);
 bindField($("cMin"), (g, v) => { g.minP = v === "" ? null : +v; }, "input", (g) => порожньо(g.minP));
 bindField($("cMax"), (g, v) => { g.maxP = v === "" ? null : +v; }, "input", (g) => порожньо(g.maxP));
@@ -1256,7 +1311,8 @@ $("cDel").onclick = function(){
 };
 document.addEventListener("keydown", (e) => {
   if(e.key === "Escape"){
-    if(!$("keyBox").hidden) closeKey();
+    if(!$("bggBox").hidden) closeBgg();
+    else if(!$("keyBox").hidden) closeKey();
     else if(ui.open) closeCard();
     else if(!$("menu").hidden) hideMenu();
   }
@@ -1369,6 +1425,92 @@ $("mCopy").addEventListener("click", async () => {
 });
 $("mImport").addEventListener("click", () => { hideMenu(); $("fileIn").click(); });
 
+/* ── оцінки BGG з вивантаженого файлу ───────────────────────────────
+   Рядок CSV може містити коми всередині лапок, тож розбираємо вручну. */
+function csvRow(рядок){
+  const поля = []; let буфер = "", вЛапках = false;
+  for(let i = 0; i < рядок.length; i++){
+    const c = рядок[i];
+    if(вЛапках){
+      if(c === '"'){ if(рядок[i + 1] === '"'){ буфер += '"'; i++; } else вЛапках = false; }
+      else буфер += c;
+    } else if(c === '"') вЛапках = true;
+    else if(c === ","){ поля.push(буфер); буфер = ""; }
+    else буфер += c;
+  }
+  поля.push(буфер);
+  return поля;
+}
+const ключ = (s) => String(s || "").toLowerCase().replace(/[\s–—–—:.,!'’"()]/g, "");
+
+async function bggImport(file){
+  const текст = await file.text();
+  const рядки = текст.split(/\r?\n/).filter(Boolean);
+  if(рядки.length < 2){ toast("Файл порожній."); return; }
+  const шапка = csvRow(рядки[0]).map((s) => s.trim().toLowerCase());
+  const iId = шапка.indexOf("id"), iName = шапка.indexOf("name");
+  const iAvg = шапка.indexOf("average"), iRank = шапка.indexOf("rank");
+  if(iName < 0 || iAvg < 0){
+    toast("Це не той файл: у ньому немає колонок name та average.");
+    return;
+  }
+  const довідник = new Map();
+  for(let i = 1; i < рядки.length; i++){
+    const п = csvRow(рядки[i]);
+    const к = ключ(п[iName]);
+    if(к && !довідник.has(к)) довідник.set(к, п);
+  }
+  const змінені = [];
+  let не = 0;
+  games.forEach((g) => {
+    const п = довідник.get(ключ(g.nameEn)) || довідник.get(ключ(g.name));
+    if(!п){ не++; return; }
+    const оцінка = Math.round(parseFloat(п[iAvg]) * 10) / 10;
+    if(!isFinite(оцінка)) return;
+    const ранг = iRank >= 0 ? parseInt(п[iRank], 10) : NaN;
+    if(g.bggRating === оцінка && g.bggId === (iId >= 0 ? п[iId] : g.bggId)) return;
+    g.bggRating = оцінка;
+    if(iId >= 0) g.bggId = п[iId];
+    if(isFinite(ранг) && ранг > 0) g.bggRank = ранг; else delete g.bggRank;
+    stamp(g);
+    змінені.push(g);
+  });
+  if(!змінені.length){ toast("Нічого не змінилося: оцінки вже такі."); render(); return; }
+  if(mode === "github"){ enqueue(змінені); cacheSave(); badge(); ghPush(); }
+  else if(mode === "server") await sync(змінені);
+  else localSave();
+  render();
+  toast("Оцінки BGG: звірено " + змінені.length + ", не знайшлося " + не + ".");
+}
+
+function openBgg(){ $("keyScrim").hidden = false; $("bggBox").hidden = false; }
+function closeBgg(){ $("keyScrim").hidden = true; $("bggBox").hidden = true; }
+$("mBgg").addEventListener("click", () => { hideMenu(); openBgg(); });
+$("bggCancel").addEventListener("click", closeBgg);
+$("bggPick").addEventListener("click", () => $("bggIn").click());
+$("bggIn").addEventListener("change", async (e) => {
+  const f = e.target.files && e.target.files[0];
+  e.target.value = "";
+  if(!f) return;
+  if(!canEdit()) return;
+  closeBgg();
+  toast("Читаю файл…");
+  try{ await bggImport(f); }
+  catch(err){ toast("Не вдалося прочитати: " + (err.message || err)); }
+});
+$("bggClear").addEventListener("click", async () => {
+  if(!canEdit()) return;
+  const змінені = games.filter((g) => g.bggRating != null);
+  змінені.forEach((g) => { delete g.bggRating; delete g.bggRank; delete g.bggId; stamp(g); });
+  closeBgg();
+  if(!змінені.length){ toast("Оцінок BGG і не було."); return; }
+  if(mode === "github"){ enqueue(змінені); cacheSave(); badge(); ghPush(); }
+  else if(mode === "server") await sync(змінені);
+  else localSave();
+  render();
+  toast("Оцінки BGG прибрано з " + змінені.length + " ігор.");
+});
+
 $("keyRepo").textContent = GH.owner + "/" + GH.repo;
 function openKey(){
   $("keyIn").value = token;
@@ -1378,7 +1520,7 @@ function openKey(){
 function closeKey(){ $("keyScrim").hidden = true; $("keyBox").hidden = true; }
 $("mToken").addEventListener("click", () => { hideMenu(); openKey(); });
 $("keyCancel").addEventListener("click", closeKey);
-$("keyScrim").addEventListener("click", closeKey);
+$("keyScrim").addEventListener("click", () => { closeKey(); closeBgg(); });
 $("keyForget").addEventListener("click", () => {
   tokenSave(""); closeKey(); toast("Ключ прибрано з цього браузера.");
 });
