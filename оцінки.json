@@ -1,7 +1,7 @@
 {
   "app": "полиця настілок",
   "version": 2,
-  "saved": "2026-09-12T19:45:29.166Z",
+  "saved": "2026-09-12T19:45:56.337Z",
   "games": [
     {
       "added": "2026-09-12",
@@ -39,7 +39,9 @@
       "bggId": "173346",
       "bggRank": 24,
       "bggRating": 8.1,
-      "byCount": {},
+      "byCount": {
+        "2": 8
+      },
       "comment": "",
       "cover": "https://cf.geekdo-images.com/zdagMskTF7wJBPjX74XsRw__square200/img/xNee3M-jWc5u5sMjn7IyvWFJ4qQ=/200x200/filters:strip_icc()/pic2576399.jpg",
       "id": "g-7wonders-duel",
@@ -48,7 +50,7 @@
       "minutes": null,
       "name": "7 чудес. Дуель",
       "nameEn": "7 Wonders Duel",
-      "plays": 0,
+      "plays": 2,
       "rules": [
         {
           "kind": "офіційні",
@@ -61,13 +63,13 @@
           "url": "https://geekach.com.ua/content/files/pamjatka-nastlno-gri-7-wonders.-duel-7-chudes.-duel-ukranskou-movou-49229611.pdf"
         }
       ],
-      "score": null,
+      "score": 8,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T17:20:03.076Z",
+      "updated": "2026-09-12T19:45:47.068Z",
       "weight": null
     },
     {
