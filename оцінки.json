@@ -436,6 +436,30 @@
     },
     {
       "added": "2026-09-12",
+      "bggId": "308500",
+      "bggRank": 12273,
+      "bggRating": 6.4,
+      "byCount": {},
+      "comment": "",
+      "cover": "https://cf.geekdo-images.com/pNyUXcqnZijf2H6hgocejA__square200/img/XCQGYc6paLAqRFj6b9TMcujfuwU=/200x200/filters:strip_icc()/pic7240542.jpg",
+      "id": "g-clash-of-deck",
+      "maxP": null,
+      "minP": null,
+      "minutes": null,
+      "name": "Clash of Deck",
+      "nameEn": "",
+      "plays": 0,
+      "score": null,
+      "status": "колекція",
+      "statuses": [
+        "колекція"
+      ],
+      "tags": [],
+      "updated": "2026-09-12T16:06:23.511Z",
+      "weight": null
+    },
+    {
+      "added": "2026-09-12",
       "bggId": "244522",
       "bggRank": 203,
       "bggRating": 7.5,
@@ -504,6 +528,30 @@
       ],
       "tags": [],
       "updated": "2026-09-12T16:01:36.850Z",
+      "weight": null
+    },
+    {
+      "added": "2026-09-12",
+      "bggId": "322703",
+      "bggRank": 3475,
+      "bggRating": 6.7,
+      "byCount": {},
+      "comment": "",
+      "cover": "https://cf.geekdo-images.com/aDs97Vr3NP_vc-bg-w1jzw__square200/img/bme_iRZQpOSkIhZbEPmSAczTRY4=/200x200/filters:strip_icc()/pic8807033.png",
+      "id": "g-death-valley",
+      "maxP": null,
+      "minP": null,
+      "minutes": null,
+      "name": "Долина Смерті",
+      "nameEn": "Death Valley",
+      "plays": 0,
+      "score": null,
+      "status": "колекція",
+      "statuses": [
+        "колекція"
+      ],
+      "tags": [],
+      "updated": "2026-09-12T16:06:23.511Z",
       "weight": null
     },
     {
@@ -2094,5 +2142,5 @@
       "weight": null
     }
   ],
-  "saved": "2026-09-12T16:01:36.850Z"
+  "saved": "2026-09-12T16:06:23.511Z"
 }
