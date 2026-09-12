@@ -595,6 +595,20 @@ function lww(base, changes){
   return Object.keys(byId).map((id) => byId[id]);
 }
 
+/** Повідомлення коміта. Історія має читатися як історія оцінок, а не як
+    «1 зміна» — інакше git тут тримати нема сенсу. */
+function підсумок(pending){
+  const назви = pending.map((g) => {
+    const ім = g.name || g.id;
+    if(g.deleted) return "− " + ім;
+    if(g.score != null) return ім + " " + g.score;
+    return ім;
+  });
+  const видно = назви.slice(0, 3).join(", ");
+  const решта = назви.length - 3;
+  return "Оцінки: " + видно + (решта > 0 ? " і ще " + решта : "");
+}
+
 async function ghPush(){
   if(mode !== "github" || !token) return false;
   for(let спроба = 0; спроба < 3; спроба++){
@@ -609,7 +623,7 @@ async function ghPush(){
       return true;
     }
     let ok;
-    try{ ok = await ghWrite(merged, "Оцінки: " + pending.length + " " + plural(pending.length, "зміна", "зміни", "змін")); }
+    try{ ok = await ghWrite(merged, підсумок(pending)); }
     catch(e){ toast(String(e.message || e)); badge(); return false; }
     if(ok){
       queue = []; queueSave();
