@@ -1,7 +1,7 @@
 {
   "app": "полиця настілок",
   "version": 2,
-  "saved": "2026-09-12T20:02:53.169Z",
+  "saved": "2026-09-12T20:03:37.546Z",
   "games": [
     {
       "added": "2026-09-12",
@@ -605,7 +605,12 @@
       "bggId": "416851",
       "bggRank": 208,
       "bggRating": 7.7,
-      "byCount": {},
+      "byCount": {
+        "2": 7.5,
+        "3": 8.5,
+        "4": 8,
+        "5": 7
+      },
       "comment": "",
       "cover": "https://cf.geekdo-images.com/rGomBfj0FGrZM-w3h5HFWQ__square200/img/ffjAFgvd7XZQT0KLRsql4zl4bYc=/200x200/filters:strip_icc()/pic8250341.png",
       "id": "g-castle-combo",
@@ -614,7 +619,7 @@
       "minutes": null,
       "name": "Castle Combo",
       "nameEn": "",
-      "plays": 0,
+      "plays": 9,
       "rules": [
         {
           "kind": "офіційні",
@@ -622,14 +627,15 @@
           "url": "https://geekach.com.ua/content/files/pravila-nastlno-gri-fortecja-kombo-casle-combo-91372490.pdf"
         }
       ],
-      "score": null,
+      "score": 8,
       "status": "колекція",
       "statuses": [
-        "колекція"
+        "колекція",
+        "онлайн"
       ],
       "tags": [],
-      "updated": "2026-09-12T17:20:03.076Z",
-      "weight": null
+      "updated": "2026-09-12T20:03:29.446Z",
+      "weight": 2
     },
     {
       "added": "2026-09-12",
