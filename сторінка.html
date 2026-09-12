@@ -1,0 +1,847 @@
+<title>Полиця настілок</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Onest:wght@400;500;600&family=Unbounded:wght@400;600&display=swap">
+
+<style>
+:root{
+  --paper:#E9EAE5; --sheet:#F5F6F2; --sunk:#DEE0D9;
+  --ink:#14181A; --ink-soft:#5A6360; --ink-faint:#8C948F;
+  --rule:#CDD2CB; --rule-soft:#DFE3DC;
+  --petrol:#0E5E58; --petrol-dim:#3E8A83;
+  --amber:#A9711A; --rust:#A3402D; --sage:#4C7A3E;
+  --on-accent:#F5F6F2;
+  --shadow:0 1px 2px rgba(20,24,26,.05), 0 18px 40px -22px rgba(20,24,26,.35);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#111512; --sheet:#191E1A; --sunk:#0C100D;
+    --ink:#E7EAE3; --ink-soft:#9BA49C; --ink-faint:#6E7871;
+    --rule:#293028; --rule-soft:#1F2620;
+    --petrol:#57B5A8; --petrol-dim:#2E6C66;
+    --amber:#D2A24C; --rust:#D2705A; --sage:#84B76F;
+    --on-accent:#0C100D;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 22px 48px -26px rgba(0,0,0,.85);
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#111512; --sheet:#191E1A; --sunk:#0C100D;
+  --ink:#E7EAE3; --ink-soft:#9BA49C; --ink-faint:#6E7871;
+  --rule:#293028; --rule-soft:#1F2620;
+  --petrol:#57B5A8; --petrol-dim:#2E6C66;
+  --amber:#D2A24C; --rust:#D2705A; --sage:#84B76F;
+  --on-accent:#0C100D;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 22px 48px -26px rgba(0,0,0,.85);
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font:400 16px/1.5 "Onest", "Segoe UI", system-ui, sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+button,input,select,textarea{font:inherit; color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--petrol); outline-offset:2px; border-radius:3px}
+
+.wrap{max-width:1080px; margin:0 auto; padding:0 20px 96px}
+
+/* ── шапка ─────────────────────────────────────────── */
+.top{padding:34px 0 18px}
+.brand{display:flex; align-items:baseline; gap:.4em; font-family:"Unbounded","Onest",sans-serif}
+.brand b{font-weight:600; font-size:clamp(26px,4.4vw,38px); letter-spacing:-.03em}
+.brand span{font-weight:400; font-size:clamp(15px,2.4vw,20px); color:var(--ink-faint); letter-spacing:-.02em}
+.tagline{margin:10px 0 0; max-width:52ch; color:var(--ink-soft); font-size:15px}
+
+.stats{display:flex; flex-wrap:wrap; gap:0; margin:22px 0 0; padding:0;
+  border-top:1px solid var(--rule); border-bottom:1px solid var(--rule)}
+.stats div{flex:1 1 120px; padding:12px 16px 13px; border-left:1px solid var(--rule-soft)}
+.stats div:first-child{border-left:0; padding-left:0}
+.stats dt{margin:0; font:600 10px/1.4 "JetBrains Mono",ui-monospace,monospace;
+  letter-spacing:.14em; text-transform:uppercase; color:var(--ink-faint)}
+.stats dd{margin:3px 0 0; font-family:"Unbounded","Onest",sans-serif; font-weight:400;
+  font-size:20px; letter-spacing:-.02em; font-variant-numeric:tabular-nums}
+.stats dd small{font-size:12px; color:var(--ink-faint); font-family:"Onest",sans-serif}
+
+/* ── панель керування ──────────────────────────────── */
+.tools{display:flex; flex-wrap:wrap; gap:8px; align-items:center; padding:16px 0 10px; position:sticky; top:0;
+  background:linear-gradient(var(--paper) 74%, transparent); z-index:6}
+.fld{display:flex; align-items:center; gap:6px; background:var(--sheet);
+  border:1px solid var(--rule); border-radius:7px; padding:0 10px; height:36px}
+.fld input,.fld select{background:none; border:0; height:34px; font-size:14px}
+.fld input{width:170px}
+.fld select{padding-right:2px}
+.fld label{font:600 10px/1 "JetBrains Mono",ui-monospace,monospace; letter-spacing:.12em;
+  text-transform:uppercase; color:var(--ink-faint)}
+.seg{display:flex; align-items:center; gap:2px; background:var(--sheet); border:1px solid var(--rule);
+  border-radius:7px; padding:3px; height:36px}
+.seg > span{font:600 10px/1 "JetBrains Mono",ui-monospace,monospace; letter-spacing:.12em;
+  text-transform:uppercase; color:var(--ink-faint); padding:0 7px 0 5px}
+.seg button{border:0; background:none; border-radius:5px; padding:0 9px; height:28px;
+  font-size:13px; font-weight:500; color:var(--ink-soft)}
+.seg button[aria-pressed="true"]{background:var(--petrol); color:var(--on-accent)}
+.btn{height:36px; padding:0 14px; border-radius:7px; border:1px solid var(--rule);
+  background:var(--sheet); font-size:14px; font-weight:500}
+.btn:hover{border-color:var(--ink-faint)}
+.btn.pri{background:var(--petrol); border-color:var(--petrol); color:var(--on-accent)}
+.btn[aria-pressed="true"]{background:var(--sunk); border-color:var(--ink-faint)}
+.spacer{flex:1}
+.menu-wrap{position:relative}
+.menu{position:absolute; right:0; top:42px; min-width:210px; background:var(--sheet);
+  border:1px solid var(--rule); border-radius:9px; box-shadow:var(--shadow); padding:5px; z-index:9}
+.menu button{display:block; width:100%; text-align:left; border:0; background:none;
+  padding:9px 10px; border-radius:6px; font-size:14px}
+.menu button:hover{background:var(--sunk)}
+.menu hr{border:0; border-top:1px solid var(--rule-soft); margin:5px 0}
+
+/* ── аркуш зі списком ──────────────────────────────── */
+.head-row,.row{display:grid; align-items:center;
+  grid-template-columns:var(--pick,0px) minmax(0,1fr) auto auto; gap:14px}
+.head-row{padding:0 4px 7px; border-bottom:1px solid var(--rule)}
+.head-row span{font:600 10px/1.4 "JetBrains Mono",ui-monospace,monospace;
+  letter-spacing:.14em; text-transform:uppercase; color:var(--ink-faint)}
+.head-row .h-counts{width:152px}
+.head-row .h-score{width:78px; text-align:right}
+
+.sheet{list-style:none; margin:0; padding:0}
+.row{padding:11px 4px; border-bottom:1px solid var(--rule-soft)}
+.row:hover{background:var(--sheet)}
+.row.picked{background:var(--sheet); box-shadow:inset 3px 0 0 var(--petrol)}
+.pick{display:flex; align-items:center; justify-content:center}
+.pick input{width:16px; height:16px; accent-color:var(--petrol); margin:0}
+.open{border:0; background:none; padding:0; text-align:left; min-width:0; display:block; width:100%}
+.nm{display:flex; align-items:center; gap:7px; font-size:16px; font-weight:500; letter-spacing:-.01em}
+.dot{width:7px; height:7px; border-radius:50%; background:var(--ink-faint); flex:none}
+.s-хочу .dot{background:var(--amber)} .s-колекція .dot{background:var(--petrol-dim)}
+.s-улюблена .dot{background:var(--petrol)} .s-відклав .dot{background:var(--ink-faint)}
+.s-позбувся .dot{background:var(--rust)}
+.meta{margin:3px 0 0; font:400 12.5px/1.45 "Onest",sans-serif; color:var(--ink-faint);
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+.note{margin:3px 0 0; font-size:13px; color:var(--ink-soft); white-space:nowrap;
+  overflow:hidden; text-overflow:ellipsis; max-width:60ch}
+
+.counts{display:grid; grid-template-columns:repeat(4,34px); gap:4px; width:152px}
+.cnt{border:1px solid var(--rule-soft); border-radius:5px; background:var(--sheet);
+  height:38px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:0}
+.cnt b{font:600 14px/1 "JetBrains Mono",ui-monospace,monospace; color:var(--band,var(--ink))}
+.cnt i{font:400 9px/1.4 "JetBrains Mono",ui-monospace,monospace; font-style:normal;
+  letter-spacing:.06em; color:var(--ink-faint)}
+.cnt.void b{color:var(--rule)}
+.cnt.now{border-color:var(--petrol); box-shadow:inset 0 0 0 1px var(--petrol)}
+
+.score{width:78px; text-align:right}
+.score .num{font-family:"Unbounded","Onest",sans-serif; font-weight:400; font-size:26px;
+  letter-spacing:-.04em; font-variant-numeric:tabular-nums; color:var(--band,var(--ink-faint))}
+.score .num.none{font-size:20px; color:var(--rule)}
+.meter{display:block; height:3px; margin-top:5px; background:var(--sunk); border-radius:2px; overflow:hidden}
+.meter i{display:block; height:100%; background:var(--band,var(--ink-faint))}
+
+.b-low{--band:var(--rust)} .b-mid{--band:var(--amber)}
+.b-good{--band:var(--sage)} .b-top{--band:var(--petrol)}
+
+.blank{padding:54px 4px; color:var(--ink-faint); text-align:center}
+.blank b{display:block; font-family:"Unbounded","Onest",sans-serif; font-weight:400;
+  font-size:18px; color:var(--ink-soft); margin-bottom:6px}
+
+/* ── порівняння ────────────────────────────────────── */
+.cmp{margin:18px 0 26px; border:1px solid var(--rule); border-radius:11px;
+  background:var(--sheet); overflow:hidden}
+.cmp-head{display:flex; align-items:center; justify-content:space-between; gap:12px;
+  padding:12px 14px; border-bottom:1px solid var(--rule)}
+.cmp-head h2{margin:0; font:600 12px/1 "JetBrains Mono",ui-monospace,monospace;
+  letter-spacing:.14em; text-transform:uppercase; color:var(--ink-faint)}
+.cmp-scroll{overflow-x:auto}
+.cmp table{border-collapse:collapse; width:100%; min-width:520px}
+.cmp th,.cmp td{padding:9px 14px; text-align:left; border-bottom:1px solid var(--rule-soft);
+  vertical-align:top; font-size:14px}
+.cmp thead th{font-family:"Unbounded","Onest",sans-serif; font-weight:400; font-size:15px;
+  letter-spacing:-.02em; border-bottom:1px solid var(--rule)}
+.cmp tbody th{font:600 10px/1.5 "JetBrains Mono",ui-monospace,monospace; letter-spacing:.12em;
+  text-transform:uppercase; color:var(--ink-faint); width:150px; white-space:nowrap}
+.cmp td.v{font-variant-numeric:tabular-nums}
+.cmp td.v b{font:600 15px/1 "JetBrains Mono",ui-monospace,monospace; color:var(--band,var(--ink-faint))}
+.cmp td.best{background:color-mix(in srgb, var(--petrol) 11%, transparent)}
+.cmp .bar{display:block; height:3px; margin-top:5px; max-width:110px;
+  background:var(--sunk); border-radius:2px; overflow:hidden}
+.cmp .bar i{display:block; height:100%; background:var(--band,var(--ink-faint))}
+
+/* ── картка гри ────────────────────────────────────── */
+.scrim{position:fixed; inset:0; background:rgba(10,14,12,.42); z-index:20}
+.card{position:fixed; top:0; right:0; bottom:0; width:min(440px,100%); z-index:21;
+  background:var(--sheet); border-left:1px solid var(--rule); box-shadow:var(--shadow);
+  display:flex; flex-direction:column; transform:translateX(14px); opacity:0;
+  transition:transform .16s ease, opacity .16s ease}
+.card.on{transform:none; opacity:1}
+.c-head{display:flex; align-items:flex-start; gap:10px; padding:16px 16px 12px;
+  border-bottom:1px solid var(--rule)}
+.c-name{flex:1; min-width:0; background:none; border:0; border-bottom:1px dashed var(--rule);
+  padding:2px 0 5px; font-family:"Unbounded","Onest",sans-serif; font-weight:400; font-size:19px;
+  letter-spacing:-.025em}
+.c-name:focus{outline:none; border-bottom-color:var(--petrol)}
+.icon{width:32px; height:32px; flex:none; border:1px solid var(--rule); border-radius:7px;
+  background:var(--paper); font-size:14px; line-height:1; display:grid; place-items:center}
+.c-body{flex:1; overflow-y:auto; padding:16px; display:flex; flex-direction:column; gap:20px}
+.grp{display:flex; flex-direction:column; gap:9px; border:0; margin:0; padding:0}
+.grp > legend, .lbl{font:600 10px/1.4 "JetBrains Mono",ui-monospace,monospace;
+  letter-spacing:.14em; text-transform:uppercase; color:var(--ink-faint); padding:0}
+.line{display:flex; flex-wrap:wrap; gap:8px; align-items:center}
+.line .fld{flex:1 1 92px; min-width:0}
+.line .fld input{width:100%}
+.num-in{width:100%; background:none; border:0; height:34px; font-size:14px;
+  font-variant-numeric:tabular-nums}
+.step{display:flex; align-items:center; gap:0; border:1px solid var(--rule); border-radius:7px;
+  background:var(--paper); height:36px; overflow:hidden}
+.step button{width:32px; height:34px; border:0; background:none; font-size:16px; color:var(--ink-soft)}
+.step button:hover{background:var(--sunk)}
+.step b{min-width:34px; text-align:center; font:600 14px/1 "JetBrains Mono",ui-monospace,monospace}
+
+.scale{display:grid; gap:3px}
+.scale.s10{grid-template-columns:repeat(10,1fr)}
+.scale.s5{grid-template-columns:repeat(5,1fr); max-width:190px}
+.scale button{height:30px; border:1px solid var(--rule-soft); border-radius:4px;
+  background:var(--paper); font:600 12px/1 "JetBrains Mono",ui-monospace,monospace;
+  color:var(--ink-faint); padding:0}
+.scale button:hover{border-color:var(--ink-faint)}
+.scale button.on{background:var(--band); border-color:var(--band); color:var(--on-accent)}
+.scale.big button{height:36px; font-size:13px}
+
+.pad{display:grid; grid-template-columns:34px 1fr; gap:6px 8px; align-items:center}
+.pad .who{font:600 12px/1 "JetBrains Mono",ui-monospace,monospace; color:var(--ink-soft); text-align:right}
+.pad .who small{display:block; font-size:8px; letter-spacing:.1em; color:var(--ink-faint); margin-top:3px}
+
+textarea{width:100%; min-height:96px; resize:vertical; background:var(--paper);
+  border:1px solid var(--rule); border-radius:7px; padding:9px 10px; font-size:14px; line-height:1.55}
+textarea:focus{outline:none; border-color:var(--petrol)}
+.hint{font-size:12px; color:var(--ink-faint); margin:0}
+.c-foot{display:flex; align-items:center; gap:8px; padding:12px 16px;
+  border-top:1px solid var(--rule); background:var(--sheet)}
+.c-foot .saved{flex:1; font:400 12px/1 "Onest",sans-serif; color:var(--ink-faint)}
+.danger{border-color:var(--rust); color:var(--rust); background:none}
+
+.toast{position:fixed; left:50%; bottom:22px; transform:translateX(-50%); z-index:40;
+  background:var(--ink); color:var(--paper); padding:10px 16px; border-radius:8px;
+  font-size:14px; box-shadow:var(--shadow); max-width:min(440px,92vw)}
+
+@media (max-width:720px){
+  .head-row{display:none}
+  .row{grid-template-columns:var(--pick,0px) minmax(0,1fr) auto; row-gap:9px}
+  .counts{grid-column:2 / -1; grid-template-columns:repeat(4,1fr); width:auto}
+  .score{grid-row:1; width:64px}
+  .card{border-left:0}
+  .note{max-width:none}
+}
+@media (prefers-reduced-motion:reduce){ *{transition:none !important} }
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="brand"><b>Полиця</b> <span>настілок</span></div>
+    <p class="tagline">Оцінки, партії й нотатки до кожної коробки — і окремо те, як гра йде на двох, трьох, чотирьох і більше.</p>
+    <dl class="stats" id="stats"></dl>
+  </header>
+
+  <div class="tools">
+    <div class="fld"><input id="q" type="search" placeholder="Пошук за назвою, тегом, нотаткою" aria-label="Пошук"></div>
+    <div class="seg" id="segCount" role="group" aria-label="Кількість гравців">
+      <span>Гравців</span>
+      <button data-c="all" aria-pressed="true">усі</button>
+      <button data-c="2" aria-pressed="false">2</button>
+      <button data-c="3" aria-pressed="false">3</button>
+      <button data-c="4" aria-pressed="false">4</button>
+      <button data-c="5" aria-pressed="false">5+</button>
+    </div>
+    <div class="fld"><label for="fStatus">Статус</label>
+      <select id="fStatus">
+        <option value="all">усі</option>
+        <option value="хочу">хочу зіграти</option>
+        <option value="колекція">у колекції</option>
+        <option value="улюблена">улюблена</option>
+        <option value="відклав">відклав</option>
+        <option value="позбувся">позбувся</option>
+      </select></div>
+    <div class="fld"><label for="fSort">Сортувати</label>
+      <select id="fSort">
+        <option value="score">за оцінкою</option>
+        <option value="name">за назвою</option>
+        <option value="plays">за партіями</option>
+        <option value="added">за датою додавання</option>
+        <option value="minutes">за часом партії</option>
+        <option value="weight">за складністю</option>
+      </select></div>
+    <div class="spacer"></div>
+    <button class="btn" id="cmpBtn" aria-pressed="false">Порівняти</button>
+    <button class="btn pri" id="addBtn">Додати гру</button>
+    <div class="menu-wrap">
+      <button class="btn" id="menuBtn" aria-haspopup="true" aria-expanded="false" aria-label="Ще">···</button>
+      <div class="menu" id="menu" hidden>
+        <button id="mExport">Експортувати JSON</button>
+        <button id="mCopy">Скопіювати JSON</button>
+        <hr>
+        <button id="mImport">Імпортувати JSON…</button>
+        <input id="fileIn" type="file" accept="application/json,.json" hidden>
+      </div>
+    </div>
+  </div>
+
+  <div id="cmpBox"></div>
+
+  <div class="head-row" id="headRow">
+    <span></span><span>Гра</span>
+    <span class="h-counts">За складом столу</span>
+    <span class="h-score" id="hScore">Оцінка</span>
+  </div>
+  <ol class="sheet" id="list"></ol>
+  <div class="blank" id="blank" hidden></div>
+</div>
+
+<div class="scrim" id="scrim" hidden></div>
+<aside class="card" id="card" hidden role="dialog" aria-modal="true" aria-label="Картка гри">
+  <div class="c-head">
+    <input class="c-name" id="cName" placeholder="Назва гри" aria-label="Назва гри">
+    <button class="icon" id="cClose" aria-label="Закрити">✕</button>
+  </div>
+  <div class="c-body">
+    <div class="line">
+      <div class="fld" style="flex:2 1 150px"><label for="cStatus">Статус</label>
+        <select id="cStatus">
+          <option value="хочу">хочу зіграти</option>
+          <option value="колекція">у колекції</option>
+          <option value="улюблена">улюблена</option>
+          <option value="відклав">відклав</option>
+          <option value="позбувся">позбувся</option>
+        </select></div>
+      <div class="step" aria-label="Партій зіграно">
+        <button id="pMinus" aria-label="Менше партій">−</button>
+        <b id="pVal">0</b>
+        <button id="pPlus" aria-label="Ще партія">+</button>
+      </div>
+      <span class="hint">партій</span>
+    </div>
+
+    <div class="line">
+      <div class="fld"><label for="cMin">Від</label><input class="num-in" id="cMin" type="number" min="1" max="20" inputmode="numeric"></div>
+      <div class="fld"><label for="cMax">До</label><input class="num-in" id="cMax" type="number" min="1" max="20" inputmode="numeric"></div>
+      <div class="fld"><label for="cMinutes">Хвилин</label><input class="num-in" id="cMinutes" type="number" min="5" max="600" step="5" inputmode="numeric"></div>
+    </div>
+
+    <fieldset class="grp">
+      <legend>Загальна оцінка</legend>
+      <div class="scale s10 big" id="sMain"></div>
+    </fieldset>
+
+    <fieldset class="grp">
+      <legend>Оцінка за складом столу</legend>
+      <div class="pad" id="pad"></div>
+      <p class="hint">Та сама гра на двох і на п'ятьох — часто дві різні гри. Порожній рядок означає «не грав таким складом».</p>
+    </fieldset>
+
+    <fieldset class="grp">
+      <legend>Складність</legend>
+      <div class="scale s5" id="sWeight"></div>
+    </fieldset>
+
+    <div class="grp">
+      <label class="lbl" for="cTags">Теги</label>
+      <div class="fld" style="width:100%"><input id="cTags" placeholder="кооп, євро, філер — через кому" style="width:100%"></div>
+    </div>
+
+    <div class="grp">
+      <label class="lbl" for="cNote">Нотатка</label>
+      <textarea id="cNote" placeholder="Чим зайшла, кому радити, що дратує, які доповнення потрібні."></textarea>
+    </div>
+  </div>
+  <div class="c-foot">
+    <span class="saved" id="cSaved"></span>
+    <button class="btn danger" id="cDel">Видалити</button>
+    <button class="btn pri" id="cDone">Готово</button>
+  </div>
+</aside>
+
+<script>
+"use strict";
+const COUNTS = ["2","3","4","5"];
+const CLABEL = {"2":"2","3":"3","4":"4","5":"5+"};
+const STATUS = {"хочу":"хочу зіграти","колекція":"у колекції","улюблена":"улюблена",
+                "відклав":"відклав","позбувся":"позбувся"};
+const LSKEY = "polytsia.games.v1";
+
+const SEED = ["Картографи","Magic Maze","Planet B","Unmatched: Битва легенд, ч. 2",
+  "Кіт у коробці","Інорі","Голем","Земля","Зомбі-кошенята","Мандалорець","Палео",
+  "Сплячі боги 2","Темна гавань: Гудзики та мурахи","Темна гавань: Щелепи лева",
+  "Тоскана","Ходу героям нема"];
+
+let games = [];
+let db = null;
+let ready = false;
+const ui = {q:"", count:"all", status:"all", sort:"score", cmp:false, picked:new Set(), open:null};
+
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s == null ? "" : s).replace(/[&<>"]/g, (c) =>
+  ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]));
+
+function band(v){ return v == null ? "" : v <= 3 ? "b-low" : v <= 6 ? "b-mid" : v <= 8 ? "b-good" : "b-top"; }
+function blank(name){
+  return {name:name, status:"колекція", minP:null, maxP:null, minutes:null, weight:null,
+          plays:0, score:null, byCount:{}, tags:[], comment:"",
+          added:new Date().toISOString().slice(0,10)};
+}
+function newId(){ return "g-" + Date.now().toString(36) + "-" + Math.random().toString(36).slice(2,6); }
+
+/* ── зберігання: база опублікованої сторінки або пам'ять браузера ── */
+function localSave(){
+  try{ localStorage.setItem(LSKEY, JSON.stringify(games)); }catch(e){}
+}
+function localLoad(){
+  try{
+    const raw = localStorage.getItem(LSKEY);
+    if(raw) return JSON.parse(raw);
+  }catch(e){}
+  return null;
+}
+async function persist(g){
+  if(db){
+    const body = Object.assign({}, g); delete body.id;
+    try{ await db.doc("games/" + g.id).set(body); }
+    catch(e){ toast("Не вдалося зберегти: " + (e && e.code ? e.code : "збій зв'язку")); }
+  } else localSave();
+}
+async function drop(id){
+  games = games.filter((g) => g.id !== id);
+  if(db){
+    try{ await db.doc("games/" + id).delete(); }
+    catch(e){ toast("Не вдалося видалити: " + (e && e.code ? e.code : "збій зв'язку")); }
+  } else localSave();
+  render();
+}
+
+async function boot(){
+  const stored = localLoad();
+  if(stored && stored.length){ games = stored; ready = true; render(); }
+  else if(!window.claude){ games = SEED.map((n, i) => Object.assign(blank(n), {id:"g-seed-" + (i+1)})); ready = true; localSave(); render(); }
+  else render();
+
+  if(!window.claude) return;
+  let d = null;
+  try{ d = await window.claude.use("db"); }catch(e){ d = null; }
+  if(!d){ if(!ready){ ready = true; render(); } return; }
+  db = d;
+  db.collection("games").onSnapshot(
+    (snap) => {
+      games = snap.docs.map((doc) => Object.assign({id:doc.id}, doc.data()));
+      ready = true; render();
+      if(ui.open && !games.some((g) => g.id === ui.open)) closeCard();
+    },
+    (err) => { ready = true; render(); toast("База недоступна (" + err.code + "). Правки не збережуться."); }
+  );
+}
+
+/* ── вибірка й сортування ────────────────────────── */
+function effScore(g){
+  if(ui.count === "all") return g.score == null ? null : g.score;
+  const v = g.byCount ? g.byCount[ui.count] : null;
+  return v == null ? null : v;
+}
+function fitsCount(g){
+  if(ui.count === "all") return true;
+  if(g.byCount && g.byCount[ui.count] != null) return true;
+  const mn = g.minP, mx = g.maxP;
+  if(mn == null && mx == null) return true;
+  if(ui.count === "5") return mx == null || mx >= 5;
+  const c = +ui.count;
+  return (mn == null || mn <= c) && (mx == null || mx >= c);
+}
+function visible(){
+  const q = ui.q.trim().toLowerCase();
+  let arr = games.filter((g) => {
+    if(ui.status !== "all" && g.status !== ui.status) return false;
+    if(!fitsCount(g)) return false;
+    if(!q) return true;
+    const hay = [g.name, g.comment, (g.tags || []).join(" ")].join(" ").toLowerCase();
+    return hay.includes(q);
+  });
+  const num = (v) => (v == null || v === "" ? null : +v);
+  arr.sort((a, b) => {
+    if(ui.sort === "name") return (a.name || "").localeCompare(b.name || "", "uk");
+    let x, y;
+    if(ui.sort === "score"){ x = effScore(a); y = effScore(b); }
+    else if(ui.sort === "plays"){ x = num(a.plays) || 0; y = num(b.plays) || 0; }
+    else if(ui.sort === "added"){ x = a.added || ""; y = b.added || ""; }
+    else { x = num(a[ui.sort]); y = num(b[ui.sort]); }
+    if(x == null && y == null) return (a.name || "").localeCompare(b.name || "", "uk");
+    if(x == null) return 1;
+    if(y == null) return -1;
+    if(x === y) return (a.name || "").localeCompare(b.name || "", "uk");
+    return ui.sort === "added" ? (x > y ? -1 : 1) : (y - x);
+  });
+  return arr;
+}
+
+/* ── малювання ───────────────────────────────────── */
+function render(){ renderStats(); renderList(); renderCmp(); }
+
+function renderStats(){
+  const rated = games.filter((g) => g.score != null);
+  const avg = rated.length ? (rated.reduce((s, g) => s + g.score, 0) / rated.length).toFixed(1) : "—";
+  const plays = games.reduce((s, g) => s + (+g.plays || 0), 0);
+  let extra;
+  if(ui.count === "all"){
+    const top = rated.slice().sort((a, b) => b.score - a.score)[0];
+    extra = ["Перша в списку", top ? esc(top.name) : "—"];
+  } else {
+    const list = games.filter((g) => g.byCount && g.byCount[ui.count] != null)
+                      .sort((a, b) => b.byCount[ui.count] - a.byCount[ui.count]);
+    extra = ["Краща на " + CLABEL[ui.count],
+             list.length ? esc(list[0].name) + " <small>" + list[0].byCount[ui.count] + "</small>" : "—"];
+  }
+  $("stats").innerHTML =
+    cell("Ігор на полиці", games.length) +
+    cell("Оцінено", rated.length + " <small>з " + games.length + "</small>") +
+    cell("Середня оцінка", avg) +
+    cell("Партій зіграно", plays) +
+    cell(extra[0], extra[1]);
+  function cell(t, v){ return "<div><dt>" + t + "</dt><dd>" + v + "</dd></div>"; }
+}
+
+function renderList(){
+  const list = $("list"), arr = visible();
+  document.documentElement.style.setProperty("--pick", ui.cmp ? "26px" : "0px");
+  $("hScore").textContent = ui.count === "all" ? "Оцінка" : "На " + CLABEL[ui.count];
+
+  if(!ready){
+    list.innerHTML = ""; $("headRow").hidden = true;
+    show("Хвилинку", "Дістаю полицю з бази.");
+    return;
+  }
+  $("headRow").hidden = arr.length === 0;
+  if(!arr.length){
+    list.innerHTML = "";
+    if(!games.length) show("Полиця порожня", "Натисни «Додати гру» — і почнеться.");
+    else show("Нічого не підходить", "Спробуй інший склад столу, статус або пошук.");
+    return;
+  }
+  $("blank").hidden = true;
+
+  list.innerHTML = arr.map((g) => {
+    const s = effScore(g), b = band(s);
+    const meta = [];
+    meta.push(STATUS[g.status] || g.status || "");
+    if(g.minP || g.maxP) meta.push((g.minP || "?") + "–" + (g.maxP || "?") + " гравців");
+    if(g.minutes) meta.push(g.minutes + " хв");
+    if(g.plays) meta.push(g.plays + " " + plural(g.plays, "партія", "партії", "партій"));
+    if(g.weight) meta.push("складність " + g.weight);
+    if(g.tags && g.tags.length) meta.push(g.tags.join(" · "));
+    const cells = COUNTS.map((c) => {
+      const v = g.byCount ? g.byCount[c] : null;
+      return "<span class='cnt " + (v == null ? "void " : "") + band(v) +
+        (ui.count === c ? " now" : "") + "'><b>" + (v == null ? "·" : v) +
+        "</b><i>" + CLABEL[c] + "</i></span>";
+    }).join("");
+    return "<li class='row s-" + esc(g.status) + (ui.picked.has(g.id) ? " picked" : "") + "' data-id='" + esc(g.id) + "'>" +
+      (ui.cmp ? "<label class='pick'><input type='checkbox' data-pick='" + esc(g.id) + "' " +
+        (ui.picked.has(g.id) ? "checked" : "") + " aria-label='Порівняти " + esc(g.name) + "'></label>" : "<span></span>") +
+      "<button class='open' data-open='" + esc(g.id) + "'>" +
+        "<span class='nm'><i class='dot'></i>" + esc(g.name) + "</span>" +
+        "<span class='meta'>" + esc(meta.filter(Boolean).join(" · ")) + "</span>" +
+        (g.comment ? "<span class='note'>" + esc(g.comment) + "</span>" : "") +
+      "</button>" +
+      "<div class='counts'>" + cells + "</div>" +
+      "<div class='score " + b + "'><span class='num" + (s == null ? " none" : "") + "'>" +
+        (s == null ? "—" : s) + "</span>" +
+        "<span class='meter'><i style='width:" + (s == null ? 0 : s * 10) + "%'></i></span></div>" +
+    "</li>";
+  }).join("");
+
+  function show(t, sub){
+    const el = $("blank"); el.hidden = false;
+    el.innerHTML = "<b>" + t + "</b>" + sub;
+  }
+}
+function plural(n, one, few, many){
+  const a = Math.abs(n) % 100, b = a % 10;
+  if(a > 10 && a < 20) return many;
+  if(b === 1) return one;
+  if(b >= 2 && b <= 4) return few;
+  return many;
+}
+
+/* ── порівняння ──────────────────────────────────── */
+function renderCmp(){
+  const box = $("cmpBox");
+  const picked = games.filter((g) => ui.picked.has(g.id));
+  if(!ui.cmp || picked.length < 2){
+    box.innerHTML = ui.cmp
+      ? "<p class='hint' style='padding:14px 4px 0'>Познач дві–чотири гри, щоб побачити їх поруч.</p>"
+      : "";
+    return;
+  }
+  const gs = picked.slice(0, 4);
+  const rows = [
+    ["Загальна", (g) => g.score, true],
+    ["На 2", (g) => pick(g, "2"), true],
+    ["На 3", (g) => pick(g, "3"), true],
+    ["На 4", (g) => pick(g, "4"), true],
+    ["На 5+", (g) => pick(g, "5"), true],
+    ["Складність", (g) => g.weight, false],
+    ["Партій", (g) => g.plays || 0, false],
+    ["Гравців", (g) => (g.minP || g.maxP) ? (g.minP || "?") + "–" + (g.maxP || "?") : null, false],
+    ["Час", (g) => g.minutes ? g.minutes + " хв" : null, false],
+    ["Статус", (g) => STATUS[g.status] || g.status, false],
+    ["Теги", (g) => (g.tags || []).join(", "), false],
+    ["Нотатка", (g) => g.comment, false]
+  ];
+  function pick(g, c){ return g.byCount ? g.byCount[c] : null; }
+
+  const body = rows.map((r) => {
+    const vals = gs.map(r[1]);
+    const best = r[2] ? Math.max.apply(null, vals.map((v) => (v == null ? -1 : v))) : -1;
+    const tds = vals.map((v) => {
+      if(r[2]){
+        const cls = band(v) + (v != null && v === best && best > 0 && vals.filter((x) => x === best).length < gs.length ? " best" : "");
+        return "<td class='v " + cls + "'>" + (v == null ? "<b style='color:var(--rule)'>—</b>" :
+          "<b>" + v + "</b><span class='bar'><i style='width:" + v * 10 + "%'></i></span>") + "</td>";
+      }
+      return "<td>" + (v == null || v === "" ? "<span style='color:var(--rule)'>—</span>" : esc(v)) + "</td>";
+    }).join("");
+    return "<tr><th scope='row'>" + r[0] + "</th>" + tds + "</tr>";
+  }).join("");
+
+  $("cmpBox").innerHTML =
+    "<section class='cmp'><div class='cmp-head'><h2>Поруч на столі</h2>" +
+    "<button class='btn' id='cmpClear'>Зняти позначки</button></div>" +
+    "<div class='cmp-scroll'><table><thead><tr><th></th>" +
+    gs.map((g) => "<th>" + esc(g.name) + "</th>").join("") +
+    "</tr></thead><tbody>" + body + "</tbody></table></div></section>";
+  $("cmpClear").onclick = () => { ui.picked.clear(); render(); };
+}
+
+/* ── картка гри ──────────────────────────────────── */
+let saveTimer = null;
+function current(){ return games.find((g) => g.id === ui.open) || null; }
+
+function scale(host, max, get, set){
+  host.innerHTML = "";
+  for(let i = 1; i <= max; i++){
+    const b = document.createElement("button");
+    b.type = "button"; b.textContent = i;
+    b.setAttribute("aria-label", "оцінка " + i);
+    host.appendChild(b);
+  }
+  host.dataset.max = max;
+  host._get = get; host._set = set;
+  host.onclick = (e) => {
+    const b = e.target.closest("button"); if(!b) return;
+    const v = +b.textContent;
+    set(get() === v ? null : v);
+    paintScale(host);
+    touch();
+  };
+  paintScale(host);
+}
+function paintScale(host){
+  const v = host._get(), max = +host.dataset.max;
+  const cls = max === 10 ? band(v) : "b-top";
+  host.className = host.className.replace(/\bb-(low|mid|good|top)\b/g, "").trim() + " " + (v == null ? "" : cls);
+  Array.prototype.forEach.call(host.children, (b, i) => {
+    const on = v != null && i < v;
+    b.classList.toggle("on", on);
+    b.setAttribute("aria-pressed", on ? "true" : "false");
+  });
+}
+
+function openCard(id){
+  ui.open = id;
+  const g = current(); if(!g) return;
+  $("cName").value = g.name || "";
+  $("cStatus").value = g.status || "колекція";
+  $("pVal").textContent = g.plays || 0;
+  $("cMin").value = g.minP == null ? "" : g.minP;
+  $("cMax").value = g.maxP == null ? "" : g.maxP;
+  $("cMinutes").value = g.minutes == null ? "" : g.minutes;
+  $("cTags").value = (g.tags || []).join(", ");
+  $("cNote").value = g.comment || "";
+  $("cSaved").textContent = "";
+  $("cDel").textContent = "Видалити";
+
+  scale($("sMain"), 10, () => current() && current().score, (v) => { current().score = v; });
+  scale($("sWeight"), 5, () => current() && current().weight, (v) => { current().weight = v; });
+  const pad = $("pad"); pad.innerHTML = "";
+  COUNTS.forEach((c) => {
+    const who = document.createElement("div");
+    who.className = "who";
+    who.innerHTML = CLABEL[c] + "<small>ГР.</small>";
+    const row = document.createElement("div");
+    row.className = "scale s10";
+    pad.appendChild(who); pad.appendChild(row);
+    scale(row, 10,
+      () => { const g2 = current(); return g2 && g2.byCount ? g2.byCount[c] : null; },
+      (v) => {
+        const g2 = current(); if(!g2) return;
+        g2.byCount = g2.byCount || {};
+        if(v == null) delete g2.byCount[c]; else g2.byCount[c] = v;
+      });
+  });
+
+  $("scrim").hidden = false; $("card").hidden = false;
+  requestAnimationFrame(() => $("card").classList.add("on"));
+  $("cName").focus();
+}
+function closeCard(){
+  ui.open = null;
+  $("card").classList.remove("on");
+  $("card").hidden = true; $("scrim").hidden = true;
+}
+function touch(){
+  const g = current(); if(!g) return;
+  render();
+  clearTimeout(saveTimer);
+  $("cSaved").textContent = "…";
+  saveTimer = setTimeout(async () => {
+    await persist(g);
+    $("cSaved").textContent = "збережено";
+    setTimeout(() => { if($("cSaved").textContent === "збережено") $("cSaved").textContent = ""; }, 1600);
+  }, 350);
+}
+function bindField(el, apply, ev){
+  el.addEventListener(ev || "input", () => {
+    const g = current(); if(!g) return;
+    apply(g, el.value);
+    touch();
+  });
+}
+bindField($("cName"), (g, v) => { g.name = v; });
+bindField($("cStatus"), (g, v) => { g.status = v; }, "change");
+bindField($("cMin"), (g, v) => { g.minP = v === "" ? null : +v; });
+bindField($("cMax"), (g, v) => { g.maxP = v === "" ? null : +v; });
+bindField($("cMinutes"), (g, v) => { g.minutes = v === "" ? null : +v; });
+bindField($("cNote"), (g, v) => { g.comment = v; });
+bindField($("cTags"), (g, v) => {
+  g.tags = v.split(",").map((s) => s.trim()).filter(Boolean);
+});
+$("pPlus").onclick = () => bumpPlays(1);
+$("pMinus").onclick = () => bumpPlays(-1);
+function bumpPlays(d){
+  const g = current(); if(!g) return;
+  g.plays = Math.max(0, (+g.plays || 0) + d);
+  $("pVal").textContent = g.plays;
+  touch();
+}
+$("cDone").onclick = closeCard;
+$("cClose").onclick = closeCard;
+$("scrim").onclick = closeCard;
+$("cDel").onclick = function(){
+  const g = current(); if(!g) return;
+  if(this.textContent !== "Точно видалити?"){ this.textContent = "Точно видалити?"; return; }
+  const id = g.id, name = g.name;
+  closeCard(); drop(id); toast("«" + name + "» знято з полиці.");
+};
+document.addEventListener("keydown", (e) => {
+  if(e.key === "Escape"){
+    if(ui.open) closeCard();
+    else if(!$("menu").hidden) hideMenu();
+  }
+});
+
+/* ── панель керування ────────────────────────────── */
+$("q").addEventListener("input", (e) => { ui.q = e.target.value; render(); });
+$("fStatus").addEventListener("change", (e) => { ui.status = e.target.value; render(); });
+$("fSort").addEventListener("change", (e) => { ui.sort = e.target.value; render(); });
+$("segCount").addEventListener("click", (e) => {
+  const b = e.target.closest("button"); if(!b) return;
+  ui.count = b.dataset.c;
+  Array.prototype.forEach.call($("segCount").querySelectorAll("button"),
+    (x) => x.setAttribute("aria-pressed", x === b ? "true" : "false"));
+  render();
+});
+$("cmpBtn").addEventListener("click", function(){
+  ui.cmp = !ui.cmp;
+  this.setAttribute("aria-pressed", ui.cmp ? "true" : "false");
+  if(!ui.cmp) ui.picked.clear();
+  render();
+});
+$("list").addEventListener("click", (e) => {
+  const o = e.target.closest("[data-open]");
+  if(o){ openCard(o.dataset.open); return; }
+});
+$("list").addEventListener("change", (e) => {
+  const p = e.target.closest("[data-pick]"); if(!p) return;
+  const id = p.dataset.pick;
+  if(p.checked){
+    if(ui.picked.size >= 4){ p.checked = false; toast("Більше чотирьох поруч уже не читається."); return; }
+    ui.picked.add(id);
+  } else ui.picked.delete(id);
+  render();
+});
+$("addBtn").addEventListener("click", async () => {
+  const g = Object.assign(blank(""), {id:newId()});
+  games.push(g);
+  if(!db) localSave();
+  render(); openCard(g.id);
+  if(db) await persist(g);
+});
+
+/* ── меню, обмін даними ──────────────────────────── */
+function hideMenu(){ $("menu").hidden = true; $("menuBtn").setAttribute("aria-expanded", "false"); }
+$("menuBtn").addEventListener("click", (e) => {
+  e.stopPropagation();
+  const m = $("menu"); m.hidden = !m.hidden;
+  $("menuBtn").setAttribute("aria-expanded", m.hidden ? "false" : "true");
+});
+document.addEventListener("click", (e) => {
+  if(!$("menu").hidden && !e.target.closest(".menu-wrap")) hideMenu();
+});
+function dump(){ return JSON.stringify({app:"полиця настілок", saved:new Date().toISOString(), games:games}, null, 2); }
+$("mExport").addEventListener("click", async () => {
+  hideMenu();
+  const name = "полиця-" + new Date().toISOString().slice(0, 10) + ".json";
+  const data = dump();
+  let saver = null;
+  try{ saver = window.claude ? await window.claude.use("downloads") : null; }catch(e){ saver = null; }
+  if(saver){
+    try{ await saver.save({filename:name, data:data}); toast("Файл збережено."); }
+    catch(e){ toast("Збереження скасовано."); }
+    return;
+  }
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([data], {type:"application/json"}));
+  a.download = name; a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+  toast("Файл збережено.");
+});
+$("mCopy").addEventListener("click", async () => {
+  hideMenu();
+  try{ await navigator.clipboard.writeText(dump()); toast("JSON у буфері обміну."); }
+  catch(e){ toast("Браузер не дав доступ до буфера. Скористайся експортом у файл."); }
+});
+$("mImport").addEventListener("click", () => { hideMenu(); $("fileIn").click(); });
+$("fileIn").addEventListener("change", async (e) => {
+  const f = e.target.files && e.target.files[0]; if(!f) return;
+  e.target.value = "";
+  let data;
+  try{ data = JSON.parse(await f.text()); }
+  catch(err){ toast("Це не схоже на JSON із полиці."); return; }
+  const arr = Array.isArray(data) ? data : data.games;
+  if(!Array.isArray(arr)){ toast("У файлі немає списку ігор."); return; }
+  let added = 0, upd = 0;
+  for(const raw of arr){
+    if(!raw || !raw.name) continue;
+    const g = Object.assign(blank(raw.name), raw);
+    const same = games.find((x) => x.id === raw.id || x.name === raw.name);
+    if(same){ Object.assign(same, g, {id:same.id}); upd++; await persist(same); }
+    else { g.id = raw.id || newId(); games.push(g); added++; await persist(g); }
+  }
+  if(!db) localSave();
+  render();
+  toast("Додано " + added + ", оновлено " + upd + ".");
+});
+
+let toastTimer = null;
+function toast(msg){
+  let t = document.querySelector(".toast");
+  if(!t){ t = document.createElement("div"); t.className = "toast"; t.setAttribute("role", "status"); document.body.appendChild(t); }
+  t.textContent = msg;
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.remove(), 3600);
+}
+
+boot();
+</script>
