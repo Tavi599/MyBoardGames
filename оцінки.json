@@ -16,13 +16,20 @@
       "name": "Корова 006",
       "nameEn": "6 nimmt!",
       "plays": 0,
+      "rules": [
+        {
+          "kind": "інше",
+          "title": "Правила (англійською)",
+          "url": "https://boardgamegeek.com/filepage/276531/rulebook-b-and-w-a4-size"
+        }
+      ],
       "score": null,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T16:01:36.850Z",
+      "updated": "2026-09-12T17:57:22.686Z",
       "weight": null
     },
     {
@@ -327,13 +334,25 @@
       "name": "Battle Line",
       "nameEn": "",
       "plays": 0,
+      "rules": [
+        {
+          "kind": "інше",
+          "title": "Правила (англійською)",
+          "url": "https://boardgamegeek.com/filepage/22998/battlelinerulespdf"
+        },
+        {
+          "kind": "памʼятка",
+          "title": "Памʼятка комбінацій",
+          "url": "https://boardgamegeek.com/filepage/38150/player-aid-hand-rankings"
+        }
+      ],
       "score": null,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T16:01:36.850Z",
+      "updated": "2026-09-12T17:57:22.686Z",
       "weight": null
     },
     {
@@ -1150,13 +1169,20 @@
       "name": "Ходу героям нема. Битви з босами",
       "nameEn": "Keep the Heroes Out!: Boss Battles",
       "plays": 0,
+      "rules": [
+        {
+          "kind": "інше",
+          "title": "Правила (англійською)",
+          "url": "https://boardgamegeek.com/filepage/272882/boss-battles-rulebook-085"
+        }
+      ],
       "score": null,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T16:01:36.850Z",
+      "updated": "2026-09-12T17:57:22.686Z",
       "weight": null
     },
     {
@@ -2843,13 +2869,20 @@
       "name": "Unmatched. Відьмак: Занепад світів",
       "nameEn": "Unmatched: The Witcher – Realms Fall",
       "plays": 0,
+      "rules": [
+        {
+          "kind": "інше",
+          "title": "Правила (англійською)",
+          "url": "https://boardgamegeek.com/filepage/312548/unmatched-the-witcher-realms-fall-set-rules-en1"
+        }
+      ],
       "score": null,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T16:01:36.850Z",
+      "updated": "2026-09-12T17:57:22.686Z",
       "weight": null
     },
     {
@@ -2913,6 +2946,6 @@
       "weight": null
     }
   ],
-  "saved": "2026-09-12T17:54:05.874Z",
+  "saved": "2026-09-12T17:57:22.686Z",
   "version": 2
 }
