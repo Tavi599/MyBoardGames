@@ -1,7 +1,7 @@
 {
   "app": "полиця настілок",
   "version": 2,
-  "saved": "2026-09-12T20:15:39.128Z",
+  "saved": "2026-09-12T20:16:16.971Z",
   "games": [
     {
       "added": "2026-09-12",
@@ -1193,7 +1193,12 @@
       "bggId": "281259",
       "bggRank": 207,
       "bggRating": 7.6,
-      "byCount": {},
+      "byCount": {
+        "2": 7.5,
+        "3": 7.5,
+        "4": 6,
+        "5": 5
+      },
       "comment": "",
       "cover": "https://cf.geekdo-images.com/AuAheDzhkLufiZFE9JaRNA__square200/img/ZihFbpHcPsrHUxU8dfHFr8eqfDY=/200x200/filters:strip_icc()/pic4781085.jpg",
       "id": "g-isle-of-cats",
@@ -1202,7 +1207,7 @@
       "minutes": null,
       "name": "Острів котів",
       "nameEn": "The Isle of Cats",
-      "plays": 0,
+      "plays": 8,
       "rules": [
         {
           "kind": "офіційні",
@@ -1221,8 +1226,8 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T17:20:03.076Z",
-      "weight": null
+      "updated": "2026-09-12T20:16:07.800Z",
+      "weight": 2.5
     },
     {
       "added": "2026-09-12",
