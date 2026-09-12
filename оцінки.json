@@ -1,7 +1,7 @@
 {
   "app": "полиця настілок",
   "version": 2,
-  "saved": "2026-09-12T20:05:31.572Z",
+  "saved": "2026-09-12T20:06:01.256Z",
   "games": [
     {
       "added": "2026-09-12",
@@ -1294,7 +1294,12 @@
       "added": "2026-09-12",
       "bggId": "351550",
       "bggRating": 8.1,
-      "byCount": {},
+      "byCount": {
+        "2": 5,
+        "3": 7,
+        "4": 8,
+        "5": 7
+      },
       "comment": "",
       "cover": "https://cf.geekdo-images.com/ZC5y7zSkbNwKTIk-eHs1ww__square200/img/UnKITGfNYfaotfgrCWkbXhCOMFU=/200x200/filters:strip_icc()/pic6985340.jpg",
       "expansion": true,
@@ -1304,7 +1309,7 @@
       "minutes": null,
       "name": "Ходу героям нема. Помста магістра гільдії",
       "nameEn": "Keep the Heroes Out!: Guild Master's Revenge",
-      "plays": 0,
+      "plays": 1,
       "rules": [
         {
           "kind": "офіційні",
@@ -1323,8 +1328,8 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T20:05:22.240Z",
-      "weight": null
+      "updated": "2026-09-12T20:05:52.207Z",
+      "weight": 3
     },
     {
       "added": "2026-09-12",
