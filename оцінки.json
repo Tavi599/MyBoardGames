@@ -1,7 +1,7 @@
 {
   "app": "полиця настілок",
   "version": 2,
-  "saved": "2026-09-12T19:56:44.600Z",
+  "saved": "2026-09-12T19:57:44.722Z",
   "games": [
     {
       "added": "2026-09-12",
@@ -1926,7 +1926,10 @@
       "bggId": "367351",
       "bggRank": 3810,
       "bggRating": 7.2,
-      "byCount": {},
+      "byCount": {
+        "2": 6,
+        "3": 8
+      },
       "comment": "",
       "cover": "https://cf.geekdo-images.com/5cExnc8YU5n-52o4FGTZzA__square200/img/eLPuGguCkrABdCyAzQgYQiHX_ng=/200x200/filters:strip_icc()/pic6970585.png",
       "id": "g-seed-03",
@@ -1935,7 +1938,7 @@
       "minutes": null,
       "name": "Planet B",
       "nameEn": "",
-      "plays": 0,
+      "plays": 1,
       "rules": [
         {
           "kind": "офіційні",
@@ -1943,13 +1946,13 @@
           "url": "https://geekach.com.ua/content/files/pravila-nastlno-gri-planet-b-32779151.pdf"
         }
       ],
-      "score": null,
+      "score": 8,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T17:20:03.076Z",
+      "updated": "2026-09-12T19:57:35.263Z",
       "weight": null
     },
     {
