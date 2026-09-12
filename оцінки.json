@@ -40,13 +40,25 @@
       "name": "7 чудес. Дуель",
       "nameEn": "7 Wonders Duel",
       "plays": 0,
+      "rules": [
+        {
+          "kind": "офіційні",
+          "title": "Правила",
+          "url": "https://geekach.com.ua/content/files/pravila-nastlno-gri-7-wonders.-duel-7-chudes.-duel-ukranskou-movou-65947724.pdf"
+        },
+        {
+          "kind": "памʼятка",
+          "title": "Памʼятка",
+          "url": "https://geekach.com.ua/content/files/pamjatka-nastlno-gri-7-wonders.-duel-7-chudes.-duel-ukranskou-movou-49229611.pdf"
+        }
+      ],
       "score": null,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T16:01:36.850Z",
+      "updated": "2026-09-12T17:20:03.076Z",
       "weight": null
     },
     {
@@ -88,13 +100,30 @@
       "name": "Жах Аркхема. Карткова гра",
       "nameEn": "Arkham Horror: The Card Game",
       "plays": 0,
+      "rules": [
+        {
+          "kind": "офіційні",
+          "title": "Правила",
+          "url": "https://geekach.com.ua/content/files/pravila-gri-zhax-arkgema.-kartkova-gra-ukranskou-25543972.pdf"
+        },
+        {
+          "kind": "інше",
+          "title": "Довідник",
+          "url": "https://geekach.com.ua/content/files/dovdnik-79412426.pdf"
+        },
+        {
+          "kind": "інше",
+          "title": "Путівник",
+          "url": "https://geekach.com.ua/content/files/putvnik-82475935.pdf"
+        }
+      ],
       "score": null,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T16:01:36.850Z",
+      "updated": "2026-09-12T17:20:03.076Z",
       "weight": null
     },
     {
@@ -136,13 +165,20 @@
       "name": "Жах Аркхема. На краю світу",
       "nameEn": "Arkham Horror: The Card Game – The Edge of the Earth",
       "plays": 0,
+      "rules": [
+        {
+          "kind": "офіційні",
+          "title": "Правила",
+          "url": "https://geekach.com.ua/content/files/pravila-nastlno-gri-zhax-arkgema.-kartkova-gra-na-krau-svtu.-dosldnicke-dopovnennja-56347424.pdf"
+        }
+      ],
       "score": null,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T16:01:36.850Z",
+      "updated": "2026-09-12T17:20:03.076Z",
       "weight": null
     },
     {
@@ -160,13 +196,30 @@
       "name": "Загублені руїни Арнаку",
       "nameEn": "Lost Ruins of Arnak",
       "plays": 0,
+      "rules": [
+        {
+          "kind": "офіційні",
+          "title": "Правила",
+          "url": "https://geekach.com.ua/content/files/pravila-nastlno-gri-zagublen-runi-arnaku-lost-ruins-of-arnak-ukranskou-movou-47507153.pdf"
+        },
+        {
+          "kind": "соло",
+          "title": "Соло-правила",
+          "url": "https://geekach.com.ua/content/files/pravila-solo-gri-zagublen-runi-arnaku-lost-ruins-of-arnak-ukranskou-movou-57139249.pdf"
+        },
+        {
+          "kind": "памʼятка",
+          "title": "Памʼятка",
+          "url": "https://geekach.com.ua/content/files/pamjatka-zagublen-runi-arnaku-lost-ruins-of-arnak-ukranskou-movou-20813504.pdf"
+        }
+      ],
       "score": null,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T16:01:36.850Z",
+      "updated": "2026-09-12T17:20:03.076Z",
       "weight": null,
       "withExp": [
         "g-arnak-promo"
@@ -187,13 +240,20 @@
       "name": "Загублені руїни Арнаку. Звивисті стежки",
       "nameEn": "Lost Ruins of Arnak: Twisted Paths",
       "plays": 0,
+      "rules": [
+        {
+          "kind": "офіційні",
+          "title": "Правила",
+          "url": "https://geekach.com.ua/content/files/pravila-dopovnennja-zagublen-runi-arnaku-zvivist-stezhki-61267959.pdf"
+        }
+      ],
       "score": null,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T16:01:36.850Z",
+      "updated": "2026-09-12T17:20:03.076Z",
       "weight": null
     },
     {
@@ -281,13 +341,20 @@
       "name": "Боброва гребля",
       "nameEn": "Beaver Creek",
       "plays": 0,
+      "rules": [
+        {
+          "kind": "офіційні",
+          "title": "Правила",
+          "url": "https://geekach.com.ua/content/files/pravila-nastlno-gri-bobrova-greblja-beaver-creek-12258445.pdf"
+        }
+      ],
       "score": null,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T16:01:36.850Z",
+      "updated": "2026-09-12T17:20:03.076Z",
       "weight": null
     },
     {
@@ -305,13 +372,20 @@
       "name": "Сірий кардинал",
       "nameEn": "Behind the Throne",
       "plays": 0,
+      "rules": [
+        {
+          "kind": "офіційні",
+          "title": "Правила",
+          "url": "https://geekach.com.ua/content/files/pravila-nastlno-gri-sriy-kardinal-ukranskou-movou_11724379.pdf"
+        }
+      ],
       "score": null,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T16:01:36.850Z",
+      "updated": "2026-09-12T17:20:03.076Z",
       "weight": null
     },
     {
@@ -377,13 +451,20 @@
       "name": "Королівство кроликів",
       "nameEn": "Bunny Kingdom",
       "plays": 0,
+      "rules": [
+        {
+          "kind": "офіційні",
+          "title": "Правила",
+          "url": "https://geekach.com.ua/content/files/pravila-nastlno-gri-korolvstvo-krolikv-bunny-kingdom-43982461.pdf"
+        }
+      ],
       "score": null,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T16:01:36.850Z",
+      "updated": "2026-09-12T17:20:03.076Z",
       "weight": null
     },
     {
@@ -425,13 +506,20 @@
       "name": "Castle Combo",
       "nameEn": "",
       "plays": 0,
+      "rules": [
+        {
+          "kind": "офіційні",
+          "title": "Правила",
+          "url": "https://geekach.com.ua/content/files/pravila-nastlno-gri-fortecja-kombo-casle-combo-91372490.pdf"
+        }
+      ],
       "score": null,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T16:01:36.850Z",
+      "updated": "2026-09-12T17:20:03.076Z",
       "weight": null
     },
     {
@@ -449,13 +537,20 @@
       "name": "Битва Колод: Посвята",
       "nameEn": "Clash of Decks: Starter Kit",
       "plays": 0,
+      "rules": [
+        {
+          "kind": "офіційні",
+          "title": "Правила",
+          "url": "https://geekach.com.ua/content/files/pravila-nastlno-gri-bitva-kolod-clash-of-decks-ukranskou-movou-8577544.pdf"
+        }
+      ],
       "score": null,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T16:08:04.404Z",
+      "updated": "2026-09-12T17:20:03.076Z",
       "weight": null
     },
     {
@@ -473,13 +568,20 @@
       "name": "Влучний хід",
       "nameEn": "That's Pretty Clever!",
       "plays": 0,
+      "rules": [
+        {
+          "kind": "офіційні",
+          "title": "Правила",
+          "url": "https://geekach.com.ua/content/files/pravila-nastlno-gri-vluchniy-xd-thats-pretty-clever-ukranskou-movou-84849382.pdf"
+        }
+      ],
       "score": null,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T16:01:36.850Z",
+      "updated": "2026-09-12T17:20:03.076Z",
       "weight": null
     },
     {
@@ -497,13 +599,20 @@
       "name": "Кольт Експрес",
       "nameEn": "Colt Express",
       "plays": 0,
+      "rules": [
+        {
+          "kind": "офіційні",
+          "title": "Правила",
+          "url": "https://geekach.com.ua/content/files/pravila-nastlno-gri-kolt-ekspres-colt-express-ukranskou-movou-25570836.pdf"
+        }
+      ],
       "score": null,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T16:01:36.850Z",
+      "updated": "2026-09-12T17:20:03.076Z",
       "weight": null
     },
     {
@@ -545,13 +654,20 @@
       "name": "Долина Смерті",
       "nameEn": "Death Valley",
       "plays": 0,
+      "rules": [
+        {
+          "kind": "офіційні",
+          "title": "Правила",
+          "url": "https://geekach.com.ua/content/files/pravila-nastlno-gri-dolina-smert.-rozshirene-vidannja-death-valley-27326200.pdf"
+        }
+      ],
       "score": null,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T16:06:23.511Z",
+      "updated": "2026-09-12T17:20:03.076Z",
       "weight": null
     },
     {
@@ -593,13 +709,20 @@
       "name": "Лісова метушня. Альпи",
       "nameEn": "Forest Shuffle: Alpine",
       "plays": 0,
+      "rules": [
+        {
+          "kind": "офіційні",
+          "title": "Правила",
+          "url": "https://geekach.com.ua/content/files/pravila-nastlno-gri-lsova-metushnja.-alpi-forest-shuffle-alpine-expansion-67754672.pdf"
+        }
+      ],
       "score": null,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T16:01:36.850Z",
+      "updated": "2026-09-12T17:20:03.076Z",
       "weight": null
     },
     {
@@ -617,13 +740,20 @@
       "name": "Лісова метушня",
       "nameEn": "Forest Shuffle",
       "plays": 0,
+      "rules": [
+        {
+          "kind": "офіційні",
+          "title": "Правила",
+          "url": "https://geekach.com.ua/content/files/pravila-nastlno-gri-lsova-metushnja-forest-shuffle-9735427.pdf"
+        }
+      ],
       "score": null,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T16:01:36.850Z",
+      "updated": "2026-09-12T17:20:03.076Z",
       "weight": null
     },
     {
@@ -665,13 +795,20 @@
       "name": "Гранд-готель Австрія",
       "nameEn": "Grand Austria Hotel",
       "plays": 0,
+      "rules": [
+        {
+          "kind": "офіційні",
+          "title": "Правила",
+          "url": "https://geekach.com.ua/content/files/pravila-nastlno-gri-grand-gotel-avstrja-grand-austria-hotel-75366492.pdf"
+        }
+      ],
       "score": null,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T16:01:36.850Z",
+      "updated": "2026-09-12T17:20:03.076Z",
       "weight": null
     },
     {
@@ -689,13 +826,25 @@
       "name": "Турбо. Спека на треку",
       "nameEn": "Heat: Pedal to the Metal",
       "plays": 0,
+      "rules": [
+        {
+          "kind": "офіційні",
+          "title": "Правила",
+          "url": "https://geekach.com.ua/content/files/pravila-nastlno-gri-turbo-speka-na-treku-heat-pedal-to-the-metal-ukranskou-movou-97592978.pdf"
+        },
+        {
+          "kind": "офіційні",
+          "title": "Ускладнені правила",
+          "url": "https://geekach.com.ua/content/files/uskladnen-pravila-86556142.pdf"
+        }
+      ],
       "score": null,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T16:01:36.850Z",
+      "updated": "2026-09-12T17:20:03.076Z",
       "weight": null
     },
     {
@@ -737,13 +886,20 @@
       "name": "Hive",
       "nameEn": "",
       "plays": 0,
+      "rules": [
+        {
+          "kind": "офіційні",
+          "title": "Правила",
+          "url": "https://geekach.com.ua/content/files/pravila-nastlno-gri-hive-pocket-ultimate-ua-vulik-49726385.pdf"
+        }
+      ],
       "score": null,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T16:01:36.850Z",
+      "updated": "2026-09-12T17:20:03.076Z",
       "weight": null
     },
     {
@@ -760,13 +916,20 @@
       "name": "Медова пригода",
       "nameEn": "Once Upon a Honey",
       "plays": 0,
+      "rules": [
+        {
+          "kind": "офіційні",
+          "title": "Правила",
+          "url": "https://geekach.com.ua/content/files/pravila-nastlno-gri-medova-prigoda-91687406.pdf"
+        }
+      ],
       "score": null,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T16:01:36.850Z",
+      "updated": "2026-09-12T17:20:03.076Z",
       "weight": null
     },
     {
@@ -784,13 +947,20 @@
       "name": "Гортограй. Буйнолісся",
       "nameEn": "Storyfold: Wildwoods",
       "plays": 0,
+      "rules": [
+        {
+          "kind": "офіційні",
+          "title": "Правила",
+          "url": "https://geekach.com.ua/content/files/pravila-nastlno-gri-gortogray.-buynolssja-storyfold-wildwoods-61923245.pdf"
+        }
+      ],
       "score": null,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T16:01:36.850Z",
+      "updated": "2026-09-12T17:20:03.076Z",
       "weight": null
     },
     {
@@ -808,13 +978,25 @@
       "name": "Острів котів",
       "nameEn": "The Isle of Cats",
       "plays": 0,
+      "rules": [
+        {
+          "kind": "офіційні",
+          "title": "Правила сімейної гри",
+          "url": "https://geekach.com.ua/content/files/ostrv-kotv.-pravila-smeyno-gri-94989525.pdf"
+        },
+        {
+          "kind": "офіційні",
+          "title": "Правила",
+          "url": "https://geekach.com.ua/content/files/pravila-gri-ostrv-kotv-ukranskou-movou-75533596.pdf"
+        }
+      ],
       "score": null,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T16:01:36.850Z",
+      "updated": "2026-09-12T17:20:03.076Z",
       "weight": null
     },
     {
@@ -928,13 +1110,20 @@
       "name": "Повітряні змії",
       "nameEn": "Kites",
       "plays": 0,
+      "rules": [
+        {
+          "kind": "офіційні",
+          "title": "Правила",
+          "url": "https://geekach.com.ua/content/files/pravila-nastlno-gri-povtrjan-zm-kites-38737209.pdf"
+        }
+      ],
       "score": null,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T16:01:36.850Z",
+      "updated": "2026-09-12T17:20:03.076Z",
       "weight": null
     },
     {
@@ -952,13 +1141,25 @@
       "name": "Листи закоханих",
       "nameEn": "Love Letter",
       "plays": 0,
+      "rules": [
+        {
+          "kind": "офіційні",
+          "title": "Правила",
+          "url": "https://geekach.com.ua/content/files/pravila-nastlno-gri-listi-zakoxanix-love-letters-ukranskou-movou-41900774.pdf"
+        },
+        {
+          "kind": "інше",
+          "title": "Еррата для настільної гри Листи закохани",
+          "url": "https://geekach.com.ua/content/files/errata-dlja-nastlno-gri-listi-zakoxanix-love-letters-ukranskou-movou-85552309.pdf"
+        }
+      ],
       "score": null,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T16:01:36.850Z",
+      "updated": "2026-09-12T17:20:03.076Z",
       "weight": null
     },
     {
@@ -1024,13 +1225,20 @@
       "name": "Mind Bug. Химерія: Перший контакт",
       "nameEn": "Mindbug: First Contact",
       "plays": 0,
+      "rules": [
+        {
+          "kind": "офіційні",
+          "title": "Правила",
+          "url": "https://geekach.com.ua/content/files/pravila-nastlno-gri-mind-bug.-ximerja-pershiy-kontakt-mindbug-first-contact-55434930.pdf"
+        }
+      ],
       "score": null,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T16:01:36.850Z",
+      "updated": "2026-09-12T17:20:03.076Z",
       "weight": null
     },
     {
@@ -1048,13 +1256,20 @@
       "name": "MLEM. Космічне агентство",
       "nameEn": "MLEM: Space Agency",
       "plays": 0,
+      "rules": [
+        {
+          "kind": "офіційні",
+          "title": "Правила",
+          "url": "https://geekach.com.ua/content/files/pravila-nastlno-gri-mlem.-kosmchne-agentstvo-mlem-space-agency-88195889.pdf"
+        }
+      ],
       "score": null,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T16:01:36.850Z",
+      "updated": "2026-09-12T17:20:03.076Z",
       "weight": null
     },
     {
@@ -1072,13 +1287,20 @@
       "name": "Міцелія",
       "nameEn": "Mycelia",
       "plays": 0,
+      "rules": [
+        {
+          "kind": "офіційні",
+          "title": "Правила",
+          "url": "https://geekach.com.ua/content/files/pravila-nastlno-gri-mcelja-mycelia-63294204.pdf"
+        }
+      ],
       "score": null,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T16:01:36.850Z",
+      "updated": "2026-09-12T17:20:03.076Z",
       "weight": null
     },
     {
@@ -1096,13 +1318,25 @@
       "name": "Містична долина",
       "nameEn": "Mystic Vale",
       "plays": 0,
+      "rules": [
+        {
+          "kind": "офіційні",
+          "title": "Правила (англійською)",
+          "url": "https://geekach.com.ua/content/files/pravila-nastlno-gri-mystic-vale-anglyskou-movou-85963749.pdf"
+        },
+        {
+          "kind": "офіційні",
+          "title": "Правила",
+          "url": "https://geekach.com.ua/content/files/pravila-nastlno-gri-mstichna-dolina-mystic-vale-ukranskou-movou-26187500.pdf"
+        }
+      ],
       "score": null,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T16:01:36.850Z",
+      "updated": "2026-09-12T17:20:03.076Z",
       "weight": null
     },
     {
@@ -1120,13 +1354,20 @@
       "name": "Хижа планета",
       "nameEn": "Not Alone",
       "plays": 0,
+      "rules": [
+        {
+          "kind": "офіційні",
+          "title": "Правила",
+          "url": "https://geekach.com.ua/content/files/pravila-nastlno-gri-xizha-planeta-not-alone-ukranskou-movou-89443495.pdf"
+        }
+      ],
       "score": null,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T16:01:36.850Z",
+      "updated": "2026-09-12T17:20:03.076Z",
       "weight": null
     },
     {
@@ -1144,13 +1385,20 @@
       "name": "Хижа планета. За обріями",
       "nameEn": "Not Alone: Exploration",
       "plays": 0,
+      "rules": [
+        {
+          "kind": "офіційні",
+          "title": "Правила",
+          "url": "https://geekach.com.ua/content/files/pravila-dopovnennja-xizha-planeta.-za-obrjami-39165008.pdf"
+        }
+      ],
       "score": null,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T16:01:36.850Z",
+      "updated": "2026-09-12T17:20:03.076Z",
       "weight": null
     },
     {
@@ -1168,13 +1416,20 @@
       "name": "Хижа планета. Притулок",
       "nameEn": "Not Alone: Sanctuary",
       "plays": 0,
+      "rules": [
+        {
+          "kind": "офіційні",
+          "title": "Правила",
+          "url": "https://geekach.com.ua/content/files/pravila-dopovnennja-xizha-planeta.-pritulok-94199239.pdf"
+        }
+      ],
       "score": null,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T16:01:36.850Z",
+      "updated": "2026-09-12T17:20:03.076Z",
       "weight": null
     },
     {
@@ -1192,13 +1447,20 @@
       "name": "Перші залізниці",
       "nameEn": "Pioneer Rails",
       "plays": 0,
+      "rules": [
+        {
+          "kind": "офіційні",
+          "title": "Правила",
+          "url": "https://geekach.com.ua/content/files/pravila-nastlno-gri-persh-zalznic-pioneer-rails-73146248.pdf"
+        }
+      ],
       "score": null,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T16:01:36.850Z",
+      "updated": "2026-09-12T17:20:03.076Z",
       "weight": null
     },
     {
@@ -1216,13 +1478,20 @@
       "name": "Планета",
       "nameEn": "Planet",
       "plays": 0,
+      "rules": [
+        {
+          "kind": "офіційні",
+          "title": "Правила",
+          "url": "https://geekach.com.ua/content/files/pravila-nastlno-gri-planeta-planet-47334005.pdf"
+        }
+      ],
       "score": null,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T16:01:36.850Z",
+      "updated": "2026-09-12T17:20:03.076Z",
       "weight": null
     },
     {
@@ -1240,13 +1509,20 @@
       "name": "Вибухові зілля",
       "nameEn": "Potion Explosion",
       "plays": 0,
+      "rules": [
+        {
+          "kind": "офіційні",
+          "title": "Правила",
+          "url": "https://geekach.com.ua/content/files/pravila-nastlno-gri-vibuxov-zllja-potion-explosion-32129438.pdf"
+        }
+      ],
       "score": null,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T16:01:36.850Z",
+      "updated": "2026-09-12T17:20:03.076Z",
       "weight": null
     },
     {
@@ -1264,13 +1540,20 @@
       "name": "Рамен! Рамен!",
       "nameEn": "Ramen! Ramen!",
       "plays": 0,
+      "rules": [
+        {
+          "kind": "офіційні",
+          "title": "Правила",
+          "url": "https://geekach.com.ua/content/files/pravila-nastlno-gri-ramen-ramen-ramen-ramen-ukranskou-movou-4232891.pdf"
+        }
+      ],
       "score": null,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T16:01:36.850Z",
+      "updated": "2026-09-12T17:20:03.076Z",
       "weight": null
     },
     {
@@ -1312,13 +1595,20 @@
       "name": "Паперові океани. Нові моря",
       "nameEn": "Sea Salt & Paper: Extra Salt",
       "plays": 0,
+      "rules": [
+        {
+          "kind": "офіційні",
+          "title": "Правила",
+          "url": "https://geekach.com.ua/content/files/pravila-dopovnennja-paperov-okeani.-nov-morja-16302640.pdf"
+        }
+      ],
       "score": null,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T16:01:36.850Z",
+      "updated": "2026-09-12T17:20:03.076Z",
       "weight": null
     },
     {
@@ -1336,13 +1626,20 @@
       "name": "Картографи",
       "nameEn": "Cartographers",
       "plays": 0,
+      "rules": [
+        {
+          "kind": "офіційні",
+          "title": "Правила",
+          "url": "https://geekach.com.ua/content/files/pravila-nastlno-gri-kartografi-cartographers-a-roll-player-tale-ukranskou-movou-28929387.pdf"
+        }
+      ],
       "score": 7,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T16:01:36.850Z",
+      "updated": "2026-09-12T17:20:03.076Z",
       "weight": null
     },
     {
@@ -1360,13 +1657,20 @@
       "name": "Magic Maze",
       "nameEn": "",
       "plays": 0,
+      "rules": [
+        {
+          "kind": "офіційні",
+          "title": "Правила",
+          "url": "https://geekach.com.ua/content/files/pravila-nastlno-gri-magomarket-magic-maze-ukranskou-movou-59874903.pdf"
+        }
+      ],
       "score": null,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T16:01:36.850Z",
+      "updated": "2026-09-12T17:20:03.076Z",
       "weight": null
     },
     {
@@ -1384,13 +1688,20 @@
       "name": "Planet B",
       "nameEn": "",
       "plays": 0,
+      "rules": [
+        {
+          "kind": "офіційні",
+          "title": "Правила",
+          "url": "https://geekach.com.ua/content/files/pravila-nastlno-gri-planet-b-32779151.pdf"
+        }
+      ],
       "score": null,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T16:01:36.850Z",
+      "updated": "2026-09-12T17:20:03.076Z",
       "weight": null
     },
     {
@@ -1408,13 +1719,20 @@
       "name": "Unmatched. Битва легенд, частина друга",
       "nameEn": "Unmatched: Battle of Legends, Volume Two",
       "plays": 0,
+      "rules": [
+        {
+          "kind": "офіційні",
+          "title": "Правила",
+          "url": "https://geekach.com.ua/content/files/pravila-gri-unmatched-bitva-legend.-chastina-druga-6045750.pdf"
+        }
+      ],
       "score": null,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T16:01:36.850Z",
+      "updated": "2026-09-12T17:20:03.076Z",
       "weight": null
     },
     {
@@ -1432,13 +1750,20 @@
       "name": "Кіт у коробці",
       "nameEn": "Cat in the Box",
       "plays": 0,
+      "rules": [
+        {
+          "kind": "офіційні",
+          "title": "Правила",
+          "url": "https://geekach.com.ua/content/files/pravila-nastlno-gri-kt-u-korobc-cat-in-the-box-deluxe-edition-17583378.pdf"
+        }
+      ],
       "score": 7,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T16:01:36.850Z",
+      "updated": "2026-09-12T17:20:03.076Z",
       "weight": null
     },
     {
@@ -1456,13 +1781,20 @@
       "name": "Інорі",
       "nameEn": "Inori",
       "plays": 0,
+      "rules": [
+        {
+          "kind": "офіційні",
+          "title": "Правила",
+          "url": "https://geekach.com.ua/content/files/pravila-nastlno-gri-nor-inori-72509735.pdf"
+        }
+      ],
       "score": 7,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T16:01:36.850Z",
+      "updated": "2026-09-12T17:20:03.076Z",
       "weight": null
     },
     {
@@ -1528,13 +1860,20 @@
       "name": "Зомбі-кошенята",
       "nameEn": "Zombie Kittens",
       "plays": 0,
+      "rules": [
+        {
+          "kind": "офіційні",
+          "title": "Правила",
+          "url": "https://geekach.com.ua/content/files/pravila-nastlno-gri-vibuxov-koshenjata-zomb-koshenjata-zombie-kittens-81086063.pdf"
+        }
+      ],
       "score": null,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T16:01:36.850Z",
+      "updated": "2026-09-12T17:20:03.076Z",
       "weight": null
     },
     {
@@ -1552,13 +1891,25 @@
       "name": "Зоряні війни. Мандалорець: Пригоди",
       "nameEn": "Star Wars: The Mandalorian Adventures",
       "plays": 0,
+      "rules": [
+        {
+          "kind": "офіційні",
+          "title": "Правила",
+          "url": "https://geekach.com.ua/content/files/pravila-nastlno-gri-zorjan-vyni-mandalorec--prigodi-4428133.pdf"
+        },
+        {
+          "kind": "інше",
+          "title": "Зоряні війни: Мандалорець - Дошка безчес",
+          "url": "https://geekach.com.ua/content/files/zorjan-vyni-mandalorec--doshka-bezchestja-vikliki-74659509.pdf"
+        }
+      ],
       "score": null,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T16:01:36.850Z",
+      "updated": "2026-09-12T17:20:03.076Z",
       "weight": null
     },
     {
@@ -1576,13 +1927,20 @@
       "name": "Палео",
       "nameEn": "Paleo",
       "plays": 0,
+      "rules": [
+        {
+          "kind": "офіційні",
+          "title": "Правила",
+          "url": "https://geekach.com.ua/content/files/pravila-nastlno-gri-paleo-paleo-ukranskou-movou-4431339.pdf"
+        }
+      ],
       "score": 8,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T16:01:36.850Z",
+      "updated": "2026-09-12T17:20:03.076Z",
       "weight": null
     },
     {
@@ -1600,13 +1958,25 @@
       "name": "Сплячі боги 2. Далекі небеса",
       "nameEn": "Sleeping Gods: Distant Skies",
       "plays": 0,
+      "rules": [
+        {
+          "kind": "офіційні",
+          "title": "Правила",
+          "url": "https://geekach.com.ua/content/files/pravila-nastlno-gri-spljach-bogi.-dalek-nebesa-71364736.pdf"
+        },
+        {
+          "kind": "інше",
+          "title": "Вступний комікс",
+          "url": "https://geekach.com.ua/content/files/vstupniy-komks-80400913.pdf"
+        }
+      ],
       "score": 9,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T16:01:36.850Z",
+      "updated": "2026-09-12T17:20:03.076Z",
       "weight": null
     },
     {
@@ -1624,13 +1994,25 @@
       "name": "Темна гавань. Ґудзики та комахи",
       "nameEn": "Gloomhaven: Buttons & Bugs",
       "plays": 0,
+      "rules": [
+        {
+          "kind": "офіційні",
+          "title": "Правила",
+          "url": "https://geekach.com.ua/content/files/pravila-nastlno-gri-temna-gavan.-udziki-ta-komaxi-gloomhaven-buttons-bugs-26258000.pdf"
+        },
+        {
+          "kind": "офіційні",
+          "title": "Повні правила",
+          "url": "https://geekach.com.ua/content/files/povn-pravila-nastlno-gri-temna-gavan.-udziki-ta-komaxi-gloomhaven-buttons-bugs-35399139.pdf"
+        }
+      ],
       "score": null,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T16:01:36.850Z",
+      "updated": "2026-09-12T17:20:03.076Z",
       "weight": null
     },
     {
@@ -1671,13 +2053,20 @@
       "name": "Виноробство. Тоскана",
       "nameEn": "Viticulture: Tuscany Essential Edition",
       "plays": 0,
+      "rules": [
+        {
+          "kind": "офіційні",
+          "title": "Правила",
+          "url": "https://geekach.com.ua/content/files/pravila-nastlno-gri-vinorobstvo.-toskana-viticulture-tuscany-13897155.pdf"
+        }
+      ],
       "score": null,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T16:01:36.850Z",
+      "updated": "2026-09-12T17:20:03.076Z",
       "weight": null
     },
     {
@@ -1724,13 +2113,20 @@
       "name": "Розкіш",
       "nameEn": "Splendor",
       "plays": 0,
+      "rules": [
+        {
+          "kind": "офіційні",
+          "title": "Правила",
+          "url": "https://geekach.com.ua/content/files/pravila-nastlno-gri-rozksh-ukranskou-movou-38886594.pdf"
+        }
+      ],
       "score": null,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T16:01:36.850Z",
+      "updated": "2026-09-12T17:20:03.076Z",
       "weight": null
     },
     {
@@ -1748,13 +2144,20 @@
       "name": "Розкіш. Дуель",
       "nameEn": "Splendor Duel",
       "plays": 0,
+      "rules": [
+        {
+          "kind": "офіційні",
+          "title": "Правила",
+          "url": "https://geekach.com.ua/content/files/pravila-nastlno-gri-rozksh-duel-splendor-duel-ukranskou-movou-48923954.pdf"
+        }
+      ],
       "score": null,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T16:01:36.850Z",
+      "updated": "2026-09-12T17:20:03.076Z",
       "weight": null
     },
     {
@@ -1772,13 +2175,20 @@
       "name": "Зоряні битви",
       "nameEn": "Star Realms",
       "plays": 0,
+      "rules": [
+        {
+          "kind": "офіційні",
+          "title": "Правила",
+          "url": "https://geekach.com.ua/content/files/pravila-nastlno-gri-zorjan-bitvi-star-realms-50507202.pdf"
+        }
+      ],
       "score": null,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T16:01:36.850Z",
+      "updated": "2026-09-12T17:20:03.076Z",
       "weight": null
     },
     {
@@ -1796,13 +2206,20 @@
       "name": "Кам'яна доба",
       "nameEn": "Stone Age",
       "plays": 0,
+      "rules": [
+        {
+          "kind": "офіційні",
+          "title": "Правила",
+          "url": "https://geekach.com.ua/content/files/pravila-nastlno-gri-kamjana-doba-stone-age-20798679.pdf"
+        }
+      ],
       "score": null,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T16:01:36.850Z",
+      "updated": "2026-09-12T17:20:03.076Z",
       "weight": null
     },
     {
@@ -1820,13 +2237,25 @@
       "name": "Таверни Тіфенталя",
       "nameEn": "The Taverns of Tiefenthal",
       "plays": 0,
+      "rules": [
+        {
+          "kind": "офіційні",
+          "title": "Правила",
+          "url": "https://geekach.com.ua/content/files/pravila-nastlno-gri-taverni-tfentalja-ukranskou-movou-40726205.pdf"
+        },
+        {
+          "kind": "офіційні",
+          "title": "Правила модулів",
+          "url": "https://geekach.com.ua/content/files/pravila-modulv-taverni-tfentalja-ukranskou-movou-50277275.pdf"
+        }
+      ],
       "score": null,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T16:01:36.850Z",
+      "updated": "2026-09-12T17:20:03.076Z",
       "weight": null
     },
     {
@@ -1844,13 +2273,20 @@
       "name": "Племена вітру",
       "nameEn": "Tribes of the Wind",
       "plays": 0,
+      "rules": [
+        {
+          "kind": "офіційні",
+          "title": "Правила",
+          "url": "https://geekach.com.ua/content/files/pravila-nastlno-gri-plemena-vtru-tribes-of-the-wind-ukranskou-movou-11995239.pdf"
+        }
+      ],
       "score": null,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T16:01:36.850Z",
+      "updated": "2026-09-12T17:20:03.076Z",
       "weight": null
     },
     {
@@ -1868,13 +2304,20 @@
       "name": "Квиток на потяг. Париж",
       "nameEn": "Ticket to Ride: Paris",
       "plays": 0,
+      "rules": [
+        {
+          "kind": "офіційні",
+          "title": "Правила",
+          "url": "https://geekach.com.ua/content/files/pravila-nastlno-gri-kvitok-na-potjag-parizh-ticket-to-ride-paris-4774380.pdf"
+        }
+      ],
       "score": null,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T16:01:36.850Z",
+      "updated": "2026-09-12T17:20:03.076Z",
       "weight": null
     },
     {
@@ -1892,13 +2335,25 @@
       "name": "Стежки Тукани",
       "nameEn": "Trails of Tucana",
       "plays": 0,
+      "rules": [
+        {
+          "kind": "офіційні",
+          "title": "Правила",
+          "url": "https://geekach.com.ua/content/files/pravila-gri-stezhki-tukani-trails-of-tucana-73094048.pdf"
+        },
+        {
+          "kind": "інше",
+          "title": "Стежки Тукани - ігрові поля",
+          "url": "https://geekach.com.ua/content/files/stezhki-tukani--grov-polja-15197454.pdf"
+        }
+      ],
       "score": null,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T16:01:36.850Z",
+      "updated": "2026-09-12T17:20:03.076Z",
       "weight": null
     },
     {
@@ -1916,13 +2371,20 @@
       "name": "Unlock! Короткі пригоди. Політ ангела",
       "nameEn": "Unlock! Short Adventures: The Flight of the Angel",
       "plays": 0,
+      "rules": [
+        {
+          "kind": "офіційні",
+          "title": "Правила",
+          "url": "https://geekach.com.ua/content/files/pravila-nastlno-gri-unlock-korotk-prigodi-98163429.pdf"
+        }
+      ],
       "score": null,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T16:01:36.850Z",
+      "updated": "2026-09-12T17:20:03.076Z",
       "weight": null
     },
     {
@@ -1940,13 +2402,20 @@
       "name": "Unlock! Короткі пригоди. Пробудження мумії",
       "nameEn": "Unlock! Short Adventures: The Awakening of the Mummy",
       "plays": 0,
+      "rules": [
+        {
+          "kind": "офіційні",
+          "title": "Правила",
+          "url": "https://geekach.com.ua/content/files/pravila-nastlno-gri-unlock-korotk-prigodi-22903155.pdf"
+        }
+      ],
       "score": null,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T16:01:36.850Z",
+      "updated": "2026-09-12T17:20:03.076Z",
       "weight": null
     },
     {
@@ -1964,13 +2433,20 @@
       "name": "Unlock! Короткі пригоди. Таємниці бабусиних рецептів",
       "nameEn": "Unlock!: Short Adventures – Secret Recipes of Yore",
       "plays": 0,
+      "rules": [
+        {
+          "kind": "офіційні",
+          "title": "Правила",
+          "url": "https://geekach.com.ua/content/files/pravila-nastlno-gri-unlock-korotk-prigodi-45146383.pdf"
+        }
+      ],
       "score": null,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T16:01:36.850Z",
+      "updated": "2026-09-12T17:20:03.076Z",
       "weight": null
     },
     {
@@ -2012,13 +2488,20 @@
       "name": "Виноробство",
       "nameEn": "Viticulture Essential Edition",
       "plays": 0,
+      "rules": [
+        {
+          "kind": "офіційні",
+          "title": "Правила",
+          "url": "https://geekach.com.ua/content/files/pravila-gri-vinorobstvo-ukranskou-movou-7747939.pdf"
+        }
+      ],
       "score": null,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T16:01:36.850Z",
+      "updated": "2026-09-12T17:20:03.076Z",
       "weight": null
     },
     {
@@ -2036,13 +2519,20 @@
       "name": "Білий замок",
       "nameEn": "The White Castle",
       "plays": 0,
+      "rules": [
+        {
+          "kind": "офіційні",
+          "title": "Правила",
+          "url": "https://geekach.com.ua/content/files/pravila-nastlno-gri-bliy-zamok-the-white-castle-55729090.pdf"
+        }
+      ],
       "score": null,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T16:01:36.850Z",
+      "updated": "2026-09-12T17:20:03.076Z",
       "weight": null
     },
     {
@@ -2060,13 +2550,20 @@
       "name": "Крила",
       "nameEn": "Wingspan",
       "plays": 0,
+      "rules": [
+        {
+          "kind": "офіційні",
+          "title": "Правила",
+          "url": "https://geekach.com.ua/content/files/pravila-nastlno-gri-krila-wingspan-ukranskou-movou-94317401.pdf"
+        }
+      ],
       "score": null,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T16:01:36.850Z",
+      "updated": "2026-09-12T17:20:03.076Z",
       "weight": null
     },
     {
@@ -2108,13 +2605,25 @@
       "name": "Змієвир",
       "nameEn": "Wyrmspan",
       "plays": 0,
+      "rules": [
+        {
+          "kind": "офіційні",
+          "title": "Правила",
+          "url": "https://geekach.com.ua/content/files/pravila-nastlno-gri-zmevir-wyrmspan-39412122.pdf"
+        },
+        {
+          "kind": "соло",
+          "title": "Соло-правила",
+          "url": "https://geekach.com.ua/content/files/pravila-solo-rezhimu-85372596.pdf"
+        }
+      ],
       "score": null,
       "status": "колекція",
       "statuses": [
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-12T16:01:36.850Z",
+      "updated": "2026-09-12T17:20:03.076Z",
       "weight": null
     },
     {
@@ -2142,6 +2651,6 @@
       "weight": null
     }
   ],
-  "saved": "2026-09-12T17:01:26.099Z",
+  "saved": "2026-09-12T17:20:03.076Z",
   "version": 2
 }
