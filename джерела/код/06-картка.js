@@ -105,13 +105,15 @@ function renderBgg(g){
     "<button type='button' class='chip tag " + к + "' data-genre='" + esc(н) +
     "' title='Знайти всі такі'>" + esc(н) + "</button>").join("");
 
-  $("bggGrp").hidden = !рядки.length && !мітки.length;
-  if(!рядки.length) return;
+  // Заповнюємо завжди, і лише потім вирішуємо, чи показувати. Ранній вихід
+  // тут лишав у блоці числа попередньої гри: сховане — ще не порожнє.
   $("cBgg").innerHTML = рядки.map(([п, з]) =>
     "<div><dt>" + esc(п) + "</dt><dd>" + esc(з) + "</dd></div>").join("");
   const л = $("cBggLink");
   л.hidden = !g.bggId;
-  if(g.bggId) л.href = "https://boardgamegeek.com/boardgame/" + encodeURIComponent(g.bggId);
+  л.href = g.bggId
+    ? "https://boardgamegeek.com/boardgame/" + encodeURIComponent(g.bggId) : "";
+  $("bggGrp").hidden = !рядки.length && !мітки.length;
 }
 
 /** Правила гри: список посилань із хрестиком і рядок для нового. */
@@ -329,6 +331,10 @@ $("cGenres").addEventListener("click", (e) => {
   const b = e.target.closest("[data-genre]"); if(!b) return;
   closeCard();
   ui.q = b.dataset.genre;
+  // Стрічку жанрів скидаємо: підказка обіцяє «знайти всі такі», а з
+  // увімкненою «стратегією» натиснуте в сімейній грі «тварини» дало б
+  // порожній список — і виглядало б це як поламане, а не як перетин.
+  ui.family = ФІЛЬТРИ.find((ф) => ф.ключ === "family").типово;
   renderFilters();
   render();
   window.scrollTo({top: 0, behavior: "smooth"});

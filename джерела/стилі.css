@@ -199,7 +199,6 @@ button{cursor:pointer}
 .cnt b{font:600 14px/1 "IBM Plex Mono",ui-monospace,monospace; color:var(--band,var(--ink))}
 .cnt i{font:400 9px/1.4 "IBM Plex Mono",ui-monospace,monospace; font-style:normal;
   letter-spacing:.06em; color:var(--ink-faint)}
-.cnt.void b{color:var(--rule)}
 .cnt.now{border-color:var(--petrol); box-shadow:inset 0 0 0 1px var(--petrol)}
 
 .score{width:78px; text-align:right}
