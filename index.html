@@ -547,6 +547,26 @@ textarea:focus{outline:none; border-color:var(--petrol)}
 .keybox input:focus{outline:none; border-color:var(--petrol)}
 .keyRow{display:flex; gap:8px; align-items:center}
 
+/* ── жереб «що зіграти» ────────────────────────────────────────────────
+   Три коробки в стовпчик: обкладинка, назва з поясненням, оцінка й дві
+   дії. Оцінка тут та сама, що в списку, — тим самим кольором смуги. */
+.keybox .seg{margin:0 0 8px}
+.cands{margin:10px 0 14px; display:flex; flex-direction:column; gap:6px}
+.cand{display:flex; align-items:center; gap:10px; padding:8px;
+  border:1px solid var(--rule-soft); border-radius:9px; background:var(--paper)}
+.cand .cov{width:44px; height:44px; flex:none}
+.cand .what{flex:1; min-width:0}
+.cand .what b{display:block; font-size:14.5px; font-weight:600; letter-spacing:-.01em;
+  overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.cand .why{display:block; font-size:12px; color:var(--ink-faint);
+  overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.cand > .num{flex:none; font-family:"IBM Plex Sans","Segoe UI",system-ui,sans-serif;
+  font-weight:600; font-size:20px; letter-spacing:-.02em;
+  font-variant-numeric:tabular-nums; color:var(--band,var(--ink-faint))}
+.cand-do{flex:none; display:flex; flex-direction:column; align-items:flex-end; gap:3px}
+.cand-do .btn{height:28px; padding:0 9px; font-size:12.5px}
+.cand-do .link{font-size:11px; letter-spacing:.06em}
+
 .toast{position:fixed; left:50%; bottom:22px; transform:translateX(-50%); z-index:40;
   background:var(--ink); color:var(--paper); padding:10px 16px; border-radius:8px;
   font-size:14px; box-shadow:var(--shadow); max-width:min(440px,92vw)}
@@ -646,6 +666,8 @@ textarea:focus{outline:none; border-color:var(--petrol)}
     <div class="menu-wrap">
       <button class="btn" id="menuBtn" aria-haspopup="true" aria-expanded="false" aria-label="Ще">···</button>
       <div class="menu" id="menu" hidden>
+        <button id="mPick">Що зіграти?…</button>
+        <hr>
         <button id="mExport">Експортувати JSON</button>
         <button id="mCopy">Скопіювати JSON</button>
         <hr>
@@ -686,6 +708,7 @@ textarea:focus{outline:none; border-color:var(--petrol)}
     <span class="pills" id="pills"></span>
     <button class="link" id="resetBtn" type="button" hidden>Скинути всі фільтри</button>
     <span class="spacer"></span>
+    <button class="icon-btn" id="diceBtn" type="button"></button>
     <button class="icon-btn" id="viewBtn" type="button" aria-pressed="false"></button>
   </div>
 
@@ -715,6 +738,18 @@ textarea:focus{outline:none; border-color:var(--petrol)}
     <span class="spacer"></span>
     <button class="btn" id="bggCancel">Закрити</button>
     <button class="btn pri" id="bggPick">Обрати файл…</button>
+  </div>
+</section>
+<section class="keybox" id="pickBox" hidden role="dialog" aria-modal="true" aria-labelledby="pickTitle">
+  <h2 id="pickTitle">Що зіграти?</h2>
+  <div class="seg wrap" id="pickCount" role="group" aria-label="Скільки нас"></div>
+  <div class="seg wrap" id="pickTime" role="group" aria-label="Скільки часу"></div>
+  <div class="cands" id="pickOut"></div>
+  <div class="keyRow">
+    <span class="hint" id="pickWhy"></span>
+    <span class="spacer"></span>
+    <button class="btn" id="pickClose" type="button">Закрити</button>
+    <button class="btn pri" id="pickRoll" type="button">Ще раз</button>
   </div>
 </section>
 <section class="keybox" id="keyBox" hidden role="dialog" aria-modal="true" aria-labelledby="keyTitle">
@@ -1975,6 +2010,64 @@ function visible(){
     .filter((g) => ФІЛЬТРИ.every((ф) => ф.пасує(g, ui[ф.ключ])))
     .sort(порівняти);
 }
+
+/* ── жереб «що зіграти» ───────────────────────────────────────────────
+   Вечір питає не «що в мене є», а «нас троє, маємо годину — діставати
+   що?». Список із двадцяти коробок на це не відповідь: із двадцяти
+   вибирати так само важко, як із дев'яноста. Тому — три коробки жеребом.
+
+   Питання ті самі, що в панелі, і перевіряються тими самими функціями
+   з реєстру: окремої «майже такої» логіки складу столу й часу тут немає
+   й бути не повинно. */
+/* Коробка, яку діставали цими днями, до жереба не йде: «зіграймо знову
+   те саме» — це рішення, а не підказка, і воно приймається без нас. */
+const СВІЖА = 14;
+const вибірВечора = {count: "all", time: "all"};
+
+/** Ті, що взагалі можуть опинитися сьогодні на столі. */
+function кандидати(){
+  const склад = ФІЛЬТРИ.find((ф) => ф.ключ === "count");
+  const час = ФІЛЬТРИ.find((ф) => ф.ключ === "time");
+  return games.filter((g) =>
+    !g.deleted
+    // Доповнення не дістають окремо, а чужа коробка стоїть у чужій хаті:
+    // порадити її на сьогодні — це порада поїхати в гості.
+    && !g.expansion
+    && stats(g).indexOf("колекція") >= 0
+    && склад.пасує(g, вибірВечора.count)
+    && час.пасує(g, вибірВечора.time)
+    && простій(g) > СВІЖА);
+}
+/** Наскільки охоче жереб тягне саме цю коробку.
+
+    Оцінка тягне вибір до улюбленого, але не робить його передбачуваним:
+    десятка вдвічі ймовірніша за п'ятірку, а не єдино можлива. Неоцінена
+    важить як міцна сімка й дістає надбавку, якщо ще не бачила столу, —
+    інакше жереб радив би вічно те саме, а нові коробки так і стояли б. */
+function вага(g){
+  return (g.score == null ? 6 : g.score) + (g.plays ? 0 : 2);
+}
+/** Три різні коробки, вибрані вагою. Менше трьох — якщо більше немає. */
+function кинути(скільки){
+  const пул = кандидати();
+  const обрані = [];
+  while(пул.length && обрані.length < (скільки || 3)){
+    let сума = 0;
+    пул.forEach((g) => { сума += вага(g); });
+    let точка = Math.random() * сума;
+    let і = 0;
+    while(і < пул.length - 1 && (точка -= вага(пул[і])) > 0) і++;
+    обрані.push(пул.splice(і, 1)[0]);
+  }
+  return обрані;
+}
+/** Чому саме вона: коли цю коробку востаннє діставали. */
+function колиОстаннє(g){
+  if(!g.plays) return "ще не грали";
+  const д = остання(g);
+  return д ? "востаннє " + датаКоротко(д) : "партії були до журналу";
+}
+
 /* ── малювання ───────────────────────────────────── */
 function render(){ оновитиСтрічки(); renderStats(); renderList(); renderCmp(); }
 
@@ -3227,6 +3320,109 @@ function toast(msg){
 }
 
 boot();
+/* ── «Що зіграти?» ────────────────────────────────────────────────────
+   Полиця відповідає на «що в мене є». Вечір питає інше: нас троє, маємо
+   годину — діставати що? Фільтри на це відповідають списком із двадцяти
+   коробок, а з двадцяти вибирати так само важко, як із дев'яноста.
+
+   Тому тут не фільтр, а жереб: три коробки, які підходять саме зараз.
+   Сам жереб — кандидати, ваги, витягування — живе у «03-вибірка.js»
+   разом з рештою вибірки: там його перевіряють тести. Тут лишилося
+   тільки те, що чіпає сторінку. */
+
+const ПИТАННЯ = [
+  {ід: "pickCount", поле: "count", підпис: "Нас",
+   варіанти: () => [["all", "байдуже"]].concat(COUNTS.map((c) => [c, CLABEL[c]]))},
+  {ід: "pickTime", поле: "time", підпис: "Часу",
+   варіанти: () => ФІЛЬТРИ.find((ф) => ф.ключ === "time").варіанти()
+     .map((в) => (в[0] === "all" ? ["all", "байдуже"] : в))},
+];
+function renderПитання(){
+  ПИТАННЯ.forEach((п) => {
+    $(п.ід).innerHTML = "<span>" + esc(п.підпис) + "</span>" +
+      п.варіанти().map(([знач, підпис]) =>
+        "<button data-v='" + esc(знач) + "' aria-pressed='" +
+        (вибірВечора[п.поле] === знач ? "true" : "false") + "'>" +
+        esc(підпис) + "</button>").join("");
+  });
+}
+function renderВибір(обрані, скількиБуло){
+  $("pickOut").innerHTML = обрані.length
+    ? обрані.map((g) =>
+        "<div class='cand'>" +
+        "<span class='cov'>" + (g.cover
+          ? "<img src='" + esc(g.cover) + "' alt='' loading='lazy' referrerpolicy='no-referrer'>"
+          : "<b>" + esc((g.name || "?").trim().charAt(0).toUpperCase()) + "</b>") + "</span>" +
+        "<span class='what'><b>" + esc(g.name) + "</b>" +
+        "<span class='why'>" + esc([playersText(g), timeText(g), колиОстаннє(g)]
+          .filter(Boolean).join(" · ")) + "</span></span>" +
+        "<span class='num " + band(g.score) + "'>" +
+        (g.score == null ? "—" : fmt(g.score)) + "</span>" +
+        "<span class='cand-do'>" +
+        "<button class='btn' data-cplay='" + esc(g.id) + "' type='button'>+ партія</button>" +
+        "<button class='link' data-copen='" + esc(g.id) + "' type='button'>картка</button>" +
+        "</span></div>").join("")
+    : "<p class='hint'>Під такий стіл нічого не підходить. Спробуй інший склад " +
+      "чи більше часу — або зазирни в те, що вже грали цими днями.</p>";
+  $("pickWhy").textContent = скількиБуло
+    ? "жереб із " + скількиБуло + " " +
+      plural(скількиБуло, "коробки", "коробок", "коробок")
+    : "";
+}
+function кинутиЖереб(){
+  const було = кандидати().length;
+  renderВибір(кинути(3), було);
+}
+function openPick(){
+  hideMenu();
+  renderПитання();
+  кинутиЖереб();
+  $("keyScrim").hidden = false;
+  $("pickBox").hidden = false;
+}
+function closePick(){
+  $("pickBox").hidden = true;
+  if($("keyBox").hidden && $("bggBox").hidden) $("keyScrim").hidden = true;
+}
+/* Значок — гральна кістка: питання «що діставати» саме таке. */
+$("diceBtn").innerHTML =
+  "<svg viewBox='0 0 16 16' width='15' height='15' fill='currentColor' aria-hidden='true'>" +
+  "<rect x='1' y='1' width='14' height='14' rx='3.5' fill='none' stroke='currentColor'" +
+  " stroke-width='1.4'/><circle cx='5' cy='5' r='1.35'/><circle cx='8' cy='8' r='1.35'/>" +
+  "<circle cx='11' cy='11' r='1.35'/></svg>";
+$("diceBtn").title = "Що зіграти? — жереб із того, що підходить";
+$("diceBtn").setAttribute("aria-label", "Що зіграти?");
+$("diceBtn").addEventListener("click", openPick);
+$("mPick").addEventListener("click", openPick);
+$("pickClose").addEventListener("click", closePick);
+$("pickRoll").addEventListener("click", кинутиЖереб);
+$("keyScrim").addEventListener("click", closePick);
+document.addEventListener("keydown", (e) => {
+  if(e.key === "Escape" && !$("pickBox").hidden) closePick();
+});
+$("pickBox").addEventListener("click", (e) => {
+  const кн = e.target.closest("[data-v]");
+  if(кн){
+    const п = ПИТАННЯ.find((x) => x.ід === кн.parentNode.id);
+    if(п){ вибірВечора[п.поле] = кн.dataset.v; renderПитання(); кинутиЖереб(); }
+    return;
+  }
+  const відкрити = e.target.closest("[data-copen]");
+  if(відкрити){ closePick(); openCard(відкрити.dataset.copen); return; }
+  // Записати партію просто звідси: коробку витягли зі столу за цією
+  // підказкою, і йти по «+» у картку заради одного дотику — зайве.
+  const зіграли = e.target.closest("[data-cplay]");
+  if(зіграли){
+    const g = games.find((x) => x.id === зіграли.dataset.cplay);
+    if(!g || !canEdit()) return;
+    додатиПартію(g);
+    stamp(g);
+    render();
+    persist(g);
+    toast("«" + g.name + "» — партію записано.");
+    кинутиЖереб();
+  }
+});
 </script>
 
 <script>
