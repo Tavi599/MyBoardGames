@@ -1,7 +1,7 @@
 {
   "app": "полиця настілок",
   "version": 4,
-  "saved": "2026-09-13T07:58:44.920Z",
+  "saved": "2026-09-13T12:27:37.726Z",
   "games": [
     {
       "added": "2026-09-12",
@@ -885,6 +885,74 @@
       "weight": 1.5
     },
     {
+      "added": "2026-09-13",
+      "bggId": "366994",
+      "byCount": {},
+      "comment": "",
+      "id": "g-bonsai",
+      "maxP": null,
+      "minP": null,
+      "minutes": null,
+      "name": "Бонсай",
+      "nameEn": "Bonsai",
+      "plays": 0,
+      "rules": [
+        {
+          "kind": "офіційні",
+          "title": "Правила",
+          "url": "https://desktopgames.com.ua/games/8445/Bonsai_ENG-Rules_v3.0%20ua_compressed.pdf"
+        },
+        {
+          "kind": "інше",
+          "title": "Правила (англійською)",
+          "url": "https://desktopgames.com.ua/games/8445/Bonsai_ENG_Rules_v3.pdf"
+        }
+      ],
+      "score": null,
+      "status": "колекція",
+      "statuses": [
+        "колекція"
+      ],
+      "tags": [],
+      "updated": "2026-09-13T12:27:37.726Z",
+      "weight": null,
+      "bggMin": 1,
+      "bggMax": 4,
+      "bggTimeMin": 40,
+      "bggTimeMax": 40,
+      "bggRating": 7.2,
+      "bggRank": 1296,
+      "bggWeight": 1.8,
+      "bggBest": [
+        3
+      ],
+      "bggRec": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "bggFamily": [
+        "family-games"
+      ],
+      "bggGenres": [
+        "environmental",
+        "puzzle"
+      ],
+      "bggMech": [
+        "contracts",
+        "end-game-bonuses",
+        "hexagon-grid",
+        "melding-and-splaying",
+        "open-drafting",
+        "pattern-building",
+        "race",
+        "solo-solitaire-game",
+        "tile-placement"
+      ],
+      "cover": "https://cf.geekdo-images.com/7Bm5_VZARWmb5sa2Vd-9nQ__square200/img/XGyJZCjyTyXH576Lv-50jtuR93w=/200x200/filters:strip_icc()/pic6961607.png"
+    },
+    {
       "added": "2026-09-12",
       "bggBest": [
         2
@@ -1147,6 +1215,193 @@
       "cover": "https://cf.geekdo-images.com/qGkU6XsF1448F_A4P8TY5Q__square200/img/g1oiWjMOPM2WUJCR39oULcbByOc=/200x200/filters:strip_icc()/pic8124431.jpg"
     },
     {
+      "added": "2026-09-13",
+      "bggId": "319273",
+      "byCount": {},
+      "comment": "",
+      "expansion": true,
+      "id": "g-cart-affril",
+      "maxP": null,
+      "minP": null,
+      "minutes": null,
+      "name": "Картографи. Набір мап 2 – Аффріл. Земля знань",
+      "nameEn": "Cartographers: Map Pack 2 – Affril: Plane of Knowledge",
+      "plays": 0,
+      "rules": [
+        {
+          "kind": "інше",
+          "title": "Сторінка набору у видавця",
+          "url": "https://thunderworksgames.com/products/cartographers-map-pack-2-affril"
+        },
+        {
+          "kind": "інше",
+          "title": "Бланки мап",
+          "url": "https://cdn.shopify.com/s/files/1/0525/7753/4134/files/CART-Sheets_Affril-Web.pdf"
+        }
+      ],
+      "score": null,
+      "status": "колекція",
+      "statuses": [
+        "колекція"
+      ],
+      "tags": [],
+      "updated": "2026-09-13T12:27:37.726Z",
+      "weight": null,
+      "bggMin": 1,
+      "bggMax": 75,
+      "bggTimeMin": 30,
+      "bggTimeMax": 45,
+      "bggRating": 7.8,
+      "bggWeight": 1.9,
+      "bggBest": [
+        3,
+        4
+      ],
+      "bggRec": [
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "bggGenres": [
+        "fantasy",
+        "territory-building"
+      ],
+      "bggMech": [
+        "bingo",
+        "grid-coverage",
+        "line-drawing",
+        "paper-and-pencil"
+      ],
+      "cover": "https://cf.geekdo-images.com/7b-bqQ4DCvhFgxLV34tA5g__square200/img/vXIiL5CgkkrcHia_0YOa37qlwZU=/200x200/filters:strip_icc()/pic5648476.png"
+    },
+    {
+      "added": "2026-09-13",
+      "bggId": "319272",
+      "byCount": {},
+      "comment": "",
+      "expansion": true,
+      "id": "g-cart-nebblis",
+      "maxP": null,
+      "minP": null,
+      "minutes": null,
+      "name": "Картографи. Набір мап 1 – Неббліс. Земля вогню",
+      "nameEn": "Cartographers: Map Pack 1 – Nebblis: Plane of Flame",
+      "plays": 0,
+      "rules": [
+        {
+          "kind": "інше",
+          "title": "Сторінка набору у видавця",
+          "url": "https://thunderworksgames.com/products/cartographers-map-pack-1-nebblis"
+        },
+        {
+          "kind": "інше",
+          "title": "Бланки мап",
+          "url": "https://cdn.shopify.com/s/files/1/0525/7753/4134/files/CART-Sheets_Nebblis-Web.pdf"
+        }
+      ],
+      "score": null,
+      "status": "колекція",
+      "statuses": [
+        "колекція"
+      ],
+      "tags": [],
+      "updated": "2026-09-13T12:27:37.726Z",
+      "weight": null,
+      "bggMin": 1,
+      "bggMax": 75,
+      "bggTimeMin": 30,
+      "bggTimeMax": 45,
+      "bggRating": 8.0,
+      "bggWeight": 1.8,
+      "bggBest": [
+        3,
+        4
+      ],
+      "bggRec": [
+        1,
+        3,
+        4,
+        5,
+        6
+      ],
+      "bggGenres": [
+        "fantasy",
+        "territory-building"
+      ],
+      "bggMech": [
+        "bingo",
+        "grid-coverage",
+        "line-drawing",
+        "paper-and-pencil"
+      ],
+      "cover": "https://cf.geekdo-images.com/4KQ2sdpGQ2g2vih-rkJhVQ__square200/img/BMYdL2-eLxWyl_altCcv0sS-FHg=/200x200/filters:strip_icc()/pic5648477.png"
+    },
+    {
+      "added": "2026-09-13",
+      "bggId": "319274",
+      "byCount": {},
+      "comment": "",
+      "expansion": true,
+      "id": "g-cart-undercity",
+      "maxP": null,
+      "minP": null,
+      "minutes": null,
+      "name": "Картографи. Набір мап 3 – Підземне місто. Глибини Сабека",
+      "nameEn": "Cartographers: Map Pack 3 – Undercity: Depths of Sabek",
+      "plays": 0,
+      "rules": [
+        {
+          "kind": "інше",
+          "title": "Сторінка набору у видавця",
+          "url": "https://thunderworksgames.com/products/cartographers-map-pack-3-undercity"
+        },
+        {
+          "kind": "інше",
+          "title": "Бланки мап",
+          "url": "https://cdn.shopify.com/s/files/1/0525/7753/4134/files/CART-Sheets_Undercity-Web.pdf"
+        }
+      ],
+      "score": null,
+      "status": "колекція",
+      "statuses": [
+        "колекція"
+      ],
+      "tags": [],
+      "updated": "2026-09-13T12:27:37.726Z",
+      "weight": null,
+      "bggMin": 1,
+      "bggMax": 75,
+      "bggTimeMin": 30,
+      "bggTimeMax": 45,
+      "bggRating": 7.8,
+      "bggWeight": 1.8,
+      "bggBest": [
+        1
+      ],
+      "bggRec": [
+        1,
+        2,
+        3
+      ],
+      "bggGenres": [
+        "fantasy",
+        "territory-building"
+      ],
+      "bggMech": [
+        "bingo",
+        "grid-coverage",
+        "line-drawing",
+        "paper-and-pencil"
+      ],
+      "cover": "https://cf.geekdo-images.com/VBjrkPfOsRN9WM8ngio-ow__square200/img/4tySzP9alYUh2_YEDQNdCwGd87c=/200x200/filters:strip_icc()/pic5648475.png"
+    },
+    {
       "added": "2026-09-12",
       "bggBest": [
         2
@@ -1332,6 +1587,71 @@
       "tags": [],
       "updated": "2026-09-12T23:12:27.075Z",
       "weight": null
+    },
+    {
+      "added": "2026-09-13",
+      "bggId": "274841",
+      "byCount": {},
+      "comment": "",
+      "id": "g-coatl",
+      "maxP": null,
+      "minP": null,
+      "minutes": null,
+      "name": "Коатль",
+      "nameEn": "Cóatl",
+      "plays": 0,
+      "rules": [
+        {
+          "kind": "офіційні",
+          "title": "Правила",
+          "url": "https://desktopgames.com.ua/games/5773/pravila_gri_koatl.pdf"
+        },
+        {
+          "kind": "соло",
+          "title": "Соло-правила",
+          "url": "https://desktopgames.com.ua/games/5773/XX_Coatl_Rulebook_Solo_gameUA.pdf"
+        }
+      ],
+      "score": null,
+      "status": "колекція",
+      "statuses": [
+        "колекція"
+      ],
+      "tags": [],
+      "updated": "2026-09-13T12:27:37.726Z",
+      "weight": null,
+      "bggMin": 1,
+      "bggMax": 4,
+      "bggTimeMin": 30,
+      "bggTimeMax": 60,
+      "bggRating": 6.8,
+      "bggRank": 2120,
+      "bggWeight": 2.0,
+      "bggBest": [
+        3
+      ],
+      "bggRec": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "bggFamily": [
+        "family-games"
+      ],
+      "bggGenres": [
+        "abstract-strategy",
+        "puzzle"
+      ],
+      "bggMech": [
+        "contracts",
+        "hand-management",
+        "once-per-game-abilities",
+        "open-drafting",
+        "pattern-building",
+        "set-collection"
+      ],
+      "cover": "https://cf.geekdo-images.com/n7oSeZ51b7HJZFshWAJg7w__square200/img/Jbv1qLVhF9HQugjxJvU_CANaF24=/200x200/filters:strip_icc()/pic5307317.jpg"
     },
     {
       "added": "2026-09-12",
@@ -3768,8 +4088,13 @@
         "онлайн"
       ],
       "tags": [],
-      "updated": "2026-09-12T23:12:27.075Z",
-      "weight": 1
+      "updated": "2026-09-13T12:27:37.726Z",
+      "weight": 1,
+      "withExp": [
+        "g-cart-affril",
+        "g-cart-nebblis",
+        "g-cart-undercity"
+      ]
     },
     {
       "added": "2026-09-10",
