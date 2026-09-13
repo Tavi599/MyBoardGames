@@ -1,7 +1,7 @@
 {
   "app": "полиця настілок",
   "version": 4,
-  "saved": "2026-09-13T12:27:37.726Z",
+  "saved": "2026-09-13T12:44:05.302Z",
   "games": [
     {
       "added": "2026-09-12",
@@ -1231,7 +1231,7 @@
         {
           "kind": "інше",
           "title": "Сторінка набору у видавця",
-          "url": "https://thunderworksgames.com/products/cartographers-map-pack-2-affril"
+          "url": "https://desktopgames.com.ua/ua/kartografy-affril-zemlia-znan-cartographers.html"
         },
         {
           "kind": "інше",
@@ -1245,7 +1245,7 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-13T12:27:37.726Z",
+      "updated": "2026-09-13T12:44:05.302Z",
       "weight": null,
       "bggMin": 1,
       "bggMax": 75,
@@ -1297,7 +1297,7 @@
         {
           "kind": "інше",
           "title": "Сторінка набору у видавця",
-          "url": "https://thunderworksgames.com/products/cartographers-map-pack-1-nebblis"
+          "url": "https://desktopgames.com.ua/ua/kartografy-nebblis-zemlia-vogniu-cartographers.html"
         },
         {
           "kind": "інше",
@@ -1311,7 +1311,7 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-13T12:27:37.726Z",
+      "updated": "2026-09-13T12:44:05.302Z",
       "weight": null,
       "bggMin": 1,
       "bggMax": 75,
@@ -1359,7 +1359,7 @@
         {
           "kind": "інше",
           "title": "Сторінка набору у видавця",
-          "url": "https://thunderworksgames.com/products/cartographers-map-pack-3-undercity"
+          "url": "https://desktopgames.com.ua/ua/kartografy-pidzemne-misto-glybyny-sabeka.html"
         },
         {
           "kind": "інше",
@@ -1373,7 +1373,7 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-13T12:27:37.726Z",
+      "updated": "2026-09-13T12:44:05.302Z",
       "weight": null,
       "bggMin": 1,
       "bggMax": 75,
