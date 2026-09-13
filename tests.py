@@ -8,6 +8,8 @@
 Запуск:  python tests.py
 """
 import copy
+import json
+import pathlib
 import sys
 
 sys.stdout.reconfigure(encoding="utf-8")
@@ -352,6 +354,28 @@ def лад_тести():
     return зле
 
 
+def злиття_тести():
+    """Ті самі випадки, що й у сторінці, — «src/merge-cases.json».
+
+    Правило злиття одне, а реалізацій три: lww() і замінитиСтан() у
+    браузері, злити() тут. Поділити між ними код не можна, тож ділимо
+    перелік випадків: розійдуться реалізації — впаде котрась зі сторін.
+    """
+    import server
+    зле = []
+    файл = pathlib.Path(__file__).parent / "src" / "merge-cases.json"
+    випадки = json.loads(файл.read_text(encoding="utf-8"))["випадки"]
+    if not випадки:
+        return ["✗ перелік випадків злиття порожній"]
+    for в in випадки:
+        вислід, _ = server.злити(copy.deepcopy(в["було"]), copy.deepcopy(в["приїхало"]))
+        за_id = sorted(вислід, key=lambda г: г.get("id", ""))
+        треба = sorted(в["стало"], key=lambda г: г.get("id", ""))
+        if за_id != треба:
+            зле.append(f"✗ злиття: {в['назва']}: маю {за_id!r}, чекав {треба!r}")
+    return зле
+
+
 def головне():
     впало = 0
     зроблено = 0
@@ -382,6 +406,15 @@ def головне():
             print("  ", р)
     else:
         print("✓ лад: номер формату й копії списків")
+
+    зроблено += 1
+    зле = злиття_тести()
+    if зле:
+        впало += len(зле)
+        for р in зле:
+            print("  ", р)
+    else:
+        print("✓ злиття: ті самі випадки, що й у сторінці")
 
     зроблено += 1
     п, з = check.перевірити(copy.deepcopy(ЗРАЗОК))
