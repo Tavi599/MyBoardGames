@@ -1,7 +1,7 @@
 {
   "app": "полиця настілок",
   "version": 4,
-  "saved": "2026-09-13T12:44:05.302Z",
+  "saved": "2026-09-13T13:54:32.668Z",
   "games": [
     {
       "added": "2026-09-12",
@@ -1245,7 +1245,7 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-13T12:44:05.302Z",
+      "updated": "2026-09-13T13:54:32.668Z",
       "weight": null,
       "bggMin": 1,
       "bggMax": 75,
@@ -1278,7 +1278,10 @@
         "line-drawing",
         "paper-and-pencil"
       ],
-      "cover": "https://cf.geekdo-images.com/7b-bqQ4DCvhFgxLV34tA5g__square200/img/vXIiL5CgkkrcHia_0YOa37qlwZU=/200x200/filters:strip_icc()/pic5648476.png"
+      "cover": "https://cf.geekdo-images.com/7b-bqQ4DCvhFgxLV34tA5g__square200/img/vXIiL5CgkkrcHia_0YOa37qlwZU=/200x200/filters:strip_icc()/pic5648476.png",
+      "family": [
+        "family-games"
+      ]
     },
     {
       "added": "2026-09-13",
@@ -1311,7 +1314,7 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-13T12:44:05.302Z",
+      "updated": "2026-09-13T13:54:32.668Z",
       "weight": null,
       "bggMin": 1,
       "bggMax": 75,
@@ -1340,7 +1343,10 @@
         "line-drawing",
         "paper-and-pencil"
       ],
-      "cover": "https://cf.geekdo-images.com/4KQ2sdpGQ2g2vih-rkJhVQ__square200/img/BMYdL2-eLxWyl_altCcv0sS-FHg=/200x200/filters:strip_icc()/pic5648477.png"
+      "cover": "https://cf.geekdo-images.com/4KQ2sdpGQ2g2vih-rkJhVQ__square200/img/BMYdL2-eLxWyl_altCcv0sS-FHg=/200x200/filters:strip_icc()/pic5648477.png",
+      "family": [
+        "family-games"
+      ]
     },
     {
       "added": "2026-09-13",
@@ -1373,7 +1379,7 @@
         "колекція"
       ],
       "tags": [],
-      "updated": "2026-09-13T12:44:05.302Z",
+      "updated": "2026-09-13T13:54:32.668Z",
       "weight": null,
       "bggMin": 1,
       "bggMax": 75,
@@ -1399,7 +1405,10 @@
         "line-drawing",
         "paper-and-pencil"
       ],
-      "cover": "https://cf.geekdo-images.com/VBjrkPfOsRN9WM8ngio-ow__square200/img/4tySzP9alYUh2_YEDQNdCwGd87c=/200x200/filters:strip_icc()/pic5648475.png"
+      "cover": "https://cf.geekdo-images.com/VBjrkPfOsRN9WM8ngio-ow__square200/img/4tySzP9alYUh2_YEDQNdCwGd87c=/200x200/filters:strip_icc()/pic5648475.png",
+      "family": [
+        "family-games"
+      ]
     },
     {
       "added": "2026-09-12",
