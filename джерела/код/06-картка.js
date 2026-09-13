@@ -330,6 +330,7 @@ document.addEventListener("keydown", (e) => {
   if(e.key === "Escape"){
     if(!$("bggBox").hidden) closeBgg();
     else if(!$("keyBox").hidden) closeKey();
+    else if(!$("filtBox").hidden) closeFilters();
     else if(ui.open) closeCard();
     else if(!$("menu").hidden) hideMenu();
   }

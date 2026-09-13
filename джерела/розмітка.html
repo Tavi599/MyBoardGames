@@ -1,22 +1,25 @@
 <div class="wrap">
   <header class="top">
-    <div class="brand"><b>Полиця</b> <span>настілок</span></div>
+    <div class="brand-row">
+      <div class="brand"><b>Полиця</b> <span>настілок</span></div>
+      <!-- Де зберігаються оцінки — це стан, а не орудка, тож і місце йому
+           в шапці, а не серед кнопок: у панелі він займав місце в ряду й
+           щоразу зіштовхував «···» на власний рядок. -->
+      <span class="chip" id="chip" title="Де зберігаються оцінки"></span>
+    </div>
     <dl class="stats" id="stats"></dl>
   </header>
 
   <div class="tools">
-    <!-- Фільтри й сортування малюються з реєстру в «03-вибірка.js». -->
-    <div class="filters" id="filters"></div>
+    <!-- Фільтри малюються з реєстру в «03-вибірка.js», і кожен сам знає, де
+         йому стояти: пошук тут, абетка окремим рядком, решта — у шухляді. -->
+    <div class="filters" id="search"></div>
+    <button class="btn" id="filtBtn" aria-haspopup="dialog" aria-expanded="false"
+            aria-pressed="false" title="Жанр, тема, склад столу, статус, приховані групи">Фільтри</button>
     <div class="fld"><label for="fSort">Сортувати</label>
       <select id="fSort"></select>
       <button class="flip" id="fFlip" aria-label="Перевернути порядок">↓</button></div>
     <div class="spacer"></div>
-    <span class="chip" id="chip" title="Де зберігаються оцінки"></span>
-    <div class="menu-wrap" id="hideWrap">
-      <button class="btn" id="hideBtn" aria-haspopup="true" aria-expanded="false"
-              aria-pressed="false" title="Прибрати з полиці цілі групи коробок">Приховати</button>
-      <div class="menu" id="hidePick" hidden></div>
-    </div>
     <button class="btn" id="cmpBtn" aria-pressed="false">Порівняти</button>
     <button class="btn pri" id="addBtn">Додати гру</button>
     <div class="menu-wrap">
@@ -36,6 +39,10 @@
     </div>
   </div>
 
+  <!-- Абетковий указник. Живе тут, а не в шухляді: указник, який треба
+       відкрити, указником уже не є. Стрічку в нього вкладає реєстр. -->
+  <div class="abc-row" id="abc" hidden></div>
+
   <div class="locked" id="locked" hidden>
     <div>
       <b>Тільки читання</b>
@@ -53,6 +60,9 @@
        потрібна саме тоді, коли щось відфільтровано. -->
   <div class="found" id="found">
     <span id="foundN"></span>
+    <!-- Плашки того, що ввімкнено. Фільтри тепер за кнопкою, і без них
+         не було б видно, чому коробок раптом дванадцять. -->
+    <span class="pills" id="pills"></span>
     <button class="link" id="resetBtn" type="button" hidden>Скинути всі фільтри</button>
     <span class="spacer"></span>
     <button class="icon-btn" id="viewBtn" type="button" aria-pressed="false"></button>
@@ -103,6 +113,28 @@
     <button class="btn pri" id="keySave">Зберегти</button>
   </div>
 </section>
+<div class="scrim" id="filtScrim" hidden></div>
+<aside class="drawer" id="filtBox" hidden role="dialog" aria-modal="true" aria-labelledby="filtTitle">
+  <div class="c-head">
+    <h2 id="filtTitle">Фільтри</h2>
+    <button class="icon" id="filtClose" aria-label="Закрити">✕</button>
+  </div>
+  <div class="c-body">
+    <div class="fgroups" id="filtBody"></div>
+    <fieldset class="grp">
+      <legend>Приховати</legend>
+      <div class="picks" id="hidePick"></div>
+      <p class="hint">Це не фільтр, а звуження самої полиці: прибране не
+        потрапляє й у підсумки вгорі. Познач скільком завгодно — причини не
+        хотіти бачити коробку не виключають одна одну.</p>
+    </fieldset>
+  </div>
+  <div class="c-foot">
+    <button class="btn" id="filtReset" type="button">Скинути всі</button>
+    <span class="spacer"></span>
+    <button class="btn pri" id="filtDone" type="button">Готово</button>
+  </div>
+</aside>
 <aside class="card" id="card" hidden role="dialog" aria-modal="true" aria-label="Картка гри">
   <div class="c-head">
     <div class="c-names">

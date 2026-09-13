@@ -47,6 +47,7 @@ button{cursor:pointer}
 /* Тісніше, ніж було: під шапкою тепер дві стрічки жанрів, і кожен
    зайвий піксель угорі відсуває власне список. */
 .top{padding:22px 0 12px}
+.brand-row{display:flex; align-items:center; justify-content:space-between; gap:12px}
 .brand{display:flex; align-items:baseline; gap:.4em; font-family:"IBM Plex Sans","Segoe UI",system-ui,sans-serif}
 .brand b{font-weight:600; font-size:clamp(22px,3.4vw,30px); letter-spacing:-.015em}
 .brand span{font-weight:400; font-size:clamp(13px,1.9vw,16px); color:var(--ink-faint); letter-spacing:-.02em}
@@ -126,6 +127,49 @@ button{cursor:pointer}
   padding:9px 10px; border-radius:6px; font-size:14px}
 .menu button:hover{background:var(--sunk)}
 .menu hr{border:0; border-top:1px solid var(--rule-soft); margin:5px 0}
+
+/* ── абетковий указник ─────────────────────────────────────────────────
+   Окремий рядок під панеллю. Кнопки вужчі за звичні й монотипні: у літер
+   різна ширина, і без фіксованого поля указник виглядав би як частокіл
+   різної товщини. */
+.abc-row{padding:0 0 10px}
+.seg.abc{padding:3px 4px}
+.seg.abc button{min-width:27px; padding:0 5px; text-align:center;
+  font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:12.5px}
+/* «усі» — слово, а не літера, тож фіксоване поле йому лише шкодить. */
+.seg.abc button[data-v="all"]{min-width:0; padding:0 8px;
+  font-family:"IBM Plex Sans","Segoe UI",system-ui,sans-serif; font-size:13px}
+
+/* ── плашки ввімкненого ────────────────────────────────────────────────
+   Фільтри живуть у шухляді, і без цих плашок закрита шухляда ховала б
+   причину, чому коробок раптом дванадцять. Кожна знімає своє звуження. */
+.pills{display:flex; flex-wrap:wrap; gap:6px; min-width:0}
+.pill{display:inline-flex; align-items:center; gap:6px; height:24px; padding:0 8px;
+  border:1px solid var(--petrol); border-radius:12px;
+  background:color-mix(in srgb, var(--petrol) 10%, transparent);
+  color:var(--petrol); font:inherit; letter-spacing:.08em}
+.pill:hover{background:color-mix(in srgb, var(--petrol) 18%, transparent)}
+.pill i{font-style:normal; font-size:11px; opacity:.7}
+
+/* ── шухляда фільтрів ──────────────────────────────────────────────────
+   Та сама механіка, що в картки, але від лівого краю: картка — це одна
+   коробка, шухляда — вся полиця, і плутати їх, коли вони виїжджають з
+   того самого боку, легше, ніж здається. */
+.drawer{position:fixed; top:0; left:0; bottom:0; width:min(400px,100%); z-index:21;
+  background:var(--sheet); border-right:1px solid var(--rule); box-shadow:var(--shadow);
+  display:flex; flex-direction:column; transform:translateX(-14px); opacity:0;
+  transition:transform .16s ease, opacity .16s ease}
+.drawer.on{transform:none; opacity:1}
+.drawer h2{flex:1; margin:0; font-family:"IBM Plex Sans","Segoe UI",system-ui,sans-serif;
+  font-weight:600; font-size:19px; letter-spacing:-.025em}
+.drawer .c-head{align-items:center}
+/* У шухляді стрічка — це не смужка в рядку кнопок, а блок на всю ширину:
+   підпис над кнопками, кнопки переносяться скільки треба. */
+.fgroups{display:flex; flex-direction:column; gap:14px}
+.fgroups .seg{flex-wrap:wrap; height:auto; min-height:36px; row-gap:3px; align-items:flex-start}
+.fgroups .seg > span{flex:0 0 100%; padding:3px 2px 4px}
+.fgroups .fld{width:100%}
+.fgroups .fld select{flex:1}
 
 /* ── аркуш зі списком ──────────────────────────────── */
 .head-row,.row{display:grid; align-items:center;
@@ -515,6 +559,14 @@ textarea:focus{outline:none; border-color:var(--petrol)}
   .row .meta{white-space:normal; display:-webkit-box; -webkit-line-clamp:2;
     -webkit-box-orient:vertical; overflow:hidden}
   .card{border-left:0}
+  .drawer{border-right:0}
+  /* Указник має влазити в два рядки, а не в чотири: на 390 пікселях це
+     різниця між «видно список» і «видно кнопки». */
+  .seg.abc{padding:3px}
+  .seg.abc button{min-width:25px; padding:0 3px; font-size:12px}
+  /* Підпис «ЛІТЕРА» коштує цілий рядок кнопок, а рядок літер і без нього
+     ні на що інше не схожий. Для читача з екрана лишається aria-label. */
+  .seg.abc > span{display:none}
   .note{max-width:none}
 }
 @media (prefers-reduced-motion:reduce){ *{transition:none !important} }

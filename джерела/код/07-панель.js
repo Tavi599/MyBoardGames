@@ -1,4 +1,13 @@
-/* ── панель керування ────────────────────────────── */
+/* ── панель керування ─────────────────────────────────────────────────
+   Фільтрів стало більше, ніж влазить у рядок. Сама стрічка «Тема» на
+   телефоні — це сім рядків кнопок, і власне список починався вже під
+   ними. Тому в панелі лишилися пошук і сортування, указник за першою
+   літерою став окремим рядком, а решта фільтрів живе в шухляді за
+   кнопкою «Фільтри».
+
+   Закрита шухляда ховає не лише кнопки, а й відповідь на «чому коробок
+   раптом дванадцять», тож ввімкнене показують плашки над списком —
+   кожна знімається дотиком. Малює їх renderFound у «04-список.js». */
 
 /** Підпис і кнопки однієї стрічки. Окремо, бо їх малюють двоє: повна
     побудова панелі й оновлення стрічки, чиї варіанти залежать від даних. */
@@ -9,8 +18,45 @@ function нутрощіСтрічки(ф){
       (ui[ф.ключ] === знач ? "true" : "false") + "'>" + esc(підпис) + "</button>").join("");
 }
 
-/** Варіанти стрічки можуть залежати від даних: жанри беруться з самої
-    полиці, а полиця приїжджає вже після того, як панель намальовано —
+/** Один віджет фільтра. Вид каже, чим він буде, місце — де стане. */
+function віджет(ф){
+  const v = ui[ф.ключ];
+  if(ф.вид === "пошук"){
+    return "<div class='fld'><input type='search' data-ф='" + esc(ф.ключ) +
+      "' value='" + esc(v) + "' placeholder='" + esc(ф.держак || "Пошук") +
+      "' aria-label='" + esc(ф.держак || "Пошук") + "'></div>";
+  }
+  if(ф.вид === "стрічка"){
+    return "<div class='seg" + (ф.широка ? " wrap" : "") +
+      (ф.клас ? " " + esc(ф.клас) : "") + "' data-ф='" + esc(ф.ключ) +
+      "' role='group' aria-label='" + esc(ф.підпис) + "'>" +
+      нутрощіСтрічки(ф) + "</div>";
+  }
+  const ід = "f-" + ф.ключ;
+  return "<div class='fld'><label for='" + ід + "'>" + esc(ф.підпис) + "</label>" +
+    "<select id='" + ід + "' data-ф='" + esc(ф.ключ) + "'>" +
+    ф.варіанти().map(([знач, підпис]) =>
+      "<option value='" + esc(знач) + "'" + (v === знач ? " selected" : "") + ">" +
+      esc(підпис) + "</option>").join("") + "</select></div>";
+}
+
+/** Малює фільтри з реєстру, кожен на своє місце. Жодного фільтра тут не
+    названо поіменно: щоб додати новий, досить дописати об'єкт у ФІЛЬТРИ. */
+function renderFilters(){
+  const купки = {search: [], abc: [], filtBody: []};
+  ФІЛЬТРИ.forEach((ф) => { (купки[ф.місце] || купки.filtBody).push(віджет(ф)); });
+  Object.keys(купки).forEach((де) => { $(де).innerHTML = купки[де].join(""); });
+  оновитиАбетку();
+}
+/** Указник з однією кнопкою «усі» — це порожній рядок і змарнована висота:
+    полиця або ще не приїхала, або стоїть уся під однією літерою. */
+function оновитиАбетку(){
+  const стрічка = $("abc").querySelector(".seg");
+  $("abc").hidden = !стрічка || стрічка.querySelectorAll("button").length < 3;
+}
+
+/** Варіанти стрічки можуть залежати від даних: жанри й літери беруться з
+    самої полиці, а полиця приїжджає вже після того, як панель намальовано —
     і з мережі, і з кеша, і кількома заходами. Тому перед кожним показом
     звіряємо набір кнопок і перемальовуємо саме ту стрічку, у якої він
     змінився. Панель цілком не чіпаємо навмисне: у ній живе поле пошуку,
@@ -18,7 +64,7 @@ function нутрощіСтрічки(ф){
 function оновитиСтрічки(){
   ФІЛЬТРИ.forEach((ф) => {
     if(ф.вид !== "стрічка") return;
-    const вузол = $("filters").querySelector(".seg[data-ф='" + ф.ключ + "']");
+    const вузол = document.querySelector(".seg[data-ф='" + ф.ключ + "']");
     if(!вузол) return;
     const треба = ф.варіанти().map((в) => в[0]);
     const є = Array.prototype.map.call(вузол.querySelectorAll("button"), (b) => b.dataset.v);
@@ -30,58 +76,78 @@ function оновитиСтрічки(){
     if(треба.indexOf(ui[ф.ключ]) < 0) ui[ф.ключ] = ф.типово;
     вузол.innerHTML = нутрощіСтрічки(ф);
   });
+  оновитиАбетку();
 }
 
-/** Малює фільтри з реєстру. Жодного фільтра тут не названо поіменно:
-    щоб додати новий, досить дописати об'єкт у ФІЛЬТРИ. */
-function renderFilters(){
-  $("filters").innerHTML = ФІЛЬТРИ.map((ф) => {
-    const v = ui[ф.ключ];
-    if(ф.вид === "пошук"){
-      return "<div class='fld'><input type='search' data-ф='" + esc(ф.ключ) +
-        "' value='" + esc(v) + "' placeholder='" + esc(ф.держак || "Пошук") +
-        "' aria-label='" + esc(ф.держак || "Пошук") + "'></div>";
-    }
-    if(ф.вид === "стрічка"){
-      return "<div class='seg" + (ф.широка ? " wrap" : "") + "' data-ф='" +
-        esc(ф.ключ) + "' role='group' aria-label='" +
-        esc(ф.підпис) + "'>" + нутрощіСтрічки(ф) + "</div>";
-    }
-    const ід = "f-" + ф.ключ;
-    return "<div class='fld'><label for='" + ід + "'>" + esc(ф.підпис) + "</label>" +
-      "<select id='" + ід + "' data-ф='" + esc(ф.ключ) + "'>" +
-      ф.варіанти().map(([знач, підпис]) =>
-        "<option value='" + esc(знач) + "'" + (v === знач ? " selected" : "") + ">" +
-        esc(підпис) + "</option>").join("") + "</select></div>";
-  }).join("");
-}
-
-/** Один обробник на всі фільтри: клік по стрічці, зміна списку, набір у пошуку. */
+/** Ставить значення фільтра. Один обробник на всі фільтри, де б вони не
+    стояли: у панелі, у рядку указника, у шухляді. */
 function поставити(ключ, знач){
   ui[ключ] = знач;
   // Перемальовуємо лише стрічку — вона показує стан кнопками. Список і поле
   // пошуку тримають вибране самі, а повна перемальовка щоразу висмикувала б
   // фокус із віджета просто посеред роботи.
-  const стрічка = $("filters").querySelector(".seg[data-ф='" + ключ + "']");
+  const стрічка = document.querySelector(".seg[data-ф='" + ключ + "']");
   if(стрічка){
     Array.prototype.forEach.call(стрічка.querySelectorAll("button"), (b) =>
       b.setAttribute("aria-pressed", b.dataset.v === знач ? "true" : "false"));
   }
   render();
 }
-$("filters").addEventListener("input", (e) => {
+document.addEventListener("input", (e) => {
   const el = e.target.closest("input[data-ф]"); if(!el) return;
   // Пошук перемальовувати не можна — фокус вискочить із поля посеред слова.
   ui[el.dataset["ф"]] = el.value;
   render();
 });
-$("filters").addEventListener("change", (e) => {
+document.addEventListener("change", (e) => {
   const el = e.target.closest("select[data-ф]"); if(!el) return;
   поставити(el.dataset["ф"], el.value);
 });
-$("filters").addEventListener("click", (e) => {
+document.addEventListener("click", (e) => {
   const b = e.target.closest(".seg[data-ф] button"); if(!b) return;
   поставити(b.closest(".seg").dataset["ф"], b.dataset.v);
+});
+
+/* ── шухляда фільтрів ─────────────────────────────────────────────── */
+function openFilters(){
+  hideMenu();
+  $("filtScrim").hidden = false;
+  $("filtBox").hidden = false;
+  requestAnimationFrame(() => $("filtBox").classList.add("on"));
+  $("filtBtn").setAttribute("aria-expanded", "true");
+  $("filtClose").focus();
+}
+function closeFilters(){
+  $("filtBox").classList.remove("on");
+  $("filtBox").hidden = true;
+  $("filtScrim").hidden = true;
+  $("filtBtn").setAttribute("aria-expanded", "false");
+}
+/** Лічильник на кнопці. Рахуємо лише те, що сховане в шухляді: пошук і
+    указник видно й так, а кнопка, яка числить видиме, лише збиває. */
+function paintFiltBtn(){
+  const скільки = звуження().filter((з) => !з.місце).length;
+  const кн = $("filtBtn");
+  кн.textContent = скільки ? "Фільтри · " + скільки : "Фільтри";
+  кн.setAttribute("aria-pressed", скільки ? "true" : "false");
+}
+$("filtBtn").addEventListener("click", () => {
+  if($("filtBox").hidden) openFilters(); else closeFilters();
+});
+$("filtClose").addEventListener("click", closeFilters);
+$("filtDone").addEventListener("click", closeFilters);
+$("filtScrim").addEventListener("click", closeFilters);
+$("filtReset").addEventListener("click", скинутиФільтри);
+$("resetBtn").addEventListener("click", скинутиФільтри);
+/* Плашка знімає своє звуження — і лишає решту. Саме цього від неї й
+   чекаєш: «прибрати оце», а не «скинути все». */
+$("pills").addEventListener("click", (e) => {
+  const b = e.target.closest("[data-off]"); if(!b) return;
+  const частини = b.dataset.off.split(":");
+  знятиЗвуження(частини[0], частини[1]);
+  renderFilters();
+  renderHide();
+  render();
 });
 
 $("fSort").innerHTML = СОРТУВАННЯ.map((с) =>
@@ -108,16 +174,13 @@ renderFilters();
    Раніше тут була одна кнопка «Без доповнень». Причин не хотіти бачити
    коробку в списку виявилося більше однієї, і вони не виключають одна
    одну, тож замість кнопки — перелік із позначками: скільки треба,
-   стільки й познач. Сам перелік малюється з ХОВАНОК. */
+   стільки й познач. Сам перелік малюється з ХОВАНОК і живе в тій самій
+   шухляді, що й фільтри: це теж відповідь на «що показувати». */
 function renderHide(){
   $("hidePick").innerHTML = ХОВАНКИ.map((п) =>
     "<label class='pickrow'><input type='checkbox' data-hide='" + esc(п.ключ) + "'" +
     (ui.hide.has(п.ключ) ? " checked" : "") + "><span>" + esc(п.підпис) +
     "</span></label>").join("");
-  const скільки = ui.hide.size;
-  const кн = $("hideBtn");
-  кн.textContent = скільки ? "Приховано: " + скільки : "Приховати";
-  кн.setAttribute("aria-pressed", скільки ? "true" : "false");
 }
 /* Значки перемикача. Кнопка показує той вигляд, у який перемкне, — це
    звичніше за показ поточного стану: на неї тиснуть, щоб отримати те,
@@ -149,27 +212,11 @@ $("viewBtn").addEventListener("click", () => {
   paintView();
   render();
 });
-$("resetBtn").addEventListener("click", скинутиФільтри);
-function закритиХованки(){
-  $("hidePick").hidden = true;
-  $("hideBtn").setAttribute("aria-expanded", "false");
-}
 renderHide();
-$("hideBtn").addEventListener("click", () => {
-  const відкрити = $("hidePick").hidden;
-  hideMenu();                       // чуже меню поруч — геть
-  $("hidePick").hidden = !відкрити;
-  $("hideBtn").setAttribute("aria-expanded", відкрити ? "true" : "false");
-});
 $("hidePick").addEventListener("change", (e) => {
   const el = e.target.closest("[data-hide]"); if(!el) return;
   if(el.checked) ui.hide.add(el.dataset.hide); else ui.hide.delete(el.dataset.hide);
-  renderHide();
   render();
-});
-// Клік усередині переліку його не закриває: позначок ставлять кілька підряд.
-document.addEventListener("click", (e) => {
-  if(!$("hidePick").hidden && !e.target.closest("#hideWrap")) закритиХованки();
 });
 $("cWith").addEventListener("change", (e) => {
   const el = e.target.closest("[data-exp]"); if(!el) return;
@@ -237,4 +284,3 @@ $("addBtn").addEventListener("click", async () => {
   render(); openCard(g.id);
   if(db) await persist(g);
 });
-

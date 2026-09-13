@@ -40,16 +40,26 @@ function скинутиФільтри(){
   renderHide();
   render();
 }
+/** Рядок над списком: скільки коробок видно й чому саме стільки.
+    Фільтри тепер за кнопкою, тож кожне ввімкнене звуження стоїть тут
+    плашкою — і знімається дотиком по ній. Плашки дістаються лише тим,
+    що сховане в шухляді: пошук і указник за літерою видно й так. */
 function renderFound(arr){
   const усього = games.length;
   // Поки полиця їде з бази, рахувати нічого: «0 коробок» злякало б дарма.
   $("found").hidden = !ready;
   if(!ready) return;
-  $("foundN").textContent = звужено()
+  const звужене = звуження();
+  $("foundN").textContent = звужене.length
     ? arr.length + " " + plural(arr.length, "коробка", "коробки", "коробок") +
       " з " + усього
     : усього + " " + plural(усього, "коробка", "коробки", "коробок");
-  $("resetBtn").hidden = !звужено();
+  $("pills").innerHTML = звужене.filter((з) => !з.місце).map((з) =>
+    "<button class='pill' type='button' data-off='" + esc(з.вид) + ":" + esc(з.ключ) +
+    "' title='Зняти'>" + esc(з.підпис) + ": " + esc(з.значення) +
+    "<i aria-hidden='true'>✕</i></button>").join("");
+  $("resetBtn").hidden = !звужене.length;
+  paintFiltBtn();
 }
 
 function renderList(){
