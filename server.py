@@ -19,7 +19,6 @@ from __future__ import annotations
 import argparse
 import copy
 import json
-import os
 import re
 import socket
 import subprocess
@@ -129,10 +128,11 @@ def записати(стан: dict) -> None:
     стан["version"] = ВЕРСІЯ_ДАНИХ
     стан["saved"] = зараз()
     стан["games"] = sorted(стан.get("games", []), key=lambda г: г.get("id", ""))
-    текст = json.dumps(стан, ensure_ascii=False, indent=2, sort_keys=True) + "\n"
-    тимчасовий = ДАНІ.with_suffix(".json.tmp")
-    тимчасовий.write_text(текст, encoding="utf-8")
-    os.replace(тимчасовий, ДАНІ)
+    # Кладе на диск «bgg.py» — той самий код, що й у щоденному заході. Поки
+    # сервер писав по-своєму (з sort_keys і з CRLF), одне збереження тут
+    # перетрушувало файл, а наступне збереження з телефона перетрушувало
+    # його назад: два коміти на сотні рядків замість двох рядків по суті.
+    bgg.писати(стан, bgg.кінець_рядка(ДАНІ), ДАНІ)
 
 
 def злити(поточні: list[dict], вхідні: list[dict]) -> tuple[list[dict], int]:
