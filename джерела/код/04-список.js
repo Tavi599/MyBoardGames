@@ -144,10 +144,21 @@ function renderList(){
       (stats(g).indexOf("продаж") >= 0 ? " sale" : "") +
       (ui.picked.has(g.id) ? " picked" : "");
   }
-  function обкладинка(g){
+  /** `поверх` лягає всередину обкладинки — так у плитці на ній тримається
+      кутик з оцінкою BGG. Рядкові він не потрібен: там ця оцінка стоїть
+      просто під твоєю. */
+  function обкладинка(g, поверх){
     return "<span class='cov'>" + (g.cover
       ? "<img src='" + esc(g.cover) + "' alt='' loading='lazy' referrerpolicy='no-referrer'>"
-      : "<b>" + esc((g.name || "?").trim().charAt(0).toUpperCase()) + "</b>") + "</span>";
+      : "<b>" + esc((g.name || "?").trim().charAt(0).toUpperCase()) + "</b>") +
+      (поверх || "") + "</span>";
+  }
+  /* Оцінка BGG кутиком навпроти твоєї: твоя вгорі праворуч, чужа внизу
+     ліворуч. Без неї плитка каже просто «8», і з двох метрів незрозуміло,
+     чия то вісімка; у рядку вони стоять одна під одною й такого питання
+     не виникає. */
+  function бггКутик(g){
+    return g.bggRating ? "<span class='cov-bgg'>BGG " + fmt(g.bggRating) + "</span>" : "";
   }
   function позначка(g){
     return ui.cmp
@@ -225,7 +236,7 @@ function renderList(){
   function плитка(g){
     return "<li class='tile " + класи(g) + "' data-id='" + esc(g.id) + "'>" +
       "<button class='open' data-open='" + esc(g.id) + "' title='" + esc(g.name) + "'>" +
-        обкладинка(g) +
+        обкладинка(g, бггКутик(g)) +
         "<span class='nm'><i class='dot'></i><span class='txt'>" + esc(g.name) + "</span>" +
           (g.expansion ? "<span class='badge'>доп.</span>" : "") + "</span>" +
       "</button>" +

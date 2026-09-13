@@ -237,6 +237,14 @@ button{cursor:pointer}
 .tile > .score .num{font-size:16px}
 .tile > .score .num.none{font-size:13px}
 .tile > .score .meter,.tile > .score .bgg{display:none}
+/* Оцінка BGG — другим кутиком, навпроти твоєї: твоя вгорі праворуч,
+   чужа внизу ліворуч, обидві на обкладинці. Тло те саме, а шрифт тихіший:
+   на плитці має бути видно, котра з двох цифр твоя. */
+.tile .cov{position:relative}
+.cov-bgg{position:absolute; left:5px; bottom:5px; padding:1px 6px 2px;
+  border-radius:7px; background:color-mix(in srgb, var(--paper) 88%, transparent);
+  border:1px solid var(--rule-soft); color:var(--ink-faint); white-space:nowrap;
+  font:600 10px/1.5 "IBM Plex Mono",ui-monospace,monospace; letter-spacing:.04em}
 /* Кнопка правил — у нижньому куті, на смузі з назвою: на обкладинці їй
    тісно поруч з оцінкою, а тут вона під великим пальцем. Назва звільняє
    для неї місце відступом, інакше вони наклалися б. */
