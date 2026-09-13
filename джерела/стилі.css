@@ -448,14 +448,20 @@ button{cursor:pointer}
    Рядок партії: дата, склад, нотатка, хрестик. Дата має сталу ширину —
    інакше поля під нею стрибають від «3 вер» до «13 лист 2025». */
 .log{display:flex; flex-direction:column; gap:4px}
-.logrow{display:flex; align-items:center; gap:6px}
-.logrow > b{flex:0 0 78px; font:600 11px/1 "IBM Plex Mono",ui-monospace,monospace;
-  letter-spacing:.04em; color:var(--ink-soft)}
-.logrow select{flex:0 0 64px; min-width:0; height:30px; border:1px solid var(--rule);
+/* Сітка, а не гнучкий рядок: у гнучкому нотатка на телефоні займала всю
+   ширину й зіштовхувала хрестик на третій рядок, самого. У сітці хрестик
+   лишається при даті, а нотатка просто переїжджає під них. */
+.logrow{display:grid; grid-template-columns:126px 64px minmax(0,1fr) auto;
+  align-items:center; gap:6px}
+.logrow select{min-width:0; height:30px; border:1px solid var(--rule);
   border-radius:6px; background:var(--sheet); color:var(--ink); font-size:13px; padding:0 4px}
 .logrow select option{background:var(--sheet); color:var(--ink)}
-.logrow input{flex:1 1 60px; min-width:0; height:30px; border:1px solid var(--rule);
+.logrow input{min-width:0; width:100%; height:30px; border:1px solid var(--rule);
   border-radius:6px; background:var(--sheet); padding:0 8px; font-size:13px}
+/* Поле дати браузер малює своїм: власна ширина, свій значок календаря.
+   Тримаємо його моноширинним — воно тут стовпчиком. */
+.logrow .date-in{padding:0 6px; color:var(--ink);
+  font:400 12px/1 "IBM Plex Mono",ui-monospace,monospace}
 .logrow .icon{width:28px; height:28px; flex:none; font-size:12px}
 .log .link{align-self:flex-start; margin-top:2px; letter-spacing:.06em; font-size:12px}
 .log .hint{margin:2px 0 0}
@@ -604,6 +610,10 @@ textarea:focus{outline:none; border-color:var(--petrol)}
     -webkit-box-orient:vertical; overflow:hidden}
   .card{border-left:0}
   .drawer{border-right:0}
+  /* На телефоні дата, склад і хрестик — перший рядок, нотатка під ними:
+     учотирьох вони влазять хіба обрізаними. */
+  .logrow{grid-template-columns:minmax(0,1fr) 64px auto}
+  .logrow .note-in{grid-column:1 / -1; grid-row:2}
   /* Указник має влазити в два рядки, а не в чотири: на 390 пікселях це
      різниця між «видно список» і «видно кнопки». */
   .seg.abc{padding:3px}

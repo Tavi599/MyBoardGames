@@ -339,13 +339,17 @@ function renderLog(g){
     .slice(0, усі ? ж.length : ПОКАЗУВАТИ_ПАРТІЙ);
   const незаписаних = Math.max(0, (+g.plays || 0) - ж.length);
   $("cLog").innerHTML = рядки.map(([з, і]) =>
-    "<div class='logrow'><b>" + esc(датаКоротко(з.on)) + "</b>" +
+    "<div class='logrow'>" +
+    // Дата — поле, а не підпис: партію записують і наступного дня, і в
+    // понеділок за суботу, і помилитися тут легше, ніж деінде.
+    "<input class='date-in' type='date' data-logd='" + і + "' value='" +
+    esc(з.on) + "' max='" + esc(сьогодні()) + "' aria-label='День партії'>" +
     "<select data-logn='" + і + "' aria-label='Скільки було за столом'>" +
     "<option value=''>склад</option>" +
     COUNTS.map((c) => "<option value='" + esc(c) + "'" +
       (з.count === c ? " selected" : "") + ">" + esc(CLABEL[c]) + "</option>").join("") +
     "</select>" +
-    "<input data-logt='" + і + "' value='" + esc(з.note || "") +
+    "<input class='note-in' data-logt='" + і + "' value='" + esc(з.note || "") +
     "' placeholder='нотатка' aria-label='Нотатка до партії'>" +
     "<button class='icon' data-logx='" + і + "' type='button' " +
     "aria-label='Прибрати цю партію'>✕</button></div>").join("") +
@@ -369,11 +373,27 @@ $("cLog").addEventListener("click", (e) => {
   touch();
 });
 $("cLog").addEventListener("change", (e) => {
-  const el = e.target.closest("[data-logn]"); if(!el) return;
   const g = current(); if(!g || !canEdit()) return;
-  const з = журнал(g)[+el.dataset.logn]; if(!з) return;
-  if(el.value) з.count = el.value; else delete з.count;
-  touch();
+  const склад = e.target.closest("[data-logn]");
+  if(склад){
+    const з = журнал(g)[+склад.dataset.logn]; if(!з) return;
+    if(склад.value) з.count = склад.value; else delete з.count;
+    touch();
+    return;
+  }
+  const день = e.target.closest("[data-logd]");
+  if(день){
+    if(!день.value || день.value > сьогодні()){
+      // Порожнє поле й день наперед лишаємо без змін: партія, яка ще не
+      // відбулася, — це не запис, а обіцянка.
+      renderLog(g);
+      if(день.value) toast("Наперед партії не записують.");
+      return;
+    }
+    перенестиПартію(g, +день.dataset.logd, день.value);
+    renderLog(g);
+    touch();
+  }
 });
 $("cLog").addEventListener("input", (e) => {
   const el = e.target.closest("[data-logt]"); if(!el) return;
@@ -381,6 +401,15 @@ $("cLog").addEventListener("input", (e) => {
   const з = журнал(g)[+el.dataset.logt]; if(!з) return;
   const v = el.value.trim();
   if(v) з.note = v; else delete з.note;
+  touch();
+});
+/* Скасувати останнє: те саме, що «−» угорі, але тут, при журналі, де
+   й видно, що саме зникне. */
+$("cLogUndo").addEventListener("click", () => {
+  const g = current(); if(!g || !canEdit()) return;
+  if(!(+g.plays || 0)){ toast("Скасовувати нічого."); return; }
+  меншеПартій(g);
+  показатиПартії(g);
   touch();
 });
 /* Партія минулим числом: грали в суботу, записуєш у понеділок. */

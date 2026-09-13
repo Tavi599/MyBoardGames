@@ -471,14 +471,20 @@ button{cursor:pointer}
    Рядок партії: дата, склад, нотатка, хрестик. Дата має сталу ширину —
    інакше поля під нею стрибають від «3 вер» до «13 лист 2025». */
 .log{display:flex; flex-direction:column; gap:4px}
-.logrow{display:flex; align-items:center; gap:6px}
-.logrow > b{flex:0 0 78px; font:600 11px/1 "IBM Plex Mono",ui-monospace,monospace;
-  letter-spacing:.04em; color:var(--ink-soft)}
-.logrow select{flex:0 0 64px; min-width:0; height:30px; border:1px solid var(--rule);
+/* Сітка, а не гнучкий рядок: у гнучкому нотатка на телефоні займала всю
+   ширину й зіштовхувала хрестик на третій рядок, самого. У сітці хрестик
+   лишається при даті, а нотатка просто переїжджає під них. */
+.logrow{display:grid; grid-template-columns:126px 64px minmax(0,1fr) auto;
+  align-items:center; gap:6px}
+.logrow select{min-width:0; height:30px; border:1px solid var(--rule);
   border-radius:6px; background:var(--sheet); color:var(--ink); font-size:13px; padding:0 4px}
 .logrow select option{background:var(--sheet); color:var(--ink)}
-.logrow input{flex:1 1 60px; min-width:0; height:30px; border:1px solid var(--rule);
+.logrow input{min-width:0; width:100%; height:30px; border:1px solid var(--rule);
   border-radius:6px; background:var(--sheet); padding:0 8px; font-size:13px}
+/* Поле дати браузер малює своїм: власна ширина, свій значок календаря.
+   Тримаємо його моноширинним — воно тут стовпчиком. */
+.logrow .date-in{padding:0 6px; color:var(--ink);
+  font:400 12px/1 "IBM Plex Mono",ui-monospace,monospace}
 .logrow .icon{width:28px; height:28px; flex:none; font-size:12px}
 .log .link{align-self:flex-start; margin-top:2px; letter-spacing:.06em; font-size:12px}
 .log .hint{margin:2px 0 0}
@@ -627,6 +633,10 @@ textarea:focus{outline:none; border-color:var(--petrol)}
     -webkit-box-orient:vertical; overflow:hidden}
   .card{border-left:0}
   .drawer{border-right:0}
+  /* На телефоні дата, склад і хрестик — перший рядок, нотатка під ними:
+     учотирьох вони влазять хіба обрізаними. */
+  .logrow{grid-template-columns:minmax(0,1fr) 64px auto}
+  .logrow .note-in{grid-column:1 / -1; grid-row:2}
   /* Указник має влазити в два рядки, а не в чотири: на 390 пікселях це
      різниця між «видно список» і «видно кнопки». */
   .seg.abc{padding:3px}
@@ -817,11 +827,15 @@ textarea:focus{outline:none; border-color:var(--petrol)}
         <div class="fld"><label for="cLogDate">Була партія</label>
           <input id="cLogDate" type="date"></div>
         <button class="btn" id="cLogAdd" type="button">Записати</button>
+        <button class="btn" id="cLogUndo" type="button">Відмінити останню</button>
       </div>
       <p class="hint">«+» угорі записує сьогоднішню партію одним дотиком, і більше
-        нічого заповнювати не треба. Склад столу й нотатку можна дописати потім,
-        а можна ніколи: журнал не питає, він лише пам'ятає. Партії, зіграні до
-        його появи, лишаються самим числом у лічильнику.</p>
+        нічого заповнювати не треба. День у кожному рядку можна переставити —
+        грали вчора, записуєш сьогодні; склад столу й нотатку можна дописати
+        потім, а можна ніколи: журнал не питає, він лише пам'ятає. Коробці рівно
+        на двох (чи на одного) склад проставляється сам. «Відмінити останню»
+        прибирає найсвіжішу партію — те саме робить «−» угорі. Партії, зіграні
+        до появи журналу, лишаються самим числом у лічильнику.</p>
     </fieldset>
 
     <fieldset class="grp">
@@ -1161,13 +1175,35 @@ function сьогодні(){
   const два = (n) => (n < 10 ? "0" : "") + n;
   return д.getFullYear() + "-" + два(д.getMonth() + 1) + "-" + два(д.getDate());
 }
+/** Склад столу, якого не треба питати: коробка розрахована рівно на
+    стількох. Соло — це завжди один, дуель — завжди двоє, і клацати це
+    щоразу руками означало б питати про те, що вже відомо. */
+function сталийСклад(g){
+  const {від, до} = склад(g);
+  if(від == null || до == null || від !== до) return null;
+  return від <= 5 ? String(від) : "5+";
+}
 /** Записує партію. День без дати — сьогоднішній; лічильник іде слідом. */
-function додатиПартію(g, коли, склад){
+function додатиПартію(g, коли, наСкількох){
   const запис = {on: коли || сьогодні()};
-  if(склад) запис.count = склад;
-  g.log = журнал(g).concat([запис]).sort((a, b) => (a.on < b.on ? -1 : a.on > b.on ? 1 : 0));
+  const с = наСкількох || сталийСклад(g);
+  if(с) запис.count = с;
+  g.log = впорядкувати(журнал(g).concat([запис]));
   g.plays = Math.max((+g.plays || 0) + 1, g.log.length);
   return запис;
+}
+/** Журнал завжди йде від давнішої партії до свіжішої. */
+function впорядкувати(ж){
+  return ж.slice().sort((a, b) => (a.on < b.on ? -1 : a.on > b.on ? 1 : 0));
+}
+/** Переставляє записану партію на інший день. Порядок журналу тримається
+    сам: дата — єдине, за чим він упорядкований. */
+function перенестиПартію(g, і, коли){
+  const ж = журнал(g);
+  if(!(і >= 0 && і < ж.length) || !коли) return false;
+  ж[і].on = коли;
+  g.log = впорядкувати(ж);
+  return true;
 }
 /** Прибирає запис під номером і — разом із партією, яку він рахував.
     Номер, а не дата: за один день партій буває й дві. */
@@ -1179,14 +1215,19 @@ function прибратиПартію(g, і){
   if(ж.length) g.log = ж; else delete g.log;
   return true;
 }
-/** Мінус у лічильнику: спершу з'їдає незаписані партії, і лише коли їх
-    не лишилось — найсвіжіший запис журналу. Інакше «−1» стирало б дату,
-    якої ти не чіпав. */
+/** Мінус — це «скасувати останню партію», і саме в такому порядку:
+    спершу найсвіжіший запис журналу, і лише коли журнал порожній —
+    незаписані партії, зіграні до його появи.
+
+    Перша редакція робила навпаки, щоб не стирати дату, якої ти не чіпав, —
+    і виходило гірше за те, від чого берегло: «+» ставив сьогоднішній день,
+    «−» з'їдав натомість давню партію без дати, і повернутися до того, що
+    було, ставало неможливо. Скасування мусить скасовувати. */
 function меншеПартій(g){
   const було = +g.plays || 0;
   if(було <= 0) return;
   const ж = журнал(g);
-  if(ж.length >= було) прибратиПартію(g, ж.length - 1);
+  if(ж.length) прибратиПартію(g, ж.length - 1);
   else g.plays = було - 1;
 }
 
@@ -1305,8 +1346,7 @@ const МІГРАЦІЇ = [
   // читанні лічильник вертається принаймні до числа записаних партій.
   function журналНеБільшийЗаЛічильник(g){
     if(!Array.isArray(g.log)) return;
-    g.log = g.log.filter((з) => з && typeof з.on === "string")
-      .sort((a, b) => (a.on < b.on ? -1 : a.on > b.on ? 1 : 0));
+    g.log = впорядкувати(g.log.filter((з) => з && typeof з.on === "string"));
     if(!g.log.length){ delete g.log; return; }
     if((+g.plays || 0) < g.log.length) g.plays = g.log.length;
   },
@@ -2724,13 +2764,17 @@ function renderLog(g){
     .slice(0, усі ? ж.length : ПОКАЗУВАТИ_ПАРТІЙ);
   const незаписаних = Math.max(0, (+g.plays || 0) - ж.length);
   $("cLog").innerHTML = рядки.map(([з, і]) =>
-    "<div class='logrow'><b>" + esc(датаКоротко(з.on)) + "</b>" +
+    "<div class='logrow'>" +
+    // Дата — поле, а не підпис: партію записують і наступного дня, і в
+    // понеділок за суботу, і помилитися тут легше, ніж деінде.
+    "<input class='date-in' type='date' data-logd='" + і + "' value='" +
+    esc(з.on) + "' max='" + esc(сьогодні()) + "' aria-label='День партії'>" +
     "<select data-logn='" + і + "' aria-label='Скільки було за столом'>" +
     "<option value=''>склад</option>" +
     COUNTS.map((c) => "<option value='" + esc(c) + "'" +
       (з.count === c ? " selected" : "") + ">" + esc(CLABEL[c]) + "</option>").join("") +
     "</select>" +
-    "<input data-logt='" + і + "' value='" + esc(з.note || "") +
+    "<input class='note-in' data-logt='" + і + "' value='" + esc(з.note || "") +
     "' placeholder='нотатка' aria-label='Нотатка до партії'>" +
     "<button class='icon' data-logx='" + і + "' type='button' " +
     "aria-label='Прибрати цю партію'>✕</button></div>").join("") +
@@ -2754,11 +2798,27 @@ $("cLog").addEventListener("click", (e) => {
   touch();
 });
 $("cLog").addEventListener("change", (e) => {
-  const el = e.target.closest("[data-logn]"); if(!el) return;
   const g = current(); if(!g || !canEdit()) return;
-  const з = журнал(g)[+el.dataset.logn]; if(!з) return;
-  if(el.value) з.count = el.value; else delete з.count;
-  touch();
+  const склад = e.target.closest("[data-logn]");
+  if(склад){
+    const з = журнал(g)[+склад.dataset.logn]; if(!з) return;
+    if(склад.value) з.count = склад.value; else delete з.count;
+    touch();
+    return;
+  }
+  const день = e.target.closest("[data-logd]");
+  if(день){
+    if(!день.value || день.value > сьогодні()){
+      // Порожнє поле й день наперед лишаємо без змін: партія, яка ще не
+      // відбулася, — це не запис, а обіцянка.
+      renderLog(g);
+      if(день.value) toast("Наперед партії не записують.");
+      return;
+    }
+    перенестиПартію(g, +день.dataset.logd, день.value);
+    renderLog(g);
+    touch();
+  }
 });
 $("cLog").addEventListener("input", (e) => {
   const el = e.target.closest("[data-logt]"); if(!el) return;
@@ -2766,6 +2826,15 @@ $("cLog").addEventListener("input", (e) => {
   const з = журнал(g)[+el.dataset.logt]; if(!з) return;
   const v = el.value.trim();
   if(v) з.note = v; else delete з.note;
+  touch();
+});
+/* Скасувати останнє: те саме, що «−» угорі, але тут, при журналі, де
+   й видно, що саме зникне. */
+$("cLogUndo").addEventListener("click", () => {
+  const g = current(); if(!g || !canEdit()) return;
+  if(!(+g.plays || 0)){ toast("Скасовувати нічого."); return; }
+  меншеПартій(g);
+  показатиПартії(g);
   touch();
 });
 /* Партія минулим числом: грали в суботу, записуєш у понеділок. */
