@@ -125,8 +125,77 @@ function renderBgg(g){
   л.hidden = !g.bggId;
   л.href = g.bggId
     ? "https://boardgamegeek.com/boardgame/" + encodeURIComponent(g.bggId) : "";
+  // Кнопка є лише там, де є кому питати. На GitHub Pages те саме щоночі
+  // робить дія в репозиторії, а з диска до BGG не дійти зовсім: він не
+  // пускає до себе браузерну сторінку (CORS) і пошуку за назвою не віддає
+  // нікому — тільки звернення за числовим id з боку сервера.
+  $("cBggPull").hidden = !(mode === "server" && /^[0-9]+$/.test(String(g.bggId || "")));
   $("bggGrp").hidden = !рядки.length && !мітки.length;
 }
+
+/* Назви полів у відповіді сервера — наші внутрішні; у сповіщенні вони
+   мають бути такими самими, як підписи в блоці «Що каже BGG». Мінус
+   спереду означає, що поле не з'явилося, а зникло (так буває з рангом:
+   гра вибула з рейтингу). */
+const ЧУЖІ_ПІДПИСИ = {
+  bggMin:"гравців", bggMax:"гравців", bggTimeMin:"тривалість",
+  bggTimeMax:"тривалість", bggRating:"оцінка", bggRank:"місце в рейтингу",
+  bggWeight:"складність", bggBest:"найкраще на", bggRec:"годиться на",
+  bggFamily:"підрозділ", bggGenres:"жанри", bggMech:"механіки",
+  cover:"обкладинка"
+};
+function назвиПолів(поля){
+  const вийшло = [];
+  поля.forEach((п) => {
+    const зник = п.charAt(0) === "−" || п.charAt(0) === "-";
+    const назва = ЧУЖІ_ПІДПИСИ[зник ? п.slice(1) : п] || п;
+    const рядок = зник ? назва + " (зникло)" : назва;
+    if(вийшло.indexOf(рядок) < 0) вийшло.push(рядок);
+  });
+  return вийшло;
+}
+
+/** Запитати BGG про цю коробку просто зараз. Своїх полів це не торкається —
+    добираються тільки чужі числа; мітку updated сервер не піднімає, щоб не
+    перебити правку, яка чекає в черзі на телефоні. */
+async function pullBgg(){
+  const g = current();
+  if(!g || !canEdit()) return;
+  const кн = $("cBggPull"), підпис = кн.textContent;
+  кн.disabled = true;
+  кн.textContent = "Питаю BGG…";
+  try{
+    const res = await fetch("api/bgg", {
+      method:"POST", headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({id:g.id})
+    });
+    let тіло = {};
+    try{ тіло = await res.json(); }catch(e){}
+    if(!res.ok) throw new Error(тіло.error || ("сервер відповів " + res.status));
+    // Сервер віддає запис уже зі своїми правками — кладемо його на місце
+    // старого, а не зливаємо: правда про чужі числа тепер там.
+    const свіжа = прийняти([тіло.game])[0];
+    const і = games.findIndex((x) => x.id === свіжа.id);
+    if(і >= 0) games[і] = свіжа; else games.push(свіжа);
+    const поля = тіло.fields || [];
+    if(ui.open === свіжа.id){
+      renderBgg(свіжа);
+      renderFamily(свіжа);        // порожній варіант показує, що стоїть на BGG
+      $("cCover").value = свіжа.cover || "";
+      paintCover(свіжа);
+      renderPad(свіжа);           // межі BGG вирішують, які склади показати
+    }
+    render();
+    toast(поля.length ? "З BGG: " + назвиПолів(поля).join(", ") + "."
+                      : "На BGG те саме: міняти нічого.");
+  }catch(e){
+    toast("Не вдалося: " + (e.message || e));
+  }finally{
+    кн.disabled = false;
+    кн.textContent = підпис;
+  }
+}
+$("cBggPull").addEventListener("click", pullBgg);
 
 /** Вибір власного жанру. Порожній варіант означає «як на BGG» і показує,
     що саме там стоїть, — щоб було видно, чи є від чого відступати. */
@@ -147,7 +216,7 @@ function renderRules(g){
   $("cRules").innerHTML = список.length
     ? список.map((п) =>
         "<div class='rule'>" +
-        "<a href='" + esc(п.url) + "' target='_blank' rel='noopener noreferrer'>" +
+        "<a href='" + esc(посилання(п.url)) + "' target='_blank' rel='noopener noreferrer'>" +
         esc(п.title || ВИДИ_ПРАВИЛ[п.kind] || "правила") + "</a>" +
         "<i>" + esc(ВИДИ_ПРАВИЛ[п.kind] || п.kind || "") + "</i>" +
         "<button type='button' class='rm' data-rule='" + esc(п.url) +
@@ -271,7 +340,7 @@ bindField($("cName"), (g, v) => { g.name = v; }, "input", (g) => g.name || "");
 bindField($("cAlt"), (g, v) => { g.nameEn = v; }, "input", (g) => g.nameEn || "");
 function paintCover(g){
   $("cCovPrev").innerHTML = g.cover
-    ? "<img src='" + esc(g.cover) + "' alt='' referrerpolicy='no-referrer'>"
+    ? "<img src='" + esc(посилання(g.cover)) + "' alt='' referrerpolicy='no-referrer'>"
     : "<b>" + esc((g.name || "?").trim().charAt(0).toUpperCase()) + "</b>";
 }
 bindField($("cCover"), (g, v) => {

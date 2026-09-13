@@ -29,7 +29,7 @@ function renderВибір(обрані, скількиБуло){
     ? обрані.map((g) =>
         "<div class='cand'>" +
         "<span class='cov'>" + (g.cover
-          ? "<img src='" + esc(g.cover) + "' alt='' loading='lazy' referrerpolicy='no-referrer'>"
+          ? "<img src='" + esc(посилання(g.cover)) + "' alt='' loading='lazy' referrerpolicy='no-referrer'>"
           : "<b>" + esc((g.name || "?").trim().charAt(0).toUpperCase()) + "</b>") + "</span>" +
         "<span class='what'><b>" + esc(g.name) + "</b>" +
         "<span class='why'>" + esc([playersText(g), timeText(g), колиОстаннє(g)]

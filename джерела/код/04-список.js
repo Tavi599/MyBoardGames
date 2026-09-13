@@ -149,7 +149,7 @@ function renderList(){
       просто під твоєю. */
   function обкладинка(g, поверх){
     return "<span class='cov'>" + (g.cover
-      ? "<img src='" + esc(g.cover) + "' alt='' loading='lazy' referrerpolicy='no-referrer'>"
+      ? "<img src='" + esc(посилання(g.cover)) + "' alt='' loading='lazy' referrerpolicy='no-referrer'>"
       : "<b>" + esc((g.name || "?").trim().charAt(0).toUpperCase()) + "</b>") +
       (поверх || "") + "</span>";
   }
@@ -172,7 +172,7 @@ function renderList(){
   function кнопкаПравил(g){
     const перше = перші(g);
     if(!перше) return "<span class='rules-btn ghost'></span>";
-    return "<a class='rules-btn' href='" + esc(перше.url) + "' target='_blank'" +
+    return "<a class='rules-btn' href='" + esc(посилання(перше.url)) + "' target='_blank'" +
       " rel='noopener noreferrer' title='" + esc(rules(g).map((п) =>
         ВИДИ_ПРАВИЛ[п.kind] || п.kind).join(" · ")) +
       "' aria-label='Правила: " + esc(g.name) + "'>П</a>";

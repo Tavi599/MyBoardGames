@@ -35,7 +35,10 @@ import time
 import urllib.error
 import urllib.request
 
-sys.stdout.reconfigure(encoding="utf-8")
+# Не в «__main__»: цей файл імпортує й сервер, і тести, і вивід має бути
+# читним однаково. hasattr — бо потік може бути й не текстовим.
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
 ТЕКА = pathlib.Path(__file__).parent
 ДАНІ = ТЕКА / "оцінки.json"
@@ -136,6 +139,11 @@ def десятина(v) -> float | None:
 
 def дістати(ід: str) -> dict:
     """Усе, що знає BGG про цю коробку, — уже в наших полях і назвах."""
+    # Номер іде просто в адресу, тож приймаємо тільки цифри. Він приходить із
+    # даних, а дані бувають імпортовані з чужого файла: рядок звідти не має
+    # права дописати собі шлях чи ще один параметр запиту.
+    if not str(ід).isdigit():
+        raise ValueError(f"bggId має бути числом, а не {ід!r}")
     річ = взяти(ПРО_РІЧ.format(ід=ід)).get("item") or {}
     живе = взяти(ЖИВЕ.format(ід=ід)).get("item") or {}
     links = річ.get("links") or {}
