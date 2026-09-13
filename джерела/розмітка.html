@@ -155,6 +155,20 @@
     </div>
 
     <fieldset class="grp">
+      <legend>Журнал партій</legend>
+      <div class="log" id="cLog"></div>
+      <div class="line">
+        <div class="fld"><label for="cLogDate">Була партія</label>
+          <input id="cLogDate" type="date"></div>
+        <button class="btn" id="cLogAdd" type="button">Записати</button>
+      </div>
+      <p class="hint">«+» угорі записує сьогоднішню партію одним дотиком, і більше
+        нічого заповнювати не треба. Склад столу й нотатку можна дописати потім,
+        а можна ніколи: журнал не питає, він лише пам'ятає. Партії, зіграні до
+        його появи, лишаються самим числом у лічильнику.</p>
+    </fieldset>
+
+    <fieldset class="grp">
       <legend>Статус</legend>
       <div class="chips" id="cStatus"></div>
       <p class="hint auto-note" id="cAuto" hidden></p>

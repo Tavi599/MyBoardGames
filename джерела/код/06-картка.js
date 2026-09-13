@@ -210,7 +210,9 @@ function openCard(id){
   $("cName").value = g.name || "";
   $("cAlt").value = g.nameEn || "";
   renderStatus(g);
-  $("pVal").textContent = g.plays || 0;
+  ui.logAll = false;   // журнал щоразу починається згорнутим
+  показатиПартії(g);
+  $("cLogDate").value = "";
   $("cMin").value = g.minP == null ? "" : g.minP;
   $("cMax").value = g.maxP == null ? "" : g.maxP;
   $("cMinutes").value = g.minutes == null ? "" : g.minutes;
@@ -311,11 +313,87 @@ $("pMinus").onclick = () => bumpPlays(-1);
 function bumpPlays(d){
   const g = current(); if(!g) return;
   if(!canEdit()) return;
-  g.plays = Math.max(0, (+g.plays || 0) + d);
-  $("pVal").textContent = g.plays;
-  renderStatus(g);   // перша партія знімає «ще не зіграна», нуль — повертає
+  // Плюс записує сьогоднішню партію в журнал — це і є той «один дотик».
+  // Мінус спершу з'їдає незаписані партії, і лише потім свіжий запис.
+  if(d > 0) додатиПартію(g); else меншеПартій(g);
+  показатиПартії(g);
   touch();
 }
+/** Лічильник, журнал і похідний статус — усе, що змінює одна партія. */
+function показатиПартії(g){
+  $("pVal").textContent = g.plays || 0;
+  renderLog(g);
+  renderStatus(g);   // перша партія знімає «ще не зіграна», нуль — повертає
+}
+/* ── журнал партій ────────────────────────────────────────────────────
+   Найсвіжіші згори: саме їх дописують і саме їх виправляють. Показуємо
+   шість — далі це вже не «що ми грали останнім часом», а історія, і
+   вона розкривається окремо. */
+const ПОКАЗУВАТИ_ПАРТІЙ = 6;
+function renderLog(g){
+  const ж = журнал(g);
+  const усі = ui.logAll || ж.length <= ПОКАЗУВАТИ_ПАРТІЙ;
+  // Номер запису — це його місце в журналі; малюємо від кінця, тож
+  // тримаємо справжній номер при собі, а не рахуємо його на льоту.
+  const рядки = ж.map((з, і) => [з, і]).reverse()
+    .slice(0, усі ? ж.length : ПОКАЗУВАТИ_ПАРТІЙ);
+  const незаписаних = Math.max(0, (+g.plays || 0) - ж.length);
+  $("cLog").innerHTML = рядки.map(([з, і]) =>
+    "<div class='logrow'><b>" + esc(датаКоротко(з.on)) + "</b>" +
+    "<select data-logn='" + і + "' aria-label='Скільки було за столом'>" +
+    "<option value=''>склад</option>" +
+    COUNTS.map((c) => "<option value='" + esc(c) + "'" +
+      (з.count === c ? " selected" : "") + ">" + esc(CLABEL[c]) + "</option>").join("") +
+    "</select>" +
+    "<input data-logt='" + і + "' value='" + esc(з.note || "") +
+    "' placeholder='нотатка' aria-label='Нотатка до партії'>" +
+    "<button class='icon' data-logx='" + і + "' type='button' " +
+    "aria-label='Прибрати цю партію'>✕</button></div>").join("") +
+    (ж.length > ПОКАЗУВАТИ_ПАРТІЙ
+      ? "<button class='link' id='logMore' type='button'>" +
+        (усі ? "згорнути" : "показати всі " + ж.length) + "</button>"
+      : "") +
+    (незаписаних
+      ? "<p class='hint'>" + незаписаних + " " +
+        plural(незаписаних, "партія", "партії", "партій") +
+        " без дати — зіграні до журналу.</p>"
+      : "") +
+    (!ж.length && !незаписаних ? "<p class='hint'>Ще жодної партії.</p>" : "");
+}
+$("cLog").addEventListener("click", (e) => {
+  if(e.target.id === "logMore"){ ui.logAll = !ui.logAll; renderLog(current()); return; }
+  const b = e.target.closest("[data-logx]"); if(!b) return;
+  const g = current(); if(!g || !canEdit()) return;
+  прибратиПартію(g, +b.dataset.logx);
+  показатиПартії(g);
+  touch();
+});
+$("cLog").addEventListener("change", (e) => {
+  const el = e.target.closest("[data-logn]"); if(!el) return;
+  const g = current(); if(!g || !canEdit()) return;
+  const з = журнал(g)[+el.dataset.logn]; if(!з) return;
+  if(el.value) з.count = el.value; else delete з.count;
+  touch();
+});
+$("cLog").addEventListener("input", (e) => {
+  const el = e.target.closest("[data-logt]"); if(!el) return;
+  const g = current(); if(!g || !canEdit()) return;
+  const з = журнал(g)[+el.dataset.logt]; if(!з) return;
+  const v = el.value.trim();
+  if(v) з.note = v; else delete з.note;
+  touch();
+});
+/* Партія минулим числом: грали в суботу, записуєш у понеділок. */
+$("cLogAdd").addEventListener("click", () => {
+  const g = current(); if(!g || !canEdit()) return;
+  const коли = $("cLogDate").value;
+  if(!коли){ toast("Обери день, коли грали."); return; }
+  if(коли > сьогодні()){ toast("Наперед партії не записують."); return; }
+  додатиПартію(g, коли);
+  $("cLogDate").value = "";
+  показатиПартії(g);
+  touch();
+});
 $("cDone").onclick = closeCard;
 $("cClose").onclick = closeCard;
 $("scrim").onclick = closeCard;

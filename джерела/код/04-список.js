@@ -196,7 +196,13 @@ function renderList(){
     if(рід.length) meta.push(рід.join(" · "));
     const хто = playersText(g); if(хто) meta.push(хто);
     const коли = timeText(g); if(коли) meta.push(коли);
-    if(g.plays) meta.push(g.plays + " " + plural(g.plays, "партія", "партії", "партій"));
+    if(g.plays){
+      // Дата останньої партії стоїть тут же, при лічильнику: заради неї
+      // журнал і заводили, а окремої колонки вона не варта.
+      const коли = остання(g);
+      meta.push(g.plays + " " + plural(g.plays, "партія", "партії", "партій") +
+        (коли ? ", востаннє " + датаКоротко(коли) : ""));
+    }
     const вага = складність(g); if(вага) meta.push("складність " + fmt(вага));
     if(g.tags && g.tags.length) meta.push(g.tags.join(" · "));
     // У рядку — тільки ті склади, за які оцінка вже стоїть. Порожні

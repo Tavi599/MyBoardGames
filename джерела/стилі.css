@@ -444,6 +444,22 @@ button{cursor:pointer}
 .chip.tied{background:var(--sunk); color:var(--ink); border-style:dashed}
 .chip.tied b{margin-left:7px; color:var(--ink-faint); font-weight:600}
 .chip.tied:hover b{color:var(--rust)}
+/* ── журнал партій ─────────────────────────────────────────────────────
+   Рядок партії: дата, склад, нотатка, хрестик. Дата має сталу ширину —
+   інакше поля під нею стрибають від «3 вер» до «13 лист 2025». */
+.log{display:flex; flex-direction:column; gap:4px}
+.logrow{display:flex; align-items:center; gap:6px}
+.logrow > b{flex:0 0 78px; font:600 11px/1 "IBM Plex Mono",ui-monospace,monospace;
+  letter-spacing:.04em; color:var(--ink-soft)}
+.logrow select{flex:0 0 64px; min-width:0; height:30px; border:1px solid var(--rule);
+  border-radius:6px; background:var(--sheet); color:var(--ink); font-size:13px; padding:0 4px}
+.logrow select option{background:var(--sheet); color:var(--ink)}
+.logrow input{flex:1 1 60px; min-width:0; height:30px; border:1px solid var(--rule);
+  border-radius:6px; background:var(--sheet); padding:0 8px; font-size:13px}
+.logrow .icon{width:28px; height:28px; flex:none; font-size:12px}
+.log .link{align-self:flex-start; margin-top:2px; letter-spacing:.06em; font-size:12px}
+.log .hint{margin:2px 0 0}
+
 .picks{display:flex; flex-direction:column; gap:2px; max-height:230px; overflow-y:auto}
 .pickrow{display:flex; align-items:center; gap:9px; padding:7px 9px; border-radius:6px;
   background:var(--paper); border:1px solid var(--rule-soft); font-size:14px; cursor:pointer}

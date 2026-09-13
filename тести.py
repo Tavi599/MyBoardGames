@@ -22,6 +22,8 @@ import перевірка
             "id": "g-base", "name": "Основна", "nameEn": "Base",
             "statuses": ["колекція", "улюблена"], "status": "колекція",
             "score": 8.5, "weight": 3, "plays": 4,
+            "log": [{"on": "2026-08-30", "count": "2"},
+                    {"on": "2026-09-11", "note": "виграв Тарас"}],
             "byCount": {"1": 6, "2": 9, "4": 7.5, "5+": 5},
             "minP": 1, "maxP": 4, "minutes": 60,
             "bggMin": 1, "bggMax": 6, "bggBest": [2, 3], "bggRec": [1, 2, 3, 4],
@@ -117,6 +119,22 @@ import перевірка
     ("те саме посилання двічі",
      lambda с: с["games"][0]["rules"].append(dict(с["games"][0]["rules"][0])),
      "вже є"),
+    ("журнал не списком", lambda с: с["games"][0].update(log={}), "log"),
+    ("партія без дати", lambda с: с["games"][0]["log"][0].pop("on"), "YYYY-MM-DD"),
+    ("день, якого немає",
+     lambda с: с["games"][0]["log"][0].update(on="2026-02-31"), "такого дня немає"),
+    ("дата навиворіт",
+     lambda с: с["games"][0]["log"][0].update(on="30.08.2026"), "YYYY-MM-DD"),
+    ("журнал не за порядком",
+     lambda с: с["games"][0].update(log=list(reversed(с["games"][0]["log"]))),
+     "від давнішої"),
+    ("склад партії вигаданий",
+     lambda с: с["games"][0]["log"][0].update(count="7"), "не склад столу"),
+    ("нотатка не рядком",
+     lambda с: с["games"][0]["log"][0].update(note=7), "note"),
+    # Найважливіше з усього журналу: записів не може бути більше за партії.
+    ("записів більше, ніж партій",
+     lambda с: с["games"][0].update(plays=1), "лічильник каже"),
 ]
 
 

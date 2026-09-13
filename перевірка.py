@@ -22,7 +22,7 @@ sys.stdout.reconfigure(encoding="utf-8")
 ПОРІГ_ПОДІЛУ = 250 * 1024
 
 # Має збігатися з ВЕРСІЯ у «джерела/код/01-основа.js».
-ВЕРСІЯ_ДАНИХ = 3
+ВЕРСІЯ_ДАНИХ = 4
 
 # «хочу зіграти» й «відклав» скасовано на версії 3; «чужа» — коробка є,
 # але не твоя. Міграція на сторінці викидає скасовані з давніх записів.
@@ -39,7 +39,7 @@ sys.stdout.reconfigure(encoding="utf-8")
     "plays", "minP", "maxP", "minutes", "tags", "comment", "cover", "expansion",
     "withExp", "bggId", "bggRating", "bggRank", "added", "updated", "deleted",
     "rules", "bggMin", "bggMax", "bggBest", "bggRec", "bggTimeMin", "bggTimeMax",
-    "bggWeight", "bggFamily", "bggGenres", "bggMech", "family",
+    "bggWeight", "bggFamily", "bggGenres", "bggMech", "family", "log",
 }
 
 # Підписи жанрів живуть в одному файлі зі сторінкою: «збірка.py» вкладає
@@ -101,6 +101,45 @@ def опитування(де, поле, v, стеля):
     поза = [x for x in v if not 1 <= x <= межа]
     if поза:
         біда(де, f"{поле} має склади поза межами 1..{межа}: {поза}")
+
+
+def журнал(де, v, партій):
+    """Журнал партій: записи з датою, від давнішої до свіжішої, і їх ніколи
+    не більше, ніж самих партій, — партія без запису буває (зіграли до
+    журналу), запис без партії не буває."""
+    if v is None:
+        return
+    if not isinstance(v, list):
+        return біда(де, "log має бути списком")
+    дати = []
+    сьогодні = datetime.now().strftime("%Y-%m-%d")
+    for н, з in enumerate(v):
+        хто = f"{де} log[{н}]"
+        if not isinstance(з, dict):
+            біда(хто, "не об'єкт")
+            continue
+        зайві = set(з) - {"on", "count", "note"}
+        if зайві:
+            увага(хто, "невідомі поля: " + ", ".join(sorted(зайві)))
+        коли = з.get("on")
+        if not isinstance(коли, str) or not re.fullmatch(r"\d{4}-\d{2}-\d{2}", коли):
+            біда(хто, f"on = {коли!r}: потрібен день у вигляді YYYY-MM-DD")
+        else:
+            try:
+                datetime.fromisoformat(коли)
+                дати.append(коли)
+                if коли > сьогодні:
+                    увага(хто, f"партія {коли} — у майбутньому")
+            except ValueError:
+                біда(хто, f"on = {коли!r} — такого дня немає")
+        if "count" in з and з["count"] not in СКЛАДИ:
+            біда(хто, f"count = {з['count']!r}: це не склад столу")
+        if "note" in з and not isinstance(з["note"], str):
+            біда(хто, "note має бути рядком")
+    if дати != sorted(дати):
+        біда(де, "log має йти від давнішої партії до свіжішої")
+    if len(v) > (партій or 0):
+        біда(де, f"у журналі {len(v)} партій, а лічильник каже {партій or 0}")
 
 
 def ціле(де, поле, v, найменше=0, найбільше=None):
@@ -222,6 +261,7 @@ def _перевірити(стан):
         чужа(де, "bggRating", г.get("bggRating"))
         чужа(де, "bggWeight", г.get("bggWeight"), 5)
         ціле(де, "plays", г.get("plays"), 0)
+        журнал(де, г.get("log"), г.get("plays"))
         ціле(де, "bggRank", г.get("bggRank"), 1)
         ціле(де, "minP", г.get("minP"), 1, 100)
         ціле(де, "maxP", г.get("maxP"), 1, 100)

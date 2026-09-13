@@ -21,6 +21,7 @@ function renderCmp(){
     ["Завжди з", (g) => withNames(g).join(", "), false],
     ["Складність", (g) => складність(g), false],
     ["Партій", (g) => g.plays || 0, false],
+    ["Востаннє", (g) => (остання(g) ? датаКоротко(остання(g)) : ""), false],
     ["Гравців", (g) => playersText(g), false],
     ["Найкраще на", (g) => ranges(g.bggBest), false],
     ["Годиться на", (g) => ranges(g.bggRec), false],
