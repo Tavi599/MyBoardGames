@@ -34,8 +34,12 @@ function renderВибір(обрані, скількиБуло){
         "<span class='what'><b>" + esc(g.name) + "</b>" +
         "<span class='why'>" + esc([playersText(g), timeText(g), колиОстаннє(g)]
           .filter(Boolean).join(" · ")) + "</span></span>" +
-        "<span class='num " + band(g.score) + "'>" +
+        // Своя оцінка й чужа — стовпчиком, як у списку: коли збираєшся
+        // грати іншою компанією, чужа середня важить не менше за свою.
+        "<span class='cand-score'><span class='num " + band(g.score) + "'>" +
         (g.score == null ? "—" : fmt(g.score)) + "</span>" +
+        (g.bggRating ? "<span class='bgg'>BGG " + fmt(g.bggRating) + "</span>" : "") +
+        "</span>" +
         "<span class='cand-do'>" +
         "<button class='btn' data-cplay='" + esc(g.id) + "' type='button'>+ партія</button>" +
         "<button class='link' data-copen='" + esc(g.id) + "' type='button'>картка</button>" +

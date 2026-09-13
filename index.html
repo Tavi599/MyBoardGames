@@ -566,9 +566,12 @@ textarea:focus{outline:none; border-color:var(--petrol)}
   overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
 .cand .why{display:block; font-size:12px; color:var(--ink-faint);
   overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
-.cand > .num{flex:none; font-family:"IBM Plex Sans","Segoe UI",system-ui,sans-serif;
-  font-weight:600; font-size:20px; letter-spacing:-.02em;
+.cand-score{flex:none; display:flex; flex-direction:column; align-items:center; gap:1px}
+.cand-score .num{font-family:"IBM Plex Sans","Segoe UI",system-ui,sans-serif;
+  font-weight:600; font-size:20px; letter-spacing:-.02em; line-height:1.1;
   font-variant-numeric:tabular-nums; color:var(--band,var(--ink-faint))}
+.cand-score .bgg{white-space:nowrap; font:600 10px/1 "IBM Plex Mono",ui-monospace,monospace;
+  letter-spacing:.04em; color:var(--ink-faint)}
 .cand-do{flex:none; display:flex; flex-direction:column; align-items:flex-end; gap:3px}
 .cand-do .btn{height:28px; padding:0 9px; font-size:12.5px}
 .cand-do .link{font-size:11px; letter-spacing:.06em}
@@ -3429,8 +3432,12 @@ function renderВибір(обрані, скількиБуло){
         "<span class='what'><b>" + esc(g.name) + "</b>" +
         "<span class='why'>" + esc([playersText(g), timeText(g), колиОстаннє(g)]
           .filter(Boolean).join(" · ")) + "</span></span>" +
-        "<span class='num " + band(g.score) + "'>" +
+        // Своя оцінка й чужа — стовпчиком, як у списку: коли збираєшся
+        // грати іншою компанією, чужа середня важить не менше за свою.
+        "<span class='cand-score'><span class='num " + band(g.score) + "'>" +
         (g.score == null ? "—" : fmt(g.score)) + "</span>" +
+        (g.bggRating ? "<span class='bgg'>BGG " + fmt(g.bggRating) + "</span>" : "") +
+        "</span>" +
         "<span class='cand-do'>" +
         "<button class='btn' data-cplay='" + esc(g.id) + "' type='button'>+ партія</button>" +
         "<button class='link' data-copen='" + esc(g.id) + "' type='button'>картка</button>" +
