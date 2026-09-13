@@ -148,11 +148,14 @@ $("keyIn").addEventListener("keydown", (e) => { if(e.key === "Enter") $("keySave
 $("fileIn").addEventListener("change", async (e) => {
   const f = e.target.files && e.target.files[0]; if(!f) return;
   e.target.value = "";
-  let data;
-  try{ data = JSON.parse(await f.text()); }
-  catch(err){ toast("Це не схоже на JSON із полиці."); return; }
-  const arr = прийняти(Array.isArray(data) ? data : data.games);
-  if(!Array.isArray(arr)){ toast("У файлі немає списку ігор."); return; }
+  let arr;
+  try{
+    const data = JSON.parse(await f.text());
+    arr = прийняти(Array.isArray(data) ? data : data.games);
+  }catch(err){
+    toast("Це не схоже на полицю: " + (err.message || err));
+    return;
+  }
   let added = 0, upd = 0;
   for(const raw of arr){
     if(!raw || !raw.name) continue;

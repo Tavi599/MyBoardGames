@@ -174,9 +174,8 @@ async function pullBgg(){
     if(!res.ok) throw new Error(тіло.error || ("сервер відповів " + res.status));
     // Сервер віддає запис уже зі своїми правками — кладемо його на місце
     // старого, а не зливаємо: правда про чужі числа тепер там.
-    const свіжа = прийняти([тіло.game])[0];
-    const і = games.findIndex((x) => x.id === свіжа.id);
-    if(і >= 0) games[і] = свіжа; else games.push(свіжа);
+    if(!тіло.game) throw new Error("сервер не віддав коробку");
+    const свіжа = оновитиОдну(прийняти([тіло.game])[0]);
     const поля = тіло.fields || [];
     if(ui.open === свіжа.id){
       renderBgg(свіжа);

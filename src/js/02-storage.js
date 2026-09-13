@@ -220,19 +220,27 @@ function badge(){
   }
 }
 
-function mergeIn(incoming){
+/** Повний стан із сервера лягає на місце нинішнього.
+
+    Саме **повний**: наприкінці в games лишається тільки те, що приїхало,
+    плюс те, що ще чекає в черзі, — інакше гра, викинута з іншого пристрою,
+    воскресала б тут. Одну коробку сюди передавати не можна: від полиці
+    лишиться одна коробка. Для однієї є оновитиОдну(). */
+function замінитиСтан(incoming){
   // Те саме правило, що й на сервері: свіжіший запис перемагає. Потрібне,
   // бо поки відповідь летіла, тут могли встигнути натиснути ще щось.
-  const byId = {};
-  games.forEach((g) => { byId[g.id] = g; });
-  incoming.forEach((g) => {
-    const cur = byId[g.id];
-    if(!cur || (g.updated || "") >= (cur.updated || "")) byId[g.id] = g;
-  });
+  const merged = lww(games, incoming);
   const known = new Set(incoming.map((g) => g.id));
   const pending = new Set(queue.map((g) => g.id));
-  games = Object.keys(byId).map((id) => byId[id])
-    .filter((g) => known.has(g.id) || pending.has(g.id));
+  games = merged.filter((g) => known.has(g.id) || pending.has(g.id));
+}
+
+/** Одна коробка, яку перерахували деінде — скажімо, сервер добрав їй числа
+    з BGG. Решта полиці лишається як є. */
+function оновитиОдну(g){
+  const i = games.findIndex((x) => x.id === g.id);
+  if(i >= 0) games[i] = g; else games.push(g);
+  return g;
 }
 
 async function sync(list){
@@ -248,7 +256,7 @@ async function sync(list){
     if(!res.ok) throw new Error("HTTP " + res.status);
     const state = await res.json();
     queue = []; queueSave();
-    mergeIn(прийняти(state.games));
+    замінитиСтан(прийняти(state.games));
     if(ui.open && !games.some((g) => g.id === ui.open)) closeCard();
     badge(); render();
     return true;
@@ -276,11 +284,12 @@ async function persist(g){
 
 async function drop(id){
   const g = games.find((x) => x.id === id);
+  if(!g) return;
   games = games.filter((x) => x.id !== id);
   const мітка = {id:id, name:(g && g.name) || "", deleted:new Date().toISOString(),
                  updated:new Date().toISOString()};
   if(mode === "github"){
-    if(!token){ toast("Без ключа доступу видалити не вийде."); games.push(g); return; }
+    if(!token){ toast("Без ключа доступу видалити не вийде."); games.push(g); render(); return; }
     enqueue([мітка]); cacheSave(); badge(); render(); schedulePush(); return;
   }
   if(mode === "server"){
@@ -328,9 +337,15 @@ async function boot(){
       const res = await fetch("api/state", {cache:"no-store"});
       if(res.ok) state = await res.json();
     }catch(e){}
-    if(state){
+    // Відповідь сервера теж буває несхожою на полицю — тоді краще
+    // лишитися при своїй копії, ніж обірвати завантаження з порожнім
+    // екраном: прийняти() від такого кидає.
+    let зі_сервера = null;
+    try{ зі_сервера = state ? прийняти(state.games) : null; }
+    catch(e){ зі_сервера = null; }
+    if(зі_сервера){
       mode = "server";
-      games = прийняти(state.games);
+      games = зі_сервера;
       ready = true; badge(); render();
       if(queue.length) sync([]);
       setInterval(() => { if(queue.length) sync([]); }, 30000);
