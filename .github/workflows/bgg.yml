@@ -40,7 +40,11 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  добрати:
+  # Ідентифікатор роботи — латиною: GitHub інших не приймає й мовчки
+  # відмовляється читати весь файл (робіт нуль, назва — шлях до файла).
+  # Те саме правило, що й для змінних оболонки нижче.
+  bgg:
+    name: Добрати числа з BGG
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
