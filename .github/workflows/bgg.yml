@@ -71,20 +71,20 @@ jobs:
             git reset --hard "origin/${GITHUB_REF_NAME}"
 
             if [ "${REFRESH}" = "true" ]; then
-              python "бгг.py" --усі
+              python "bgg.py" --усі
             else
-              python "бгг.py"
+              python "bgg.py"
             fi
 
-            if git diff --quiet -- "оцінки.json"; then
+            if git diff --quiet -- "ratings.json"; then
               echo "Нічого нового: коміт не потрібен."
               exit 0
             fi
 
             # Зламаного не комітимо навіть від себе.
-            python "перевірка.py"
+            python "check.py"
 
-            git add -- "оцінки.json"
+            git add -- "ratings.json"
             git commit -m "Числа з BGG: добрано автоматично
 
           Склад столу, тривалість, вага, жанри й обкладинки для коробок,

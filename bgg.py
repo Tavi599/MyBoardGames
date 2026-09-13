@@ -20,10 +20,10 @@
 чисел, а наступний запуск їх спокійно поверне.
 
 Запуск:
-    python "бгг.py"                 добрати те, чого бракує
-    python "бгг.py" --усі           ще й освіжити наявне: оцінка й ранг пливуть
-    python "бгг.py" --лише g-seed-01 g-calico
-    python "бгг.py" --показати      нічого не писати, лише показати різницю
+    python "bgg.py"                 добрати те, чого бракує
+    python "bgg.py" --усі           ще й освіжити наявне: оцінка й ранг пливуть
+    python "bgg.py" --лише g-seed-01 g-calico
+    python "bgg.py" --показати      нічого не писати, лише показати різницю
 """
 from __future__ import annotations
 
@@ -41,7 +41,7 @@ if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
 ТЕКА = pathlib.Path(__file__).parent
-ДАНІ = ТЕКА / "оцінки.json"
+ДАНІ = ТЕКА / "ratings.json"
 
 ПРО_РІЧ = "https://api.geekdo.com/api/geekitems?objectid={ід}&objecttype=thing"
 ЖИВЕ = "https://api.geekdo.com/api/dynamicinfo?objectid={ід}&objecttype=thing"
@@ -52,7 +52,7 @@ if hasattr(sys.stdout, "reconfigure"):
 ЗАГОЛОВКИ = {"User-Agent": "polytsia-shelf/1.0 (+https://github.com/Tavi599/MyBoardGames)",
              "Accept": "application/json"}
 # Опитування спільноти зводиться до складів 1..10 — далі це вже не про стіл.
-# Те саме число стоїть у «перевірка.py»: воно там і перевіряється.
+# Те саме число стоїть у «check.py»: воно там і перевіряється.
 СТЕЛЯ_ОПИТУВАННЯ = 10
 # Це не жанри, а службові позначки BGG: «доповнення до базової гри». У нас
 # для цього є своя галочка в картці, а в стрічці жанрів такий чип був би

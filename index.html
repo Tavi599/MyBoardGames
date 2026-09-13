@@ -665,7 +665,7 @@ textarea:focus{outline:none; border-color:var(--petrol)}
   </header>
 
   <div class="tools">
-    <!-- Фільтри малюються з реєстру в «03-вибірка.js», і кожен сам знає, де
+    <!-- Фільтри малюються з реєстру в «03-filter.js», і кожен сам знає, де
          йому стояти: пошук тут, абетка окремим рядком, решта — у шухляді. -->
     <div class="filters" id="search"></div>
     <button class="btn" id="filtBtn" aria-haspopup="dialog" aria-expanded="false"
@@ -954,7 +954,7 @@ textarea:focus{outline:none; border-color:var(--petrol)}
 </aside>
 
 <script>
-/* Згенеровано збіркою з «джерела/жанри.json» — правити там. */
+/* Згенеровано збіркою з «src/genres.json» — правити там. */
 "use strict";
 const РОДИНИ = {"strategy-games": "стратегія", "family-games": "сімейна", "thematic-games": "тематична", "party-games": "вечіркова", "abstract-games": "абстрактна", "customizable-games": "колекційна", "childrens-games": "дитяча", "wargames": "воєнна"};
 const ЖАНРИ = {"abstract-strategy": "абстрактна стратегія", "action-dexterity": "спритність", "adventure": "пригоди", "american-west": "Дикий Захід", "ancient": "античність", "animals": "тварини", "arabian": "Схід", "aviation-flight": "авіація", "bluffing": "блеф", "book": "книга", "card-game": "карткова", "childrens-game": "дитяча", "city-building": "розбудова міста", "civilization": "цивілізація", "collectible-components": "колекційні складники", "comic-book-strip": "комікси", "deduction": "дедукція", "dice": "кубики", "economic": "економіка", "educational": "навчальна", "environmental": "довкілля", "exploration": "дослідження світу", "fantasy": "фентезі", "farming": "фермерство", "fighting": "бійка", "horror": "жахи", "humor": "гумор", "industry-manufacturing": "виробництво", "mafia": "мафія", "maze": "лабіринт", "medieval": "середньовіччя", "memory": "памʼять", "miniatures": "мініатюри", "movies-tv-radio-theme": "кіно й серіали", "murder-mystery": "убивство й розслідування", "mythology": "міфологія", "nautical": "море", "negotiation": "перемовини", "novel-based": "за книгою", "number": "числа", "party-game": "вечіркова", "pirates": "пірати", "political": "політика", "prehistoric": "первісні часи", "print-and-play": "роздрукуй і грай", "puzzle": "головоломка", "racing": "перегони", "real-time": "на час", "renaissance": "Ренесанс", "science-fiction": "наукова фантастика", "space-exploration": "освоєння космосу", "spies-secret-agents": "шпигуни", "sports": "спорт", "territory-building": "розширення володінь", "trains": "потяги", "transportation": "транспорт", "travel": "подорожі", "video-game-theme": "відеоігри", "wargame": "воєнна", "word-game": "словесна", "zombies": "зомбі"};
@@ -1011,7 +1011,7 @@ function rules(g){
 function перші(g){ return rules(g)[0] || null; }
 
 /* ── жанри ────────────────────────────────────────────────────────────
-   Дві константи, РОДИНИ і ЖАНРИ, вкладає збірка з «джерела/жанри.json» —
+   Дві константи, РОДИНИ і ЖАНРИ, вкладає збірка з «src/genres.json» —
    того самого файла, яким звіряється перевірка даних. У самих записах
    лежать слуги BGG («card-game»), а не підписи: підпис можна переписати
    українською заново, і жоден запис від цього не зміниться.
@@ -1040,7 +1040,7 @@ function genreNames(g){ return (g.bggGenres || []).map((k) => ЖАНРИ[k] || k
    обидва: гра пасує, якщо має бодай один зі своїх слугів.
 
    Ніде не зберігаються: виводяться щоразу з bggGenres і bggMech. Тому
-   зміна визначення в «жанри.json» діє одразу, без проходу по даних. */
+   зміна визначення в «genres.json» діє одразу, без проходу по даних. */
 function hasKey(g, к){
   const кат = g.bggGenres || [], мех = g.bggMech || [];
   if(к.склад && !пасуєСклад(g, к.склад)) return false;
@@ -1287,7 +1287,7 @@ const SEED = ["Картографи","Magic Maze","Planet B","Unmatched: Бит�
 let games = [];
 let db = null;
 let ready = false;
-// Поля фільтрів сюди дописує реєстр із «03-вибірка.js» — щоб типове
+// Поля фільтрів сюди дописує реєстр із «03-filter.js» — щоб типове
 // значення кожного фільтра жило в одному місці, а не в двох.
 const ui = {sort:"score", rev:false, hide:new Set(), cmp:false,
             view:збереженийВигляд(),
@@ -1422,7 +1422,7 @@ function newId(){ return "g-" + Date.now().toString(36) + "-" + Math.random().to
 
 /* ── зберігання ─────────────────────────────────────────────────────
    Три місця, і сторінка сама розуміє, де вона запущена:
-     "server" — віддана локальним сервером, правда лежить в «оцінки.json»;
+     "server" — віддана локальним сервером, правда лежить в «ratings.json»;
      "cloud"  — опублікована сторінка, правда в базі артефакта;
      "local"  — файл відкрито з диска, правда в пам'яті цього браузера.
    У режимі сервера незбережене не губиться: лягає в чергу й доїздить,
@@ -1460,10 +1460,10 @@ function enqueue(list){
 }
 
 /* ── GitHub як база ──────────────────────────────────────────────────
-   Сторінка, віддана GitHub Pages, пише «оцінки.json» просто в репозиторій
+   Сторінка, віддана GitHub Pages, пише «ratings.json» просто в репозиторій
    через API. Кожне збереження — коміт, тобто історія й резервна копія це
    одне й те саме. Комп'ютер удома для цього не потрібен.               */
-const GH = {owner:"Tavi599", repo:"MyBoardGames", path:"оцінки.json", branch:"main"};
+const GH = {owner:"Tavi599", repo:"MyBoardGames", path:"ratings.json", branch:"main"};
 const TKEY = "polytsia.token.v1";
 const CKEY = "polytsia.cache.v1";
 const ПАУЗА = 8000;            // мс тиші перед комітом
@@ -1632,7 +1632,7 @@ function badge(){
     chip.textContent = queue.length ? "чекає " + queue.length : "сервер";
     chip.title = queue.length
       ? queue.length + " змін чекають на зв'язок із сервером — не закривай сторінку надовго"
-      : "Оцінки лежать в «оцінки.json» на комп'ютері й комітяться в git";
+      : "Оцінки лежать в «ratings.json» на комп'ютері й комітяться в git";
   } else if(mode === "cloud"){
     chip.className = "chip ok"; chip.textContent = "хмара";
     chip.title = "Оцінки в базі опублікованої сторінки";
@@ -3024,7 +3024,7 @@ $("cRules").addEventListener("click", (e) => {
 
    Закрита шухляда ховає не лише кнопки, а й відповідь на «чому коробок
    раптом дванадцять», тож ввімкнене показують плашки над списком —
-   кожна знімається дотиком. Малює їх renderFound у «04-список.js». */
+   кожна знімається дотиком. Малює їх renderFound у «04-list.js». */
 
 /** Підпис і кнопки однієї стрічки. Окремо, бо їх малюють двоє: повна
     побудова панелі й оновлення стрічки, чиї варіанти залежать від даних. */
@@ -3493,7 +3493,7 @@ boot();
    коробок, а з двадцяти вибирати так само важко, як із дев'яноста.
 
    Тому тут не фільтр, а жереб: кілька коробок, які підходять саме зараз.
-   Сам жереб — кандидати, ваги, витягування — живе у «03-вибірка.js»
+   Сам жереб — кандидати, ваги, витягування — живе у «03-filter.js»
    разом з рештою вибірки: там його перевіряють тести. Тут лишилося
    тільки те, що чіпає сторінку. */
 
