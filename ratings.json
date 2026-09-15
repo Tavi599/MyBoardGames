@@ -1,7 +1,7 @@
 {
   "app": "полиця настілок",
   "version": 4,
-  "saved": "2026-09-15T21:17:14.518Z",
+  "saved": "2026-09-15T21:17:37.355Z",
   "games": [
     {
       "added": "2026-09-12",
@@ -487,7 +487,8 @@
       "bggTimeMin": 30,
       "bggWeight": 2.9,
       "byCount": {
-        "2": 8.5
+        "2": 8,
+        "3": 9
       },
       "comment": "",
       "cover": "https://cf.geekdo-images.com/6GqH14TJJhza86BX5HCLEQ__square200/img/tyxj64Wz6GWL1X-jfnsg3tnaWV4=/200x200/filters:strip_icc()/pic5674958.jpg",
@@ -521,7 +522,7 @@
         "чужа"
       ],
       "tags": [],
-      "updated": "2026-09-15T21:17:05.538Z",
+      "updated": "2026-09-15T21:17:28.412Z",
       "weight": 3,
       "withExp": [
         "g-arnak-promo"
