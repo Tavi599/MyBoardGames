@@ -27,7 +27,7 @@
         "simultaneous-action-selection"
       ],
       "bggMin": 2,
-      "bggRank": 674,
+      "bggRank": 675,
       "bggRating": 7,
       "bggRec": [
         3,
@@ -175,7 +175,7 @@
         "variable-player-powers"
       ],
       "bggMin": 1,
-      "bggRank": 7917,
+      "bggRank": 7811,
       "bggRating": 8.3,
       "bggRec": [
         1,
@@ -185,7 +185,7 @@
       ],
       "bggTimeMax": 60,
       "bggTimeMin": 40,
-      "bggWeight": 2.3,
+      "bggWeight": 2.4,
       "byCount": {
         "2": 6,
         "3": 7,
@@ -405,7 +405,7 @@
         "variable-player-powers"
       ],
       "bggMin": 1,
-      "bggRating": 8.5,
+      "bggRating": 8.6,
       "bggRec": [
         1,
         2,
@@ -721,7 +721,7 @@
         "variable-player-powers"
       ],
       "bggMin": 2,
-      "bggRank": 973,
+      "bggRank": 965,
       "bggRating": 7.4,
       "bggRec": [
         2,
@@ -783,7 +783,7 @@
         "tile-placement"
       ],
       "bggMin": 1,
-      "bggRank": 7713,
+      "bggRank": 7629,
       "bggRating": 7,
       "bggRec": [
         2,
@@ -852,7 +852,7 @@
         "take-that"
       ],
       "bggMin": 2,
-      "bggRank": 9499,
+      "bggRank": 9519,
       "bggRating": 6.2,
       "bggRec": [
         2,
@@ -933,7 +933,7 @@
       "bggTimeMin": 40,
       "bggTimeMax": 40,
       "bggRating": 7.2,
-      "bggRank": 1296,
+      "bggRank": 1297,
       "bggWeight": 1.8,
       "bggBest": [
         3
@@ -1047,9 +1047,10 @@
         "worker-placement"
       ],
       "bggMin": 1,
-      "bggRank": 5419,
+      "bggRank": 5398,
       "bggRating": 7.3,
       "bggRec": [
+        1,
         2,
         3,
         4
@@ -1185,7 +1186,7 @@
         "tile-placement"
       ],
       "bggMin": 1,
-      "bggRank": 274,
+      "bggRank": 276,
       "bggRating": 7.5,
       "bggRec": [
         1,
@@ -1438,14 +1439,13 @@
       "bggMax": 5,
       "bggMech": [
         "end-game-bonuses",
-        "multi-use-cards",
         "open-drafting",
         "set-collection",
         "tags",
         "tile-placement"
       ],
       "bggMin": 2,
-      "bggRank": 208,
+      "bggRank": 203,
       "bggRating": 7.7,
       "bggRec": [
         2,
@@ -1512,7 +1512,7 @@
         "solo-solitaire-game"
       ],
       "bggMin": 1,
-      "bggRank": 6168,
+      "bggRank": 6162,
       "bggRating": 6.3,
       "bggRec": [
         1,
@@ -1568,7 +1568,7 @@
         "solo-solitaire-game"
       ],
       "bggMin": 1,
-      "bggRank": 203,
+      "bggRank": 204,
       "bggRating": 7.5,
       "bggRec": [
         1,
@@ -1646,7 +1646,7 @@
       "bggTimeMin": 30,
       "bggTimeMax": 60,
       "bggRating": 6.8,
-      "bggRank": 2120,
+      "bggRank": 2125,
       "bggWeight": 2,
       "bggBest": [
         3
@@ -1701,7 +1701,7 @@
         "variable-player-powers"
       ],
       "bggMin": 2,
-      "bggRank": 565,
+      "bggRank": 566,
       "bggRating": 7.1,
       "bggRec": [
         3,
@@ -1836,7 +1836,7 @@
         "take-that"
       ],
       "bggMin": 1,
-      "bggRank": 3475,
+      "bggRank": 3484,
       "bggRating": 6.7,
       "bggRec": [
         1,
@@ -1897,7 +1897,7 @@
         "voting"
       ],
       "bggMin": 3,
-      "bggRank": 435,
+      "bggRank": 436,
       "bggRating": 7.2,
       "bggRec": [
         4,
@@ -1970,7 +1970,7 @@
         "take-that"
       ],
       "bggMin": 2,
-      "bggRank": 4046,
+      "bggRank": 4062,
       "bggRating": 6.1,
       "bggRec": [
         3,
@@ -2167,7 +2167,7 @@
         "variable-set-up"
       ],
       "bggMin": 2,
-      "bggRank": 1517,
+      "bggRank": 1519,
       "bggRating": 7,
       "bggRec": [
         2
@@ -2367,7 +2367,7 @@
         "variable-set-up"
       ],
       "bggMin": 1,
-      "bggRank": 3250,
+      "bggRank": 3257,
       "bggRating": 6.8,
       "bggRec": [
         1,
@@ -2432,7 +2432,7 @@
         "tile-placement"
       ],
       "bggMin": 2,
-      "bggRank": 337,
+      "bggRank": 336,
       "bggRating": 7.3,
       "bggRec": [
         2
@@ -2551,14 +2551,14 @@
         "storytelling"
       ],
       "bggMin": 1,
-      "bggRank": 3075,
+      "bggRank": 2986,
       "bggRating": 7.8,
       "bggRec": [
         1
       ],
       "bggTimeMax": 60,
       "bggTimeMin": 30,
-      "bggWeight": 2.1,
+      "bggWeight": 2.2,
       "byCount": {},
       "comment": "",
       "cover": "https://cf.geekdo-images.com/s8nB_bnCj_nBdwMJZqsptA__square200/img/0dT9LLAJSC0oz_KYUfp9rr44sck=/200x200/filters:strip_icc()/pic8332322.png",
@@ -2620,7 +2620,7 @@
         "turn-order-stat-based"
       ],
       "bggMin": 1,
-      "bggRank": 207,
+      "bggRank": 211,
       "bggRating": 7.6,
       "bggRec": [
         1,
@@ -2913,7 +2913,7 @@
         "cooperative-game"
       ],
       "bggMin": 2,
-      "bggRank": 1742,
+      "bggRank": 1745,
       "bggRating": 6.8,
       "bggRec": [
         2,
@@ -2980,7 +2980,7 @@
         "take-that"
       ],
       "bggMin": 2,
-      "bggRank": 314,
+      "bggRank": 316,
       "bggRating": 7.5,
       "bggRec": [
         3,
@@ -3049,7 +3049,7 @@
         "random-production"
       ],
       "bggMin": 2,
-      "bggRank": 1405,
+      "bggRank": 1410,
       "bggRating": 6.6,
       "bggRec": [
         2,
@@ -3171,7 +3171,7 @@
         "take-that"
       ],
       "bggMin": 2,
-      "bggRank": 426,
+      "bggRank": 427,
       "bggRating": 7.5,
       "bggRec": [
         2
@@ -3358,7 +3358,7 @@
         "tags"
       ],
       "bggMin": 2,
-      "bggRank": 604,
+      "bggRank": 605,
       "bggRating": 7.2,
       "bggRec": [
         2,
@@ -3421,7 +3421,7 @@
         "set-collection"
       ],
       "bggMin": 3,
-      "bggRank": 561,
+      "bggRank": 563,
       "bggRating": 7.1,
       "bggRec": [
         3,
@@ -3496,7 +3496,7 @@
         "team-based-game"
       ],
       "bggMin": 2,
-      "bggRank": 983,
+      "bggRank": 984,
       "bggRating": 7,
       "bggRec": [
         3,
@@ -3679,7 +3679,7 @@
         "paper-and-pencil"
       ],
       "bggMin": 1,
-      "bggRank": 4112,
+      "bggRank": 4095,
       "bggRating": 7.1,
       "bggRec": [
         1,
@@ -3745,7 +3745,7 @@
         "turn-order-progressive"
       ],
       "bggMin": 2,
-      "bggRank": 1951,
+      "bggRank": 1955,
       "bggRating": 6.6,
       "bggRec": [
         2,
@@ -3809,7 +3809,7 @@
         "variable-set-up"
       ],
       "bggMin": 2,
-      "bggRank": 603,
+      "bggRank": 604,
       "bggRating": 7.1,
       "bggRec": [
         2,
@@ -3868,7 +3868,7 @@
         "set-collection"
       ],
       "bggMin": 1,
-      "bggRank": 7516,
+      "bggRank": 7512,
       "bggRating": 6.9,
       "bggRec": [
         1,
@@ -4147,7 +4147,7 @@
         "variable-player-powers"
       ],
       "bggMin": 1,
-      "bggRank": 806,
+      "bggRank": 808,
       "bggRating": 6.9,
       "bggRec": [
         2,
@@ -4209,7 +4209,7 @@
         "worker-placement"
       ],
       "bggMin": 2,
-      "bggRank": 3810,
+      "bggRank": 3826,
       "bggRating": 7.2,
       "bggRec": [
         2,
@@ -4332,7 +4332,7 @@
         "trick-taking"
       ],
       "bggMin": 3,
-      "bggRank": 3208,
+      "bggRank": 3211,
       "bggRating": 7,
       "bggRec": [
         3,
@@ -4391,7 +4391,7 @@
         "worker-placement"
       ],
       "bggMin": 2,
-      "bggRank": 5133,
+      "bggRank": 5101,
       "bggRating": 6.8,
       "bggRec": [
         2,
@@ -4456,7 +4456,7 @@
         "worker-placement"
       ],
       "bggMin": 1,
-      "bggRank": 747,
+      "bggRank": 749,
       "bggRating": 7.5,
       "bggRec": [
         1,
@@ -4528,7 +4528,7 @@
         "victory-points-as-a-resource"
       ],
       "bggMin": 1,
-      "bggRank": 212,
+      "bggRank": 213,
       "bggRating": 7.6,
       "bggRec": [
         1,
@@ -4588,7 +4588,7 @@
         "push-your-luck"
       ],
       "bggMin": 2,
-      "bggRank": 4520,
+      "bggRank": 4523,
       "bggRating": 6.6,
       "bggRec": [
         3,
@@ -4650,7 +4650,7 @@
         "variable-set-up"
       ],
       "bggMin": 1,
-      "bggRank": 1847,
+      "bggRank": 1821,
       "bggRating": 7.5,
       "bggRec": [
         1,
@@ -4718,7 +4718,7 @@
         "variable-set-up"
       ],
       "bggMin": 2,
-      "bggRank": 236,
+      "bggRank": 237,
       "bggRating": 7.6,
       "bggRec": [
         1,
@@ -4785,7 +4785,7 @@
         "storytelling"
       ],
       "bggMin": 1,
-      "bggRank": 820,
+      "bggRank": 805,
       "bggRating": 8.3,
       "bggRec": [
         1,
@@ -4944,7 +4944,7 @@
       ],
       "bggMin": 1,
       "bggRank": 12,
-      "bggRating": 8.4,
+      "bggRating": 8.3,
       "bggRec": [
         1,
         2,
@@ -5071,7 +5071,7 @@
         "variable-set-up"
       ],
       "bggMin": 1,
-      "bggRank": 355,
+      "bggRank": 353,
       "bggRating": 7.9,
       "bggRec": [
         1,
@@ -5476,7 +5476,7 @@
         "tile-placement"
       ],
       "bggMin": 2,
-      "bggRank": 1205,
+      "bggRank": 1204,
       "bggRating": 7.3,
       "bggRec": [
         2,
@@ -5536,7 +5536,7 @@
         "set-collection"
       ],
       "bggMin": 2,
-      "bggRank": 180,
+      "bggRank": 181,
       "bggRating": 7.5,
       "bggRec": [
         2,
@@ -5598,7 +5598,7 @@
         "set-collection"
       ],
       "bggMin": 2,
-      "bggRank": 5738,
+      "bggRank": 5683,
       "bggRating": 7,
       "bggRec": [
         2,
@@ -5668,7 +5668,7 @@
         "variable-set-up"
       ],
       "bggMin": 1,
-      "bggRank": 809,
+      "bggRank": 810,
       "bggRating": 7.4,
       "bggRec": [
         1,
@@ -5734,7 +5734,7 @@
         "real-time"
       ],
       "bggMin": 1,
-      "bggRank": 4085,
+      "bggRank": 4098,
       "bggRating": 7.2,
       "bggRec": [
         1,
@@ -5797,7 +5797,7 @@
         "real-time"
       ],
       "bggMin": 1,
-      "bggRank": 5691,
+      "bggRank": 5698,
       "bggRating": 6.7,
       "bggRec": [
         1,
@@ -5855,7 +5855,7 @@
         "real-time"
       ],
       "bggMin": 1,
-      "bggRank": 5872,
+      "bggRank": 5902,
       "bggRating": 6.5,
       "bggRec": [
         1,
@@ -5918,7 +5918,7 @@
         "take-that"
       ],
       "bggMin": 2,
-      "bggRank": 31155,
+      "bggRank": 31249,
       "bggRating": 5.5,
       "bggRec": [
         3,
@@ -6122,7 +6122,6 @@
         "dice-rolling",
         "end-game-bonuses",
         "hand-management",
-        "once-per-game-abilities",
         "open-drafting",
         "set-collection",
         "solo-solitaire-game",
@@ -6196,7 +6195,7 @@
         "variable-player-powers"
       ],
       "bggMin": 2,
-      "bggRank": 2705,
+      "bggRank": 2687,
       "bggRating": 8.4,
       "bggRec": [
         2
@@ -6265,7 +6264,7 @@
         "turn-order-progressive"
       ],
       "bggMin": 1,
-      "bggRank": 123,
+      "bggRank": 124,
       "bggRating": 7.9,
       "bggRec": [
         1,
