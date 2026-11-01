@@ -27,7 +27,7 @@
         "simultaneous-action-selection"
       ],
       "bggMin": 2,
-      "bggRank": 675,
+      "bggRank": 677,
       "bggRating": 7,
       "bggRec": [
         3,
@@ -175,8 +175,8 @@
         "variable-player-powers"
       ],
       "bggMin": 1,
-      "bggRank": 7811,
-      "bggRating": 8.3,
+      "bggRank": 7163,
+      "bggRating": 8.2,
       "bggRec": [
         1,
         2,
@@ -650,7 +650,7 @@
         "melding-and-splaying"
       ],
       "bggMin": 2,
-      "bggRank": 334,
+      "bggRank": 337,
       "bggRating": 7.4,
       "bggRec": [
         2
@@ -721,7 +721,7 @@
         "variable-player-powers"
       ],
       "bggMin": 2,
-      "bggRank": 965,
+      "bggRank": 959,
       "bggRating": 7.4,
       "bggRec": [
         2,
@@ -730,7 +730,7 @@
       ],
       "bggTimeMax": 120,
       "bggTimeMin": 60,
-      "bggWeight": 3.1,
+      "bggWeight": 3.0,
       "byCount": {},
       "comment": "",
       "cover": "https://cf.geekdo-images.com/-9NLgO6ASOHgZtMtamqjxw__square200/img/FAhOsxfX6w9eobTUUAe_bFT9_VQ=/200x200/filters:strip_icc()/pic6418160.png",
@@ -783,7 +783,7 @@
         "tile-placement"
       ],
       "bggMin": 1,
-      "bggRank": 7629,
+      "bggRank": 7598,
       "bggRating": 7,
       "bggRec": [
         2,
@@ -852,7 +852,7 @@
         "take-that"
       ],
       "bggMin": 2,
-      "bggRank": 9519,
+      "bggRank": 9607,
       "bggRating": 6.2,
       "bggRec": [
         2,
@@ -987,7 +987,7 @@
         "take-that"
       ],
       "bggMin": 2,
-      "bggRank": 1317,
+      "bggRank": 1321,
       "bggRating": 7,
       "bggRec": [
         2
@@ -1047,7 +1047,7 @@
         "worker-placement"
       ],
       "bggMin": 1,
-      "bggRank": 5398,
+      "bggRank": 5317,
       "bggRating": 7.3,
       "bggRec": [
         1,
@@ -1107,7 +1107,6 @@
       "bggId": "184921",
       "bggMax": 4,
       "bggMech": [
-        "area-majority-influence",
         "closed-drafting",
         "end-game-bonuses",
         "grid-coverage",
@@ -1116,7 +1115,7 @@
         "square-grid"
       ],
       "bggMin": 2,
-      "bggRank": 393,
+      "bggRank": 395,
       "bggRating": 7.4,
       "bggRec": [
         2,
@@ -1186,7 +1185,7 @@
         "tile-placement"
       ],
       "bggMin": 1,
-      "bggRank": 276,
+      "bggRank": 278,
       "bggRating": 7.5,
       "bggRec": [
         1,
@@ -1445,7 +1444,7 @@
         "tile-placement"
       ],
       "bggMin": 2,
-      "bggRank": 203,
+      "bggRank": 202,
       "bggRating": 7.7,
       "bggRec": [
         2,
@@ -1512,7 +1511,7 @@
         "solo-solitaire-game"
       ],
       "bggMin": 1,
-      "bggRank": 6162,
+      "bggRank": 6189,
       "bggRating": 6.3,
       "bggRec": [
         1,
@@ -1563,12 +1562,13 @@
       "bggMax": 4,
       "bggMech": [
         "dice-rolling",
+        "highest-lowest-scoring",
         "paper-and-pencil",
         "re-rolling-and-locking",
         "solo-solitaire-game"
       ],
       "bggMin": 1,
-      "bggRank": 204,
+      "bggRank": 205,
       "bggRating": 7.5,
       "bggRec": [
         1,
@@ -1578,7 +1578,7 @@
       ],
       "bggTimeMax": 30,
       "bggTimeMin": 30,
-      "bggWeight": 1.9,
+      "bggWeight": 1.8,
       "byCount": {
         "2": 7,
         "3": 8,
@@ -1646,7 +1646,7 @@
       "bggTimeMin": 30,
       "bggTimeMax": 60,
       "bggRating": 6.8,
-      "bggRank": 2125,
+      "bggRank": 2134,
       "bggWeight": 2,
       "bggBest": [
         3
@@ -1772,7 +1772,7 @@
         "variable-player-powers"
       ],
       "bggMin": 1,
-      "bggRank": 54,
+      "bggRank": 55,
       "bggRating": 8.2,
       "bggRec": [
         1,
@@ -1836,7 +1836,7 @@
         "take-that"
       ],
       "bggMin": 1,
-      "bggRank": 3484,
+      "bggRank": 3507,
       "bggRating": 6.7,
       "bggRec": [
         1,
@@ -1887,7 +1887,7 @@
         "party-game"
       ],
       "bggId": "39856",
-      "bggMax": 6,
+      "bggMax": 8,
       "bggMech": [
         "race",
         "simultaneous-action-selection",
@@ -1897,12 +1897,14 @@
         "voting"
       ],
       "bggMin": 3,
-      "bggRank": 436,
+      "bggRank": 437,
       "bggRating": 7.2,
       "bggRec": [
         4,
         5,
-        6
+        6,
+        7,
+        8
       ],
       "bggTimeMax": 30,
       "bggTimeMin": 30,
@@ -1970,7 +1972,7 @@
         "take-that"
       ],
       "bggMin": 2,
-      "bggRank": 4062,
+      "bggRank": 4069,
       "bggRating": 6.1,
       "bggRec": [
         3,
@@ -2167,7 +2169,7 @@
         "variable-set-up"
       ],
       "bggMin": 2,
-      "bggRank": 1519,
+      "bggRank": 1518,
       "bggRating": 7,
       "bggRec": [
         2
@@ -2228,7 +2230,7 @@
         "variable-set-up"
       ],
       "bggMin": 2,
-      "bggRank": 69,
+      "bggRank": 68,
       "bggRating": 8,
       "bggRec": [
         2,
@@ -2292,7 +2294,7 @@
         "variable-set-up"
       ],
       "bggMin": 1,
-      "bggRank": 47,
+      "bggRank": 49,
       "bggRating": 8,
       "bggRec": [
         1,
@@ -2367,7 +2369,7 @@
         "variable-set-up"
       ],
       "bggMin": 1,
-      "bggRank": 3257,
+      "bggRank": 3250,
       "bggRating": 6.8,
       "bggRec": [
         1,
@@ -2432,7 +2434,7 @@
         "tile-placement"
       ],
       "bggMin": 2,
-      "bggRank": 336,
+      "bggRank": 338,
       "bggRating": 7.3,
       "bggRec": [
         2
@@ -2551,7 +2553,7 @@
         "storytelling"
       ],
       "bggMin": 1,
-      "bggRank": 2986,
+      "bggRank": 2841,
       "bggRating": 7.8,
       "bggRec": [
         1
@@ -2620,7 +2622,7 @@
         "turn-order-stat-based"
       ],
       "bggMin": 1,
-      "bggRank": 211,
+      "bggRank": 212,
       "bggRating": 7.6,
       "bggRec": [
         1,
@@ -2913,7 +2915,7 @@
         "cooperative-game"
       ],
       "bggMin": 2,
-      "bggRank": 1745,
+      "bggRank": 1764,
       "bggRating": 6.8,
       "bggRec": [
         2,
@@ -3049,7 +3051,7 @@
         "random-production"
       ],
       "bggMin": 2,
-      "bggRank": 1410,
+      "bggRank": 1413,
       "bggRating": 6.6,
       "bggRec": [
         2,
@@ -3171,7 +3173,7 @@
         "take-that"
       ],
       "bggMin": 2,
-      "bggRank": 427,
+      "bggRank": 430,
       "bggRating": 7.5,
       "bggRec": [
         2
@@ -3234,7 +3236,7 @@
         "track-movement"
       ],
       "bggMin": 2,
-      "bggRank": 976,
+      "bggRank": 977,
       "bggRating": 7.1,
       "bggRec": [
         3,
@@ -3243,7 +3245,7 @@
       ],
       "bggTimeMax": 60,
       "bggTimeMin": 30,
-      "bggWeight": 1.8,
+      "bggWeight": 1.7,
       "byCount": {
         "2": 5,
         "3": 6,
@@ -3297,7 +3299,7 @@
         "solo-solitaire-game"
       ],
       "bggMin": 1,
-      "bggRank": 1377,
+      "bggRank": 1359,
       "bggRating": 7.4,
       "bggRec": [
         1,
@@ -3421,7 +3423,7 @@
         "set-collection"
       ],
       "bggMin": 3,
-      "bggRank": 563,
+      "bggRank": 567,
       "bggRating": 7.1,
       "bggRec": [
         3,
@@ -3496,7 +3498,7 @@
         "team-based-game"
       ],
       "bggMin": 2,
-      "bggRank": 984,
+      "bggRank": 986,
       "bggRating": 7,
       "bggRec": [
         3,
@@ -3679,7 +3681,7 @@
         "paper-and-pencil"
       ],
       "bggMin": 1,
-      "bggRank": 4095,
+      "bggRank": 4085,
       "bggRating": 7.1,
       "bggRec": [
         1,
@@ -3687,12 +3689,11 @@
         3,
         4,
         5,
-        6,
-        7
+        6
       ],
       "bggTimeMax": 45,
       "bggTimeMin": 30,
-      "bggWeight": 1.9,
+      "bggWeight": 2.0,
       "byCount": {
         "2": 8,
         "3": 8,
@@ -3745,7 +3746,7 @@
         "turn-order-progressive"
       ],
       "bggMin": 2,
-      "bggRank": 1955,
+      "bggRank": 1958,
       "bggRating": 6.6,
       "bggRec": [
         2,
@@ -3809,7 +3810,7 @@
         "variable-set-up"
       ],
       "bggMin": 2,
-      "bggRank": 604,
+      "bggRank": 602,
       "bggRating": 7.1,
       "bggRec": [
         2,
@@ -3868,7 +3869,7 @@
         "set-collection"
       ],
       "bggMin": 1,
-      "bggRank": 7512,
+      "bggRank": 7561,
       "bggRating": 6.9,
       "bggRec": [
         1,
@@ -3938,7 +3939,7 @@
         "take-that"
       ],
       "bggMin": 2,
-      "bggRank": 252,
+      "bggRank": 253,
       "bggRating": 7.5,
       "bggRec": [
         2,
@@ -4147,7 +4148,7 @@
         "variable-player-powers"
       ],
       "bggMin": 1,
-      "bggRank": 808,
+      "bggRank": 811,
       "bggRating": 6.9,
       "bggRec": [
         2,
@@ -4209,7 +4210,7 @@
         "worker-placement"
       ],
       "bggMin": 2,
-      "bggRank": 3826,
+      "bggRank": 3809,
       "bggRating": 7.2,
       "bggRec": [
         2,
@@ -4391,7 +4392,7 @@
         "worker-placement"
       ],
       "bggMin": 2,
-      "bggRank": 5101,
+      "bggRank": 5070,
       "bggRating": 6.8,
       "bggRec": [
         2,
@@ -4456,7 +4457,7 @@
         "worker-placement"
       ],
       "bggMin": 1,
-      "bggRank": 749,
+      "bggRank": 747,
       "bggRating": 7.5,
       "bggRec": [
         1,
@@ -4528,7 +4529,7 @@
         "victory-points-as-a-resource"
       ],
       "bggMin": 1,
-      "bggRank": 213,
+      "bggRank": 215,
       "bggRating": 7.6,
       "bggRec": [
         1,
@@ -4588,7 +4589,7 @@
         "push-your-luck"
       ],
       "bggMin": 2,
-      "bggRank": 4523,
+      "bggRank": 4524,
       "bggRating": 6.6,
       "bggRec": [
         3,
@@ -4650,7 +4651,7 @@
         "variable-set-up"
       ],
       "bggMin": 1,
-      "bggRank": 1821,
+      "bggRank": 1802,
       "bggRating": 7.5,
       "bggRec": [
         1,
@@ -4785,7 +4786,7 @@
         "storytelling"
       ],
       "bggMin": 1,
-      "bggRank": 805,
+      "bggRank": 796,
       "bggRating": 8.3,
       "bggRec": [
         1,
@@ -4860,7 +4861,7 @@
         "variable-player-powers"
       ],
       "bggMin": 1,
-      "bggRank": 887,
+      "bggRank": 879,
       "bggRating": 7.5,
       "bggRec": [
         1
@@ -5071,7 +5072,7 @@
         "variable-set-up"
       ],
       "bggMin": 1,
-      "bggRank": 353,
+      "bggRank": 349,
       "bggRating": 7.9,
       "bggRec": [
         1,
@@ -5213,7 +5214,7 @@
         "set-collection"
       ],
       "bggMin": 2,
-      "bggRank": 111,
+      "bggRank": 110,
       "bggRating": 7.9,
       "bggRec": [
         2
@@ -5278,7 +5279,7 @@
         "variable-set-up"
       ],
       "bggMin": 2,
-      "bggRank": 178,
+      "bggRank": 179,
       "bggRating": 7.5,
       "bggRec": [
         2
@@ -5341,7 +5342,7 @@
         "worker-placement"
       ],
       "bggMin": 2,
-      "bggRank": 189,
+      "bggRank": 190,
       "bggRating": 7.5,
       "bggRec": [
         2,
@@ -5476,7 +5477,7 @@
         "tile-placement"
       ],
       "bggMin": 2,
-      "bggRank": 1204,
+      "bggRank": 1206,
       "bggRating": 7.3,
       "bggRec": [
         2,
@@ -5598,7 +5599,7 @@
         "set-collection"
       ],
       "bggMin": 2,
-      "bggRank": 5683,
+      "bggRank": 5687,
       "bggRating": 7,
       "bggRec": [
         2,
@@ -5668,7 +5669,7 @@
         "variable-set-up"
       ],
       "bggMin": 1,
-      "bggRank": 810,
+      "bggRank": 814,
       "bggRating": 7.4,
       "bggRec": [
         1,
@@ -5734,7 +5735,7 @@
         "real-time"
       ],
       "bggMin": 1,
-      "bggRank": 4098,
+      "bggRank": 4081,
       "bggRating": 7.2,
       "bggRec": [
         1,
@@ -5797,7 +5798,7 @@
         "real-time"
       ],
       "bggMin": 1,
-      "bggRank": 5698,
+      "bggRank": 5648,
       "bggRating": 6.7,
       "bggRec": [
         1,
@@ -5855,7 +5856,7 @@
         "real-time"
       ],
       "bggMin": 1,
-      "bggRank": 5902,
+      "bggRank": 5882,
       "bggRating": 6.5,
       "bggRec": [
         1,
@@ -5918,7 +5919,7 @@
         "take-that"
       ],
       "bggMin": 2,
-      "bggRank": 31249,
+      "bggRank": 31473,
       "bggRating": 5.5,
       "bggRec": [
         3,
@@ -6195,7 +6196,7 @@
         "variable-player-powers"
       ],
       "bggMin": 2,
-      "bggRank": 2687,
+      "bggRank": 2677,
       "bggRating": 8.4,
       "bggRec": [
         2
@@ -6264,7 +6265,7 @@
         "turn-order-progressive"
       ],
       "bggMin": 1,
-      "bggRank": 124,
+      "bggRank": 123,
       "bggRating": 7.9,
       "bggRec": [
         1,
