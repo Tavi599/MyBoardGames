@@ -1007,6 +1007,14 @@ checkEqual("кирилиця переживає base64 туди й назад",
 checkEqual("апостроф не виходить з атрибута", escapeHtml("Кам'яна доба"), "Кам&#39;яна доба");
 checkEqual("і подвійна лапка теж", escapeHtml('a"b'), "a&quot;b");
 checkEqual("порожнє — порожній рядок", escapeHtml(null), "");
+/* Число в розмітку йде без екранування, тож formatNumber мусить віддавати
+   лише числа: оцінка-рядок з імпортованого файла — це чужа розмітка. */
+checkEqual("рядок на місці оцінки не стає розміткою",
+           formatNumber("<img src=x onerror=alert(1)>"), "");
+checkEqual("числовий рядок читається як число", formatNumber("7.5"), "7,5");
+checkEqual("нескінченність і не-число — порожньо",
+           [formatNumber(Infinity), formatNumber(NaN), formatNumber({})], ["", "", ""]);
+checkEqual("нуль — це число, а не порожнеча", formatNumber(0), "0");
 
 /* ── вивід ─────────────────────────────────────────── */
 addEventListener("DOMContentLoaded", () => {

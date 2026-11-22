@@ -1018,8 +1018,17 @@ function pluralize(count, one, few, many){
   return many;
 }
 
-/** 6.5 → «6,5», 7 → «7». Кома, бо українською десяткова кома. */
-function formatNumber(value){ return value == null ? "" : String(value).replace(".", ","); }
+/** 6.5 → «6,5», 7 → «7». Кома, бо українською десяткова кома.
+
+    Лише справжні числа: результат іде в розмітку без екранування, а дані
+    приходять і з чужих рук (імпорт JSON, сусідній пристрій). Рядок на місці
+    оцінки — це не оцінка, а нагода вставити в сторінку свій код, тож усе,
+    що не число, стає порожнім. Числовий рядок («7.5») читаємо як число. */
+function formatNumber(value){
+  if(value == null || value === "") return "";
+  const number = typeof value === "number" ? value : Number(value);
+  return isFinite(number) ? String(number).replace(".", ",") : "";
+}
 
 /** Клас кольору для оцінки за десятибальною шкалою. */
 function scoreBandClass(score){
