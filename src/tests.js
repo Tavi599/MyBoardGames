@@ -1,417 +1,433 @@
-/* Тести на чисту логіку: статуси, вибірка, сортування.
-   Node в системі немає, тож вони живуть у власній сторінці «tests.html»,
-   яку збирає та сама «build.py» з тих самих файлів коду. Відкрий її в
-   браузері — зелене означає, що вибірка й сортування працюють. */
+/* Тести на чисту логіку: модель запису, вибірка, сортування, злиття, черга.
+   Живуть у власній сторінці «tests.html», яку збирає та сама «build.py» з
+   тих самих файлів коду. Відкрий її в браузері — зелене означає, що все,
+   від чого залежать оцінки, працює. */
 "use strict";
 
-let склалось = 0, впало = 0;
-const рядки = [];
+let passed = 0, failed = 0;
+const results = [];
 
-function ок(назва, умова, деталі){
-  if(умова){ склалось++; рядки.push(["ok", назва, ""]); }
-  else { впало++; рядки.push(["no", назва, деталі == null ? "" : String(деталі)]); }
+function check(name, condition, details){
+  if(condition){ passed++; results.push(["ok", name, ""]); }
+  else { failed++; results.push(["no", name, details == null ? "" : String(details)]); }
 }
-function рівні(назва, було, треба){
-  const a = JSON.stringify(було), b = JSON.stringify(треба);
-  ок(назва, a === b, "маю " + a + ", чекав " + b);
+function checkEqual(name, actual, expected){
+  const actualJson = JSON.stringify(actual), expectedJson = JSON.stringify(expected);
+  check(name, actualJson === expectedJson, "маю " + actualJson + ", чекав " + expectedJson);
 }
 
 /** Коробка зі зразка: усе, чого не назвав, — типове. */
-function коробка(що){
+function sampleGame(overrides){
   return Object.assign({
-    id: "g-" + (що.name || "х"), name: "Гра", nameEn: "", statuses: ["колекція"],
+    id: "g-" + (overrides.name || "х"), name: "Гра", nameEn: "", statuses: ["колекція"],
     status: "колекція", score: null, byCount: {}, plays: 0, tags: [], comment: "",
     minP: null, maxP: null, updated: "2026-01-01T00:00:00.000Z",
-  }, що);
+  }, overrides);
 }
-/** Ставить полицю й стан панелі, повертає назви того, що видно. */
-function видно(набір, стан){
-  games = набір;
-  // Типові значення беремо з реєстру, а не переписуємо тут: додасться
-  // фільтр — тести самі почнуть його скидати.
-  ФІЛЬТРИ.forEach((ф) => { ui[ф.ключ] = ф.типово; });
-  Object.assign(ui, {sort:"score", rev:false}, стан || {});
-  ui.hide = new Set((стан || {}).hide || []);
-  return visible().map((g) => g.name);
+/** Стан перегляду з типовими фільтрами й названими відхиленнями: `sort`,
+    `reversed` і `hidden` — це поля самого стану, решта — значення фільтрів.
+    Типове береться з реєстру, а не переписується тут: додасться фільтр —
+    тести самі почнуть його скидати. */
+function viewWith(state){
+  const view = defaultView();
+  Object.keys(state || {}).forEach((key) => {
+    if(key === "sort" || key === "reversed") view[key] = state[key];
+    else if(key === "hidden") view.hidden = new Set(state.hidden);
+    else view.filters[key] = state[key];
+  });
+  return view;
 }
+/* Остання показана полиця та її стан — щоб спитати, чим саме її звужено. */
+let lastShelf = [], lastView = defaultView();
+/** Назви того, що видно на полиці `games` у стані `state`. */
+function shownNames(games, state){
+  lastShelf = games;
+  lastView = viewWith(state);
+  return visibleGames(games, lastView).map((game) => game.name);
+}
+const narrowings = () => activeNarrowings(lastShelf, lastView);
+const isNarrowed = () => narrowings().length > 0;
 
 /* ── статуси ───────────────────────────────────────── */
-рівні("старий одиничний status читається",
-      stats({status:"улюблена"}), ["улюблена"]);
-рівні("порожня коробка не має статусів", stats({}), []);
+checkEqual("старий одиничний status читається",
+      statusesOf({status:"улюблена"}), ["улюблена"]);
+checkEqual("порожня коробка не має статусів", statusesOf({}), []);
 {
-  const g = коробка({});
-  setStats(g, new Set(["позбувся", "улюблена"]));
-  рівні("порядок статусів завжди як у STATUS", g.statuses, ["улюблена", "позбувся"]);
-  рівні("status лишається дзеркалом першого", g.status, "улюблена");
-  setStats(g, new Set());
-  ок("порожній набір прибирає status", !("status" in g), JSON.stringify(g.statuses));
+  const game = sampleGame({});
+  setStatuses(game, new Set(["позбувся", "улюблена"]));
+  checkEqual("порядок статусів завжди як у STATUS", game.statuses, ["улюблена", "позбувся"]);
+  checkEqual("status лишається дзеркалом першого", game.status, "улюблена");
+  setStatuses(game, new Set());
+  check("порожній набір прибирає status", !("status" in game), JSON.stringify(game.statuses));
 }
-рівні("незіграна виводиться з партій", autoStats(коробка({plays:0})), ["незіграна"]);
-рівні("зіграна не має похідного статусу", autoStats(коробка({plays:1})), []);
-рівні("похідний статус не потрапляє в збережені",
-      stats(коробка({plays:0})), ["колекція"]);
+checkEqual("незіграна виводиться з партій", derivedStatuses(sampleGame({plays:0})), ["незіграна"]);
+checkEqual("зіграна не має похідного статусу", derivedStatuses(sampleGame({plays:1})), []);
+checkEqual("похідний статус не потрапляє в збережені",
+      statusesOf(sampleGame({plays:0})), ["колекція"]);
 
 /* ── міграції ──────────────────────────────────────── */
 {
-  const давня = підняти({id:"g-1", name:"Давня", status:"улюблена"});
-  рівні("давній запис отримує список статусів", давня.statuses, ["улюблена"]);
-  рівні("дзеркало status лишається", давня.status, "улюблена");
+  const legacy = migrateGame({id:"g-1", name:"Давня", status:"улюблена"});
+  checkEqual("давній запис отримує список статусів", legacy.statuses, ["улюблена"]);
+  checkEqual("дзеркало status лишається", legacy.status, "улюблена");
 }
-рівні("запис без статусу взагалі стає «у колекції»",
-      підняти({id:"g-2", name:"Гола"}).statuses, ["колекція"]);
+checkEqual("запис без статусу взагалі стає «у колекції»",
+      migrateGame({id:"g-2", name:"Гола"}).statuses, ["колекція"]);
 {
-  const свіжа = {id:"g-3", name:"Свіжа", statuses:["онлайн"], status:"онлайн"};
-  рівні("міграція нічого не псує в сучасному записі",
-        підняти(JSON.parse(JSON.stringify(свіжа))), свіжа);
-  const двічі = підняти(підняти(JSON.parse(JSON.stringify(свіжа))));
-  рівні("міграцію можна прогнати двічі поспіль", двічі, свіжа);
+  const fresh = {id:"g-3", name:"Свіжа", statuses:["онлайн"], status:"онлайн"};
+  checkEqual("міграція нічого не псує в сучасному записі",
+        migrateGame(JSON.parse(JSON.stringify(fresh))), fresh);
+  const twice = migrateGame(migrateGame(JSON.parse(JSON.stringify(fresh))));
+  checkEqual("міграцію можна прогнати двічі поспіль", twice, fresh);
 }
-рівні("надгробок міграція не чіпає",
-      підняти({id:"g-4", deleted:true, updated:"2026-01-01T00:00:00.000Z"}),
+checkEqual("надгробок міграція не чіпає",
+      migrateGame({id:"g-4", deleted:true, updated:"2026-01-01T00:00:00.000Z"}),
       {id:"g-4", deleted:true, updated:"2026-01-01T00:00:00.000Z"});
 
 /* ── скасовані статуси ─────────────────────────────── */
 {
-  const давнє = підняти({id:"g-6", name:"Давнє", statuses:["хочу","колекція"],
+  const legacyRecord = migrateGame({id:"g-6", name:"Давнє", statuses:["хочу","колекція"],
                          status:"хочу"});
-  рівні("скасований статус випадає", давнє.statuses, ["колекція"]);
-  рівні("дзеркало переїжджає на того, хто лишився", давнє.status, "колекція");
-  const геть = підняти({id:"g-7", name:"Саме хочу", statuses:["відклав"], status:"відклав"});
-  рівні("коли не лишилось нічого — порожній список", геть.statuses, []);
-  ок("і дзеркало прибирається", !("status" in геть), JSON.stringify(геть));
-  рівні("сучасний запис міграція не чіпає",
-        підняти({id:"g-8", name:"Свій", statuses:["чужа"], status:"чужа"}).statuses,
+  checkEqual("скасований статус випадає", legacyRecord.statuses, ["колекція"]);
+  checkEqual("дзеркало переїжджає на того, хто лишився", legacyRecord.status, "колекція");
+  const emptied = migrateGame({id:"g-7", name:"Саме хочу", statuses:["відклав"], status:"відклав"});
+  checkEqual("коли не лишилось нічого — порожній список", emptied.statuses, []);
+  check("і дзеркало прибирається", !("status" in emptied), JSON.stringify(emptied));
+  checkEqual("сучасний запис міграція не чіпає",
+        migrateGame({id:"g-8", name:"Свій", statuses:["чужа"], status:"чужа"}).statuses,
         ["чужа"]);
   // Найважливіше тут: сторінка, що застаріла на один статус, не сміє
   // стирати з чужого запису те, чого ще не знає, — інакше вона розішле
   // обрізане далі, і статус зникне в усіх.
-  рівні("незнайомий статус переживає міграцію",
-        підняти({id:"g-9", name:"З майбутнього",
+  checkEqual("незнайомий статус переживає міграцію",
+        migrateGame({id:"g-9", name:"З майбутнього",
                  statuses:["колекція","щеНеВигаданий"], status:"колекція"}).statuses,
         ["колекція", "щеНеВигаданий"]);
 }
 
 /* ── де коробка ────────────────────────────────────── */
 {
-  const g = коробка({statuses:["колекція"], status:"колекція"});
-  setStats(g, узгодити(new Set(stats(g)).add("чужа"), "чужа"));
-  рівні("«друзів» гасить «у колекції»", g.statuses, ["чужа"]);
-  setStats(g, узгодити(new Set(stats(g)).add("колекція"), "колекція"));
-  рівні("і навпаки", g.statuses, ["колекція"]);
-  setStats(g, узгодити(new Set(stats(g)).add("позбувся"), "позбувся"));
-  рівні("«позбувся» теж гасить «у колекції»", g.statuses, ["позбувся"]);
+  const game = sampleGame({statuses:["колекція"], status:"колекція"});
+  setStatuses(game, resolveStatusConflicts(new Set(statusesOf(game)).add("чужа"), "чужа"));
+  checkEqual("«друзів» гасить «у колекції»", game.statuses, ["чужа"]);
+  setStatuses(game, resolveStatusConflicts(new Set(statusesOf(game)).add("колекція"), "колекція"));
+  checkEqual("і навпаки", game.statuses, ["колекція"]);
+  setStatuses(game, resolveStatusConflicts(new Set(statusesOf(game)).add("позбувся"), "позбувся"));
+  checkEqual("«позбувся» теж гасить «у колекції»", game.statuses, ["позбувся"]);
   // Друг, у якого ти грав, продав свою коробку: вона й далі чужа і вже
   // недосяжна. Саме це поєднання показує, що продали друзі.
-  setStats(g, узгодити(new Set(stats(g)).add("чужа"), "чужа"));
-  рівні("«чужа» і «позбувся» стоять разом", g.statuses, ["чужа", "позбувся"]);
-  setStats(g, узгодити(new Set(stats(g)).add("колекція"), "колекція"));
-  рівні("«у колекції» гасить обидва разом", g.statuses, ["колекція"]);
+  setStatuses(game, resolveStatusConflicts(new Set(statusesOf(game)).add("чужа"), "чужа"));
+  checkEqual("«чужа» і «позбувся» стоять разом", game.statuses, ["чужа", "позбувся"]);
+  setStatuses(game, resolveStatusConflicts(new Set(statusesOf(game)).add("колекція"), "колекція"));
+  checkEqual("«у колекції» гасить обидва разом", game.statuses, ["колекція"]);
 }
 
 /* ── кандидат на продаж ────────────────────────────── */
 {
-  const g = коробка({statuses:["колекція"], status:"колекція"});
-  setStats(g, узгодити(new Set(stats(g)).add("продаж"), "продаж"));
-  рівні("продаж стає поруч із «у колекції»", g.statuses, ["колекція", "продаж"]);
-  setStats(g, узгодити(new Set(stats(g)).add("улюблена"), "улюблена"));
-  рівні("улюблену теж можна продавати",
-        g.statuses, ["колекція", "улюблена", "продаж"]);
-  setStats(g, узгодити(new Set(stats(g)).add("позбувся"), "позбувся"));
-  рівні("коробка пішла — позначка про продаж іде разом із нею",
-        g.statuses, ["улюблена", "позбувся"]);
-  const h = коробка({statuses:["колекція", "продаж"], status:"колекція"});
-  setStats(h, узгодити(new Set(stats(h)).add("чужа"), "чужа"));
-  рівні("до іншого власника — так само", h.statuses, ["чужа"]);
-  рівні("продаж не заважає лишатися своєю",
-        stats(коробка({statuses:["колекція","продаж"]})), ["колекція", "продаж"]);
-  const п = коробка({statuses:["продаж"], status:"продаж"});
-  setStats(п, узгодити(new Set(stats(п)).add("улюблена"), "улюблена"));
-  рівні("а решта статусів позначку про продаж не чіпає",
-        п.statuses, ["улюблена", "продаж"]);
+  const game = sampleGame({statuses:["колекція"], status:"колекція"});
+  setStatuses(game, resolveStatusConflicts(new Set(statusesOf(game)).add("продаж"), "продаж"));
+  checkEqual("продаж стає поруч із «у колекції»", game.statuses, ["колекція", "продаж"]);
+  setStatuses(game, resolveStatusConflicts(new Set(statusesOf(game)).add("улюблена"), "улюблена"));
+  checkEqual("улюблену теж можна продавати",
+        game.statuses, ["колекція", "улюблена", "продаж"]);
+  setStatuses(game, resolveStatusConflicts(new Set(statusesOf(game)).add("позбувся"), "позбувся"));
+  checkEqual("коробка пішла — позначка про продаж іде разом із нею",
+        game.statuses, ["улюблена", "позбувся"]);
+  const otherGame = sampleGame({statuses:["колекція", "продаж"], status:"колекція"});
+  setStatuses(otherGame, resolveStatusConflicts(new Set(statusesOf(otherGame)).add("чужа"), "чужа"));
+  checkEqual("до іншого власника — так само", otherGame.statuses, ["чужа"]);
+  checkEqual("продаж не заважає лишатися своєю",
+        statusesOf(sampleGame({statuses:["колекція","продаж"]})), ["колекція", "продаж"]);
+  const forSaleOnly = sampleGame({statuses:["продаж"], status:"продаж"});
+  setStatuses(forSaleOnly, resolveStatusConflicts(new Set(statusesOf(forSaleOnly)).add("улюблена"), "улюблена"));
+  checkEqual("а решта статусів позначку про продаж не чіпає",
+        forSaleOnly.statuses, ["улюблена", "продаж"]);
 }
 
 /* ── форматування ──────────────────────────────────── */
-рівні("десяткова кома", fmt(6.5), "6,5");
-рівні("ціле без коми", fmt(7), "7");
-рівні("порожнє лишається порожнім", fmt(null), "");
-рівні("смуга за оцінкою", [band(2), band(5), band(8), band(9.5), band(null)],
+checkEqual("десяткова кома", formatNumber(6.5), "6,5");
+checkEqual("ціле без коми", formatNumber(7), "7");
+checkEqual("порожнє лишається порожнім", formatNumber(null), "");
+checkEqual("смуга за оцінкою", [scoreBandClass(2), scoreBandClass(5), scoreBandClass(8), scoreBandClass(9.5), scoreBandClass(null)],
       ["b-low", "b-mid", "b-good", "b-top", ""]);
 
 /* ── оцінка за складом столу ───────────────────────── */
 {
-  const g = коробка({score: 8, byCount: {"2": 6.5}});
-  ui.count = "all"; рівні("на «усі» береться загальна", effScore(g), 8);
-  ui.count = "2";   рівні("на двох береться оцінка складу", effScore(g), 6.5);
-  ui.count = "4";   рівні("немає оцінки складу — порожньо", effScore(g), null);
+  const game = sampleGame({score: 8, byCount: {"2": 6.5}});
+  const viewAt = (playerCount) => viewWith({playerCount: playerCount});
+  checkEqual("на «усі» береться загальна", scoreInView(game, viewAt(ANY)), 8);
+  checkEqual("на двох береться оцінка складу", scoreInView(game, viewAt("2")), 6.5);
+  checkEqual("немає оцінки складу — порожньо", scoreInView(game, viewAt("4")), null);
 }
 
 /* ── чи пасує склад столу ──────────────────────────── */
 {
-  ui.count = "3";
-  ок("влазить у діапазон", fitsCount(коробка({minP:2, maxP:4})));
-  ок("не влазить у діапазон", !fitsCount(коробка({minP:4, maxP:6})));
-  ок("без діапазону пасує всім", fitsCount(коробка({})));
-  ок("оцінка складу важливіша за діапазон",
-     fitsCount(коробка({minP:4, maxP:6, byCount:{"3": 7}})));
-  ок("межі з BGG працюють так само, як свої",
-     fitsCount(коробка({minP:null, maxP:null, bggMin:2, bggMax:4})));
-  ок("свої межі перекривають BGG",
-     !fitsCount(коробка({minP:4, maxP:6, bggMin:1, bggMax:8})));
-  ui.count = "5";
-  ок("рівно п'ятеро: гра на 2–7 підходить", fitsCount(коробка({minP:2, maxP:7})));
-  ок("рівно п'ятеро: гра на 2–4 не підходить", !fitsCount(коробка({minP:2, maxP:4})));
-  ui.count = "5+";
-  ок("«5+» — це більше за п'ятьох", fitsCount(коробка({minP:2, maxP:7})));
-  ок("гра рівно на п'ятьох у «5+» не потрапляє", !fitsCount(коробка({minP:2, maxP:5})));
-  ок("без верхньої межі потрапляє в «5+»", fitsCount(коробка({minP:2, maxP:null})));
+  check("влазить у діапазон", fitsPlayerCount(sampleGame({minP:2, maxP:4}), "3"));
+  check("не влазить у діапазон", !fitsPlayerCount(sampleGame({minP:4, maxP:6}), "3"));
+  check("без діапазону пасує всім", fitsPlayerCount(sampleGame({}), "3"));
+  check("оцінка складу важливіша за діапазон",
+        fitsPlayerCount(sampleGame({minP:4, maxP:6, byCount:{"3": 7}}), "3"));
+  check("межі з BGG працюють так само, як свої",
+        fitsPlayerCount(sampleGame({minP:null, maxP:null, bggMin:2, bggMax:4}), "3"));
+  check("свої межі перекривають BGG",
+        !fitsPlayerCount(sampleGame({minP:4, maxP:6, bggMin:1, bggMax:8}), "3"));
+  check("рівно п'ятеро: гра на 2–7 підходить",
+        fitsPlayerCount(sampleGame({minP:2, maxP:7}), "5"));
+  check("рівно п'ятеро: гра на 2–4 не підходить",
+        !fitsPlayerCount(sampleGame({minP:2, maxP:4}), "5"));
+  check("«5+» — це більше за п'ятьох", fitsPlayerCount(sampleGame({minP:2, maxP:7}), "5+"));
+  check("гра рівно на п'ятьох у «5+» не потрапляє",
+        !fitsPlayerCount(sampleGame({minP:2, maxP:5}), "5+"));
+  check("без верхньої межі потрапляє в «5+»",
+        fitsPlayerCount(sampleGame({minP:2, maxP:null}), "5+"));
+  check("«усі» не відсіює нікого", fitsPlayerCount(sampleGame({minP:4, maxP:6}), ANY));
 }
 
 /* ── які клітинки складу є в коробки ───────────────── */
 {
-  рівні("коробка на 2–4 має три клітинки",
-        countsOf(коробка({bggMin:2, bggMax:4})), ["2","3","4"]);
-  рівні("соло-коробка має саму одиничку",
-        countsOf(коробка({bggMin:1, bggMax:1})), ["1"]);
-  рівні("коробка на 2–10 отримує «5+»",
-        countsOf(коробка({bggMin:2, bggMax:10})), ["2","3","4","5","5+"]);
-  рівні("рівно п'ятеро — «5+» не потрібне",
-        countsOf(коробка({bggMin:2, bggMax:5})), ["2","3","4","5"]);
-  рівні("без жодних меж показуємо один–п'ять",
-        countsOf(коробка({})), ["1","2","3","4","5"]);
-  рівні("поставлена оцінка не зникає, хоч би що казали межі",
-        countsOf(коробка({bggMin:2, bggMax:2, byCount:{"4": 7}})), ["2","4"]);
-  рівні("у рядок ідуть тільки заповнені",
-        ratedCounts(коробка({bggMin:1, bggMax:6, byCount:{"2": 8, "5+": 6}})),
+  checkEqual("коробка на 2–4 має три клітинки",
+        playerCountsFor(sampleGame({bggMin:2, bggMax:4})), ["2","3","4"]);
+  checkEqual("соло-коробка має саму одиничку",
+        playerCountsFor(sampleGame({bggMin:1, bggMax:1})), ["1"]);
+  checkEqual("коробка на 2–10 отримує «5+»",
+        playerCountsFor(sampleGame({bggMin:2, bggMax:10})), ["2","3","4","5","5+"]);
+  checkEqual("рівно п'ятеро — «5+» не потрібне",
+        playerCountsFor(sampleGame({bggMin:2, bggMax:5})), ["2","3","4","5"]);
+  checkEqual("без жодних меж показуємо один–п'ять",
+        playerCountsFor(sampleGame({})), ["1","2","3","4","5"]);
+  checkEqual("поставлена оцінка не зникає, хоч би що казали межі",
+        playerCountsFor(sampleGame({bggMin:2, bggMax:2, byCount:{"4": 7}})), ["2","4"]);
+  checkEqual("у рядок ідуть тільки заповнені",
+        ratedPlayerCounts(sampleGame({bggMin:1, bggMax:6, byCount:{"2": 8, "5+": 6}})),
         ["2","5+"]);
-  рівні("без оцінок у рядку немає нічого", ratedCounts(коробка({})), []);
+  checkEqual("без оцінок у рядку немає нічого", ratedPlayerCounts(sampleGame({})), []);
 }
 
 /* ── підпис клітинки «5+» ──────────────────────────── */
 {
-  рівні("стеля відома — пишемо її", countLabel(коробка({bggMax:6}), "5+"), "до 6");
-  рівні("стеля з десяти", countLabel(коробка({bggMax:10}), "5+"), "до 10");
-  рівні("сотня гравців у клітинку не влазить і сенсу не має",
-        countLabel(коробка({bggMax:100}), "5+"), "6+");
-  рівні("стелі немає — лишається загальний підпис",
-        countLabel(коробка({}), "5+"), "6+");
-  рівні("звичайні склади підписані цифрою", countLabel(коробка({bggMax:9}), "3"), "3");
+  checkEqual("стеля відома — пишемо її", playerCountLabel(sampleGame({bggMax:6}), "5+"), "до 6");
+  checkEqual("стеля з десяти", playerCountLabel(sampleGame({bggMax:10}), "5+"), "до 10");
+  checkEqual("сотня гравців у клітинку не влазить і сенсу не має",
+        playerCountLabel(sampleGame({bggMax:100}), "5+"), "6+");
+  checkEqual("стелі немає — лишається загальний підпис",
+        playerCountLabel(sampleGame({}), "5+"), "6+");
+  checkEqual("звичайні склади підписані цифрою", playerCountLabel(sampleGame({bggMax:9}), "3"), "3");
 }
 
 /* ── опитування спільноти ──────────────────────────── */
 {
-  рівні("суцільний відрізок склеюється", ranges([2,3,4,5]), "2–5");
-  рівні("одинак лишається цифрою", ranges([4]), "4");
-  рівні("дірка розриває відрізок", ranges([2,3,5,6]), "2–3 · 5–6");
-  рівні("порожнє опитування — порожній рядок", ranges([]), "");
-  рівні("немає поля взагалі", ranges(undefined), "");
+  checkEqual("суцільний відрізок склеюється", formatRanges([2,3,4,5]), "2–5");
+  checkEqual("одинак лишається цифрою", formatRanges([4]), "4");
+  checkEqual("дірка розриває відрізок", formatRanges([2,3,5,6]), "2–3 · 5–6");
+  checkEqual("порожнє опитування — порожній рядок", formatRanges([]), "");
+  checkEqual("немає поля взагалі", formatRanges(undefined), "");
 }
 
 /* ── свої числа поверх чужих ───────────────────────── */
 {
-  рівні("склад беремо з BGG, коли свого немає",
-        склад(коробка({bggMin:2, bggMax:6})), {від:2, до:6});
-  рівні("своє число перекриває чуже",
-        склад(коробка({minP:3, bggMin:1, bggMax:6})), {від:3, до:6});
-  рівні("час із BGG діапазоном", timeText(коробка({bggTimeMin:60, bggTimeMax:90})),
+  checkEqual("склад беремо з BGG, коли свого немає",
+        playerRange(sampleGame({bggMin:2, bggMax:6})), {min:2, max:6});
+  checkEqual("своє число перекриває чуже",
+        playerRange(sampleGame({minP:3, bggMin:1, bggMax:6})), {min:3, max:6});
+  checkEqual("час із BGG діапазоном", durationText(sampleGame({bggTimeMin:60, bggTimeMax:90})),
         "60–90 хв");
-  рівні("свій час — одне число", timeText(коробка({minutes:45, bggTimeMin:60, bggTimeMax:90})),
+  checkEqual("свій час — одне число", durationText(sampleGame({minutes:45, bggTimeMin:60, bggTimeMax:90})),
         "45 хв");
-  рівні("однаковий час не подвоюємо", timeText(коробка({bggTimeMin:20, bggTimeMax:20})), "20 хв");
-  рівні("часу немає зовсім", timeText(коробка({})), "");
-  рівні("складність своя важливіша", складність(коробка({weight:4, bggWeight:2.3})), 4);
-  рівні("складність із BGG, коли своєї немає", складність(коробка({bggWeight:2.3})), 2.3);
-  рівні("гравці словами", playersText(коробка({bggMin:2, bggMax:4})), "2–4 гравці");
-  рівні("один гравець", playersText(коробка({bggMin:1, bggMax:1})), "1 гравець");
-  рівні("п'ятеро", playersText(коробка({bggMin:5, bggMax:5})), "5 гравців");
-  рівні("нічого не знаємо", playersText(коробка({})), "");
+  checkEqual("однаковий час не подвоюємо", durationText(sampleGame({bggTimeMin:20, bggTimeMax:20})), "20 хв");
+  checkEqual("часу немає зовсім", durationText(sampleGame({})), "");
+  checkEqual("складність своя важливіша", weightOf(sampleGame({weight:4, bggWeight:2.3})), 4);
+  checkEqual("складність із BGG, коли своєї немає", weightOf(sampleGame({bggWeight:2.3})), 2.3);
+  checkEqual("гравці словами", playersText(sampleGame({bggMin:2, bggMax:4})), "2–4 гравці");
+  checkEqual("один гравець", playersText(sampleGame({bggMin:1, bggMax:1})), "1 гравець");
+  checkEqual("п'ятеро", playersText(sampleGame({bggMin:5, bggMax:5})), "5 гравців");
+  checkEqual("нічого не знаємо", playersText(sampleGame({})), "");
 }
 
 /* ── несумісні статуси ─────────────────────────────── */
 {
-  const g = коробка({statuses:["колекція"], status:"колекція"});
-  setStats(g, узгодити(new Set(stats(g)).add("позбувся"), "позбувся"));
-  рівні("«позбувся» гасить «у колекції»", g.statuses, ["позбувся"]);
-  setStats(g, узгодити(new Set(stats(g)).add("колекція"), "колекція"));
-  рівні("і навпаки", g.statuses, ["колекція"]);
-  setStats(g, узгодити(new Set(stats(g)).add("онлайн"), "онлайн"));
-  рівні("«онлайн» нікого не гасить", g.statuses, ["колекція", "онлайн"]);
-  setStats(g, узгодити(new Set(stats(g)).add("позбувся"), "позбувся"));
-  рівні("позбувся коробки, а онлайн лишився", g.statuses, ["онлайн", "позбувся"]);
-  setStats(g, узгодити(new Set(stats(g)).add("улюблена"), "улюблена"));
-  рівні("улюблена вживається з чим завгодно",
-        g.statuses, ["улюблена", "онлайн", "позбувся"]);
+  const game = sampleGame({statuses:["колекція"], status:"колекція"});
+  setStatuses(game, resolveStatusConflicts(new Set(statusesOf(game)).add("позбувся"), "позбувся"));
+  checkEqual("«позбувся» гасить «у колекції»", game.statuses, ["позбувся"]);
+  setStatuses(game, resolveStatusConflicts(new Set(statusesOf(game)).add("колекція"), "колекція"));
+  checkEqual("і навпаки", game.statuses, ["колекція"]);
+  setStatuses(game, resolveStatusConflicts(new Set(statusesOf(game)).add("онлайн"), "онлайн"));
+  checkEqual("«онлайн» нікого не гасить", game.statuses, ["колекція", "онлайн"]);
+  setStatuses(game, resolveStatusConflicts(new Set(statusesOf(game)).add("позбувся"), "позбувся"));
+  checkEqual("позбувся коробки, а онлайн лишився", game.statuses, ["онлайн", "позбувся"]);
+  setStatuses(game, resolveStatusConflicts(new Set(statusesOf(game)).add("улюблена"), "улюблена"));
+  checkEqual("улюблена вживається з чим завгодно",
+        game.statuses, ["улюблена", "онлайн", "позбувся"]);
 }
 
 /* ── пошук ─────────────────────────────────────────── */
 {
-  const полиця = [коробка({name:"Палео", nameEn:"Paleo"}),
-                  коробка({name:"Земля", nameEn:"Earth", tags:["двигун"]}),
-                  коробка({name:"Голем", nameEn:"Golem", comment:"важка"})];
-  рівні("пошук українською", видно(полиця, {q:"пале"}), ["Палео"]);
-  рівні("пошук оригінальною", видно(полиця, {q:"earth"}), ["Земля"]);
-  рівні("пошук за тегом", видно(полиця, {q:"двигун"}), ["Земля"]);
-  рівні("пошук у нотатці", видно(полиця, {q:"важка"}), ["Голем"]);
-  рівні("нічого не знайшлось", видно(полиця, {q:"ъ"}), []);
+  const shelf = [sampleGame({name:"Палео", nameEn:"Paleo"}),
+                  sampleGame({name:"Земля", nameEn:"Earth", tags:["двигун"]}),
+                  sampleGame({name:"Голем", nameEn:"Golem", comment:"важка"})];
+  checkEqual("пошук українською", shownNames(shelf, {search:"пале"}), ["Палео"]);
+  checkEqual("пошук оригінальною", shownNames(shelf, {search:"earth"}), ["Земля"]);
+  checkEqual("пошук за тегом", shownNames(shelf, {search:"двигун"}), ["Земля"]);
+  checkEqual("пошук у нотатці", shownNames(shelf, {search:"важка"}), ["Голем"]);
+  checkEqual("нічого не знайшлось", shownNames(shelf, {search:"ъ"}), []);
 }
 
 /* ── приховані групи ───────────────────────────────── */
 {
-  const полиця = [
-    коробка({name:"База"}),
-    коробка({name:"Доп", expansion:true}),
-    коробка({name:"Здихався", statuses:["позбувся"], status:"позбувся"}),
-    коробка({name:"Мережева", statuses:["онлайн"], status:"онлайн"}),
-    коробка({name:"Здихався й мережева", statuses:["онлайн","позбувся"], status:"онлайн"}),
+  const shelf = [
+    sampleGame({name:"База"}),
+    sampleGame({name:"Доп", expansion:true}),
+    sampleGame({name:"Здихався", statuses:["позбувся"], status:"позбувся"}),
+    sampleGame({name:"Мережева", statuses:["онлайн"], status:"онлайн"}),
+    sampleGame({name:"Здихався й мережева", statuses:["онлайн","позбувся"], status:"онлайн"}),
   ];
-  рівні("типово видно всі коробки", видно(полиця, {sort:"name"}).length, 5);
-  рівні("сховати доповнення",
-        видно(полиця, {sort:"name", hide:["exp"]}).indexOf("Доп"), -1);
-  рівні("сховати позбуті",
-        видно(полиця, {sort:"name", hide:["позбувся"]}),
+  checkEqual("типово видно всі коробки", shownNames(shelf, {sort:"name"}).length, 5);
+  checkEqual("сховати доповнення",
+        shownNames(shelf, {sort:"name", hidden:["expansions"]}).indexOf("Доп"), -1);
+  checkEqual("сховати позбуті",
+        shownNames(shelf, {sort:"name", hidden:["gone"]}),
         ["База", "Доп", "Мережева"]);
-  рівні("сховати лише-онлайн: ховається тільки те, чого ніде немає",
-        видно(полиця, {sort:"name", hide:["онлайн"]}),
+  checkEqual("сховати лише-онлайн: ховається тільки те, чого ніде немає",
+        shownNames(shelf, {sort:"name", hidden:["onlineOnly"]}),
         ["База", "Доп", "Здихався"]);
   // Коробка стоїть удома або в друга — те, що в неї грають ще й онлайн,
   // не робить її менш досяжною за столом, і ховати її не можна.
   {
-    const свої = [
-      коробка({name:"Вдома", statuses:["колекція","онлайн"], status:"колекція"}),
-      коробка({name:"У друга", statuses:["чужа","онлайн"], status:"чужа"}),
-      коробка({name:"Тільки в мережі", statuses:["онлайн"], status:"онлайн"}),
+    const ownAndFriends = [
+      sampleGame({name:"Вдома", statuses:["колекція","онлайн"], status:"колекція"}),
+      sampleGame({name:"У друга", statuses:["чужа","онлайн"], status:"чужа"}),
+      sampleGame({name:"Тільки в мережі", statuses:["онлайн"], status:"онлайн"}),
     ];
-    рівні("своя й чужа переживають «лише онлайн»",
-          видно(свої, {sort:"name", hide:["онлайн"]}), ["Вдома", "У друга"]);
+    checkEqual("своя й чужа переживають «лише онлайн»",
+          shownNames(ownAndFriends, {sort:"name", hidden:["onlineOnly"]}), ["Вдома", "У друга"]);
   }
-  рівні("сховати маленькі філери",
-        видно(полиця.concat([коробка({name:"Філер", statuses:["колекція","філер"],
+  checkEqual("сховати маленькі філери",
+        shownNames(shelf.concat([sampleGame({name:"Філер", statuses:["колекція","філер"],
                                       status:"колекція"})]),
-              {sort:"name", hide:["філер"]}).indexOf("Філер"), -1);
-  рівні("кілька позначок разом",
-        видно(полиця, {sort:"name", hide:["exp", "позбувся", "онлайн"]}), ["База"]);
-  рівні("порожній набір нічого не ховає",
-        видно(полиця, {sort:"name", hide:[]}).length, 5);
+              {sort:"name", hidden:["fillers"]}).indexOf("Філер"), -1);
+  checkEqual("кілька позначок разом",
+        shownNames(shelf, {sort:"name", hidden:["expansions", "gone", "onlineOnly"]}), ["База"]);
+  checkEqual("порожній набір нічого не ховає",
+        shownNames(shelf, {sort:"name", hidden:[]}).length, 5);
 }
 
 /* ── фільтр за статусом ────────────────────────────── */
 {
-  const полиця = [
-    коробка({name:"Улюблена", statuses:["колекція","улюблена"], status:"колекція", plays:3}),
-    коробка({name:"Онлайн", statuses:["онлайн"], status:"онлайн", plays:2}),
-    коробка({name:"Незіграна", statuses:["чужа"], status:"чужа", plays:0}),
+  const shelf = [
+    sampleGame({name:"Улюблена", statuses:["колекція","улюблена"], status:"колекція", plays:3}),
+    sampleGame({name:"Онлайн", statuses:["онлайн"], status:"онлайн", plays:2}),
+    sampleGame({name:"Незіграна", statuses:["чужа"], status:"чужа", plays:0}),
   ];
-  рівні("кілька статусів: знаходиться за другим",
-        видно(полиця, {status:"улюблена"}), ["Улюблена"]);
-  рівні("знаходиться і за першим",
-        видно(полиця, {status:"колекція"}), ["Улюблена"]);
-  рівні("фільтр за похідним статусом",
-        видно(полиця, {status:"незіграна"}), ["Незіграна"]);
-  рівні("фільтр за новим статусом «друзів»",
-        видно(полиця, {status:"чужа"}), ["Незіграна"]);
-  рівні("лише онлайн", видно(полиця, {status:"онлайн"}), ["Онлайн"]);
+  checkEqual("кілька статусів: знаходиться за другим",
+        shownNames(shelf, {status:"улюблена"}), ["Улюблена"]);
+  checkEqual("знаходиться і за першим",
+        shownNames(shelf, {status:"колекція"}), ["Улюблена"]);
+  checkEqual("фільтр за похідним статусом",
+        shownNames(shelf, {status:"незіграна"}), ["Незіграна"]);
+  checkEqual("фільтр за новим статусом «друзів»",
+        shownNames(shelf, {status:"чужа"}), ["Незіграна"]);
+  checkEqual("лише онлайн", shownNames(shelf, {status:"онлайн"}), ["Онлайн"]);
 }
 
 /* ── правила ───────────────────────────────────────── */
 {
-  const g = коробка({name:"З правилами", rules:[
+  const game = sampleGame({name:"З правилами", rules:[
     {title:"Наш переклад", url:"https://d/1", kind:"переклад"},
     {title:"Правила", url:"https://d/2", kind:"офіційні"},
     {title:"Соло", url:"https://d/3", kind:"соло"},
   ]});
-  рівні("офіційні правила стають першими",
-        rules(g).map((п) => п.kind), ["офіційні", "соло", "переклад"]);
-  рівні("кнопка в рядку веде на офіційні", перші(g).url, "https://d/2");
-  рівні("без правил нема на що вести", перші(коробка({})), null);
+  checkEqual("офіційні правила стають першими",
+        sortedRules(game).map((rule) => rule.kind), ["офіційні", "соло", "переклад"]);
+  checkEqual("кнопка в рядку веде на офіційні", firstRule(game).url, "https://d/2");
+  checkEqual("без правил нема на що вести", firstRule(sampleGame({})), null);
 
-  const полиця = [g, коробка({name:"Без правил"})];
-  рівні("фільтр: є правила", видно(полиця, {rules:"є"}), ["З правилами"]);
-  рівні("фільтр: без правил", видно(полиця, {rules:"нема"}), ["Без правил"]);
-  рівні("фільтр вимкнено — видно обидві", видно(полиця, {}).length, 2);
+  const shelf = [game, sampleGame({name:"Без правил"})];
+  checkEqual("фільтр: є правила", shownNames(shelf, {rules:"has"}), ["З правилами"]);
+  checkEqual("фільтр: без правил", shownNames(shelf, {rules:NONE}), ["Без правил"]);
+  checkEqual("фільтр вимкнено — видно обидві", shownNames(shelf, {}).length, 2);
 }
 
 /* ── жанри ─────────────────────────────────────────── */
 {
-  const g = коробка({name:"Жанрова", bggFamily:["strategy-games"],
+  const game = sampleGame({name:"Жанрова", bggFamily:["strategy-games"],
                      bggGenres:["card-game","fantasy"]});
-  рівні("родина підписується українською", familyNames(g), ["стратегія"]);
-  рівні("своя родина перекриває чужу",
-        familyNames(коробка({bggFamily:["strategy-games"], family:["party-games"]})),
+  checkEqual("родина підписується українською", familyLabels(game), ["стратегія"]);
+  checkEqual("своя родина перекриває чужу",
+        familyLabels(sampleGame({bggFamily:["strategy-games"], family:["party-games"]})),
         ["вечіркова"]);
-  рівні("порожня своя родина не заступає чужу",
-        familyOf(коробка({bggFamily:["strategy-games"], family:[]})),
+  checkEqual("порожня своя родина не заступає чужу",
+        familyKeys(sampleGame({bggFamily:["strategy-games"], family:[]})),
         ["strategy-games"]);
-  рівні("своя родина там, де BGG мовчить",
-        familyNames(коробка({family:["thematic-games"]})), ["тематична"]);
-  рівні("жанри підписуються українською", genreNames(g), ["карткова","фентезі"]);
-  рівні("слуг без підпису лишається собою",
-        genreNames(коробка({bggGenres:["quantum-ballet"]})), ["quantum-ballet"]);
-  рівні("без жанрів — порожньо", genreNames(коробка({})), []);
+  checkEqual("своя родина там, де BGG мовчить",
+        familyLabels(sampleGame({family:["thematic-games"]})), ["тематична"]);
+  checkEqual("жанри підписуються українською", genreLabels(game), ["карткова","фентезі"]);
+  checkEqual("слуг без підпису лишається собою",
+        genreLabels(sampleGame({bggGenres:["quantum-ballet"]})), ["quantum-ballet"]);
+  checkEqual("без жанрів — порожньо", genreLabels(sampleGame({})), []);
 
-  const полиця = [g,
-    коробка({name:"Сімейна", bggFamily:["family-games"], bggGenres:["animals"]}),
-    коробка({name:"Безрідна"})];
-  рівні("фільтр за родиною", видно(полиця, {family:"strategy-games"}), ["Жанрова"]);
-  рівні("фільтр «без жанру»", видно(полиця, {family:"нема"}), ["Безрідна"]);
-  рівні("своя родина знаходиться фільтром так само, як чужа",
-        видно([коробка({name:"Своя", family:["party-games"]})],
+  const shelf = [game,
+    sampleGame({name:"Сімейна", bggFamily:["family-games"], bggGenres:["animals"]}),
+    sampleGame({name:"Безрідна"})];
+  checkEqual("фільтр за родиною", shownNames(shelf, {family:"strategy-games"}), ["Жанрова"]);
+  checkEqual("фільтр «без жанру»", shownNames(shelf, {family:NONE}), ["Безрідна"]);
+  checkEqual("своя родина знаходиться фільтром так само, як чужа",
+        shownNames([sampleGame({name:"Своя", family:["party-games"]})],
               {family:"party-games"}), ["Своя"]);
-  рівні("коробка зі своєю родиною більше не «без жанру»",
-        видно([коробка({name:"Своя", family:["party-games"]})], {family:"нема"}), []);
-  рівні("типово видно всіх", видно(полиця, {sort:"name"}).length, 3);
-  рівні("пошук знаходить за підписом жанру",
-        видно(полиця, {q:"фентезі"}), ["Жанрова"]);
-  рівні("пошук знаходить і за слугом", видно(полиця, {q:"animals"}), ["Сімейна"]);
-  рівні("пошук за родиною", видно(полиця, {q:"сімейна"}), ["Сімейна"]);
+  checkEqual("коробка зі своєю родиною більше не «без жанру»",
+        shownNames([sampleGame({name:"Своя", family:["party-games"]})], {family:NONE}), []);
+  checkEqual("типово видно всіх", shownNames(shelf, {sort:"name"}).length, 3);
+  checkEqual("пошук знаходить за підписом жанру",
+        shownNames(shelf, {search:"фентезі"}), ["Жанрова"]);
+  checkEqual("пошук знаходить і за слугом", shownNames(shelf, {search:"animals"}), ["Сімейна"]);
+  checkEqual("пошук за родиною", shownNames(shelf, {search:"сімейна"}), ["Сімейна"]);
 }
 
 /* ── «звужено» знає про всі фільтри одразу ─────────── */
 {
-  const полиця = [коробка({name:"Одна"}), коробка({name:"Друга", expansion:true})];
-  видно(полиця, {});
-  ок("нічого не обрано — не звужено", !звужено());
-  видно(полиця, {q:"од"});
-  ок("пошук звужує", звужено());
-  видно(полиця, {status:"доповнення"});
-  ок("фільтр звужує", звужено());
-  рівні("фільтр «доповнення» знаходить саме їх",
-        видно(полиця, {status:"доповнення"}), ["Друга"]);
-  видно(полиця, {hide:["exp"]});
-  ок("«приховати» теж звужує", звужено());
-  видно(полиця, {sort:"name", rev:true});
-  ок("сортування звуженням не рахується", !звужено());
+  const shelf = [sampleGame({name:"Одна"}), sampleGame({name:"Друга", expansion:true})];
+  shownNames(shelf, {});
+  check("нічого не обрано — не звужено", !isNarrowed());
+  shownNames(shelf, {search:"од"});
+  check("пошук звужує", isNarrowed());
+  shownNames(shelf, {status:EXPANSION_OPTION});
+  check("фільтр звужує", isNarrowed());
+  checkEqual("фільтр «доповнення» знаходить саме їх",
+        shownNames(shelf, {status:EXPANSION_OPTION}), ["Друга"]);
+  shownNames(shelf, {hidden:["expansions"]});
+  check("«приховати» теж звужує", isNarrowed());
+  shownNames(shelf, {sort:"name", reversed:true});
+  check("сортування звуженням не рахується", !isNarrowed());
 }
 
 /* ── ключові жанри ─────────────────────────────────── */
 {
-  const кооп = коробка({name:"Кооп", bggMech:["cooperative-game","hand-management"]});
-  const темна = коробка({name:"Темна", bggGenres:["horror","card-game"]});
-  const обидва = коробка({name:"Обидва", bggGenres:["fantasy"],
+  const coop = sampleGame({name:"Кооп", bggMech:["cooperative-game","hand-management"]});
+  const dark = sampleGame({name:"Темна", bggGenres:["horror","card-game"]});
+  const both = sampleGame({name:"Обидва", bggGenres:["fantasy"],
                           bggMech:["worker-placement"]});
-  const голе = коробка({name:"Голе"});
+  const bare = sampleGame({name:"Голе"});
 
-  ок("механіка дає ключовий жанр", keyGenres(кооп).indexOf("кооп") >= 0);
-  ок("категорія дає ключовий жанр", keyGenres(темна).indexOf("жахи") >= 0);
-  рівні("зайвого не вигадуємо", keyGenres(голе), []);
-  ок("категорія й механіка складаються",
-     keyGenres(обидва).indexOf("фентезі") >= 0 && keyGenres(обидва).indexOf("робітники") >= 0);
-  рівні("порядок як у словнику, а не як у даних",
-        keyGenres(коробка({bggGenres:["fantasy"], bggMech:["cooperative-game"]})),
+  check("механіка дає ключовий жанр", keyGenreKeys(coop).indexOf("кооп") >= 0);
+  check("категорія дає ключовий жанр", keyGenreKeys(dark).indexOf("жахи") >= 0);
+  checkEqual("зайвого не вигадуємо", keyGenreKeys(bare), []);
+  check("категорія й механіка складаються",
+     keyGenreKeys(both).indexOf("фентезі") >= 0 && keyGenreKeys(both).indexOf("робітники") >= 0);
+  checkEqual("порядок як у словнику, а не як у даних",
+        keyGenreKeys(sampleGame({bggGenres:["fantasy"], bggMech:["cooperative-game"]})),
         ["кооп", "фентезі"]);
-  рівні("підписи українською", keyGenreNames(кооп), ["кооперативна"]);
-  ок("невідома механіка нічого не ламає",
-     keyGenres(коробка({bggMech:["quantum-ballet"]})).length === 0);
+  checkEqual("підписи українською", keyGenreLabels(coop), ["кооперативна"]);
+  check("невідома механіка нічого не ламає",
+     keyGenreKeys(sampleGame({bggMech:["quantum-ballet"]})).length === 0);
 
-  const полиця = [кооп, темна, обидва, голе];
-  рівні("фільтр за ключовим жанром", видно(полиця, {key:"кооп"}), ["Кооп"]);
-  рівні("фільтр за темою з категорії", видно(полиця, {key:"жахи"}), ["Темна"]);
-  рівні("типово видно всіх", видно(полиця, {sort:"name", key:"all"}).length, 4);
-  рівні("пошук знаходить за підписом ключового жанру",
-        видно(полиця, {q:"кооперативна"}), ["Кооп"]);
-  рівні("пошук знаходить і за слугом механіки",
-        видно(полиця, {q:"worker-placement"}), ["Обидва"]);
-  видно(полиця, {key:"кооп"});
-  ок("ключовий жанр рахується звуженням", звужено());
+  const shelf = [coop, dark, both, bare];
+  checkEqual("фільтр за ключовим жанром", shownNames(shelf, {keyGenre:"кооп"}), ["Кооп"]);
+  checkEqual("фільтр за темою з категорії", shownNames(shelf, {keyGenre:"жахи"}), ["Темна"]);
+  checkEqual("типово видно всіх", shownNames(shelf, {sort:"name", keyGenre:"all"}).length, 4);
+  checkEqual("пошук знаходить за підписом ключового жанру",
+        shownNames(shelf, {search:"кооперативна"}), ["Кооп"]);
+  checkEqual("пошук знаходить і за слугом механіки",
+        shownNames(shelf, {search:"worker-placement"}), ["Обидва"]);
+  shownNames(shelf, {keyGenre:"кооп"});
+  check("ключовий жанр рахується звуженням", isNarrowed());
 }
 
 /* ── «соло»: жанр за складом столу, а не за механікою ─────────────────
@@ -419,28 +435,28 @@ function видно(набір, стан){
    стоїть у кожної третьої коробки на полиці, зокрема в ігор на шістьох.
    «Соло» — це коробка рівно на одного, і нічого більше. */
 {
-  const сама = коробка({name:"Сама", bggMin:1, bggMax:1,
+  const soloOnly = sampleGame({name:"Сама", bggMin:1, bggMax:1,
                         bggMech:["solo-solitaire-game"]});
-  const режим = коробка({name:"Режим", bggMin:1, bggMax:4,
+  const withSoloMode = sampleGame({name:"Режим", bggMin:1, bggMax:4,
                          bggMech:["solo-solitaire-game"]});
-  const нічого = коробка({name:"Нічого", bggMin:2, bggMax:4});
-  const незнана = коробка({name:"Незнана", bggMech:["solo-solitaire-game"]});
-  const своя = коробка({name:"Своя", bggMin:1, bggMax:4, maxP:1});
+  const plain = sampleGame({name:"Нічого", bggMin:2, bggMax:4});
+  const unknownRange = sampleGame({name:"Незнана", bggMech:["solo-solitaire-game"]});
+  const own = sampleGame({name:"Своя", bggMin:1, bggMax:4, maxP:1});
 
-  ок("коробка на одного — це «соло»", keyGenres(сама).indexOf("соло") >= 0);
-  ок("гра з соло-режимом — не «соло»", keyGenres(режим).indexOf("соло") < 0);
-  ок("зате має «соло-режим»", keyGenres(режим).indexOf("соло-режим") >= 0);
-  ок("і сама теж має «соло-режим»", keyGenres(сама).indexOf("соло-режим") >= 0);
-  ок("без механіки й без меж — жодного соло", keyGenres(нічого).length === 0);
-  ок("невідома стеля не робить коробку соло",
-     keyGenres(незнана).indexOf("соло") < 0);
-  ок("своя стеля важить більше за чужу", keyGenres(своя).indexOf("соло") >= 0);
+  check("коробка на одного — це «соло»", keyGenreKeys(soloOnly).indexOf("соло") >= 0);
+  check("гра з соло-режимом — не «соло»", keyGenreKeys(withSoloMode).indexOf("соло") < 0);
+  check("зате має «соло-режим»", keyGenreKeys(withSoloMode).indexOf("соло-режим") >= 0);
+  check("і сама теж має «соло-режим»", keyGenreKeys(soloOnly).indexOf("соло-режим") >= 0);
+  check("без механіки й без меж — жодного соло", keyGenreKeys(plain).length === 0);
+  check("невідома стеля не робить коробку соло",
+     keyGenreKeys(unknownRange).indexOf("соло") < 0);
+  check("своя стеля важить більше за чужу", keyGenreKeys(own).indexOf("соло") >= 0);
 
-  const полиця = [сама, режим, нічого];
-  рівні("стрічка «соло» дає лише коробку на одного",
-        видно(полиця, {key:"соло"}), ["Сама"]);
-  рівні("стрічка «соло-режим» дає обидві",
-        видно(полиця, {key:"соло-режим", sort:"name"}), ["Режим", "Сама"]);
+  const shelf = [soloOnly, withSoloMode, plain];
+  checkEqual("стрічка «соло» дає лише коробку на одного",
+        shownNames(shelf, {keyGenre:"соло"}), ["Сама"]);
+  checkEqual("стрічка «соло-режим» дає обидві",
+        shownNames(shelf, {keyGenre:"соло-режим", sort:"name"}), ["Режим", "Сама"]);
 }
 
 /* ── цілість самого словника ──────────────────────────────────────────
@@ -448,226 +464,224 @@ function видно(набір, стан){
    умови мовчки не спрацював би ніде, а два однакові ключі зробили б
    другу кнопку в стрічці недосяжною. */
 {
-  const без = КЛЮЧОВІ.filter((к) => !к.категорії && !к.механіки && !к.склад);
-  рівні("кожен ключовий жанр має умову", без.map((к) => к.ключ), []);
-  const ключі = КЛЮЧОВІ.map((к) => к.ключ);
-  ок("ключі не повторюються", ключі.length === new Set(ключі).size);
-  ок("у кожного є підпис", КЛЮЧОВІ.every((к) => !!к.підпис));
-  ок("«усі» не можна взяти за ключ жанру", ключі.indexOf("all") < 0);
+  const withoutCondition = KEY_GENRES.filter((keyGenre) =>
+    !keyGenre.categories && !keyGenre.mechanics && !keyGenre.players);
+  checkEqual("кожен ключовий жанр має умову", withoutCondition.map((keyGenre) => keyGenre.key), []);
+  const keys = KEY_GENRES.map((keyGenre) => keyGenre.key);
+  check("ключі не повторюються", keys.length === new Set(keys).size);
+  check("у кожного є підпис", KEY_GENRES.every((keyGenre) => !!keyGenre.label));
+  check("«усі» не можна взяти за ключ жанру", keys.indexOf(ANY) < 0);
 }
 
 /* ── журнал партій ─────────────────────────────────────────────────────
    Головна вимога: «+1 партія» має працювати без жодного заповнювання.
    Друга: записів у журналі ніколи не більше, ніж самих партій. */
 {
-  const g = коробка({name:"Проба", plays:0});
-  додатиПартію(g, "2026-09-10");
-  додатиПартію(g, "2026-09-13");
-  рівні("партії лягли за датами", журнал(g).map((з) => з.on),
+  const game = sampleGame({name:"Проба", plays:0});
+  addPlay(game, "2026-09-10");
+  addPlay(game, "2026-09-13");
+  checkEqual("партії лягли за датами", playLog(game).map((entry) => entry.on),
         ["2026-09-10", "2026-09-13"]);
-  рівні("лічильник іде слідом", g.plays, 2);
-  додатиПартію(g, "2026-09-11");
-  рівні("записана заднім числом стає на своє місце", журнал(g).map((з) => з.on),
+  checkEqual("лічильник іде слідом", game.plays, 2);
+  addPlay(game, "2026-09-11");
+  checkEqual("записана заднім числом стає на своє місце", playLog(game).map((entry) => entry.on),
         ["2026-09-10", "2026-09-11", "2026-09-13"]);
-  рівні("остання — найсвіжіша", остання(g), "2026-09-13");
-  рівні("склад столу записується", (додатиПартію(g, "2026-09-14", "3"), журнал(g)[3].count), "3");
+  checkEqual("остання — найсвіжіша", lastPlayedOn(game), "2026-09-13");
+  checkEqual("склад столу записується", (addPlay(game, "2026-09-14", "3"), playLog(game)[3].count), "3");
 
-  прибратиПартію(g, 0);
-  рівні("прибрана партія зникає", журнал(g).map((з) => з.on),
+  removePlay(game, 0);
+  checkEqual("прибрана партія зникає", playLog(game).map((entry) => entry.on),
         ["2026-09-11", "2026-09-13", "2026-09-14"]);
-  рівні("і лічильник з нею", g.plays, 3);
+  checkEqual("і лічильник з нею", game.plays, 3);
 }
 {
   // «−» скасовує саме останню партію — найсвіжіший запис журналу, а вже
   // потім те, що лежало в лічильнику без дат.
-  const g = коробка({name:"Давня", plays:5});
-  додатиПартію(g, "2026-09-12");
-  рівні("лічильник додає до давніх", g.plays, 6);
-  меншеПартій(g);
-  рівні("мінус скасував щойно записану", g.plays, 5);
-  рівні("журнал спорожнів", журнал(g).length, 0);
-  for(let i = 0; i < 5; i++) меншеПартій(g);
-  рівні("далі йдуть партії без дат", g.plays, 0);
-  меншеПартій(g);
-  рівні("нижче нуля не буває", g.plays, 0);
+  const game = sampleGame({name:"Давня", plays:5});
+  addPlay(game, "2026-09-12");
+  checkEqual("лічильник додає до давніх", game.plays, 6);
+  undoLastPlay(game);
+  checkEqual("мінус скасував щойно записану", game.plays, 5);
+  checkEqual("журнал спорожнів", playLog(game).length, 0);
+  for(let i = 0; i < 5; i++) undoLastPlay(game);
+  checkEqual("далі йдуть партії без дат", game.plays, 0);
+  undoLastPlay(game);
+  checkEqual("нижче нуля не буває", game.plays, 0);
 }
 {
   // Той самий випадок, на якому це й спіймалося: дві партії без дат,
   // кілька «+» і «−» — і повернутися до того, що було, стало неможливо,
   // бо мінус з'їдав давні партії, а плюс вертав уже з сьогоднішнім днем.
   // «+» і «−» мусять бути точною парою.
-  const g = коробка({name:"Дуель", plays:2, bggMin:2, bggMax:2});
-  додатиПартію(g);
-  додатиПартію(g);
-  рівні("двічі записали", [g.plays, журнал(g).length], [4, 2]);
-  меншеПартій(g);
-  меншеПартій(g);
-  рівні("двічі скасували — і все як було", [g.plays, журнал(g).length], [2, 0]);
-  ок("журнал зник зовсім", !("log" in g));
+  const game = sampleGame({name:"Дуель", plays:2, bggMin:2, bggMax:2});
+  addPlay(game);
+  addPlay(game);
+  checkEqual("двічі записали", [game.plays, playLog(game).length], [4, 2]);
+  undoLastPlay(game);
+  undoLastPlay(game);
+  checkEqual("двічі скасували — і все як було", [game.plays, playLog(game).length], [2, 0]);
+  check("журнал зник зовсім", !("log" in game));
 }
 {
   // Склад столу, який нема сенсу питати.
-  рівні("дуельна коробка — двоє", сталийСклад(коробка({bggMin:2, bggMax:2})), "2");
-  рівні("соло — один", сталийСклад(коробка({bggMin:1, bggMax:1})), "1");
-  рівні("рівно шестеро — це «5+»", сталийСклад(коробка({bggMin:6, bggMax:6})), "5+");
-  ок("коробці на 2–4 нічого не вигадуємо",
-     сталийСклад(коробка({bggMin:2, bggMax:4})) == null);
-  ок("і мовчазній теж", сталийСклад(коробка({})) == null);
-  ок("своє число сильніше за чуже",
-     сталийСклад(коробка({bggMin:1, bggMax:4, minP:2, maxP:2})) === "2");
+  checkEqual("дуельна коробка — двоє", fixedPlayerCount(sampleGame({bggMin:2, bggMax:2})), "2");
+  checkEqual("соло — один", fixedPlayerCount(sampleGame({bggMin:1, bggMax:1})), "1");
+  checkEqual("рівно шестеро — це «5+»", fixedPlayerCount(sampleGame({bggMin:6, bggMax:6})), "5+");
+  check("коробці на 2–4 нічого не вигадуємо",
+     fixedPlayerCount(sampleGame({bggMin:2, bggMax:4})) == null);
+  check("і мовчазній теж", fixedPlayerCount(sampleGame({})) == null);
+  check("своє число сильніше за чуже",
+     fixedPlayerCount(sampleGame({bggMin:1, bggMax:4, minP:2, maxP:2})) === "2");
 
-  const дуель = коробка({name:"Дуель", plays:0, bggMin:2, bggMax:2});
-  рівні("записана партія одразу знає склад",
-        додатиПартію(дуель).count, "2");
-  рівні("але сказане руками важить більше",
-        додатиПартію(дуель, "2026-09-01", "1").count, "1");
+  const duel = sampleGame({name:"Дуель", plays:0, bggMin:2, bggMax:2});
+  checkEqual("записана партія одразу знає склад",
+        addPlay(duel).count, "2");
+  checkEqual("але сказане руками важить більше",
+        addPlay(duel, "2026-09-01", "1").count, "1");
 }
 {
-  const g = коробка({name:"Переїзд", plays:0});
-  додатиПартію(g, "2026-09-10");
-  додатиПартію(g, "2026-09-13");
-  перенестиПартію(g, 1, "2026-09-01");
-  рівні("переставлена партія стає на своє місце",
-        журнал(g).map((з) => з.on), ["2026-09-01", "2026-09-10"]);
-  рівні("лічильник від переїзду не змінюється", g.plays, 2);
-  ок("неіснуючий запис не переставиш", !перенестиПартію(g, 9, "2026-09-01"));
-  ок("і в нікуди теж", !перенестиПартію(g, 0, ""));
+  const game = sampleGame({name:"Переїзд", plays:0});
+  addPlay(game, "2026-09-10");
+  addPlay(game, "2026-09-13");
+  movePlay(game, 1, "2026-09-01");
+  checkEqual("переставлена партія стає на своє місце",
+        playLog(game).map((entry) => entry.on), ["2026-09-01", "2026-09-10"]);
+  checkEqual("лічильник від переїзду не змінюється", game.plays, 2);
+  check("неіснуючий запис не переставиш", !movePlay(game, 9, "2026-09-01"));
+  check("і в нікуди теж", !movePlay(game, 0, ""));
 }
 {
-  const тепер = Date.parse("2026-09-13T12:00:00");
-  const свіжа = коробка({name:"Свіжа", plays:1, log:[{on:"2026-09-11"}]});
-  const стара = коробка({name:"Стара", plays:1, log:[{on:"2026-03-01"}]});
-  const безДат = коробка({name:"Без дат", plays:7});
-  const жодної = коробка({name:"Жодної", plays:0});
-  рівні("простій рахується в днях", простій(свіжа, тепер), 2);
-  ок("давня коробка простоює довше", простій(стара, тепер) > простій(свіжа, тепер));
-  рівні("партії без дат — це «давно»", простій(безДат, тепер), ДАВНО);
-  рівні("і жодної партії — теж", простій(жодної, тепер), ДАВНО);
+  const now = Date.parse("2026-09-13T12:00:00");
+  const fresh = sampleGame({name:"Свіжа", plays:1, log:[{on:"2026-09-11"}]});
+  const stale = sampleGame({name:"Стара", plays:1, log:[{on:"2026-03-01"}]});
+  const undated = sampleGame({name:"Без дат", plays:7});
+  const neverPlayed = sampleGame({name:"Жодної", plays:0});
+  checkEqual("простій рахується в днях", daysSinceLastPlay(fresh, now), 2);
+  check("давня коробка простоює довше", daysSinceLastPlay(stale, now) > daysSinceLastPlay(fresh, now));
+  checkEqual("партії без дат — це «давно»", daysSinceLastPlay(undated, now), NEVER_PLAYED_DAYS);
+  checkEqual("і жодної партії — теж", daysSinceLastPlay(neverPlayed, now), NEVER_PLAYED_DAYS);
 
-  const полиця = [свіжа, стара, безДат, жодної];
-  const порядок = видно(полиця, {sort:"idle"});
-  рівні("угорі те, що давно не діставали",
-        порядок, ["Без дат", "Жодної", "Стара", "Свіжа"]);
+  const shelf = [fresh, stale, undated, neverPlayed];
+  const order = shownNames(shelf, {sort:"idle"});
+  checkEqual("угорі те, що давно не діставали",
+        order, ["Без дат", "Жодної", "Стара", "Свіжа"]);
 }
 {
-  рівні("дата цього року — без року",
-        датаКоротко("2026-09-13", Date.parse("2026-12-01T00:00:00")), "13 вер");
-  рівні("торішня — з роком",
-        датаКоротко("2025-11-03", Date.parse("2026-12-01T00:00:00")), "3 лист 2025");
-  рівні("сміття лишається собою", датаКоротко("отакої"), "отакої");
+  checkEqual("дата цього року — без року",
+        formatShortDate("2026-09-13", Date.parse("2026-12-01T00:00:00")), "13 вер");
+  checkEqual("торішня — з роком",
+        formatShortDate("2025-11-03", Date.parse("2026-12-01T00:00:00")), "3 лист 2025");
+  checkEqual("сміття лишається собою", formatShortDate("отакої"), "отакої");
 }
 {
   // Міграція: сторінка давнішого зразка могла збити лічильник, лишивши
   // записи на місці. Читання це виправляє.
-  const g = підняти({id:"g-1", name:"Збита", statuses:["колекція"], status:"колекція",
+  const game = migrateGame({id:"g-1", name:"Збита", statuses:["колекція"], status:"колекція",
                      plays:0, log:[{on:"2026-09-13"}, {on:"2026-09-01"}]});
-  рівні("журнал упорядковується", журнал(g).map((з) => з.on),
+  checkEqual("журнал упорядковується", playLog(game).map((entry) => entry.on),
         ["2026-09-01", "2026-09-13"]);
-  рівні("лічильник вертається до числа записів", g.plays, 2);
-  const порожній = підняти({id:"g-2", name:"Порожній", statuses:["колекція"],
+  checkEqual("лічильник вертається до числа записів", game.plays, 2);
+  const emptyLog = migrateGame({id:"g-2", name:"Порожній", statuses:["колекція"],
                             status:"колекція", plays:3, log:[]});
-  ок("порожній журнал не зберігається", !("log" in порожній));
-  рівні("а лічильник не чіпається", порожній.plays, 3);
-  const сміття = підняти({id:"g-3", name:"Сміття", statuses:["колекція"],
-                          status:"колекція", plays:2, log:[{on:"2026-09-01"}, {що:"?"}]});
-  рівні("запис без дати викидається", журнал(сміття).length, 1);
+  check("порожній журнал не зберігається", !("log" in emptyLog));
+  checkEqual("а лічильник не чіпається", emptyLog.plays, 3);
+  const garbage = migrateGame({id:"g-3", name:"Сміття", statuses:["колекція"],
+                          status:"колекція", plays:2, log:[{on:"2026-09-01"}, {what:"?"}]});
+  checkEqual("запис без дати викидається", playLog(garbage).length, 1);
 }
 
 /* ── час, складність, теги ─────────────────────────────────────────────
    Три фільтри одного вечора: скільки нас, скільки часу, наскільки важке.
    Час міряємо стелею — «влазить у годину», а не «десь близько години». */
 {
-  const філер = коробка({name:"Філер", bggTimeMin:15, bggTimeMax:20, bggWeight:1.2});
-  const година = коробка({name:"Година", bggTimeMin:45, bggTimeMax:60, bggWeight:2.5});
-  const довга = коробка({name:"Довга", bggTimeMin:90, bggTimeMax:150, bggWeight:4.1});
-  const мовчазна = коробка({name:"Мовчазна"});
-  const своя = коробка({name:"Своя", bggTimeMax:200, minutes:25, weight:1.5});
-  const полиця = [філер, година, довга, мовчазна, своя];
+  const filler = sampleGame({name:"Філер", bggTimeMin:15, bggTimeMax:20, bggWeight:1.2});
+  const hourLong = sampleGame({name:"Година", bggTimeMin:45, bggTimeMax:60, bggWeight:2.5});
+  const longGame = sampleGame({name:"Довга", bggTimeMin:90, bggTimeMax:150, bggWeight:4.1});
+  const silent = sampleGame({name:"Мовчазна"});
+  const own = sampleGame({name:"Своя", bggTimeMax:200, minutes:25, weight:1.5});
+  const shelf = [filler, hourLong, longGame, silent, own];
 
-  рівні("до 30 хв — тільки короткі",
-        видно(полиця, {time:"30", sort:"name"}), ["Своя", "Філер"]);
-  рівні("у годину влазить і філер",
-        видно(полиця, {time:"60", sort:"name"}), ["Година", "Своя", "Філер"]);
-  рівні("довші — саме довші", видно(полиця, {time:"90+"}), ["Довга"]);
-  ок("коробка без чисел у кошики часу не потрапляє",
-     видно(полиця, {time:"60"}).indexOf("Мовчазна") < 0);
-  ок("зате в «усі» вона є", видно(полиця, {time:"all"}).indexOf("Мовчазна") >= 0);
+  checkEqual("до 30 хв — тільки короткі",
+        shownNames(shelf, {duration:"30", sort:"name"}), ["Своя", "Філер"]);
+  checkEqual("у годину влазить і філер",
+        shownNames(shelf, {duration:"60", sort:"name"}), ["Година", "Своя", "Філер"]);
+  checkEqual("довші — саме довші", shownNames(shelf, {duration:"90+"}), ["Довга"]);
+  check("коробка без чисел у кошики часу не потрапляє",
+     shownNames(shelf, {duration:"60"}).indexOf("Мовчазна") < 0);
+  check("зате в «усі» вона є", shownNames(shelf, {duration:"all"}).indexOf("Мовчазна") >= 0);
 
-  рівні("легка — до двійки", видно(полиця, {weight:"light", sort:"name"}), ["Своя", "Філер"]);
-  рівні("середня — до трійки", видно(полиця, {weight:"mid"}), ["Година"]);
-  рівні("важка — понад трійку", видно(полиця, {weight:"heavy"}), ["Довга"]);
-  рівні("час і складність складаються",
-        видно(полиця, {time:"60", weight:"light", sort:"name"}), ["Своя", "Філер"]);
+  checkEqual("легка — до двійки", shownNames(shelf, {weight:"light", sort:"name"}), ["Своя", "Філер"]);
+  checkEqual("середня — до трійки", shownNames(shelf, {weight:"mid"}), ["Година"]);
+  checkEqual("важка — понад трійку", shownNames(shelf, {weight:"heavy"}), ["Довга"]);
+  checkEqual("час і складність складаються",
+        shownNames(shelf, {duration:"60", weight:"light", sort:"name"}), ["Своя", "Філер"]);
 
   // Свої числа сильніші за чужі — і тут теж.
-  ок("свій «minutes» перекриває стелю BGG",
-     видно(полиця, {time:"30"}).indexOf("Своя") >= 0);
+  check("свій «minutes» перекриває стелю BGG",
+     shownNames(shelf, {duration:"30"}).indexOf("Своя") >= 0);
 }
 {
-  const з = коробка({name:"З тегом", tags:["сімейна", "вечірня"]});
-  const без = коробка({name:"Без"});
-  рівні("тег відбирає своє", видно([з, без], {tags:"вечірня"}), ["З тегом"]);
-  games = [з, без];
-  const варіанти = ФІЛЬТРИ.find((ф) => ф.ключ === "tags").варіанти().map((в) => в[0]);
-  рівні("теги в абетковому порядку", варіанти, ["all", "вечірня", "сімейна"]);
-  games = [без];
-  рівні("без тегів — нема з чого вибирати",
-        ФІЛЬТРИ.find((ф) => ф.ключ === "tags").варіанти().length, 1);
+  const tagged = sampleGame({name:"З тегом", tags:["сімейна", "вечірня"]});
+  const untagged = sampleGame({name:"Без"});
+  checkEqual("тег відбирає своє", shownNames([tagged, untagged], {tags:"вечірня"}), ["З тегом"]);
+  const tagOptions = filterByKey("tags").options([tagged, untagged]).map((option) => option[0]);
+  checkEqual("теги в абетковому порядку", tagOptions, ["all", "вечірня", "сімейна"]);
+  checkEqual("без тегів — нема з чого вибирати",
+        filterByKey("tags").options([untagged]).length, 1);
 }
 
 /* ── абетковий указник ─────────────────────────────── */
 {
-  рівні("літера з української назви", літера({name:"Картографи"}), "К");
-  рівні("латинка збирається в одну купку", літера({name:"Magic Maze"}), "A-Z");
-  рівні("цифри в другу", літера({name:"7 чудес. Дуель"}), "0-9");
-  рівні("мала літера теж рахується", літера({name:"нова гра"}), "Н");
-  рівні("без назви — без літери", літера({name:"  "}), "");
+  checkEqual("літера з української назви", indexLetter({name:"Картографи"}), "К");
+  checkEqual("латинка збирається в одну купку", indexLetter({name:"Magic Maze"}), "A-Z");
+  checkEqual("цифри в другу", indexLetter({name:"7 чудес. Дуель"}), "0-9");
+  checkEqual("мала літера теж рахується", indexLetter({name:"нова гра"}), "Н");
+  checkEqual("без назви — без літери", indexLetter({name:"  "}), "");
 
-  const полиця = [коробка({name:"Уно"}), коробка({name:"Інорі"}),
-                  коробка({name:"Magic Maze"}), коробка({name:"7 чудес"}),
-                  коробка({name:"Картографи"})];
-  games = полиця;
-  const літери = ФІЛЬТРИ.find((ф) => ф.ключ === "letter").варіанти().map((в) => в[0]);
-  рівні("указник в українській абетці, латинка й цифри в кінці",
-        літери, ["all", "І", "К", "У", "A-Z", "0-9"]);
-  рівні("літера відбирає своє", видно(полиця, {letter:"К"}), ["Картографи"]);
-  рівні("латинська купка відбирає всю латинку",
-        видно(полиця, {letter:"A-Z"}), ["Magic Maze"]);
-  рівні("типово указник нічого не відсіює",
-        видно(полиця, {letter:"all"}).length, 5);
+  const shelf = [sampleGame({name:"Уно"}), sampleGame({name:"Інорі"}),
+                  sampleGame({name:"Magic Maze"}), sampleGame({name:"7 чудес"}),
+                  sampleGame({name:"Картографи"})];
+  const letters = filterByKey("letter").options(shelf).map((option) => option[0]);
+  checkEqual("указник в українській абетці, латинка й цифри в кінці",
+        letters, ["all", "І", "К", "У", "A-Z", "0-9"]);
+  checkEqual("літера відбирає своє", shownNames(shelf, {letter:"К"}), ["Картографи"]);
+  checkEqual("латинська купка відбирає всю латинку",
+        shownNames(shelf, {letter:"A-Z"}), ["Magic Maze"]);
+  checkEqual("типово указник нічого не відсіює",
+        shownNames(shelf, {letter:"all"}).length, 5);
 }
 
 /* ── перелік того, що звужує полицю ────────────────────────────────────
    Фільтри переїхали в шухляду, і цей перелік — єдине, з чого видно, що
    вони ввімкнені: з нього живуть і плашки, і лічильник на кнопці. */
 {
-  const полиця = [коробка({name:"Перша", statuses:["улюблена"]}),
-                  коробка({name:"Друга", expansion:true})];
-  видно(полиця, {});
-  рівні("нічого не ввімкнено — нічого й не перелічено", звуження(), []);
+  const shelf = [sampleGame({name:"Перша", statuses:["улюблена"]}),
+                  sampleGame({name:"Друга", expansion:true})];
+  shownNames(shelf, {});
+  checkEqual("нічого не ввімкнено — нічого й не перелічено", narrowings(), []);
 
-  видно(полиця, {status:"улюблена", letter:"П", hide:["exp"]});
-  const перелік = звуження();
-  рівні("перелічено все троє", перелік.length, 3);
-  рівні("фільтр називає себе людською мовою",
-        перелік.filter((з) => з.ключ === "status").map((з) => з.підпис + ": " + з.значення),
+  shownNames(shelf, {status:"улюблена", letter:"П", hidden:["expansions"]});
+  const listed = narrowings();
+  checkEqual("перелічено все троє", listed.length, 3);
+  checkEqual("фільтр називає себе людською мовою",
+        listed.filter((narrowing) => narrowing.key === "status").map((narrowing) => narrowing.label + ": " + narrowing.value),
         ["Статус: улюблена"]);
-  рівні("хованка теж", перелік.filter((з) => з.вид === "хованка")
-        .map((з) => з.підпис + ": " + з.значення), ["Приховано: доповнення"]);
+  checkEqual("хованка теж", listed.filter((narrowing) => narrowing.kind === NARROWING.HIDE)
+        .map((narrowing) => narrowing.label + ": " + narrowing.value), ["Приховано: доповнення"]);
   // Плашку заробляє лише сховане в шухляді: указник за літерою і стрічку
   // статусів видно й так, а плашка над ними повторювала б те саме вдвох
   // місцях. У лічильник і в «скинути все» вони входять і далі.
-  рівні("те, що стоїть на головній, плашки не отримує",
-        перелік.filter((з) => !з.місце).map((з) => з.ключ), ["exp"]);
+  checkEqual("те, що стоїть на головній, плашки не отримує",
+        listed.filter((narrowing) => !narrowing.slot).map((narrowing) => narrowing.key), ["expansions"]);
 
-  знятиЗвуження("фільтр", "status");
-  рівні("зняли одне — решта на місці",
-        звуження().map((з) => з.ключ), ["letter", "exp"]);
-  знятиЗвуження("хованка", "exp");
-  рівні("і хованку теж", звуження().map((з) => з.ключ), ["letter"]);
-  ок("поки щось лишилось — полиця звужена", звужено());
-  знятиЗвуження("фільтр", "letter");
-  ок("а тепер ні", !звужено());
+  clearNarrowing(lastView, NARROWING.FILTER, "status");
+  checkEqual("зняли одне — решта на місці",
+        narrowings().map((narrowing) => narrowing.key), ["letter", "expansions"]);
+  clearNarrowing(lastView, NARROWING.HIDE, "expansions");
+  checkEqual("і хованку теж", narrowings().map((narrowing) => narrowing.key), ["letter"]);
+  check("поки щось лишилось — полиця звужена", isNarrowed());
+  clearNarrowing(lastView, NARROWING.FILTER, "letter");
+  check("а тепер ні", !isNarrowed());
 }
 
 /* ── список по частинах ────────────────────────────────────────────────
@@ -675,31 +689,31 @@ function видно(набір, стан){
    двоє міняються місцями. Тому перевіряємо не «намалювалось», а самі
    вузли — чи ті самі об'єкти лишились на місці. */
 {
-  const короб = document.createElement("ol");
-  const діти = () => Array.prototype.map.call(короб.children, (e) => e.dataset.id);
-  const набір = (с) => с.split(" ").map((id) => ({id: id, name: id}));
-  const зліпити = (g) => "<li data-id='" + g.id + "'>" + g.name + "</li>";
-  const інакше = (g) => "<li data-id='" + g.id + "'>" + g.name + "!</li>";
+  const container = document.createElement("ol");
+  const childIds = () => Array.prototype.map.call(container.children, (node) => node.dataset.id);
+  const itemsOf = (ids) => ids.split(" ").map((id) => ({id: id, name: id}));
+  const toHtml = (game) => "<li data-id='" + game.id + "'>" + game.name + "</li>";
+  const toChangedHtml = (game) => "<li data-id='" + game.id + "'>" + game.name + "!</li>";
 
-  поновити(короб, набір("а б в"), зліпити);
-  рівні("нове малюється", діти(), ["а", "б", "в"]);
-  const б = короб.children[1];
-  поновити(короб, набір("а б в"), зліпити);
-  ок("незмінене не пересотворюється", короб.children[1] === б);
-  поновити(короб, набір("в б а"), зліпити);
-  рівні("порядок міняється", діти(), ["в", "б", "а"]);
-  ок("і все ще ті самі вузли", короб.children[1] === б);
-  поновити(короб, набір("в а"), зліпити);
-  рівні("зникле прибирається", діти(), ["в", "а"]);
-  поновити(короб, набір("в г а"), зліпити);
-  рівні("нове стає посеред наявних", діти(), ["в", "г", "а"]);
-  ок("сусіди при цьому цілі", короб.children[2] !== б && діти().length === 3);
-  поновити(короб, набір("в г а"), інакше);
-  рівні("змінений рядок оновлюється", короб.children[0].textContent, "в!");
-  поновити(короб, набір("д"), зліпити);
-  рівні("повна заміна теж працює", діти(), ["д"]);
-  поновити(короб, [], зліпити);
-  рівні("порожній список чистить усе", діти(), []);
+  reconcileChildren(container, itemsOf("а б в"), toHtml);
+  checkEqual("нове малюється", childIds(), ["а", "б", "в"]);
+  const secondNode = container.children[1];
+  reconcileChildren(container, itemsOf("а б в"), toHtml);
+  check("незмінене не пересотворюється", container.children[1] === secondNode);
+  reconcileChildren(container, itemsOf("в б а"), toHtml);
+  checkEqual("порядок міняється", childIds(), ["в", "б", "а"]);
+  check("і все ще ті самі вузли", container.children[1] === secondNode);
+  reconcileChildren(container, itemsOf("в а"), toHtml);
+  checkEqual("зникле прибирається", childIds(), ["в", "а"]);
+  reconcileChildren(container, itemsOf("в г а"), toHtml);
+  checkEqual("нове стає посеред наявних", childIds(), ["в", "г", "а"]);
+  check("сусіди при цьому цілі", container.children[2] !== secondNode && childIds().length === 3);
+  reconcileChildren(container, itemsOf("в г а"), toChangedHtml);
+  checkEqual("змінений рядок оновлюється", container.children[0].textContent, "в!");
+  reconcileChildren(container, itemsOf("д"), toHtml);
+  checkEqual("повна заміна теж працює", childIds(), ["д"]);
+  reconcileChildren(container, [], toHtml);
+  checkEqual("порожній список чистить усе", childIds(), []);
 }
 
 /* ── жереб «що зіграти» ────────────────────────────────────────────────
@@ -707,207 +721,299 @@ function видно(набір, стан){
    узагалі не має права робити: тягнути чуже, повторюватися й радити те,
    у що грали позавчора. */
 {
-  const своя = коробка({name:"Своя", score:7, plays:2, bggMin:1, bggMax:4,
-                        bggTimeMin:30, bggTimeMax:45});
-  const чужа = коробка({name:"Чужа", score:9, statuses:["чужа"], status:"чужа"});
-  const доп = коробка({name:"Доповнення", score:9, expansion:true});
-  const свіжа = коробка({name:"Свіжа", score:9, plays:1,
-                         log:[{on: сьогодні()}]});
+  const own = sampleGame({name:"Своя", score:7, plays:2, bggMin:1, bggMax:4,
+                          bggTimeMin:30, bggTimeMax:45});
+  const friends = sampleGame({name:"Чужа", score:9, statuses:["чужа"], status:"чужа"});
+  const expansion = sampleGame({name:"Доповнення", score:9, expansion:true});
+  const playedToday = sampleGame({name:"Свіжа", score:9, plays:1, log:[{on: todayIso()}]});
   // Межі складу тут не для краси: коробка, яка мовчить про число
-  // гравців, пасує будь-якому столу — так вирішено у fitsCount.
-  const давня = коробка({name:"Давня", score:5, plays:1, bggMin:2, bggMax:3,
-                         log:[{on:"2020-01-01"}]});
-  games = [своя, чужа, доп, свіжа, давня];
-  вибірВечора.count = "all"; вибірВечора.time = "all";
+  // гравців, пасує будь-якому столу — так вирішено у fitsPlayerCount.
+  const playedLongAgo = sampleGame({name:"Давня", score:5, plays:1, bggMin:2, bggMax:3,
+                                    log:[{on:"2020-01-01"}]});
+  const shelf = [own, friends, expansion, playedToday, playedLongAgo];
+  const candidateNames = (evening) =>
+    lotteryCandidates(shelf, Object.assign(defaultEvening(), evening)).map((game) => game.name);
 
-  рівні("у жереб ідуть лише свої, не доповнення й не щойно зіграні",
-        кандидати().map((g) => g.name).sort(), ["Давня", "Своя"]);
+  checkEqual("у жереб ідуть лише свої, не доповнення й не щойно зіграні",
+             candidateNames({}).sort(), ["Давня", "Своя"]);
+  checkEqual("склад столу звужує жереб", candidateNames({playerCount:"4"}), ["Своя"]);
+  checkEqual("час теж", candidateNames({duration:"30"}), []);
 
-  вибірВечора.count = "4";
-  рівні("склад столу звужує жереб", кандидати().map((g) => g.name), ["Своя"]);
-  вибірВечора.count = "all"; вибірВечора.time = "30";
-  рівні("час теж", кандидати().map((g) => g.name), []);
-  вибірВечора.time = "all";
+  checkEqual("неоцінена важить як міцна сімка", lotteryWeight(sampleGame({plays:1})), 6);
+  checkEqual("ще не грана дістає надбавку", lotteryWeight(sampleGame({score:7, plays:0})), 9);
+  checkEqual("оцінка — це і є вага", lotteryWeight(sampleGame({score:8, plays:3})), 8);
 
-  рівні("неоцінена важить як міцна сімка", вага(коробка({plays:1})), 6);
-  рівні("ще не грана дістає надбавку", вага(коробка({score:7, plays:0})), 9);
-  рівні("оцінка — це і є вага", вага(коробка({score:8, plays:3})), 8);
-
-  const кинуто = кинути();
-  рівні("типово радить п'ятьох", СКІЛЬКИ_РАДИТИ, 5);
-  рівні("але більше, ніж є, не вигадає", кинуто.length, 2);
-  ок("і не повторюється", кинуто[0] !== кинуто[1]);
-  ок("усі кинуті — з кандидатів",
-     кинуто.every((g) => кандидати().indexOf(g) >= 0));
-  рівні("можна попросити одну", кинути(1).length, 1);
+  const candidates = lotteryCandidates(shelf, defaultEvening());
+  const drawn = drawLottery(candidates);
+  checkEqual("типово радить п'ятьох", LOTTERY_SIZE, 5);
+  checkEqual("але більше, ніж є, не вигадає", drawn.length, 2);
+  check("і не повторюється", drawn[0] !== drawn[1]);
+  check("усі кинуті — з кандидатів", drawn.every((game) => candidates.indexOf(game) >= 0));
+  checkEqual("можна попросити одну", drawLottery(candidates, 1).length, 1);
+  checkEqual("самих кандидатів жереб не чіпає", candidates.length, 2);
 }
 {
   // Вага має схиляти жереб, а не вирішувати за нього.
-  const люба = коробка({name:"Люба", score:10, plays:3, log:[{on:"2020-01-01"}]});
-  const так = коробка({name:"Так собі", score:1, plays:3, log:[{on:"2020-01-01"}]});
-  games = [люба, так];
-  вибірВечора.count = "all"; вибірВечора.time = "all";
-  let любої = 0;
-  for(let i = 0; i < 300; i++) if(кинути(1)[0] === люба) любої++;
-  ок("десятка випадає частіше за одиницю", любої > 200, любої + " з 300");
-  ок("але не завжди", любої < 300, любої + " з 300");
+  const favorite = sampleGame({name:"Люба", score:10, plays:3, log:[{on:"2020-01-01"}]});
+  const mediocre = sampleGame({name:"Так собі", score:1, plays:3, log:[{on:"2020-01-01"}]});
+  const candidates = lotteryCandidates([favorite, mediocre], defaultEvening());
+  let favoriteDraws = 0;
+  for(let i = 0; i < 300; i++) if(drawLottery(candidates, 1)[0] === favorite) favoriteDraws++;
+  check("десятка випадає частіше за одиницю", favoriteDraws > 200, favoriteDraws + " з 300");
+  check("але не завжди", favoriteDraws < 300, favoriteDraws + " з 300");
+  // Підмінена випадковість: нуль тягне першого, майже одиниця — останнього.
+  checkEqual("жереб слухається переданої випадковості",
+             [drawLottery(candidates, 1, () => 0)[0].name,
+              drawLottery(candidates, 1, () => 0.999)[0].name], ["Люба", "Так собі"]);
 }
 {
-  рівні("ще не грана каже саме це", колиОстаннє(коробка({plays:0})), "ще не грали");
-  рівні("партії без дат — чесно",
-        колиОстаннє(коробка({plays:4})), "партії були до журналу");
-  ок("а з датою — дата",
-     колиОстаннє(коробка({plays:1, log:[{on:"2026-09-13"}]})).indexOf("востаннє") === 0);
+  checkEqual("ще не грана каже саме це", lastPlayedText(sampleGame({plays:0})), "ще не грали");
+  checkEqual("партії без дат — чесно",
+             lastPlayedText(sampleGame({plays:4})), "партії були до журналу");
+  check("а з датою — дата",
+        lastPlayedText(sampleGame({plays:1, log:[{on:"2026-09-13"}]})).indexOf("востаннє") === 0);
 }
 
 /* ── сортування ────────────────────────────────────── */
 {
-  const полиця = [коробка({name:"Сім", score:7}), коробка({name:"Без оцінки"}),
-                  коробка({name:"Девʼять", score:9})];
-  рівні("за оцінкою: більша вгорі, порожня внизу",
-        видно(полиця, {sort:"score"}), ["Девʼять", "Сім", "Без оцінки"]);
-  рівні("перевернуте: порожня все одно внизу",
-        видно(полиця, {sort:"score", rev:true}), ["Сім", "Девʼять", "Без оцінки"]);
+  const shelf = [sampleGame({name:"Сім", score:7}), sampleGame({name:"Без оцінки"}),
+                  sampleGame({name:"Девʼять", score:9})];
+  checkEqual("за оцінкою: більша вгорі, порожня внизу",
+        shownNames(shelf, {sort:"score"}), ["Девʼять", "Сім", "Без оцінки"]);
+  checkEqual("перевернуте: порожня все одно внизу",
+        shownNames(shelf, {sort:"score", reversed:true}), ["Сім", "Девʼять", "Без оцінки"]);
 }
 {
-  const полиця = [коробка({name:"Magic Maze"}), коробка({name:"Яблуко"}),
-                  коробка({name:"Абрикос"}), коробка({name:"7 чудес"})];
-  рівні("абетка: цифри, кирилиця, і аж потім латинка",
-        видно(полиця, {sort:"name"}),
+  const shelf = [sampleGame({name:"Magic Maze"}), sampleGame({name:"Яблуко"}),
+                  sampleGame({name:"Абрикос"}), sampleGame({name:"7 чудес"})];
+  checkEqual("абетка: цифри, кирилиця, і аж потім латинка",
+        shownNames(shelf, {sort:"name"}),
         ["7 чудес", "Абрикос", "Яблуко", "Magic Maze"]);
 }
 {
-  const полиця = [коробка({name:"Мало", plays:1}), коробка({name:"Багато", plays:9})];
-  рівні("за партіями", видно(полиця, {sort:"plays"}), ["Багато", "Мало"]);
+  const shelf = [sampleGame({name:"Мало", plays:1}), sampleGame({name:"Багато", plays:9})];
+  checkEqual("за партіями", shownNames(shelf, {sort:"plays"}), ["Багато", "Мало"]);
 }
 {
-  const полиця = [коробка({name:"Стара", added:"2026-01-01"}),
-                  коробка({name:"Нова", added:"2026-09-01"})];
-  рівні("за датою: свіжа вгорі", видно(полиця, {sort:"added"}), ["Нова", "Стара"]);
+  const shelf = [sampleGame({name:"Стара", added:"2026-01-01"}),
+                  sampleGame({name:"Нова", added:"2026-09-01"})];
+  checkEqual("за датою: свіжа вгорі", shownNames(shelf, {sort:"added"}), ["Нова", "Стара"]);
 }
 
 /* ── що приходить ззовні ───────────────────────────────
    «Даних немає» і «дані зіпсовані» мусять виглядати по-різному. Доки
-   прийняти() на будь-яке сміття віддавало порожній список, зламаний кеш
+   acceptGames() на будь-яке сміття віддавало порожній список, зламаний кеш
    чи чужа відповідь показувалися як порожня полиця — і сторінка потім
    щиро записала б цю порожнечу в репозиторій як правду. */
-function кинуло(що){
-  try{ прийняти(що); return false; }catch(e){ return true; }
+function rejects(value){
+  try{ acceptGames(value); return false; }catch(e){ return true; }
 }
-ок("порожній список — це список", прийняти([]).length === 0);
-рівні("коробки проходять і піднімаються",
-      прийняти([{id:"g-1", name:"Гра", status:"колекція"}]).map((g) => g.statuses),
+check("порожній список — це список", acceptGames([]).length === 0);
+checkEqual("коробки проходять і піднімаються",
+      acceptGames([{id:"g-1", name:"Гра", status:"колекція"}]).map((game) => game.statuses),
       [["колекція"]]);
-ок("нічого не прийшло — це не порожня полиця", кинуло(undefined));
-ок("null — теж", кинуло(null));
-ок("об'єкт замість списку", кинуло({games:[]}));
-ок("рядок", кинуло("[]"));
-ок("число", кинуло(0));
+check("нічого не прийшло — це не порожня полиця", rejects(undefined));
+check("null — теж", rejects(null));
+check("об'єкт замість списку", rejects({games:[]}));
+check("рядок", rejects("[]"));
+check("число", rejects(0));
 
 /* ── адреси, які йдуть у сторінку ──────────────────────
    Посилання на правила вписують руками, обкладинки приїжджають із BGG, а
    імпорт JSON приймає взагалі будь-що. Усе це потім опиняється в href або
    src, тож «javascript:» тут — не дивина, а чужий код у сторінці, де лежить
    ключ доступу до репозиторію. */
-рівні("звичайне посилання лишається", посилання("https://bgg.test/a.pdf"),
+checkEqual("звичайне посилання лишається", safeUrl("https://bgg.test/a.pdf"),
       "https://bgg.test/a.pdf");
-рівні("http теж", посилання("http://bgg.test/a.pdf"), "http://bgg.test/a.pdf");
-рівні("пошта", посилання("mailto:hi@bgg.test"), "mailto:hi@bgg.test");
-рівні("відносне лишається", посилання("icon-192.png"), "icon-192.png");
-рівні("javascript: не проходить", посилання("javascript:alert(1)"), "");
-рівні("велика літера не рятує", посилання("JavaScript:alert(1)"), "");
-рівні("пробіл перед схемою не рятує", посилання("  javascript:alert(1)"), "");
-рівні("керівний символ усередині схеми не рятує",
-      посилання("java\tscript:alert(1)"), "");
-рівні("новий рядок усередині схеми не рятує",
-      посилання("java\nscript:alert(1)"), "");
+checkEqual("http теж", safeUrl("http://bgg.test/a.pdf"), "http://bgg.test/a.pdf");
+checkEqual("пошта", safeUrl("mailto:hi@bgg.test"), "mailto:hi@bgg.test");
+checkEqual("відносне лишається", safeUrl("icon-192.png"), "icon-192.png");
+checkEqual("javascript: не проходить", safeUrl("javascript:alert(1)"), "");
+checkEqual("велика літера не рятує", safeUrl("JavaScript:alert(1)"), "");
+checkEqual("пробіл перед схемою не рятує", safeUrl("  javascript:alert(1)"), "");
+checkEqual("керівний символ усередині схеми не рятує",
+      safeUrl("java\tscript:alert(1)"), "");
+checkEqual("новий рядок усередині схеми не рятує",
+      safeUrl("java\nscript:alert(1)"), "");
 // Без «</script>» у рядку: цей файл склеюється всередину <script>
 // сторінки тестів, і закриваючий тег обірвав би її просто тут.
-рівні("data: не проходить", посилання("data:text/html,<b>x</b>"), "");
-рівні("vbscript: не проходить", посилання("vbscript:msgbox"), "");
-рівні("порожнє — порожнє", посилання(null), "");
+checkEqual("data: не проходить", safeUrl("data:text/html,<b>x</b>"), "");
+checkEqual("vbscript: не проходить", safeUrl("vbscript:msgbox"), "");
+checkEqual("порожнє — порожнє", safeUrl(null), "");
 
 /* ── злиття: чия правка виживе ─────────────────────────
    Найдорожчий код у проєкті й донедавна єдиний зовсім без тестів. Правило
-   одне на три реалізації — lww() і замінитиСтан() тут та злити() на
-   сервері, — тому самі випадки лежать окремим файлом, «src/merge-cases.json»,
+   одне на три реалізації — mergeNewestWins() і replaceShelf() тут та merge_games()
+   на сервері, — тому самі випадки лежать окремим файлом, «src/merge-cases.json»,
    і той самий перелік ганяє «tests.py» по python-реалізації. Розійдуться
    реалізації — розійдеться котрась зі сторін. */
-function заId(список){
-  return список.slice().sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
+function sortedById(games){
+  return games.slice().sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
 }
-ВИПАДКИ_ЗЛИТТЯ.forEach((в) => {
-  рівні("злиття: " + в.назва, заId(lww(в.було, в.приїхало)), заId(в.стало));
+MERGE_CASES.forEach((mergeCase) => {
+  checkEqual("злиття: " + mergeCase.name,
+        sortedById(mergeNewestWins(mergeCase.base, mergeCase.incoming)), sortedById(mergeCase.expected));
 });
 
-/* Повний стан із сервера підмітає за собою: гру, викинуту з іншого
+/* Повна полиця з бази підмітає за собою: гру, викинуту з іншого
    пристрою, тут воскрешати нічим. Але незбережене не чіпає — інакше
    правка, зроблена без зв'язку, зникла б у мить, коли зв'язок з'явився. */
 {
-  const свіжий = () => [{id:"a", name:"А", updated:"2026-02-01T00:00:00.000Z"}];
-  games = [{id:"a", name:"А", updated:"2026-01-01T00:00:00.000Z"},
-           {id:"z", name:"Зайва", updated:"2026-01-01T00:00:00.000Z"}];
-  queue = [];
-  замінитиСтан(свіжий());
-  рівні("повний стан: чого нема в приході — того нема й на полиці",
-        games.map((g) => g.id), ["a"]);
+  const stamp = (month) => "2026-0" + month + "-01T00:00:00.000Z";
+  const fromBase = () => [{id:"a", name:"А", updated:stamp(2)}];
+  const ids = (games) => sortedById(games).map((game) => game.id);
 
-  games = [{id:"a", name:"А", updated:"2026-01-01T00:00:00.000Z"},
-           {id:"q", name:"Незбережена", updated:"2026-03-01T00:00:00.000Z"}];
-  queue = [{id:"q", name:"Незбережена", updated:"2026-03-01T00:00:00.000Z"}];
-  замінитиСтан(свіжий());
-  рівні("а те, що чекає в черзі, лишається",
-        заId(games).map((g) => g.id), ["a", "q"]);
-  queue = [];
+  checkEqual("повна полиця: чого нема в приході — того нема й тут",
+             ids(replaceShelf([{id:"a", name:"А", updated:stamp(1)},
+                               {id:"z", name:"Зайва", updated:stamp(1)}], fromBase(), [])),
+             ["a"]);
 
-  games = [{id:"a", name:"А", updated:"2026-01-01T00:00:00.000Z"}];
-  замінитиСтан([{id:"a", name:"Перейменована", updated:"2026-02-01T00:00:00.000Z"}]);
-  рівні("свіжіше з сервера перекриває тутешнє", games[0].name, "Перейменована");
+  const unsaved = {id:"q", name:"Незбережена", updated:stamp(3)};
+  checkEqual("а те, що чекає в черзі, лишається",
+             ids(replaceShelf([{id:"a", name:"А", updated:stamp(1)}, unsaved],
+                              fromBase(), [unsaved])),
+             ["a", "q"]);
+  // Сторінку перезавантажили без зв'язку: полиця приїхала з бази заново,
+  // а нова коробка існує тільки в черзі.
+  checkEqual("коробка, що живе лише в черзі, вертається на полицю",
+             ids(replaceShelf([], fromBase(), [unsaved])), ["a", "q"]);
 
-  games = [{id:"a", name:"Тутешня", updated:"2026-03-01T00:00:00.000Z"}];
-  замінитиСтан([{id:"a", name:"Давня", updated:"2026-01-01T00:00:00.000Z"}]);
-  рівні("а давніше — ні", games[0].name, "Тутешня");
-}
+  checkEqual("свіжіше з бази перекриває тутешнє",
+             replaceShelf([{id:"a", name:"А", updated:stamp(1)}],
+                          [{id:"a", name:"Перейменована", updated:stamp(2)}], [])[0].name,
+             "Перейменована");
+  checkEqual("а давніше — ні",
+             replaceShelf([{id:"a", name:"Тутешня", updated:stamp(3)}],
+                          [{id:"a", name:"Давня", updated:stamp(1)}], [])[0].name,
+             "Тутешня");
 
-/* Одна коробка — це не стан. Саме на цій різниці й тримається кнопка
-   «Підтягнути з BGG»: вона оновлює одну, а не приносить полицю. */
-{
-  games = [{id:"a", name:"А"}, {id:"b", name:"Б"}];
-  оновитиОдну({id:"b", name:"Б", bggWeight:2.2});
-  рівні("одна коробка: решта на місці", games.map((g) => g.id), ["a", "b"]);
-  рівні("і саме її замінили", games[1].bggWeight, 2.2);
-  оновитиОдну({id:"c", name:"В"});
-  рівні("невідома коробка додається", games.map((g) => g.id), ["a", "b", "c"]);
+  // Видалення, яке ще не доїхало: база досі віддає коробку, але тут її
+  // вже викинули, і мітка чекає в черзі. Воскресати вона не має.
+  const tombstone = {id:"a", name:"А", deleted:stamp(3), updated:stamp(3)};
+  checkEqual("мітка видалення з черги не дає коробці воскреснути",
+             ids(replaceShelf([], fromBase(), [tombstone])), []);
+  checkEqual("мітки з файла на полицю не потрапляють",
+             ids(replaceShelf([{id:"a", name:"А", updated:stamp(1)}], [tombstone], [])), []);
 }
 
 /* Черга: одна коробка чекає в ній рівно в одному примірнику, і саме в
    останньому. Інакше сорок дотиків по «+ партія» без мережі поїхали б
    сорока записами, з яких перші тридцять дев'ять — застарілі. */
 {
-  const справжнє = queueSave;
-  queueSave = () => {};              // localStorage сторінці тестів ні до чого
-  queue = [];
-  enqueue([{id:"a", plays:1}]);
-  enqueue([{id:"a", plays:2}]);
-  enqueue([{id:"b", plays:1}]);
-  рівні("у черзі кожна коробка раз", queue.map((g) => g.id), ["a", "b"]);
-  рівні("і в найсвіжішому вигляді", queue[0].plays, 2);
-  queue = [];
-  queueSave = справжнє;
+  let queue = [];
+  queue = queueWith(queue, [{id:"a", plays:1}]);
+  queue = queueWith(queue, [{id:"a", plays:2}]);
+  queue = queueWith(queue, [{id:"b", plays:1}]);
+  checkEqual("у черзі кожна коробка раз", queue.map((game) => game.id), ["a", "b"]);
+  checkEqual("і в найсвіжішому вигляді", queue[0].plays, 2);
+}
+
+/* Черга після відправлення. Тут була втрата даних: відправлення триває
+   секунду-дві, а після успіху чергу спорожнювали цілком — разом із
+   правками, що лягли в неї, поки летіла відповідь. */
+{
+  const sent = [{id:"a", updated:"2026-01-01T10:00:00.000Z"},
+                {id:"b", updated:"2026-01-01T10:00:00.000Z"}];
+  const sentStamps = stampsOf(sent);
+  checkEqual("нічого не змінилося — черга порожня", withoutSent(sent, sentStamps), []);
+  const duringFlight = [{id:"a", updated:"2026-01-01T10:00:01.000Z"},   // правили ще раз
+                        {id:"b", updated:"2026-01-01T10:00:00.000Z"},   // поїхала як є
+                        {id:"c", updated:"2026-01-01T10:00:01.000Z"}];  // нова
+  checkEqual("правка під час відправлення лишається чекати",
+             withoutSent(duringFlight, sentStamps).map((game) => game.id), ["a", "c"]);
+  // У черзі лежать ті самі об'єкти, що й на полиці: правка міняє запис на
+  // місці, а не кладе копію. Мітки тому й знімаються до відправлення.
+  const live = {id:"x", updated:"2026-01-01T10:00:00.000Z"};
+  const liveStamps = stampsOf([live]);
+  live.updated = "2026-01-01T10:00:05.000Z";
+  checkEqual("той самий об'єкт, змінений на місці, теж лишається",
+             withoutSent([live], liveStamps).length, 1);
+}
+
+/* ── мітка видалення, файл даних, повідомлення коміта ─── */
+{
+  const tombstone = tombstoneFor({id:"g-1", name:"Викинута", score:9});
+  checkEqual("мітка несе лише id і назву",
+             Object.keys(tombstone).sort(), ["deleted", "id", "name", "updated"]);
+  check("мітка свіжіша за будь-яку давню правку", tombstone.updated > "2026-01-01");
+
+  const document = shelfDocument([{id:"b"}, {id:"a"}]);
+  checkEqual("файл даних упорядкований за id", document.games.map((game) => game.id), ["a", "b"]);
+  checkEqual("і знає свою версію", document.version, SCHEMA_VERSION);
+
+  checkEqual("коміт називає гру й оцінку",
+             commitMessage([{id:"1", name:"Палео", score:8.5}]), "Оцінки: Палео 8.5");
+  checkEqual("видалення — з мінусом",
+             commitMessage([{id:"1", name:"Палео", deleted:"2026-01-01"}]), "Оцінки: − Палео");
+  checkEqual("четверта й далі — числом",
+             commitMessage(["А", "Б", "В", "Г", "Ґ"].map((name) => ({id:name, name:name}))),
+             "Оцінки: А, Б, В і ще 2");
+}
+checkEqual("кирилиця переживає base64 туди й назад",
+           decodeBase64Utf8(encodeBase64Utf8("Полиця настілок — «Кам'яна доба»")),
+           "Полиця настілок — «Кам'яна доба»");
+
+/* ── оцінки BGG з вивантаженого файла ──────────────────── */
+{
+  checkEqual("кома в лапках не ріже поле",
+             parseCsvRow('1,"Brass: Birmingham, Deluxe",8.6'),
+             ["1", "Brass: Birmingham, Deluxe", "8.6"]);
+  checkEqual("подвоєна лапка — це лапка", parseCsvRow('"a ""b"" c",2'), ['a "b" c', "2"]);
+
+  const csv = "id,name,yearpublished,rank,average\n" +
+              "224517,Brass: Birmingham,2018,1,8.58\n" +
+              "999,Unranked Game,2020,0,6.04\n";
+  const brass = sampleGame({name:"Брасс", nameEn:"Brass Birmingham"});
+  const unranked = sampleGame({name:"Unranked Game", bggRank:50});
+  const stranger = sampleGame({name:"Нема такої"});
+  const result = applyBggRatings([brass, unranked, stranger], csv);
+  checkEqual("оцінка округлюється до десятих", brass.bggRating, 8.6);
+  checkEqual("ранг і bggId приїжджають разом", [brass.bggRank, brass.bggId], [1, "224517"]);
+  check("гра без рангу його втрачає", !("bggRank" in unranked));
+  checkEqual("змінені названо поіменно", result.changed.map((game) => game.name),
+             ["Брасс", "Unranked Game"]);
+  checkEqual("незнайдені пораховано", result.unmatched, 1);
+  check("змінена коробка дістає свіжу мітку", brass.updated > "2026-01-01T00:00:00.000Z");
+  checkEqual("удруге міняти нічого",
+             applyBggRatings([brass, unranked], csv).changed.length, 0);
+  let refused = false;
+  try{ applyBggRatings([brass], "foo,bar\n1,2\n"); }catch(e){ refused = true; }
+  check("чужий файл не приймається", refused);
+
+  checkEqual("прибирання знімає оцінку, ранг і bggId",
+             clearBggRatings([brass, stranger]).map((game) => game.name), ["Брасс"]);
+  check("і в записі їх більше немає",
+        !("bggRating" in brass) && !("bggRank" in brass) && !("bggId" in brass));
+}
+
+/* ── доповнення ────────────────────────────────────────── */
+{
+  const base = sampleGame({id:"base", name:"База"});
+  const shelf = [base, sampleGame({id:"e2", name:"Друге"}), sampleGame({id:"e1", name:"Перше"})];
+  setExpansionLinked(base, "e2", true);
+  setExpansionLinked(base, "e1", true);
+  setExpansionLinked(base, "e1", true);
+  checkEqual("прив'язані лежать упорядковано й без повторів", base.withExp, ["e1", "e2"]);
+  setExpansionLinked(base, "gone", true);
+  checkEqual("зникла коробка з назв випадає",
+             linkedExpansionNames(base, shelf), ["Перше", "Друге"]);
+  ["e1", "e2", "gone"].forEach((id) => setExpansionLinked(base, id, false));
+  check("останнє відв'язане прибирає саме поле", !("withExp" in base));
 }
 
 /* Атрибути в розмітці стоять в одинарних лапках, тож апостроф у назві
    («Кам'яна доба») мусить екрануватися так само, як подвійна лапка:
    інакше він закриває атрибут, а решта назви стає розміткою. */
-рівні("апостроф не виходить з атрибута", esc("Кам'яна доба"), "Кам&#39;яна доба");
-рівні("і подвійна лапка теж", esc('a"b'), "a&quot;b");
+checkEqual("апостроф не виходить з атрибута", escapeHtml("Кам'яна доба"), "Кам&#39;яна доба");
+checkEqual("і подвійна лапка теж", escapeHtml('a"b'), "a&quot;b");
+checkEqual("порожнє — порожній рядок", escapeHtml(null), "");
 
 /* ── вивід ─────────────────────────────────────────── */
 addEventListener("DOMContentLoaded", () => {
-  document.getElementById("сума").textContent =
-    впало ? `${впало} впало, ${склалось} склалось` : `Усі ${склалось} тестів пройдено`;
-  document.body.classList.toggle("зле", впало > 0);
-  document.getElementById("список").innerHTML = рядки.map(([стан, назва, деталі]) =>
-    `<li class="${стан}"><b>${стан === "ok" ? "✓" : "✗"}</b> ${назва}` +
-    (деталі ? `<i>${деталі}</i>` : "") + "</li>").join("");
+  document.getElementById("summary").textContent =
+    failed ? `${failed} впало, ${passed} склалось` : `Усі ${passed} тестів пройдено`;
+  document.body.classList.toggle("failed", failed > 0);
+  document.getElementById("results").innerHTML = results.map(([state, name, details]) =>
+    `<li class="${state}"><b>${state === "ok" ? "✓" : "✗"}</b> ${escapeHtml(name)}` +
+    (details ? `<i>${escapeHtml(details)}</i>` : "") + "</li>").join("");
 });

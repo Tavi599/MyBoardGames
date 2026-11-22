@@ -21,9 +21,12 @@
 
 Запуск:
     python "bgg.py"                 добрати те, чого бракує
-    python "bgg.py" --усі           ще й освіжити наявне: оцінка й ранг пливуть
-    python "bgg.py" --лише g-seed-01 g-calico
-    python "bgg.py" --показати      нічого не писати, лише показати різницю
+    python "bgg.py" --all           ще й освіжити наявне: оцінка й ранг пливуть
+    python "bgg.py" --only g-seed-01 g-calico
+    python "bgg.py" --show          нічого не писати, лише показати різницю
+
+Давні назви прапорців («--усі», «--лише», «--показати») працюють і далі:
+ними користуються заплановані запуски.
 """
 from __future__ import annotations
 
@@ -41,145 +44,147 @@ import urllib.request
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
-ТЕКА = pathlib.Path(__file__).parent
-ДАНІ = ТЕКА / "ratings.json"
+ROOT_DIR = pathlib.Path(__file__).parent
+DATA_FILE = ROOT_DIR / "ratings.json"
 
-ПРО_РІЧ = "https://api.geekdo.com/api/geekitems?objectid={ід}&objecttype=thing"
-ЖИВЕ = "https://api.geekdo.com/api/dynamicinfo?objectid={ід}&objecttype=thing"
+ITEM_URL = "https://api.geekdo.com/api/geekitems?objectid={bgg_id}&objecttype=thing"
+DYNAMIC_URL = "https://api.geekdo.com/api/dynamicinfo?objectid={bgg_id}&objecttype=thing"
 # Чемність: BGG просить не частіше за раз на секунду. Дві адреси на коробку,
 # тож пауза між коробками — і між спробами, якщо сервер попросив зачекати.
-ПАУЗА = 1.5
-СПРОБИ = 3
-ЗАГОЛОВКИ = {"User-Agent": "polytsia-shelf/1.0 (+https://github.com/Tavi599/MyBoardGames)",
-             "Accept": "application/json"}
+REQUEST_PAUSE_SECONDS = 1.5
+MAX_ATTEMPTS = 3
+REQUEST_HEADERS = {"User-Agent": "polytsia-shelf/1.0 (+https://github.com/Tavi599/MyBoardGames)",
+                   "Accept": "application/json"}
 # Опитування спільноти зводиться до складів 1..10 — далі це вже не про стіл.
 # Те саме число стоїть у «check.py»: воно там і перевіряється.
-СТЕЛЯ_ОПИТУВАННЯ = 10
+POLL_PLAYER_CEILING = 10
 # Це не жанри, а службові позначки BGG: «доповнення до базової гри». У нас
 # для цього є своя галочка в картці, а в стрічці жанрів такий чип був би
 # шумом — та ще й без українського підпису.
-НЕ_ЖАНРИ = {"expansion-for-base-game", "fan-expansion-for-base-game"}
+NON_GENRE_SLUGS = {"expansion-for-base-game", "fan-expansion-for-base-game"}
 # Єдине поле, яке освіження має право стерти: гра, що вибула з рейтингу,
 # не має рангу, і давнє число тут було б неправдою. Решту не чистимо
-# ніколи — див. коментар у застосувати().
-СТИРАЄТЬСЯ = {"bggRank"}
+# ніколи — див. коментар у apply_fresh_data().
+ERASABLE_FIELDS = {"bggRank"}
 
 # Поле в записі → звідки його брати. Порядок тут же й порядок показу.
-ЧУЖІ_ПОЛЯ = ["bggMin", "bggMax", "bggTimeMin", "bggTimeMax", "bggRating",
-             "bggRank", "bggWeight", "bggBest", "bggRec",
-             "bggFamily", "bggGenres", "bggMech"]
+BGG_FIELDS = ["bggMin", "bggMax", "bggTimeMin", "bggTimeMax", "bggRating",
+              "bggRank", "bggWeight", "bggBest", "bggRec",
+              "bggFamily", "bggGenres", "bggMech"]
 # За чим упізнаємо коробку, яку BGG ще не бачив. Решта полів законно буває
 # порожньою назавжди: рангу не має жодне доповнення, підрозділ адміністратори
 # проставляють руками й не всім, а в свіжого запису може не бути й категорій.
 # Якби «неповною» вважалася кожна така коробка, щоденний захід щодня марно
 # перепитував би два десятки незмінних сторінок. Те, що BGG колись таки
 # додасть, добере місячне освіження.
-СЕРЦЕВИНА = ["bggMin", "bggMax", "bggRating"]
+CORE_FIELDS = ["bggMin", "bggMax", "bggRating"]
 
 
-def взяти(url: str) -> dict:
+def fetch_json(url: str) -> dict:
     """Одна відповідь BGG. Тимчасову відмову перечікуємо, решту віддаємо далі."""
-    остання = None
-    for спроба in range(СПРОБИ):
+    last_error = None
+    for attempt in range(MAX_ATTEMPTS):
         try:
-            запит = urllib.request.Request(url, headers=ЗАГОЛОВКИ)
-            with urllib.request.urlopen(запит, timeout=30) as відповідь:
-                return json.loads(відповідь.read())
-        except urllib.error.HTTPError as помилка:
-            остання = помилка
+            request = urllib.request.Request(url, headers=REQUEST_HEADERS)
+            with urllib.request.urlopen(request, timeout=30) as response:
+                return json.loads(response.read())
+        except urllib.error.HTTPError as error:
+            last_error = error
             # 429 — «занадто часто», 5xx — «мені зараз зле». І те, і те минає.
-            if помилка.code not in (429, 500, 502, 503, 504):
+            if error.code not in (429, 500, 502, 503, 504):
                 raise
-        except (urllib.error.URLError, TimeoutError, json.JSONDecodeError) as помилка:
-            остання = помилка
-        time.sleep(ПАУЗА * (спроба + 2))
-    raise остання
+        except (urllib.error.URLError, TimeoutError, json.JSONDecodeError) as error:
+            last_error = error
+        time.sleep(REQUEST_PAUSE_SECONDS * (attempt + 2))
+    raise last_error
 
 
-def слуг(href: str) -> str:
+def slug_from_href(href: str) -> str:
     """«/boardgamecategory/1002/card-game» → «card-game». Беремо саме з адреси:
     підпис на BGG перейменовують, слуг лишається."""
     return (href or "").rstrip("/").rsplit("/", 1)[-1]
 
 
-def слуги(links: dict, вид: str) -> list[str]:
-    return sorted({слуг(л.get("href")) for л in (links.get(вид) or [])
-                   if слуг(л.get("href")) and слуг(л.get("href")) not in НЕ_ЖАНРИ})
+def link_slugs(links: dict, kind: str) -> list[str]:
+    return sorted({slug_from_href(link.get("href")) for link in (links.get(kind) or [])
+                   if slug_from_href(link.get("href"))
+                   and slug_from_href(link.get("href")) not in NON_GENRE_SLUGS})
 
 
-def ціле(v) -> int | None:
+def positive_int(value) -> int | None:
     """BGG віддає числа рядками, а невідоме — нулем чи порожнім рядком."""
     try:
-        n = int(str(v).strip())
+        number = int(str(value).strip())
     except (TypeError, ValueError):
         return None
-    return n if n > 0 else None
+    return number if number > 0 else None
 
 
-def склади(діапазони) -> list[int]:
+def expand_player_ranges(ranges) -> list[int]:
     """[{min:3, max:4}] → [3, 4]. Це відповіді на «на скількох найкраще»."""
-    набір = set()
-    for д in діапазони or []:
-        від, до = ціле(д.get("min")), ціле(д.get("max"))
-        if від is None:
+    counts = set()
+    for player_range in ranges or []:
+        lowest = positive_int(player_range.get("min"))
+        highest = positive_int(player_range.get("max"))
+        if lowest is None:
             continue
-        for n in range(від, (до or від) + 1):
-            if n <= СТЕЛЯ_ОПИТУВАННЯ:
-                набір.add(n)
-    return sorted(набір)
+        for count in range(lowest, (highest or lowest) + 1):
+            if count <= POLL_PLAYER_CEILING:
+                counts.add(count)
+    return sorted(counts)
 
 
-def десятина(v) -> float | None:
+def one_decimal(value) -> float | None:
     """Чужа середня — з одним знаком після коми: більше вона не означає."""
     try:
-        f = round(float(v), 1)
+        number = round(float(value), 1)
     except (TypeError, ValueError):
         return None
-    return f if f > 0 else None
+    return number if number > 0 else None
 
 
-def дістати(ід: str) -> dict:
+def fetch_game(bgg_id: str) -> dict:
     """Усе, що знає BGG про цю коробку, — уже в наших полях і назвах."""
     # Номер іде просто в адресу, тож приймаємо тільки цифри. Він приходить із
     # даних, а дані бувають імпортовані з чужого файла: рядок звідти не має
     # права дописати собі шлях чи ще один параметр запиту.
-    if not str(ід).isdigit():
-        raise ValueError(f"bggId має бути числом, а не {ід!r}")
-    річ = взяти(ПРО_РІЧ.format(ід=ід)).get("item") or {}
-    живе = взяти(ЖИВЕ.format(ід=ід)).get("item") or {}
-    links = річ.get("links") or {}
-    опитування = (живе.get("polls") or {})
-    свіже = {
-        "bggMin": ціле(річ.get("minplayers")),
-        "bggMax": ціле(річ.get("maxplayers")),
-        "bggTimeMin": ціле(річ.get("minplaytime")),
-        "bggTimeMax": ціле(річ.get("maxplaytime")),
-        "bggRating": десятина((живе.get("stats") or {}).get("average")),
-        "bggRank": рангГри(живе.get("rankinfo")),
-        "bggWeight": десятина((опитування.get("boardgameweight") or {}).get("averageweight")),
-        "bggBest": склади((опитування.get("userplayers") or {}).get("best")),
-        "bggRec": склади((опитування.get("userplayers") or {}).get("recommended")),
-        "bggFamily": слуги(links, "boardgamesubdomain"),
-        "bggGenres": слуги(links, "boardgamecategory"),
-        "bggMech": слуги(links, "boardgamemechanic"),
-        "cover": (річ.get("images") or {}).get("square200") or None,
-        "назва": річ.get("name"),
+    if not str(bgg_id).isdigit():
+        raise ValueError(f"bggId має бути числом, а не {bgg_id!r}")
+    item = fetch_json(ITEM_URL.format(bgg_id=bgg_id)).get("item") or {}
+    dynamic = fetch_json(DYNAMIC_URL.format(bgg_id=bgg_id)).get("item") or {}
+    links = item.get("links") or {}
+    polls = (dynamic.get("polls") or {})
+    fresh = {
+        "bggMin": positive_int(item.get("minplayers")),
+        "bggMax": positive_int(item.get("maxplayers")),
+        "bggTimeMin": positive_int(item.get("minplaytime")),
+        "bggTimeMax": positive_int(item.get("maxplaytime")),
+        "bggRating": one_decimal((dynamic.get("stats") or {}).get("average")),
+        "bggRank": overall_rank(dynamic.get("rankinfo")),
+        "bggWeight": one_decimal((polls.get("boardgameweight") or {}).get("averageweight")),
+        "bggBest": expand_player_ranges((polls.get("userplayers") or {}).get("best")),
+        "bggRec": expand_player_ranges((polls.get("userplayers") or {}).get("recommended")),
+        "bggFamily": link_slugs(links, "boardgamesubdomain"),
+        "bggGenres": link_slugs(links, "boardgamecategory"),
+        "bggMech": link_slugs(links, "boardgamemechanic"),
+        "cover": (item.get("images") or {}).get("square200") or None,
+        "name": item.get("name"),
     }
     # Порожній список — це не «нічого не знайшли», а «BGG про це мовчить».
     # Різниця важлива: перезаписувати наявне порожнечею не можна.
-    return {к: v for к, v in свіже.items() if v not in (None, [], "")}
+    return {field: value for field, value in fresh.items() if value not in (None, [], "")}
 
 
-def рангГри(rankinfo) -> int | None:
+def overall_rank(rankinfo) -> int | None:
     """Загальний ранг серед усіх ігор. Підрозділові ранги («серед сімейних»)
     пропускаємо: у даних живе саме той, що на сторінці гри найбільший."""
-    for р in rankinfo or []:
-        if str(р.get("rankobjectid")) == "1":
-            return ціле(р.get("rank"))
+    for rank in rankinfo or []:
+        if str(rank.get("rankobjectid")) == "1":
+            return positive_int(rank.get("rank"))
     return None
 
 
-def стеляОпитування(гра: dict) -> int:
+def poll_ceiling(game: dict) -> int:
     """Вище за стелю самої коробки опитування не читається.
 
     В опитуванні BGG є кошик «більше за стількох»: у «Діксіті» на шістьох
@@ -187,49 +192,49 @@ def стеляОпитування(гра: dict) -> int:
     двох — трійкою. Це не помилка BGG, це його спосіб питати; але в даних
     склад, якого коробка не дозволяє, — просто неправда, і перевірка
     справедливо на ньому спиняється."""
-    стеля = гра.get("bggMax") or СТЕЛЯ_ОПИТУВАННЯ
-    return min(стеля, СТЕЛЯ_ОПИТУВАННЯ)
+    ceiling = game.get("bggMax") or POLL_PLAYER_CEILING
+    return min(ceiling, POLL_PLAYER_CEILING)
 
 
-def застосувати(гра: dict, свіже: dict, освіжати: bool) -> list[str]:
+def apply_fresh_data(game: dict, fresh: dict, refresh: bool) -> list[str]:
     """Кладе чужі числа в запис. Повертає назви полів, які справді змінилися."""
-    змінені = []
-    for поле in ЧУЖІ_ПОЛЯ:
-        нове = свіже.get(поле)
-        було = гра.get(поле)
-        if поле in ("bggBest", "bggRec") and нове:
+    changed_fields = []
+    for field in BGG_FIELDS:
+        new_value = fresh.get(field)
+        old_value = game.get(field)
+        if field in ("bggBest", "bggRec") and new_value:
             # bggMax у списку йде раніше, тож стеля тут уже свіжа.
-            нове = [n for n in нове if n <= стеляОпитування(гра)] or None
-        if нове is None:
+            new_value = [count for count in new_value if count <= poll_ceiling(game)] or None
+        if new_value is None:
             # BGG про це мовчить. Стираємо лише ранг: гра могла вибути з
             # рейтингу, і давнє число стало б неправдою. Решту лишаємо як є —
             # у даних трапляється те, чого BGG не має (тривалість доповнення,
             # підрозділ, успадкований від базової гри), і це не сміття, а
             # свідомо проставлене. Освіження добирає числа, а не прибирає їх.
-            if освіжати and поле in СТИРАЄТЬСЯ and поле in гра:
-                del гра[поле]
-                змінені.append("−" + поле)
+            if refresh and field in ERASABLE_FIELDS and field in game:
+                del game[field]
+                changed_fields.append("−" + field)
             continue
-        if поле in гра and гра[поле] is not None and not освіжати:
+        if field in game and game[field] is not None and not refresh:
             continue
-        if було != нове:
-            гра[поле] = нове
-            змінені.append(поле)
+        if old_value != new_value:
+            game[field] = new_value
+            changed_fields.append(field)
     # Обкладинку ставимо лише на порожнє місце й ніколи не міняємо: там може
     # стояти твоя, вибрана свідомо, і чуже посилання її не переб'є.
-    if свіже.get("cover") and not гра.get("cover"):
-        гра["cover"] = свіже["cover"]
-        змінені.append("cover")
-    return змінені
+    if fresh.get("cover") and not game.get("cover"):
+        game["cover"] = fresh["cover"]
+        changed_fields.append("cover")
+    return changed_fields
 
 
-def бракує(гра: dict) -> bool:
+def is_incomplete(game: dict) -> bool:
     """Чи є сенс іти по цю коробку в щоденному заході."""
-    return any(гра.get(поле) in (None, [], "") for поле in СЕРЦЕВИНА) \
-        or not гра.get("cover")
+    return any(game.get(field) in (None, [], "") for field in CORE_FIELDS) \
+        or not game.get("cover")
 
 
-def кінець_рядка(шлях: pathlib.Path = ДАНІ) -> str:
+def detect_newline(path: pathlib.Path = DATA_FILE) -> str:
     """Кінці рядків лишаємо ті, що були: у Windows-копії вони свої, і міняти
     їх означало б переписати весь файл заради нічого.
 
@@ -238,19 +243,19 @@ def кінець_рядка(шлях: pathlib.Path = ДАНІ) -> str:
     тож шукати їх у прочитаному — марна праця. Кількох кілобайтів досить:
     кінець рядка в файлі один на всіх."""
     try:
-        with open(шлях, encoding="utf-8", newline="") as файл:
-            return "\r\n" if "\r\n" in файл.read(4096) else "\n"
+        with open(path, encoding="utf-8", newline="") as file:
+            return "\r\n" if "\r\n" in file.read(4096) else "\n"
     except OSError:
         return "\n"
 
 
-def читати() -> tuple[dict, str]:
-    with open(ДАНІ, encoding="utf-8", newline="") as файл:
-        текст = файл.read()
-    return json.loads(текст), "\r\n" if "\r\n" in текст else "\n"
+def read_state() -> tuple[dict, str]:
+    with open(DATA_FILE, encoding="utf-8", newline="") as file:
+        text = file.read()
+    return json.loads(text), "\r\n" if "\r\n" in text else "\n"
 
 
-def писати(стан: dict, кінець: str, шлях: pathlib.Path = ДАНІ) -> None:
+def write_state(state: dict, newline: str, path: pathlib.Path = DATA_FILE) -> None:
     """Єдине місце, де оцінки лягають на диск: звідси пишуть і щоденне
     добирання, і сервер.
 
@@ -262,62 +267,64 @@ def писати(стан: dict, кінець: str, шлях: pathlib.Path = Д�
 
     Через тимчасовий файл: заміна, перервана на середині, лишила б замість
     ста п'ятдесяти кілобайтів оцінок обрізок."""
-    текст = json.dumps(стан, ensure_ascii=False, indent=2) + "\n"
-    if кінець != "\n":
-        текст = текст.replace("\n", кінець)
-    тимчасовий = шлях.with_suffix(".json.tmp")
-    тимчасовий.write_text(текст, encoding="utf-8", newline="")
-    os.replace(тимчасовий, шлях)
+    text = json.dumps(state, ensure_ascii=False, indent=2) + "\n"
+    if newline != "\n":
+        text = text.replace("\n", newline)
+    temp_path = path.with_suffix(".json.tmp")
+    temp_path.write_text(text, encoding="utf-8", newline="")
+    os.replace(temp_path, path)
 
 
-def головне(аргументи=None) -> int:
-    розбір = argparse.ArgumentParser(description="Числа з BGG для полиці")
-    розбір.add_argument("--усі", action="store_true",
+def main(argv=None) -> int:
+    parser = argparse.ArgumentParser(description="Числа з BGG для полиці")
+    parser.add_argument("--all", "--усі", dest="refresh_all", action="store_true",
                         help="освіжити й те, що вже є: оцінка й ранг пливуть")
-    розбір.add_argument("--лише", nargs="+", metavar="ID",
+    parser.add_argument("--only", "--лише", dest="only_ids", nargs="+", metavar="ID",
                         help="тільки ці коробки, за id у даних")
-    розбір.add_argument("--показати", action="store_true",
+    parser.add_argument("--show", "--показати", dest="show_only", action="store_true",
                         help="нічого не писати, лише показати різницю")
-    н = розбір.parse_args(аргументи)
+    options = parser.parse_args(argv)
 
-    стан, кінець = читати()
-    ігри = стан.get("games") or []
-    без_ід, оброблено, змінено = [], 0, []
+    state, newline = read_state()
+    games = state.get("games") or []
+    names_without_bgg_id, fetched_count, changed_names = [], 0, []
 
-    for гра in ігри:
-        if гра.get("deleted"):
+    for game in games:
+        if game.get("deleted"):
             continue
-        if н.лише and гра.get("id") not in н.лише:
+        if options.only_ids and game.get("id") not in options.only_ids:
             continue
-        if not гра.get("bggId"):
-            без_ід.append(гра.get("name") or гра.get("id"))
+        if not game.get("bggId"):
+            names_without_bgg_id.append(game.get("name") or game.get("id"))
             continue
-        if not н.усі and not н.лише and not бракує(гра):
+        if not options.refresh_all and not options.only_ids and not is_incomplete(game):
             continue
-        назва = гра.get("name") or гра.get("id")
+        name = game.get("name") or game.get("id")
         try:
-            свіже = дістати(str(гра["bggId"]))
-        except Exception as помилка:                      # noqa: BLE001
-            print(f"  ✗ {назва}: {type(помилка).__name__} {помилка}")
+            fresh = fetch_game(str(game["bggId"]))
+        except Exception as error:                        # noqa: BLE001
+            print(f"  ✗ {name}: {type(error).__name__} {error}")
             continue
-        оброблено += 1
-        поля = застосувати(гра, свіже, освіжати=bool(н.усі or н.лише))
-        if поля:
-            змінено.append(назва)
-            print(f"  · {назва}: {', '.join(поля)}")
-        time.sleep(ПАУЗА)
+        fetched_count += 1
+        changed_fields = apply_fresh_data(
+            game, fresh, refresh=bool(options.refresh_all or options.only_ids))
+        if changed_fields:
+            changed_names.append(name)
+            print(f"  · {name}: {', '.join(changed_fields)}")
+        time.sleep(REQUEST_PAUSE_SECONDS)
 
-    print(f"Опитано коробок: {оброблено}; змінено: {len(змінено)}.")
-    if без_ід:
-        print(f"Без bggId (їх не чіпаємо): {len(без_ід)} — {', '.join(без_ід[:5])}"
-              + ("…" if len(без_ід) > 5 else ""))
-    if змінено and not н.показати:
-        писати(стан, кінець)
-        print(f"Записано в {ДАНІ.name}.")
-    elif н.показати:
+    print(f"Опитано коробок: {fetched_count}; змінено: {len(changed_names)}.")
+    if names_without_bgg_id:
+        print(f"Без bggId (їх не чіпаємо): {len(names_without_bgg_id)} — "
+              f"{', '.join(names_without_bgg_id[:5])}"
+              + ("…" if len(names_without_bgg_id) > 5 else ""))
+    if changed_names and not options.show_only:
+        write_state(state, newline)
+        print(f"Записано в {DATA_FILE.name}.")
+    elif options.show_only:
         print("Показ без запису: файл не чіпали.")
     return 0
 
 
 if __name__ == "__main__":
-    sys.exit(головне())
+    sys.exit(main())

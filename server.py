@@ -6,8 +6,11 @@
 
 Запуск:
     python "server.py"              звичайно
-    python "server.py" --пуш        ще й відправляти коміти на GitHub
-    python "server.py" --порт 9000  інший порт
+    python "server.py" --push       ще й відправляти коміти на GitHub
+    python "server.py" --port 9000  інший порт
+    python "server.py" --no-browser не відкривати сторінку в браузері
+
+Давні назви прапорців («--пуш», «--порт», «--без-браузера») працюють і далі.
 
 Сторінка сама знаходить сервер: відкрита через http — пише сюди, відкрита
 подвійним кліком з диска — живе своєю localStorage-копією. Телефон у тій
@@ -32,32 +35,32 @@ from pathlib import Path
 import bgg
 import check
 
-ТЕКА = Path(__file__).parent
-ДАНІ = ТЕКА / "ratings.json"
-ДЖЕРЕЛА = ТЕКА / "src"
-ЗІБРАНЕ = ТЕКА / "index.html"
-СТАТИКА = {
+ROOT_DIR = Path(__file__).parent
+DATA_FILE = ROOT_DIR / "ratings.json"
+SOURCE_DIR = ROOT_DIR / "src"
+BUILT_PAGE = ROOT_DIR / "index.html"
+STATIC_FILES = {
     "/manifest.webmanifest": "application/manifest+json; charset=utf-8",
     "/icon-192.png": "image/png",
     "/icon-512.png": "image/png",
 }
-ЗБІРКА = ТЕКА / "build.py"
+BUILD_SCRIPT = ROOT_DIR / "build.py"
 
-# Формат даних. Міграції живуть у сторінці («01-core.js»); сервер лише
-# не дає номеру загубитися при перезаписі файла. Число береться з
-# «check.py», а не пишеться тут удруге: доки воно лежало в обох
+# Формат даних. Міграції живуть у сторінці; сервер лише не дає номеру
+# загубитися при перезаписі файла. Число береться з «check.py» (а той читає
+# «src/schema.json»), а не пишеться тут удруге: доки воно лежало в обох
 # файлах, сервер тихо ставив на свіжі дані давній номер, і перевірка
 # після цього падала на рівному місці.
-ВЕРСІЯ_ДАНИХ = check.ВЕРСІЯ_ДАНИХ
+SCHEMA_VERSION = check.SCHEMA_VERSION
 
-ПАУЗА_ДО_КОМІТУ = 90        # секунд тиші після останньої правки
-замок = threading.Lock()
-таймер: threading.Timer | None = None
-пушити = False
+COMMIT_DELAY_SECONDS = 90   # секунд тиші після останньої правки
+state_lock = threading.Lock()
+commit_timer: threading.Timer | None = None
+push_enabled = False
 # BGG просить не частіше за раз на секунду, та й одного запитання за раз
-# з полиці цілком досить. Мережу тримаємо поза «замком»: чужий сервер не
+# з полиці цілком досить. Мережу тримаємо поза «state_lock»: чужий сервер не
 # має права затримувати збереження оцінок.
-опитування = threading.Lock()
+bgg_lock = threading.Lock()
 
 
 # ── чия це сторінка ─────────────────────────────────────────────────
@@ -81,7 +84,7 @@ import check
 # («localhost», ім'я машини), числова адреса — або домашній суфікс, який
 # роздає роутер. Публічний домен завжди має крапку й завжди закінчується
 # інакше, тож підмінити себе нашим іменем він не може.
-СВОЇ_ХОСТИ = re.compile(
+OWN_HOST_PATTERN = re.compile(
     r"^(?:"
     r"[^.:\[\]]+"                                   # localhost, ім'я машини
     r"|[0-9]{1,3}(?:\.[0-9]{1,3}){3}"               # 192.168.1.14
@@ -90,81 +93,82 @@ import check
     r")(?::[0-9]+)?$", re.IGNORECASE)
 
 
-def свій_хост(хост: str) -> bool:
-    return bool(СВОЇ_ХОСТИ.match((хост or "localhost").strip()))
+def is_own_host(host: str) -> bool:
+    return bool(OWN_HOST_PATTERN.match((host or "localhost").strip()))
 
 
-def своя_сторінка(джерело: str | None, хост: str) -> bool:
+def is_own_page(origin: str | None, host: str) -> bool:
     """Чи прийшов запит зі сторінки, яку віддали ми самі.
 
     Порожній Origin — це не чужа сторінка: браузер ставить його на кожен
     POST і на кожне міжсайтове читання. Немає його в навігації, у службовому
     робітнику й у curl, а їм ми не відмовляємо."""
-    if not джерело:
+    if not origin:
         return True
-    хост = (хост or "").strip()
-    return джерело in ("http://" + хост, "https://" + хост)
+    host = (host or "").strip()
+    return origin in ("http://" + host, "https://" + host)
 
 
 # ── дані ────────────────────────────────────────────────────────────
 
-def зараз() -> str:
+def utc_now() -> str:
     return datetime.now(timezone.utc).isoformat(timespec="milliseconds").replace("+00:00", "Z")
 
 
-def прочитати() -> dict:
-    if not ДАНІ.exists():
-        return {"app": "полиця настілок", "version": ВЕРСІЯ_ДАНИХ,
-                "saved": зараз(), "games": []}
+def read_state() -> dict:
+    if not DATA_FILE.exists():
+        return {"app": "полиця настілок", "version": SCHEMA_VERSION,
+                "saved": utc_now(), "games": []}
     try:
-        return json.loads(ДАНІ.read_text(encoding="utf-8"))
-    except json.JSONDecodeError as помилка:
+        return json.loads(DATA_FILE.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as error:
         # Краще зупинитися, ніж мовчки затерти файл із оцінками.
-        raise SystemExit(f"«{ДАНІ.name}» пошкоджено ({помилка}). Візьми копію з git: "
-                         f'git checkout -- "{ДАНІ.name}"')
+        raise SystemExit(f"«{DATA_FILE.name}» пошкоджено ({error}). Візьми копію з git: "
+                         f'git checkout -- "{DATA_FILE.name}"')
 
 
-def записати(стан: dict) -> None:
-    стан["version"] = ВЕРСІЯ_ДАНИХ
-    стан["saved"] = зараз()
-    стан["games"] = sorted(стан.get("games", []), key=lambda г: г.get("id", ""))
+def write_state(state: dict) -> None:
+    state["version"] = SCHEMA_VERSION
+    state["saved"] = utc_now()
+    state["games"] = sorted(state.get("games", []), key=lambda game: game.get("id", ""))
     # Кладе на диск «bgg.py» — той самий код, що й у щоденному заході. Поки
     # сервер писав по-своєму (з sort_keys і з CRLF), одне збереження тут
     # перетрушувало файл, а наступне збереження з телефона перетрушувало
     # його назад: два коміти на сотні рядків замість двох рядків по суті.
-    bgg.писати(стан, bgg.кінець_рядка(ДАНІ), ДАНІ)
+    bgg.write_state(state, bgg.detect_newline(DATA_FILE), DATA_FILE)
 
 
-def злити(поточні: list[dict], вхідні: list[dict]) -> tuple[list[dict], int]:
+def merge_games(current: list[dict], incoming: list[dict]) -> tuple[list[dict], int]:
     """Свіжіший запис перемагає. Порівнюємо за полем updated."""
-    за_id = {г.get("id"): г for г in поточні if г.get("id")}
-    змінено = 0
-    for гра in вхідні:
-        ід = гра.get("id")
-        if not ід:
+    games_by_id = {game.get("id"): game for game in current if game.get("id")}
+    changed_count = 0
+    for game in incoming:
+        game_id = game.get("id")
+        if not game_id:
             continue
-        стара = за_id.get(ід)
-        якщо_новіша = стара is None or (гра.get("updated") or "") >= (стара.get("updated") or "")
-        if якщо_новіша and гра != стара:
-            за_id[ід] = гра
-            змінено += 1
-    return list(за_id.values()), змінено
+        existing = games_by_id.get(game_id)
+        is_newer = existing is None or (game.get("updated") or "") >= (existing.get("updated") or "")
+        if is_newer and game != existing:
+            games_by_id[game_id] = game
+            changed_count += 1
+    return list(games_by_id.values()), changed_count
 
 
-def живі(ігри: list[dict]) -> list[dict]:
+def live_games(games: list[dict]) -> list[dict]:
     """Видалені лишаються у файлі як мітки, але сторінці їх не показуємо:
     інакше стара копія в телефоні воскресила б викинуту гру."""
-    return [г for г in ігри if not г.get("deleted")]
+    return [game for game in games if not game.get("deleted")]
 
 
-def знайти(ігри: list[dict], ід: str) -> dict | None:
-    for г in ігри:
-        if г.get("id") == ід and not г.get("deleted"):
-            return г
+def find_game(games: list[dict], game_id: str) -> dict | None:
+    for game in games:
+        if game.get("id") == game_id and not game.get("deleted"):
+            return game
     return None
 
 
-def добрати(стан: dict, ід: str, свіже: dict) -> tuple[list[str], tuple[int, str] | None]:
+def apply_bgg_data(state: dict, game_id: str,
+                   fresh: dict) -> tuple[list[str], tuple[int, str] | None]:
     """Кладе в коробку чужі числа — або не кладе жодних.
 
     Пробуємо на копії й підміняємо запис у стані аж тоді, коли перевірка
@@ -180,293 +184,308 @@ def добрати(стан: dict, ід: str, свіже: dict) -> tuple[list[st
 
     Повертає (змінені поля, вада). Вада не None — стан такий самий, як був.
     """
-    ігри = стан.get("games") or []
-    місце = next((і for і, г in enumerate(ігри)
-                  if г.get("id") == ід and not г.get("deleted")), None)
-    if місце is None:
+    games = state.get("games") or []
+    position = next((index for index, game in enumerate(games)
+                     if game.get("id") == game_id and not game.get("deleted")), None)
+    if position is None:
         return [], (404, "коробку прибрали, поки я питав")
 
-    старе = ігри[місце]
-    нове = copy.deepcopy(старе)
-    поля = bgg.застосувати(нове, свіже, освіжати=True)
-    if not поля:
+    old_game = games[position]
+    new_game = copy.deepcopy(old_game)
+    changed_fields = bgg.apply_fresh_data(new_game, fresh, refresh=True)
+    if not changed_fields:
         return [], None
 
     # Що у файлі було не так до нас — не наша провина й не привід
     # відмовлятися: інакше одна крива коробка зупинила б добирання для всіх
     # інших, ще й звинувативши в цьому BGG.
-    було = check.перевірити(стан)[0]
-    ігри[місце] = нове
-    нові = [р for р in check.перевірити(стан)[0] if р not in було]
-    if нові:
-        ігри[місце] = старе
-        return [], (502, "BGG віддав те, що не проходить перевірку: " + нові[0])
-    return поля, None
+    errors_before = check.validate(state)[0]
+    games[position] = new_game
+    new_errors = [error for error in check.validate(state)[0] if error not in errors_before]
+    if new_errors:
+        games[position] = old_game
+        return [], (502, "BGG віддав те, що не проходить перевірку: " + new_errors[0])
+    return changed_fields, None
 
 
 # ── git ─────────────────────────────────────────────────────────────
 
-def git(*аргументи: str) -> subprocess.CompletedProcess:
-    return subprocess.run(["git", *аргументи], cwd=ТЕКА, capture_output=True,
+def git(*args: str) -> subprocess.CompletedProcess:
+    return subprocess.run(["git", *args], cwd=ROOT_DIR, capture_output=True,
                           text=True, encoding="utf-8", errors="replace")
 
 
-def закомітити() -> None:
-    if not (ТЕКА / ".git").exists():
+def commit_data() -> None:
+    if not (ROOT_DIR / ".git").exists():
         return
-    with замок:
-        стан = прочитати()
-        помилки, _ = check.перевірити(стан)
-        кількість = len(живі(стан.get("games", [])))
+    with state_lock:
+        state = read_state()
+        errors, _ = check.validate(state)
+        game_count = len(live_games(state.get("games", [])))
     # На диск ми пишемо завжди: правку, яку щойно зробили, не викидають через
     # те, що в файлі знайшлася вада. А в репозиторій зламане не поїде — там
     # воно лишиться назавжди, і публічно.
-    if помилки:
-        print(f"Коміту не буде: перевірка знайшла {len(помилки)} "
-              f"{'помилку' if len(помилки) == 1 else 'помилок'}.")
-        for р in помилки[:5]:
-            print("  ✗", р)
+    if errors:
+        print(f"Коміту не буде: перевірка знайшла {len(errors)} "
+              f"{'помилку' if len(errors) == 1 else 'помилок'}.")
+        for error in errors[:5]:
+            print("  ✗", error)
         print('  Полагодь і запусти: python "check.py"')
         return
-    git("add", "--", ДАНІ.name)
-    if git("diff", "--cached", "--quiet", "--", ДАНІ.name).returncode == 0:
+    git("add", "--", DATA_FILE.name)
+    if git("diff", "--cached", "--quiet", "--", DATA_FILE.name).returncode == 0:
         return
-    підсумок = git("commit", "-m", f"Оцінки: {кількість} ігор на полиці")
-    if підсумок.returncode != 0:
-        print("Коміт не вдався:", підсумок.stderr.strip() or підсумок.stdout.strip())
+    # Саме цей файл і нічого більше: без шляху коміт забрав би все, що вже
+    # лежить в індексі, — чужу незавершену роботу під назвою «Оцінки».
+    commit_result = git("commit", "-m", f"Оцінки: {game_count} ігор на полиці",
+                        "--", DATA_FILE.name)
+    if commit_result.returncode != 0:
+        print("Коміт не вдався:", commit_result.stderr.strip() or commit_result.stdout.strip())
         return
     print("Закомічено.")
-    if пушити:
-        відправлення = git("push")
-        print("Відправлено." if відправлення.returncode == 0
-              else "Пуш не вдався: " + (відправлення.stderr.strip() or "невідомо"))
+    if push_enabled:
+        push_result = git("push")
+        print("Відправлено." if push_result.returncode == 0
+              else "Пуш не вдався: " + (push_result.stderr.strip() or "невідомо"))
 
 
-def запланувати_коміт() -> None:
-    global таймер
-    if таймер is not None:
-        таймер.cancel()
-    таймер = threading.Timer(ПАУЗА_ДО_КОМІТУ, закомітити)
-    таймер.daemon = True
-    таймер.start()
+def schedule_commit() -> None:
+    global commit_timer
+    if commit_timer is not None:
+        commit_timer.cancel()
+    commit_timer = threading.Timer(COMMIT_DELAY_SECONDS, commit_data)
+    commit_timer.daemon = True
+    commit_timer.start()
 
 
 # ── сторінка ────────────────────────────────────────────────────────
 
-def зібрати_сторінку() -> bytes:
+def fresh_page() -> bytes:
     """Тримаємо зібраний файл свіжим, щоб офлайнова копія й та, що віддається
     в мережу, ніколи не розходились."""
-    if ЗБІРКА.exists() and ДЖЕРЕЛА.is_dir():
+    if BUILD_SCRIPT.exists() and SOURCE_DIR.is_dir():
         # Джерел тепер багато — дивимось на найсвіжіше з них.
-        правлено = max((ф.stat().st_mtime for ф in ДЖЕРЕЛА.rglob("*") if ф.is_file()),
-                       default=0)
-        if not ЗІБРАНЕ.exists() or ЗІБРАНЕ.stat().st_mtime < правлено:
-            subprocess.run([sys.executable, str(ЗБІРКА)], cwd=ТЕКА, capture_output=True)
-    return ЗІБРАНЕ.read_bytes()
+        latest_change = max((path.stat().st_mtime for path in SOURCE_DIR.rglob("*")
+                             if path.is_file()), default=0)
+        if not BUILT_PAGE.exists() or BUILT_PAGE.stat().st_mtime < latest_change:
+            subprocess.run([sys.executable, str(BUILD_SCRIPT)], cwd=ROOT_DIR,
+                           capture_output=True)
+    return BUILT_PAGE.read_bytes()
 
 
 # ── HTTP ────────────────────────────────────────────────────────────
 
-class Обробник(BaseHTTPRequestHandler):
+class RequestHandler(BaseHTTPRequestHandler):
     # Латиницею: заголовки HTTP кодуються latin-1, кирилиця тут падає.
     server_version = "Polytsia"
     sys_version = ""
 
-    def log_message(self, формат, *аргументи):  # тихіше за типовий лог
+    def log_message(self, format, *args):  # тихіше за типовий лог
         pass
 
-    def _відповісти(self, код: int, тіло: bytes, тип: str) -> None:
-        self.send_response(код)
-        self.send_header("Content-Type", тип)
-        self.send_header("Content-Length", str(len(тіло)))
+    def _respond(self, status: int, body: bytes, content_type: str) -> None:
+        self.send_response(status)
+        self.send_header("Content-Type", content_type)
+        self.send_header("Content-Length", str(len(body)))
         self.send_header("Cache-Control", "no-store")
         self.end_headers()
-        self.wfile.write(тіло)
+        self.wfile.write(body)
 
-    def _json(self, дані: dict, код: int = 200) -> None:
-        self._відповісти(код, json.dumps(дані, ensure_ascii=False).encode("utf-8"),
-                         "application/json; charset=utf-8")
+    def _json(self, payload: dict, status: int = 200) -> None:
+        self._respond(status, json.dumps(payload, ensure_ascii=False).encode("utf-8"),
+                      "application/json; charset=utf-8")
 
-    def _свій(self) -> bool:
+    def _is_own_request(self) -> bool:
         """Пускаємо лише те, що прийшло з нашої ж сторінки. Див. коментар
-        біля СВОЇ_ХОСТИ — це три замки від чужої сторінки в тому самому
+        біля OWN_HOST_PATTERN — це три замки від чужої сторінки в тому самому
         браузері."""
-        хост = self.headers.get("Host") or ""
-        if not свій_хост(хост):
+        host = self.headers.get("Host") or ""
+        if not is_own_host(host):
             return False
-        return своя_сторінка(self.headers.get("Origin"), хост)
+        return is_own_page(self.headers.get("Origin"), host)
 
     def do_GET(self):
-        шлях = self.path.split("?")[0]
-        if not self._свій():
-            self._відповісти(403, b"not yours", "text/plain")
+        path = self.path.split("?")[0]
+        if not self._is_own_request():
+            self._respond(403, b"not yours", "text/plain")
             return
-        if шлях in ("/", "/index.html"):
+        if path in ("/", "/index.html"):
             try:
-                self._відповісти(200, зібрати_сторінку(), "text/html; charset=utf-8")
-            except OSError as помилка:
-                self._відповісти(500, str(помилка).encode("utf-8"), "text/plain; charset=utf-8")
-        elif шлях == "/api/state":
-            with замок:
-                self._json({"games": живі(прочитати().get("games", []))})
-        elif шлях in СТАТИКА:
-            файл = ТЕКА / шлях.lstrip("/")
-            if файл.exists():
-                self._відповісти(200, файл.read_bytes(), СТАТИКА[шлях])
+                self._respond(200, fresh_page(), "text/html; charset=utf-8")
+            except OSError as error:
+                self._respond(500, str(error).encode("utf-8"), "text/plain; charset=utf-8")
+        elif path == "/api/state":
+            with state_lock:
+                self._json({"games": live_games(read_state().get("games", []))})
+        elif path in STATIC_FILES:
+            file_path = ROOT_DIR / path.lstrip("/")
+            if file_path.exists():
+                self._respond(200, file_path.read_bytes(), STATIC_FILES[path])
             else:
-                self._відповісти(404, b"nope", "text/plain")
+                self._respond(404, b"nope", "text/plain")
         else:
-            self._відповісти(404, b"nope", "text/plain")
+            self._respond(404, b"nope", "text/plain")
 
     def do_POST(self):
-        шлях = self.path.split("?")[0]
-        if шлях not in ("/api/save", "/api/bgg"):
-            self._відповісти(404, b"nope", "text/plain")
+        path = self.path.split("?")[0]
+        if path not in ("/api/save", "/api/bgg"):
+            self._respond(404, b"nope", "text/plain")
             return
-        if not self._свій():
-            self._відповісти(403, b"not yours", "text/plain")
+        if not self._is_own_request():
+            self._respond(403, b"not yours", "text/plain")
             return
         # Третій замок: простий міжсайтовий запит такого типу не поставить, а
         # щойно він спробує — браузер спершу спитає дозволу (preflight), якого
         # ми не даємо.
-        тип = (self.headers.get("Content-Type") or "").split(";")[0].strip().lower()
-        if тип != "application/json":
+        content_type = (self.headers.get("Content-Type") or "").split(";")[0].strip().lower()
+        if content_type != "application/json":
             self._json({"error": "потрібен Content-Type: application/json"}, 415)
             return
-        довжина = int(self.headers.get("Content-Length") or 0)
-        if довжина > 8 * 1024 * 1024:
+        # Нечислова довжина кинула б виняток, а від'ємна змусила б читати до
+        # кінця з'єднання й повісила б потік — тож обидві відсікаємо тут.
+        try:
+            content_length = int(self.headers.get("Content-Length") or 0)
+        except ValueError:
+            content_length = -1
+        if content_length < 0:
+            self._json({"error": "незрозумілий Content-Length"}, 400)
+            return
+        if content_length > 8 * 1024 * 1024:
             self._json({"error": "завелике тіло запиту"}, 413)
             return
         try:
-            вхід = json.loads(self.rfile.read(довжина).decode("utf-8"))
+            request_body = json.loads(self.rfile.read(content_length).decode("utf-8"))
         except (json.JSONDecodeError, UnicodeDecodeError):
             self._json({"error": "не JSON"}, 400)
             return
-        if not isinstance(вхід, dict):
+        if not isinstance(request_body, dict):
             self._json({"error": "чекав об'єкт"}, 400)
             return
-        if шлях == "/api/bgg":
-            self._добрати_з_bgg(вхід)
+        if path == "/api/bgg":
+            self._fetch_from_bgg(request_body)
             return
 
-        ігри = вхід.get("games")
-        if not isinstance(ігри, list):
+        incoming_games = request_body.get("games")
+        if not isinstance(incoming_games, list):
             self._json({"error": "немає списку games"}, 400)
             return
 
-        with замок:
-            стан = прочитати()
-            стан["games"], змінено = злити(стан.get("games", []), ігри)
-            if змінено:
-                записати(стан)
-            назовні = живі(стан["games"])
+        with state_lock:
+            state = read_state()
+            state["games"], changed_count = merge_games(state.get("games", []), incoming_games)
+            if changed_count:
+                write_state(state)
+            visible_games = live_games(state["games"])
             # Комітити зламане ми відмовимося вже потім, і тихо — а сторінці
             # краще сказати одразу, поки видно, що саме щойно правили.
-            вади, _ = check.перевірити(стан) if змінено else ([], [])
-        if змінено:
-            print(f"Прийнято змін: {змінено}")
-            запланувати_коміт()
-        відповідь = {"games": назовні, "merged": змінено}
-        if вади:
-            відповідь["вада"] = вади[0]
-        self._json(відповідь)
+            errors, _ = check.validate(state) if changed_count else ([], [])
+        if changed_count:
+            print(f"Прийнято змін: {changed_count}")
+            schedule_commit()
+        response = {"games": visible_games, "merged": changed_count}
+        if errors:
+            # Сторінка покаже це сповіщенням: правку збережено на диск, але в
+            # репозиторій дані не поїдуть, доки ваду не полагодять.
+            response["warning"] = errors[0]
+        self._json(response)
 
-    def _добрати_з_bgg(self, вхід: dict) -> None:
+    def _fetch_from_bgg(self, request_body: dict) -> None:
         """Чужі числа для однієї коробки — на вимогу, а не за розкладом.
 
         На GitHub Pages те саме щоночі робить дія в репозиторії; тут кнопка
         в картці, бо вдома чекати до ночі немає сенсу. Мітку updated не
         піднімаємо — з тієї самої причини, що й у «bgg.py»: інакше цей запис
         переміг би правку, що чекає в черзі на телефоні."""
-        ід = вхід.get("id")
-        if not isinstance(ід, str) or not ід:
+        game_id = request_body.get("id")
+        if not isinstance(game_id, str) or not game_id:
             self._json({"error": "немає id коробки"}, 400)
             return
-        with замок:
-            гра = знайти(прочитати().get("games", []), ід)
-            номер = str((гра or {}).get("bggId") or "")
-        if гра is None:
+        with state_lock:
+            game = find_game(read_state().get("games", []), game_id)
+            bgg_id = str((game or {}).get("bggId") or "")
+        if game is None:
             self._json({"error": "такої коробки немає"}, 404)
             return
         # Номер іде просто в адресу запиту, тож приймаємо тільки цифри:
         # рядок із даних не має права стати частиною чужого посилання.
-        if not номер.isdigit():
+        if not bgg_id.isdigit():
             self._json({"error": "у цієї коробки немає числового bggId — "
                                  "його проставляє імпорт CSV («··· → Оцінки BGG»)"}, 400)
             return
-        if not опитування.acquire(blocking=False):
+        if not bgg_lock.acquire(blocking=False):
             self._json({"error": "уже питаю BGG — за мить спробуй ще"}, 429)
             return
         try:
-            свіже = bgg.дістати(номер)
-        except Exception as помилка:                      # noqa: BLE001
-            self._json({"error": f"BGG не відповів ({type(помилка).__name__})"}, 502)
+            fresh = bgg.fetch_game(bgg_id)
+        except Exception as error:                        # noqa: BLE001
+            self._json({"error": f"BGG не відповів ({type(error).__name__})"}, 502)
             return
         finally:
-            опитування.release()
+            bgg_lock.release()
 
-        with замок:
-            стан = прочитати()          # поки ми ходили, файл могли переписати
-            поля, вада = добрати(стан, ід, свіже)
-            if вада:
-                код, текст = вада
-                self._json({"error": текст}, код)
+        with state_lock:
+            state = read_state()        # поки ми ходили, файл могли переписати
+            changed_fields, failure = apply_bgg_data(state, game_id, fresh)
+            if failure:
+                status, message = failure
+                self._json({"error": message}, status)
                 return
-            if поля:
-                записати(стан)
-            назовні = dict(знайти(стан.get("games", []), ід) or {})
-        if поля:
-            print(f"BGG → {назовні.get('name')}: {', '.join(поля)}")
-            запланувати_коміт()
-        self._json({"game": назовні, "fields": поля})
+            if changed_fields:
+                write_state(state)
+            updated_game = dict(find_game(state.get("games", []), game_id) or {})
+        if changed_fields:
+            print(f"BGG → {updated_game.get('name')}: {', '.join(changed_fields)}")
+            schedule_commit()
+        self._json({"game": updated_game, "fields": changed_fields})
 
 
 # ── запуск ──────────────────────────────────────────────────────────
 
-def адреса_в_мережі() -> str:
+def lan_address() -> str:
     """IP, яким машину видно з телефона. Нічого нікуди не надсилає —
     ядро просто каже, який інтерфейс обрало б для виходу назовні."""
-    сокет = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    probe = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     try:
-        сокет.connect(("10.255.255.255", 1))
-        return сокет.getsockname()[0]
+        probe.connect(("10.255.255.255", 1))
+        return probe.getsockname()[0]
     except OSError:
         return "127.0.0.1"
     finally:
-        сокет.close()
+        probe.close()
 
 
 def main() -> None:
-    global пушити
-    розбір = argparse.ArgumentParser(description="Локальний сервер «Полиці настілок»")
-    розбір.add_argument("--порт", type=int, default=8777)
-    розбір.add_argument("--пуш", action="store_true",
+    global push_enabled
+    parser = argparse.ArgumentParser(description="Локальний сервер «Полиці настілок»")
+    parser.add_argument("--port", "--порт", dest="port", type=int, default=8777)
+    parser.add_argument("--push", "--пуш", dest="push", action="store_true",
                         help="після коміту відправляти на GitHub")
-    розбір.add_argument("--без-браузера", action="store_true")
-    аргументи = розбір.parse_args()
-    пушити = аргументи.пуш
+    parser.add_argument("--no-browser", "--без-браузера", dest="no_browser",
+                        action="store_true")
+    options = parser.parse_args()
+    push_enabled = options.push
 
-    кількість = len(живі(прочитати().get("games", [])))
-    сервер = ThreadingHTTPServer(("0.0.0.0", аргументи.порт), Обробник)
-    свій = f"http://localhost:{аргументи.порт}/"
-    мережа = f"http://{адреса_в_мережі()}:{аргументи.порт}/"
+    game_count = len(live_games(read_state().get("games", [])))
+    httpd = ThreadingHTTPServer(("0.0.0.0", options.port), RequestHandler)
+    local_url = f"http://localhost:{options.port}/"
+    lan_url = f"http://{lan_address()}:{options.port}/"
 
-    print(f"Полиця настілок — {кількість} ігор у «{ДАНІ.name}»")
-    print(f"  тут:       {свій}")
-    print(f"  з телефона: {мережа}")
-    print(f"  коміт через {ПАУЗА_ДО_КОМІТУ} с тиші" + (", далі пуш" if пушити else ""))
+    print(f"Полиця настілок — {game_count} ігор у «{DATA_FILE.name}»")
+    print(f"  тут:       {local_url}")
+    print(f"  з телефона: {lan_url}")
+    print(f"  коміт через {COMMIT_DELAY_SECONDS} с тиші" + (", далі пуш" if push_enabled else ""))
     print("  Ctrl+C — зупинити")
 
-    if not аргументи.без_браузера:
-        threading.Timer(0.6, lambda: webbrowser.open(свій)).start()
+    if not options.no_browser:
+        threading.Timer(0.6, lambda: webbrowser.open(local_url)).start()
     try:
-        сервер.serve_forever()
+        httpd.serve_forever()
     except KeyboardInterrupt:
         print("\nЗупиняюся…")
     finally:
-        if таймер is not None:
-            таймер.cancel()
-        закомітити()
+        if commit_timer is not None:
+            commit_timer.cancel()
+        commit_data()
 
 
 if __name__ == "__main__":

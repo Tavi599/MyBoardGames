@@ -8,42 +8,43 @@ from pathlib import Path
 
 from PIL import Image, ImageDraw
 
-ТЕКА = Path(__file__).parent
-ТЛО = (14, 94, 88)          # --petrol
-ПАПІР = (233, 234, 229)     # --paper
-ТІНЬ = (10, 66, 62)
-ВИСОТИ = (0.34, 0.52, 0.76, 1.0)   # чотири стовпчики, як 2 / 3 / 4 / 5+
+ROOT_DIR = Path(__file__).parent
+BACKGROUND_COLOR = (14, 94, 88)     # --petrol
+BAR_COLOR = (233, 234, 229)         # --paper
+BASELINE_COLOR = (10, 66, 62)
+BAR_HEIGHTS = (0.34, 0.52, 0.76, 1.0)   # чотири стовпчики, як 2 / 3 / 4 / 5+
 
 
-def намалювати(сторона: int) -> Image.Image:
-    полотно = Image.new("RGBA", (сторона, сторона), ТЛО + (255,))
-    перо = ImageDraw.Draw(полотно)
+def draw_icon(size: int) -> Image.Image:
+    canvas = Image.new("RGBA", (size, size), BACKGROUND_COLOR + (255,))
+    pen = ImageDraw.Draw(canvas)
 
-    поле = сторона * 0.22
-    ширина_поля = сторона - поле * 2
-    крок = ширина_поля / 4
-    товщина = крок * 0.56
-    низ = сторона - поле
-    найвища = ширина_поля * 0.92
+    margin = size * 0.22
+    inner_width = size - margin * 2
+    step = inner_width / 4
+    bar_width = step * 0.56
+    bottom = size - margin
+    tallest = inner_width * 0.92
 
     # ледь помітна лінія основи — «шкала»
-    перо.rectangle([поле, низ, сторона - поле, низ + сторона * 0.018], fill=ТІНЬ + (255,))
+    pen.rectangle([margin, bottom, size - margin, bottom + size * 0.018],
+                  fill=BASELINE_COLOR + (255,))
 
-    for номер, частка in enumerate(ВИСОТИ):
-        висота = найвища * частка
-        ліво = поле + крок * номер + (крок - товщина) / 2
-        верх = низ - висота
-        радіус = товщина * 0.28
-        перо.rounded_rectangle([ліво, верх, ліво + товщина, низ],
-                               radius=радіус, fill=ПАПІР + (255,))
-    return полотно
+    for index, fraction in enumerate(BAR_HEIGHTS):
+        height = tallest * fraction
+        left = margin + step * index + (step - bar_width) / 2
+        top = bottom - height
+        radius = bar_width * 0.28
+        pen.rounded_rectangle([left, top, left + bar_width, bottom],
+                              radius=radius, fill=BAR_COLOR + (255,))
+    return canvas
 
 
 def main() -> None:
-    for сторона in (192, 512):
-        шлях = ТЕКА / f"icon-{сторона}.png"
-        намалювати(сторона).save(шлях)
-        print("Намальовано:", шлях.name)
+    for size in (192, 512):
+        path = ROOT_DIR / f"icon-{size}.png"
+        draw_icon(size).save(path)
+        print("Намальовано:", path.name)
 
 
 if __name__ == "__main__":
