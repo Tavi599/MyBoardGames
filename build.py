@@ -38,8 +38,8 @@ GENRES_FILE = SOURCE_DIR / "genres.json"
 PURE_LOGIC_FILES = ["00-util.js", "01-model.js", "02-filters.js", "03-sync.js"]
 
 # Випадки злиття — спільні для сторінки й для «tests.py»: правило одне, а
-# реалізацій три. Тут вони стають константою на сторінці тестів; python
-# читає той самий файл.
+# реалізацій дві — mergeNewestWins() у сторінці й merge_games() у «server.py».
+# Тут вони стають константою на сторінці тестів; python читає той самий файл.
 MERGE_CASES_FILE = SOURCE_DIR / "merge-cases.json"
 
 # Розділ → файли. Код береться за іменами, відсортованими за номером.
@@ -165,7 +165,7 @@ li i{{display:block; padding-left:18px; color:#A3402D; font-style:normal}}
 
 def merge_cases_constant() -> str:
     """Випадки злиття — константою на сторінці тестів. Той самий файл читає
-    «tests.py»: правило одне, реалізацій три, тож нехай хоч перевіряються
+    «tests.py»: правило одне, реалізацій дві, тож нехай хоч перевіряються
     вони по одному переліку."""
     data = json.loads(read_text(MERGE_CASES_FILE))
     return ("/* Згенеровано збіркою з «src/merge-cases.json» — правити там. */\n"
