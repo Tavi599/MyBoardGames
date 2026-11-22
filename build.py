@@ -5,7 +5,7 @@
 кліком (file://), а туди import не пускає браузер. Склеювання на збірці дає
 поділ на файли без жодної залежності — ні npm, ні збирачки.
 
-Порядок склеювання = порядок у СКЛАД. Файли коду нумеровані, бо вони
+Порядок склеювання = порядок у PAGE_PARTS. Файли коду нумеровані, бо вони
 виконуються згори вниз і залежать від оголошень попередніх.
 
 Один і той самий «index.html» служить трьом місцям і сам розуміє, де він:
@@ -18,42 +18,38 @@
 import json
 from pathlib import Path
 
-ТЕКА = Path(__file__).parent
-ДЖЕРЕЛА = ТЕКА / "src"
-ЦІЛЬ = ТЕКА / "index.html"
-ЦІЛЬ_ТЕСТІВ = ТЕКА / "tests.html"
+ROOT_DIR = Path(__file__).parent
+SOURCE_DIR = ROOT_DIR / "src"
+OUTPUT_PAGE = ROOT_DIR / "index.html"
+OUTPUT_TESTS_PAGE = ROOT_DIR / "tests.html"
+# Сталі формату даних (версія, склади столу, статуси, види правил): спільне
+# джерело для сторінки й для «check.py».
+SCHEMA_FILE = SOURCE_DIR / "schema.json"
 # Підписи жанрів: спільне джерело для сторінки й для «check.py».
-СЛОВНИК = ДЖЕРЕЛА / "genres.json"
+GENRES_FILE = SOURCE_DIR / "genres.json"
 
-# Файли, які нічого не роблять під час завантаження: самі оголошення, жоден
-# обробник не чіпляється до розмітки сторінки. Саме їх можна перевіряти
-# окремо. Node у системі немає, тож тести живуть у власній сторінці.
+# Файли без сторінки й мережі: самі оголошення, жоден обробник не чіпляється
+# до розмітки. Саме їх можна перевіряти окремо, і саме від них залежить, чи
+# не зникне оцінка, поставлена без зв'язку: модель запису, вибірка, злиття
+# й черга. Усе з номером від 10 — це вже сховище й сама сторінка.
 #
-# «04-list.js» тут заради поновити(): звіряння списку з даними — це те
-# місце, де помилка тиха (не падає, а лишає зайвий рядок або переставляє
-# два), тож без тестів його тримати не варто.
-#
-# «02-storage.js» довго стояв осторонь, бо «він же про мережу». Насправді
-# мережа в ньому — це три функції, а решта чиста: черга, злиття, «чия
-# правка перемогла». Тобто рівно той код, від якого залежить, чи не зникне
-# оцінка, поставлена без зв'язку, — і він єдиний був без жодного тесту.
-# При завантаженні файл нічого не робить: самі оголошення, boot() кличе
-# «08-menu.js», якого на сторінці тестів немає.
-ЧИСТА_ЛОГІКА = ["01-core.js", "02-storage.js", "03-filter.js", "04-list.js"]
+# Тести живуть у власній сторінці «tests.html»: так вони виконуються там
+# само, де й код, — у браузері, без жодної залежності.
+PURE_LOGIC_FILES = ["00-util.js", "01-model.js", "02-filters.js", "03-sync.js"]
 
 # Випадки злиття — спільні для сторінки й для «tests.py»: правило одне, а
 # реалізацій три. Тут вони стають константою на сторінці тестів; python
 # читає той самий файл.
-ВИПАДКИ_ЗЛИТТЯ = ДЖЕРЕЛА / "merge-cases.json"
+MERGE_CASES_FILE = SOURCE_DIR / "merge-cases.json"
 
 # Розділ → файли. Код береться за іменами, відсортованими за номером.
-СКЛАД = {
-    "голова": ["head.html"],
-    "стилі": ["styles.css"],
-    "розмітка": ["markup.html"],
+PAGE_PARTS = {
+    "head": ["head.html"],
+    "styles": ["styles.css"],
+    "markup": ["markup.html"],
 }
 
-ОБГОРТКА = """<!doctype html>
+PAGE_SHELL = """<!doctype html>
 <html lang="uk">
 <head>
 <meta charset="utf-8">
@@ -70,7 +66,7 @@ img{{max-width:100%}}
 </style>
 </head>
 <body>
-{вміст}
+{content}
 <script>
 // Застосунок на телефоні: сторінка має відкриватися й без мережі.
 if ("serviceWorker" in navigator && location.protocol === "https:") {{
@@ -84,45 +80,59 @@ if ("serviceWorker" in navigator && location.protocol === "https:") {{
 """
 
 
-def файли_коду() -> list[Path]:
-    return sorted((ДЖЕРЕЛА / "js").glob("*.js"))
+def script_files() -> list[Path]:
+    return sorted((SOURCE_DIR / "js").glob("*.js"))
 
 
-def джерела() -> list[Path]:
+def build_dependencies() -> list[Path]:
     """Усе, від чого залежить збірка, — щоб сервер знав, коли перезбирати."""
-    свої = [ДЖЕРЕЛА / і for імена in СКЛАД.values() for і in імена]
-    return свої + файли_коду() + [СЛОВНИК, ВИПАДКИ_ЗЛИТТЯ, Path(__file__)]
+    page_parts = [SOURCE_DIR / name for names in PAGE_PARTS.values() for name in names]
+    return page_parts + script_files() + [SCHEMA_FILE, GENRES_FILE, MERGE_CASES_FILE,
+                                          Path(__file__)]
 
 
-def словник_жанрів() -> str:
-    """Підписи жанрів лежать окремим JSON, бо їх читає не лише сторінка, а й
-    перевірка даних. Тут вони стають двома константами на початку коду —
-    раніше за все, що ними користується."""
-    дані = json.loads(читати(СЛОВНИК))
-    return ('/* Згенеровано збіркою з «src/genres.json» — правити там. */\n'
+def read_text(path: Path) -> str:
+    if not path.exists():
+        raise FileNotFoundError(f"немає {path.relative_to(ROOT_DIR)}")
+    return path.read_text(encoding="utf-8")
+
+
+def js_constant(name: str, value) -> str:
+    return f"const {name} = " + json.dumps(value, ensure_ascii=False) + ";\n"
+
+
+def without_comment_keys(data: dict) -> dict:
+    """Ключі з підкресленням на початку — це пояснення для людей, що читають
+    JSON; сторінці вони не потрібні."""
+    return {key: value for key, value in data.items() if not key.startswith("_")}
+
+
+def generated_constants() -> str:
+    """Сталі формату й підписи жанрів лежать окремими JSON, бо їх читає не
+    лише сторінка, а й перевірка даних. Тут вони стають константами на
+    початку коду — раніше за все, що ними користується."""
+    schema = without_comment_keys(json.loads(read_text(SCHEMA_FILE)))
+    genres = json.loads(read_text(GENRES_FILE))
+    return ('/* Згенеровано збіркою з «src/schema.json» і «src/genres.json» '
+            '— правити там. */\n'
             '"use strict";\n'
-            "const РОДИНИ = " + json.dumps(дані["родини"], ensure_ascii=False) + ";\n"
-            "const ЖАНРИ = " + json.dumps(дані["жанри"], ensure_ascii=False) + ";\n"
-            "const КЛЮЧОВІ = " + json.dumps(дані["ключові"], ensure_ascii=False) + ";\n")
+            + js_constant("SCHEMA", schema)
+            + js_constant("FAMILY_LABELS", genres["families"])
+            + js_constant("GENRE_LABELS", genres["genres"])
+            + js_constant("KEY_GENRES", genres["keyGenres"]))
 
 
-def читати(шлях: Path) -> str:
-    if not шлях.exists():
-        raise FileNotFoundError(f"немає {шлях.relative_to(ТЕКА)}")
-    return шлях.read_text(encoding="utf-8")
-
-
-def сторінка() -> str:
+def build_page() -> str:
     """Голова, стилі, розмітка й код — в одну сторінку."""
-    голова = "".join(читати(ДЖЕРЕЛА / і) for і in СКЛАД["голова"])
-    стилі = "".join(читати(ДЖЕРЕЛА / і) for і in СКЛАД["стилі"])
-    розмітка = "".join(читати(ДЖЕРЕЛА / і) for і in СКЛАД["розмітка"])
-    код = словник_жанрів() + "".join(читати(ф) for ф in файли_коду())
-    return (голова + "\n<style>\n" + стилі + "</style>\n\n"
-            + розмітка + "\n<script>\n" + код + "</script>\n")
+    head = "".join(read_text(SOURCE_DIR / name) for name in PAGE_PARTS["head"])
+    styles = "".join(read_text(SOURCE_DIR / name) for name in PAGE_PARTS["styles"])
+    markup = "".join(read_text(SOURCE_DIR / name) for name in PAGE_PARTS["markup"])
+    code = generated_constants() + "".join(read_text(path) for path in script_files())
+    return (head + "\n<style>\n" + styles + "</style>\n\n"
+            + markup + "\n<script>\n" + code + "</script>\n")
 
 
-СТОРІНКА_ТЕСТІВ = """<!doctype html>
+TESTS_PAGE_TEMPLATE = """<!doctype html>
 <html lang="uk">
 <head>
 <meta charset="utf-8">
@@ -132,9 +142,9 @@ def сторінка() -> str:
 body{{margin:0; padding:24px; font:14px/1.5 ui-monospace,monospace; background:#F5F6F2;
   color:#14181A}}
 h1{{margin:0 0 4px; font-size:18px}}
-#сума{{display:inline-block; padding:6px 12px; border-radius:6px; font-weight:700;
+#summary{{display:inline-block; padding:6px 12px; border-radius:6px; font-weight:700;
   background:#0E5E58; color:#F5F6F2}}
-body.зле #сума{{background:#A3402D}}
+body.failed #summary{{background:#A3402D}}
 ul{{list-style:none; padding:0; margin:18px 0 0}}
 li{{padding:3px 0; border-bottom:1px solid #DFE3DC}}
 li.ok b{{color:#0E5E58}} li.no b{{color:#A3402D}}
@@ -143,38 +153,37 @@ li i{{display:block; padding-left:18px; color:#A3402D; font-style:normal}}
 </head>
 <body>
 <h1>Полиця настілок — тести логіки</h1>
-<p><span id="сума">рахую…</span></p>
-<ul id="список"></ul>
+<p><span id="summary">рахую…</span></p>
+<ul id="results"></ul>
 <script>
-{код}
+{code}
 </script>
 </body>
 </html>
 """
 
 
-def випадки_злиття() -> str:
+def merge_cases_constant() -> str:
     """Випадки злиття — константою на сторінці тестів. Той самий файл читає
     «tests.py»: правило одне, реалізацій три, тож нехай хоч перевіряються
     вони по одному переліку."""
-    дані = json.loads(читати(ВИПАДКИ_ЗЛИТТЯ))
+    data = json.loads(read_text(MERGE_CASES_FILE))
     return ("/* Згенеровано збіркою з «src/merge-cases.json» — правити там. */\n"
-            "const ВИПАДКИ_ЗЛИТТЯ = "
-            + json.dumps(дані["випадки"], ensure_ascii=False) + ";\n")
+            + js_constant("MERGE_CASES", data["cases"]))
 
 
-def сторінка_тестів() -> str:
-    код = (словник_жанрів() + випадки_злиття()
-           + "".join(читати(ДЖЕРЕЛА / "js" / і) for і in ЧИСТА_ЛОГІКА))
-    return СТОРІНКА_ТЕСТІВ.format(код=код + читати(ДЖЕРЕЛА / "tests.js"))
+def build_tests_page() -> str:
+    code = (generated_constants() + merge_cases_constant()
+            + "".join(read_text(SOURCE_DIR / "js" / name) for name in PURE_LOGIC_FILES))
+    return TESTS_PAGE_TEMPLATE.format(code=code + read_text(SOURCE_DIR / "tests.js"))
 
 
 def main() -> None:
-    ЦІЛЬ.write_text(ОБГОРТКА.format(вміст=сторінка()), encoding="utf-8")
-    ЦІЛЬ_ТЕСТІВ.write_text(сторінка_тестів(), encoding="utf-8")
-    скільки = len(файли_коду())
-    print(f"Зібрано: {ЦІЛЬ.name} ({ЦІЛЬ.stat().st_size / 1024:.0f} КБ), "
-          f"файлів коду: {скільки}; плюс {ЦІЛЬ_ТЕСТІВ.name}")
+    OUTPUT_PAGE.write_text(PAGE_SHELL.format(content=build_page()), encoding="utf-8")
+    OUTPUT_TESTS_PAGE.write_text(build_tests_page(), encoding="utf-8")
+    script_count = len(script_files())
+    print(f"Зібрано: {OUTPUT_PAGE.name} ({OUTPUT_PAGE.stat().st_size / 1024:.0f} КБ), "
+          f"файлів коду: {script_count}; плюс {OUTPUT_TESTS_PAGE.name}")
 
 
 if __name__ == "__main__":

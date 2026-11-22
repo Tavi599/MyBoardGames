@@ -5,47 +5,51 @@
    (іконки, маніфест) навпаки: спершу кеш, бо вони майже не змінюються.
    Запити до GitHub API не кешуємо ніколи — інакше вчорашні оцінки
    виглядали б як сьогоднішні. */
-const КЕШ = "полиця-v3";
-const ОБОЛОНКА = ["./", "./index.html", "./manifest.webmanifest", "./icon-192.png", "./icon-512.png"];
+const CACHE_NAME = "полиця-v3";
+const APP_SHELL = ["./", "./index.html", "./manifest.webmanifest", "./icon-192.png", "./icon-512.png"];
 
-self.addEventListener("install", (подія) => {
-  подія.waitUntil(caches.open(КЕШ).then((кеш) => кеш.addAll(ОБОЛОНКА)).then(() => self.skipWaiting()));
+self.addEventListener("install", (event) => {
+  event.waitUntil(caches.open(CACHE_NAME)
+    .then((cache) => cache.addAll(APP_SHELL))
+    .then(() => self.skipWaiting()));
 });
 
-self.addEventListener("activate", (подія) => {
-  подія.waitUntil(
+self.addEventListener("activate", (event) => {
+  event.waitUntil(
     caches.keys()
-      .then((назви) => Promise.all(назви.filter((н) => н !== КЕШ).map((н) => caches.delete(н))))
+      .then((names) => Promise.all(
+        names.filter((name) => name !== CACHE_NAME).map((name) => caches.delete(name))))
       .then(() => self.clients.claim())
   );
 });
 
-function покласти(запит, відповідь){
-  if(відповідь && відповідь.ok){
-    const копія = відповідь.clone();
-    caches.open(КЕШ).then((кеш) => кеш.put(запит, копія));
+/** Кладе вдалу відповідь у кеш і повертає її далі. */
+function cacheResponse(request, response){
+  if(response && response.ok){
+    const copy = response.clone();
+    caches.open(CACHE_NAME).then((cache) => cache.put(request, copy));
   }
-  return відповідь;
+  return response;
 }
 
-self.addEventListener("fetch", (подія) => {
-  const запит = подія.request;
-  if(запит.method !== "GET") return;
-  if(new URL(запит.url).origin !== location.origin) return;   // GitHub API — завжди в мережу
+self.addEventListener("fetch", (event) => {
+  const request = event.request;
+  if(request.method !== "GET") return;
+  if(new URL(request.url).origin !== location.origin) return;   // GitHub API — завжди в мережу
 
-  if(запит.mode === "navigate"){
-    подія.respondWith(
-      fetch(запит).then((відповідь) => покласти(запит, відповідь))
-        .catch(() => caches.match(запит).then((з) => з || caches.match("./index.html")))
+  if(request.mode === "navigate"){
+    event.respondWith(
+      fetch(request).then((response) => cacheResponse(request, response))
+        .catch(() => caches.match(request).then((cached) => cached || caches.match("./index.html")))
     );
     return;
   }
 
-  подія.respondWith(
-    caches.match(запит).then((збережене) => {
-      const свіже = fetch(запит).then((відповідь) => покласти(запит, відповідь))
-        .catch(() => збережене);
-      return збережене || свіже;
+  event.respondWith(
+    caches.match(request).then((cached) => {
+      const fresh = fetch(request).then((response) => cacheResponse(request, response))
+        .catch(() => cached);
+      return cached || fresh;
     })
   );
 });

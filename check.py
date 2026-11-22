@@ -15,30 +15,34 @@ from datetime import datetime
 
 sys.stdout.reconfigure(encoding="utf-8")
 
-ФАЙЛ = pathlib.Path(__file__).parent / "ratings.json"
+ROOT_DIR = pathlib.Path(__file__).parent
+DATA_FILE = ROOT_DIR / "ratings.json"
 
 # Коли каталог доросте до цього розміру, час ділити його на каталог і
 # журнал партій (шостий етап плану). Поріг тут, щоб про нього не забули.
-ПОРІГ_ПОДІЛУ = 250 * 1024
+SPLIT_THRESHOLD_BYTES = 250 * 1024
 
-# Має збігатися з ВЕРСІЯ у «src/js/01-core.js» — і це не побажання:
-# звіряє їх версії_збігаються() нижче, а кличе головне() перед кожним
-# комітом. Доки номер лежав у двох файлах під чесне слово, він одного разу
-# вже розійшовся, і сервер тихо ставив на свіжі дані давню позначку.
-ВЕРСІЯ_ДАНИХ = 4
-ОСНОВА = pathlib.Path(__file__).parent / "src" / "js" / "01-core.js"
+# Сталі формату даних живуть в одному файлі зі сторінкою: «build.py» вкладає
+# «src/schema.json» у код константою SCHEMA, а ми читаємо його напряму. Доки
+# номер версії та списки лежали у двох файлах під чесне слово, номер одного
+# разу вже розійшовся, і сервер тихо ставив на свіжі дані давню позначку.
+SCHEMA_FILE = ROOT_DIR / "src" / "schema.json"
+SCHEMA = json.loads(SCHEMA_FILE.read_text(encoding="utf-8"))
+
+SCHEMA_VERSION = SCHEMA["version"]
 
 # «хочу зіграти» й «відклав» скасовано на версії 3; «чужа» — коробка є,
 # але не твоя. Міграція на сторінці викидає скасовані з давніх записів.
-СТАТУСИ = {"колекція", "улюблена", "філер", "продаж", "онлайн", "чужа",
-           "позбувся"}
+STATUSES = set(SCHEMA["statuses"])
 # «5+» — це «більше за п'ятьох, скільки коробка дозволяє»; підпис до нього
 # сторінка бере з bggMax кожної гри окремо. Ключ навмисне сталий: якби він
 # залежав від стелі, зміна даних на BGG перейменовувала б чужі оцінки.
-СКЛАДИ = {"1", "2", "3", "4", "5", "5+"}
+PLAYER_COUNTS = set(SCHEMA["playerCounts"])
+RULE_KINDS = set(SCHEMA["ruleKinds"])
+
 # Опитування спільноти зводиться до складів 1..10 — далі це вже не про стіл.
-СТЕЛЯ_ОПИТУВАННЯ = 10
-ПОЛЯ = {
+POLL_PLAYER_CEILING = 10
+KNOWN_FIELDS = {
     "id", "name", "nameEn", "statuses", "status", "score", "byCount", "weight",
     "plays", "minP", "maxP", "minutes", "tags", "comment", "cover", "expansion",
     "withExp", "bggId", "bggRating", "bggRank", "added", "updated", "deleted",
@@ -49,395 +53,381 @@ sys.stdout.reconfigure(encoding="utf-8")
 # Підписи жанрів живуть в одному файлі зі сторінкою: «build.py» вкладає
 # його в код, а ми звіряємо з ним дані. Якби списки лежали окремо, вони б
 # розійшлися першого ж разу, коли на полицю стане гра з новим жанром.
-СЛОВНИК_ЖАНРІВ = pathlib.Path(__file__).parent / "src" / "genres.json"
+GENRES_FILE = ROOT_DIR / "src" / "genres.json"
 
-ВИДИ_ПРАВИЛ = {"офіційні", "соло", "памʼятка", "переклад", "інше"}
-
-помилки: list[str] = []
-застереження: list[str] = []
+found_errors: list[str] = []
+found_warnings: list[str] = []
 
 
-def біда(де, що):
-    помилки.append(f"{де}: {що}")
+def add_error(where, message):
+    found_errors.append(f"{where}: {message}")
 
 
-def увага(де, що):
-    застереження.append(f"{де}: {що}")
+def add_warning(where, message):
+    found_warnings.append(f"{where}: {message}")
 
 
-def оцінка(де, поле, v, стеля):
+def check_own_score(where, field, value, ceiling):
     """Оцінки ходять із кроком у пів бала й не перестрибують стелю."""
-    if v is None:
+    if value is None:
         return
-    if not isinstance(v, (int, float)) or isinstance(v, bool):
-        return біда(де, f"{поле} має бути числом, а не {type(v).__name__}")
-    if not 0 < v <= стеля:
-        біда(де, f"{поле} = {v}, а має бути від 0 до {стеля}")
-    elif (v * 2) % 1:
-        біда(де, f"{поле} = {v}: дозволені лише цілі та половинки")
+    if not isinstance(value, (int, float)) or isinstance(value, bool):
+        return add_error(where, f"{field} має бути числом, а не {type(value).__name__}")
+    if not 0 < value <= ceiling:
+        add_error(where, f"{field} = {value}, а має бути від 0 до {ceiling}")
+    elif (value * 2) % 1:
+        add_error(where, f"{field} = {value}: дозволені лише цілі та половинки")
 
 
-def чужа(де, поле, v, стеля=10):
+def check_bgg_number(where, field, value, ceiling=10):
     """Число з BGG — не твоє: там середнє з тисяч голосів, тож десяткова
     з одним знаком (7,6), а не половинка."""
-    if v is None:
+    if value is None:
         return
-    if not isinstance(v, (int, float)) or isinstance(v, bool):
-        return біда(де, f"{поле} має бути числом, а не {type(v).__name__}")
-    if not 0 < v <= стеля:
-        біда(де, f"{поле} = {v}, а має бути від 0 до {стеля}")
-    elif round(v, 1) != v:
-        біда(де, f"{поле} = {v}: більше за один знак після коми")
+    if not isinstance(value, (int, float)) or isinstance(value, bool):
+        return add_error(where, f"{field} має бути числом, а не {type(value).__name__}")
+    if not 0 < value <= ceiling:
+        add_error(where, f"{field} = {value}, а має бути від 0 до {ceiling}")
+    elif round(value, 1) != value:
+        add_error(where, f"{field} = {value}: більше за один знак після коми")
 
 
-def опитування(де, поле, v, стеля):
+def check_poll(where, field, value, box_ceiling):
     """Склади, які спільнота назвала найкращими чи придатними: зростаючий
     список без повторів, у межах того, що коробка взагалі дозволяє."""
-    if v is None:
+    if value is None:
         return
-    if not isinstance(v, list):
-        return біда(де, f"{поле} має бути списком")
-    if not all(isinstance(x, int) and not isinstance(x, bool) for x in v):
-        return біда(де, f"{поле} має бути списком цілих")
-    if v != sorted(set(v)):
-        біда(де, f"{поле} = {v}: має бути зростаючий список без повторів")
-    межа = min(стеля or СТЕЛЯ_ОПИТУВАННЯ, СТЕЛЯ_ОПИТУВАННЯ)
-    поза = [x for x in v if not 1 <= x <= межа]
-    if поза:
-        біда(де, f"{поле} має склади поза межами 1..{межа}: {поза}")
+    if not isinstance(value, list):
+        return add_error(where, f"{field} має бути списком")
+    if not all(isinstance(count, int) and not isinstance(count, bool) for count in value):
+        return add_error(where, f"{field} має бути списком цілих")
+    if value != sorted(set(value)):
+        add_error(where, f"{field} = {value}: має бути зростаючий список без повторів")
+    limit = min(box_ceiling or POLL_PLAYER_CEILING, POLL_PLAYER_CEILING)
+    out_of_range = [count for count in value if not 1 <= count <= limit]
+    if out_of_range:
+        add_error(where, f"{field} має склади поза межами 1..{limit}: {out_of_range}")
 
 
-def журнал(де, v, партій):
+def check_play_log(where, value, plays):
     """Журнал партій: записи з датою, від давнішої до свіжішої, і їх ніколи
     не більше, ніж самих партій, — партія без запису буває (зіграли до
     журналу), запис без партії не буває."""
-    if v is None:
+    if value is None:
         return
-    if not isinstance(v, list):
-        return біда(де, "log має бути списком")
-    дати = []
-    сьогодні = datetime.now().strftime("%Y-%m-%d")
-    for н, з in enumerate(v):
-        хто = f"{де} log[{н}]"
-        if not isinstance(з, dict):
-            біда(хто, "не об'єкт")
+    if not isinstance(value, list):
+        return add_error(where, "log має бути списком")
+    dates = []
+    today = datetime.now().strftime("%Y-%m-%d")
+    for index, entry in enumerate(value):
+        entry_where = f"{where} log[{index}]"
+        if not isinstance(entry, dict):
+            add_error(entry_where, "не об'єкт")
             continue
-        зайві = set(з) - {"on", "count", "note"}
-        if зайві:
-            увага(хто, "невідомі поля: " + ", ".join(sorted(зайві)))
-        коли = з.get("on")
-        if not isinstance(коли, str) or not re.fullmatch(r"\d{4}-\d{2}-\d{2}", коли):
-            біда(хто, f"on = {коли!r}: потрібен день у вигляді YYYY-MM-DD")
+        unknown_keys = set(entry) - {"on", "count", "note"}
+        if unknown_keys:
+            add_warning(entry_where, "невідомі поля: " + ", ".join(sorted(unknown_keys)))
+        played_on = entry.get("on")
+        if not isinstance(played_on, str) or not re.fullmatch(r"\d{4}-\d{2}-\d{2}", played_on):
+            add_error(entry_where, f"on = {played_on!r}: потрібен день у вигляді YYYY-MM-DD")
         else:
             try:
-                datetime.fromisoformat(коли)
-                дати.append(коли)
-                if коли > сьогодні:
-                    увага(хто, f"партія {коли} — у майбутньому")
+                datetime.fromisoformat(played_on)
+                dates.append(played_on)
+                if played_on > today:
+                    add_warning(entry_where, f"партія {played_on} — у майбутньому")
             except ValueError:
-                біда(хто, f"on = {коли!r} — такого дня немає")
-        if "count" in з and з["count"] not in СКЛАДИ:
-            біда(хто, f"count = {з['count']!r}: це не склад столу")
-        if "note" in з and not isinstance(з["note"], str):
-            біда(хто, "note має бути рядком")
-    if дати != sorted(дати):
-        біда(де, "log має йти від давнішої партії до свіжішої")
-    if len(v) > (партій or 0):
-        біда(де, f"у журналі {len(v)} партій, а лічильник каже {партій or 0}")
+                add_error(entry_where, f"on = {played_on!r} — такого дня немає")
+        if "count" in entry and entry["count"] not in PLAYER_COUNTS:
+            add_error(entry_where, f"count = {entry['count']!r}: це не склад столу")
+        if "note" in entry and not isinstance(entry["note"], str):
+            add_error(entry_where, "note має бути рядком")
+    if dates != sorted(dates):
+        add_error(where, "log має йти від давнішої партії до свіжішої")
+    if len(value) > (plays or 0):
+        add_error(where, f"у журналі {len(value)} партій, а лічильник каже {plays or 0}")
 
 
-def ціле(де, поле, v, найменше=0, найбільше=None):
-    if v is None:
+def check_integer(where, field, value, minimum=0, maximum=None):
+    if value is None:
         return
-    if not isinstance(v, int) or isinstance(v, bool):
-        return біда(де, f"{поле} має бути цілим, а не {type(v).__name__}")
-    if v < найменше or (найбільше is not None and v > найбільше):
-        біда(де, f"{поле} = {v} поза межами {найменше}..{найбільше or '∞'}")
+    if not isinstance(value, int) or isinstance(value, bool):
+        return add_error(where, f"{field} має бути цілим, а не {type(value).__name__}")
+    if value < minimum or (maximum is not None and value > maximum):
+        add_error(where, f"{field} = {value} поза межами {minimum}..{maximum or '∞'}")
 
 
-def мить(де, поле, v, обов):
-    if v is None:
-        if обов:
-            біда(де, f"немає {поле}")
+def check_timestamp(where, field, value, required):
+    if value is None:
+        if required:
+            add_error(where, f"немає {field}")
         return
     try:
-        datetime.fromisoformat(str(v).replace("Z", "+00:00"))
+        datetime.fromisoformat(str(value).replace("Z", "+00:00"))
     except ValueError:
-        біда(де, f"{поле} = {v!r} — не читається як дата")
+        add_error(where, f"{field} = {value!r} — не читається як дата")
 
 
-def підписи():
+def load_known_slugs():
     """Слуги жанрів, до яких є український підпис. Порожньо, якщо словника
     немає: перевірка даних не має падати через відсутній файл сторінки."""
     try:
-        д = json.loads(СЛОВНИК_ЖАНРІВ.read_text(encoding="utf-8"))
+        genres = json.loads(GENRES_FILE.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError):
         return None
-    return {"bggFamily": set(д.get("родини", {})), "bggGenres": set(д.get("жанри", {}))}
+    return {"bggFamily": set(genres.get("families", {})),
+            "bggGenres": set(genres.get("genres", {}))}
 
 
-def жанри(де, поле, v, відомі):
+def check_slugs(where, field, value, known_slugs):
     """Слуги з BGG: рядки-слуги, без повторів, і кожен із підписом."""
-    if v is None:
+    if value is None:
         return
-    if not isinstance(v, list) or not all(isinstance(x, str) for x in v):
-        return біда(де, f"{поле} має бути списком рядків")
-    if v != sorted(set(v)):
-        біда(де, f"{поле} = {v}: має бути впорядкований список без повторів")
-    криві = [x for x in v if not re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", x)]
-    if криві:
-        біда(де, f"{поле}: не слуги — {криві}")
-    if відомі is not None:
-        німі = sorted(set(v) - відомі[поле])
-        if німі:
+    if not isinstance(value, list) or not all(isinstance(slug, str) for slug in value):
+        return add_error(where, f"{field} має бути списком рядків")
+    if value != sorted(set(value)):
+        add_error(where, f"{field} = {value}: має бути впорядкований список без повторів")
+    malformed = [slug for slug in value
+                 if not re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", slug)]
+    if malformed:
+        add_error(where, f"{field}: не слуги — {malformed}")
+    if known_slugs is not None:
+        unlabeled = sorted(set(value) - known_slugs[field])
+        if unlabeled:
             # Не помилка: дані цілі, просто сторінка покаже слуг як є.
-            увага(де, f"{поле}: немає українського підпису — {', '.join(німі)}")
+            add_warning(where, f"{field}: немає українського підпису — {', '.join(unlabeled)}")
 
 
-def перевірити(стан):
+def validate(state):
     """Повертає (помилки, застереження). Викликається і з тестів.
 
     Копії, а не самі списки: доки віддавалися самі, два виклики поспіль
     давали один і той самий об'єкт — і порівняння «що було до / що стало
     після» мовчки перетворювалося на порівняння списку із самим собою."""
-    помилки.clear()
-    застереження.clear()
-    _перевірити(стан)
-    return list(помилки), list(застереження)
+    found_errors.clear()
+    found_warnings.clear()
+    _validate(state)
+    return list(found_errors), list(found_warnings)
 
 
-def _перевірити(стан):
-    ігри = стан.get("games")
-    if not isinstance(ігри, list):
-        біда("корінь", "немає списку games")
+def _validate(state):
+    games = state.get("games")
+    if not isinstance(games, list):
+        add_error("корінь", "немає списку games")
         return
-    if not стан.get("saved"):
-        увага("корінь", "немає позначки saved")
-    в = стан.get("version")
-    if в is None:
-        біда("корінь", "немає version: файл не пройшов міграцію")
-    elif isinstance(в, int) and в < ВЕРСІЯ_ДАНИХ:
+    if not state.get("saved"):
+        add_warning("корінь", "немає позначки saved")
+    version = state.get("version")
+    if version is None:
+        add_error("корінь", "немає version: файл не пройшов міграцію")
+    elif isinstance(version, int) and version < SCHEMA_VERSION:
         # Давніший номер — не біда, а слід: файл востаннє писала сторінка,
         # яка ще не оновилася (телефон із кешу, наприклад). Дані від того
         # не псуються — міграція доведе їх до пуття при першому ж читанні,
         # і номер підтягнеться сам. Валити на цьому коміт означало б
         # тримати полицю заручником браузерного кеша.
-        увага("корінь", f"version = {в}, а програма вже на {ВЕРСІЯ_ДАНИХ}: "
-                        "файл писала сторінка давнішого зразка")
-    elif в != ВЕРСІЯ_ДАНИХ:
+        add_warning("корінь", f"version = {version}, а програма вже на {SCHEMA_VERSION}: "
+                              "файл писала сторінка давнішого зразка")
+    elif version != SCHEMA_VERSION:
         # А от новіший номер — це вже справді біда: писала сторінка, яка
         # знає про дані більше за нас, і перезаписувати їх наосліп не можна.
-        біда("корінь", f"version = {в}, а програма чекає {ВЕРСІЯ_ДАНИХ}")
+        add_error("корінь", f"version = {version}, а програма чекає {SCHEMA_VERSION}")
 
-    відомі_жанри = підписи()
-    бачені = {}
-    for н, г in enumerate(ігри):
-        if not isinstance(г, dict):
-            біда(f"games[{н}]", "не об'єкт")
+    known_slugs = load_known_slugs()
+    names_by_id = {}
+    for index, game in enumerate(games):
+        if not isinstance(game, dict):
+            add_error(f"games[{index}]", "не об'єкт")
             continue
-        ід = г.get("id")
-        де = f"«{г.get('name') or ід or н}»"
+        game_id = game.get("id")
+        where = f"«{game.get('name') or game_id or index}»"
 
-        if not isinstance(ід, str) or not ід:
-            біда(де, "немає id")
-        elif ід in бачені:
-            біда(де, f"id {ід} уже зайнятий грою «{бачені[ід]}»")
+        if not isinstance(game_id, str) or not game_id:
+            add_error(where, "немає id")
+        elif game_id in names_by_id:
+            add_error(where, f"id {game_id} уже зайнятий грою «{names_by_id[game_id]}»")
         else:
-            бачені[ід] = г.get("name") or ід
+            names_by_id[game_id] = game.get("name") or game_id
 
         # Надгробок — це запис про видалену коробку; решти полів у нього нема.
-        if г.get("deleted"):
-            мить(де, "updated", г.get("updated"), обов=True)
+        if game.get("deleted"):
+            check_timestamp(where, "updated", game.get("updated"), required=True)
             continue
 
-        if not isinstance(г.get("name"), str) or not г["name"].strip():
-            біда(де, "порожня назва")
-        for поле in ("nameEn", "comment", "cover", "bggId"):
-            if поле in г and not isinstance(г[поле], str):
-                біда(де, f"{поле} має бути рядком")
+        if not isinstance(game.get("name"), str) or not game["name"].strip():
+            add_error(where, "порожня назва")
+        for field in ("nameEn", "comment", "cover", "bggId"):
+            if field in game and not isinstance(game[field], str):
+                add_error(where, f"{field} має бути рядком")
         # Обкладинка йде в src, тому схема тут — питання не смаку, а безпеки:
         # «javascript:» у сторінці означає чужий код, а в сторінці лежить
-        # ключ доступу до репозиторію. Сторінка такі адреси відкидає сама
-        # (див. посилання() в «01-core.js»), але в даних їм узагалі не місце.
-        if г.get("cover"):
-            адреса = str(г["cover"])
-            if not адреса.startswith(("http://", "https://")):
-                біда(де, f"обкладинка не http(s): {адреса[:40]!r}")
-            elif not адреса.startswith("https://"):
-                увага(де, "обкладинка не через https")
+        # ключ доступу до репозиторію. Сторінка такі адреси відкидає сама,
+        # але в даних їм узагалі не місце.
+        if game.get("cover"):
+            cover_url = str(game["cover"])
+            if not cover_url.startswith(("http://", "https://")):
+                add_error(where, f"обкладинка не http(s): {cover_url[:40]!r}")
+            elif not cover_url.startswith("https://"):
+                add_warning(where, "обкладинка не через https")
         # Те саме з bggId: він підставляється просто в адресу запиту до BGG,
         # а приїжджає з чужого вивантаженого CSV.
-        if г.get("bggId") and not str(г["bggId"]).isdigit():
-            біда(де, f"bggId має бути числом, а не {г['bggId']!r}")
+        if game.get("bggId") and not str(game["bggId"]).isdigit():
+            add_error(where, f"bggId має бути числом, а не {game['bggId']!r}")
 
-        с = г.get("statuses")
-        if с is None:
-            біда(де, "немає statuses (запис не пройшов міграцію?)")
-        elif not isinstance(с, list) or not all(isinstance(x, str) for x in с):
-            біда(де, "statuses має бути списком рядків")
+        statuses = game.get("statuses")
+        if statuses is None:
+            add_error(where, "немає statuses (запис не пройшов міграцію?)")
+        elif not isinstance(statuses, list) or not all(isinstance(key, str) for key in statuses):
+            add_error(where, "statuses має бути списком рядків")
         else:
-            чужі = set(с) - СТАТУСИ
-            if чужі:
-                біда(де, "невідомі статуси: " + ", ".join(sorted(чужі)))
-            if len(set(с)) != len(с):
-                біда(де, "статус повторюється")
+            unknown_statuses = set(statuses) - STATUSES
+            if unknown_statuses:
+                add_error(where, "невідомі статуси: " + ", ".join(sorted(unknown_statuses)))
+            if len(set(statuses)) != len(statuses):
+                add_error(where, "статус повторюється")
             # Старе поле лишається дзеркалом першого статусу — на нього
             # спирається сторінка, закешована до переходу на список.
-            if с and г.get("status") != с[0]:
-                біда(де, f"status = {г.get('status')!r}, а перший у statuses — {с[0]!r}")
+            if statuses and game.get("status") != statuses[0]:
+                add_error(where, f"status = {game.get('status')!r}, "
+                                 f"а перший у statuses — {statuses[0]!r}")
 
-        оцінка(де, "score", г.get("score"), 10)
-        оцінка(де, "weight", г.get("weight"), 5)
-        чужа(де, "bggRating", г.get("bggRating"))
-        чужа(де, "bggWeight", г.get("bggWeight"), 5)
-        ціле(де, "plays", г.get("plays"), 0)
-        журнал(де, г.get("log"), г.get("plays"))
-        ціле(де, "bggRank", г.get("bggRank"), 1)
-        ціле(де, "minP", г.get("minP"), 1, 100)
-        ціле(де, "maxP", г.get("maxP"), 1, 100)
-        ціле(де, "minutes", г.get("minutes"), 1, 6000)
+        check_own_score(where, "score", game.get("score"), 10)
+        check_own_score(where, "weight", game.get("weight"), 5)
+        check_bgg_number(where, "bggRating", game.get("bggRating"))
+        check_bgg_number(where, "bggWeight", game.get("bggWeight"), 5)
+        check_integer(where, "plays", game.get("plays"), 0)
+        check_play_log(where, game.get("log"), game.get("plays"))
+        check_integer(where, "bggRank", game.get("bggRank"), 1)
+        check_integer(where, "minP", game.get("minP"), 1, 100)
+        check_integer(where, "maxP", game.get("maxP"), 1, 100)
+        check_integer(where, "minutes", game.get("minutes"), 1, 6000)
         # Стеля тут аж 100: «Картографи» офіційно грають будь-яким натовпом,
         # і це не помилка даних, а справді така коробка.
-        ціле(де, "bggMin", г.get("bggMin"), 1, 100)
-        ціле(де, "bggMax", г.get("bggMax"), 1, 100)
-        ціле(де, "bggTimeMin", г.get("bggTimeMin"), 1, 6000)
-        ціле(де, "bggTimeMax", г.get("bggTimeMax"), 1, 6000)
-        опитування(де, "bggBest", г.get("bggBest"), г.get("bggMax"))
-        опитування(де, "bggRec", г.get("bggRec"), г.get("bggMax"))
+        check_integer(where, "bggMin", game.get("bggMin"), 1, 100)
+        check_integer(where, "bggMax", game.get("bggMax"), 1, 100)
+        check_integer(where, "bggTimeMin", game.get("bggTimeMin"), 1, 6000)
+        check_integer(where, "bggTimeMax", game.get("bggTimeMax"), 1, 6000)
+        check_poll(where, "bggBest", game.get("bggBest"), game.get("bggMax"))
+        check_poll(where, "bggRec", game.get("bggRec"), game.get("bggMax"))
         # Своя родина перевіряється тим самим словником, що й чужа:
         # вигаданий слуг тут був би так само невидимий у стрічці.
-        жанри(де, "family", г.get("family"), відомі_жанри and
-              {"family": відомі_жанри["bggFamily"]})
-        жанри(де, "bggFamily", г.get("bggFamily"), відомі_жанри)
-        жанри(де, "bggGenres", г.get("bggGenres"), відомі_жанри)
+        check_slugs(where, "family", game.get("family"), known_slugs and
+                    {"family": known_slugs["bggFamily"]})
+        check_slugs(where, "bggFamily", game.get("bggFamily"), known_slugs)
+        check_slugs(where, "bggGenres", game.get("bggGenres"), known_slugs)
         # Механіки перевіряємо лише за формою: їх на BGG сто двадцять,
         # а показуємо ми не їх, а зведені з них ключові жанри, тож
         # українських підписів до кожної тут немає й не треба.
-        жанри(де, "bggMech", г.get("bggMech"), None)
-        for менше, більше in (("minP", "maxP"), ("bggMin", "bggMax"),
-                              ("bggTimeMin", "bggTimeMax")):
-            a, b = г.get(менше), г.get(більше)
-            if isinstance(a, int) and isinstance(b, int) and a > b:
-                біда(де, f"{менше} {a} більше за {більше} {b}")
+        check_slugs(where, "bggMech", game.get("bggMech"), None)
+        for lower_field, upper_field in (("minP", "maxP"), ("bggMin", "bggMax"),
+                                         ("bggTimeMin", "bggTimeMax")):
+            lower, upper = game.get(lower_field), game.get(upper_field)
+            if isinstance(lower, int) and isinstance(upper, int) and lower > upper:
+                add_error(where, f"{lower_field} {lower} більше за {upper_field} {upper}")
 
-        зк = г.get("byCount")
-        if зк is not None:
-            if not isinstance(зк, dict):
-                біда(де, "byCount має бути об'єктом")
+        scores_by_count = game.get("byCount")
+        if scores_by_count is not None:
+            if not isinstance(scores_by_count, dict):
+                add_error(where, "byCount має бути об'єктом")
             else:
-                чужі = set(зк) - СКЛАДИ
-                if чужі:
-                    біда(де, "byCount має зайві склади: " + ", ".join(sorted(чужі)))
-                for к, v in зк.items():
-                    оцінка(де, f"byCount[{к}]", v, 10)
+                unknown_counts = set(scores_by_count) - PLAYER_COUNTS
+                if unknown_counts:
+                    add_error(where, "byCount має зайві склади: "
+                                     + ", ".join(sorted(unknown_counts)))
+                for count, score in scores_by_count.items():
+                    check_own_score(where, f"byCount[{count}]", score, 10)
 
-        т = г.get("tags")
-        if т is not None and (not isinstance(т, list)
-                              or not all(isinstance(x, str) for x in т)):
-            біда(де, "tags має бути списком рядків")
+        tags = game.get("tags")
+        if tags is not None and (not isinstance(tags, list)
+                                 or not all(isinstance(tag, str) for tag in tags)):
+            add_error(where, "tags має бути списком рядків")
 
-        if "expansion" in г and not isinstance(г["expansion"], bool):
-            біда(де, "expansion має бути true/false")
+        if "expansion" in game and not isinstance(game["expansion"], bool):
+            add_error(where, "expansion має бути true/false")
 
-        пр = г.get("rules")
-        if пр is not None:
-            if not isinstance(пр, list):
-                біда(де, "rules має бути списком")
+        rules = game.get("rules")
+        if rules is not None:
+            if not isinstance(rules, list):
+                add_error(where, "rules має бути списком")
             else:
-                адреси = set()
-                for н, п in enumerate(пр):
-                    хто = f"{де} rules[{н}]"
-                    if not isinstance(п, dict):
-                        біда(хто, "не об'єкт")
+                seen_urls = set()
+                for rule_index, rule in enumerate(rules):
+                    rule_where = f"{where} rules[{rule_index}]"
+                    if not isinstance(rule, dict):
+                        add_error(rule_where, "не об'єкт")
                         continue
-                    зайві = set(п) - {"title", "url", "kind"}
-                    if зайві:
-                        увага(хто, "невідомі поля: " + ", ".join(sorted(зайві)))
-                    url = п.get("url")
+                    unknown_keys = set(rule) - {"title", "url", "kind"}
+                    if unknown_keys:
+                        add_warning(rule_where,
+                                    "невідомі поля: " + ", ".join(sorted(unknown_keys)))
+                    url = rule.get("url")
                     if not isinstance(url, str) or not url.startswith(("http://", "https://")):
-                        біда(хто, f"url = {url!r}: потрібне посилання http(s)")
-                    elif url in адреси:
-                        біда(хто, "те саме посилання вже є в цієї гри")
+                        add_error(rule_where, f"url = {url!r}: потрібне посилання http(s)")
+                    elif url in seen_urls:
+                        add_error(rule_where, "те саме посилання вже є в цієї гри")
                     else:
-                        адреси.add(url)
-                    if п.get("kind") not in ВИДИ_ПРАВИЛ:
-                        біда(хто, f"невідомий вид правил: {п.get('kind')!r}")
+                        seen_urls.add(url)
+                    if rule.get("kind") not in RULE_KINDS:
+                        add_error(rule_where, f"невідомий вид правил: {rule.get('kind')!r}")
 
-        мить(де, "updated", г.get("updated"), обов=True)
-        мить(де, "added", г.get("added"), обов=False)
+        check_timestamp(where, "updated", game.get("updated"), required=True)
+        check_timestamp(where, "added", game.get("added"), required=False)
 
-        зайві = set(г) - ПОЛЯ
-        if зайві:
-            увага(де, "невідомі поля: " + ", ".join(sorted(зайві)))
+        unknown_fields = set(game) - KNOWN_FIELDS
+        if unknown_fields:
+            add_warning(where, "невідомі поля: " + ", ".join(sorted(unknown_fields)))
 
     # Прив'язки перевіряємо другим проходом: вони можуть указувати вперед.
-    доповнення = {г.get("id") for г in ігри if г.get("expansion")}
-    for г in ігри:
-        if г.get("deleted") or "withExp" not in г:
+    expansion_ids = {game.get("id") for game in games if game.get("expansion")}
+    for game in games:
+        if game.get("deleted") or "withExp" not in game:
             continue
-        де = f"«{г.get('name')}»"
-        в = г["withExp"]
-        if not isinstance(в, list):
-            біда(де, "withExp має бути списком")
+        where = f"«{game.get('name')}»"
+        linked_ids = game["withExp"]
+        if not isinstance(linked_ids, list):
+            add_error(where, "withExp має бути списком")
             continue
-        if г.get("expansion"):
-            біда(де, "доповнення не може тягнути за собою інші доповнення")
-        for ід in в:
-            if ід not in бачені:
-                біда(де, f"withExp вказує на неіснуючу коробку {ід}")
-            elif ід not in доповнення:
-                біда(де, f"withExp вказує на {ід}, а та коробка не доповнення")
-            elif ід == г.get("id"):
-                біда(де, "withExp вказує сам на себе")
+        if game.get("expansion"):
+            add_error(where, "доповнення не може тягнути за собою інші доповнення")
+        for linked_id in linked_ids:
+            if linked_id not in names_by_id:
+                add_error(where, f"withExp вказує на неіснуючу коробку {linked_id}")
+            elif linked_id not in expansion_ids:
+                add_error(where, f"withExp вказує на {linked_id}, а та коробка не доповнення")
+            elif linked_id == game.get("id"):
+                add_error(where, "withExp вказує сам на себе")
 
 
-def версія_сторінки():
-    """Номер формату, який знає сама сторінка. None — якщо не знайшли."""
-    try:
-        текст = ОСНОВА.read_text(encoding="utf-8")
-    except OSError:
-        return None
-    збіг = re.search(r"^const ВЕРСІЯ = ([0-9]+);", текст, re.MULTILINE)
-    return int(збіг.group(1)) if збіг else None
-
-
-def головне():
-    if not ФАЙЛ.exists():
-        print("Немає", ФАЙЛ.name)
+def main():
+    if not DATA_FILE.exists():
+        print("Немає", DATA_FILE.name)
         return 1
-    розмір = ФАЙЛ.stat().st_size
+    size = DATA_FILE.stat().st_size
     try:
-        стан = json.loads(ФАЙЛ.read_text(encoding="utf-8"))
-    except json.JSONDecodeError as e:
-        print(f"✗ {ФАЙЛ.name} не читається як JSON: {e}")
+        state = json.loads(DATA_FILE.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as error:
+        print(f"✗ {DATA_FILE.name} не читається як JSON: {error}")
         return 1
 
-    перевірити(стан)
+    errors, warnings = validate(state)
 
-    в_сторінці = версія_сторінки()
-    if в_сторінці is None:
-        увага("корінь", f"не знайшов ВЕРСІЯ у {ОСНОВА.name} — звірити нічим")
-    elif в_сторінці != ВЕРСІЯ_ДАНИХ:
-        біда("корінь", f"ВЕРСІЯ у {ОСНОВА.name} = {в_сторінці}, "
-                       f"а ВЕРСІЯ_ДАНИХ тут = {ВЕРСІЯ_ДАНИХ}: номери розійшлися")
-
-    ігор = len(стан.get("games", []))
-    print(f"Коробок: {ігор}. Розмір: {розмір / 1024:.0f} КБ.")
-    if розмір > ПОРІГ_ПОДІЛУ:
-        print(f"\n▲ Каталог переріс {ПОРІГ_ПОДІЛУ // 1024} КБ. Час ділити його на "
+    game_count = len(state.get("games", []))
+    print(f"Коробок: {game_count}. Розмір: {size / 1024:.0f} КБ.")
+    if size > SPLIT_THRESHOLD_BYTES:
+        print(f"\n▲ Каталог переріс {SPLIT_THRESHOLD_BYTES // 1024} КБ. Час ділити його на "
               "каталог і журнал партій — це шостий етап плану.")
 
-    for р in застереження:
-        print("  ~", р)
-    for р in помилки:
-        print("  ✗", р)
+    for line in warnings:
+        print("  ~", line)
+    for line in errors:
+        print("  ✗", line)
 
-    if помилки:
-        print(f"\n✗ Помилок: {len(помилки)}. Комітити не варто.")
+    if errors:
+        print(f"\n✗ Помилок: {len(errors)}. Комітити не варто.")
         return 1
-    print("\n✓ Дані цілі" + (f", застережень: {len(застереження)}" if застереження else ""))
+    print("\n✓ Дані цілі" + (f", застережень: {len(warnings)}" if warnings else ""))
     return 0
 
 
 if __name__ == "__main__":
-    sys.exit(головне())
+    sys.exit(main())

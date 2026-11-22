@@ -16,8 +16,8 @@ sys.stdout.reconfigure(encoding="utf-8")
 
 import check
 
-ЗРАЗОК = {
-    "version": check.ВЕРСІЯ_ДАНИХ,
+SAMPLE = {
+    "version": check.SCHEMA_VERSION,
     "saved": "2026-09-12T10:00:00.000Z",
     "games": [
         {
@@ -51,97 +51,110 @@ import check
 }
 
 # Кожна вада: що зіпсувати і який шматок тексту має з'явитися в помилці.
-ВАДИ = [
-    ("оцінка понад стелю", lambda с: с["games"][0].update(score=11), "score"),
-    ("чверть бала", lambda с: с["games"][0].update(score=8.25), "половинки"),
-    ("оцінка BGG на два знаки", lambda с: с["games"][0].update(bggRating=7.65), "знак"),
+DEFECTS = [
+    ("оцінка понад стелю", lambda state: state["games"][0].update(score=11), "score"),
+    ("чверть бала", lambda state: state["games"][0].update(score=8.25), "половинки"),
+    ("оцінка BGG на два знаки",
+     lambda state: state["games"][0].update(bggRating=7.65), "знак"),
     # Адреси й номери, які підставляються в сторінку чи в чужий запит.
     ("обкладинка як javascript:",
-     lambda с: с["games"][0].update(cover="javascript:alert(1)"), "не http(s)"),
-    ("bggId не число", lambda с: с["games"][0].update(bggId="1&objecttype=x"),
+     lambda state: state["games"][0].update(cover="javascript:alert(1)"), "не http(s)"),
+    ("bggId не число", lambda state: state["games"][0].update(bggId="1&objecttype=x"),
      "bggId має бути числом"),
-    ("від'ємні партії", lambda с: с["games"][0].update(plays=-1), "plays"),
-    ("партії дробом", lambda с: с["games"][0].update(plays=1.5), "plays"),
-    ("порожня назва", lambda с: с["games"][0].update(name="  "), "назва"),
-    ("id повторюється", lambda с: с["games"][1].update(id="g-base"), "зайнятий"),
-    ("немає statuses", lambda с: с["games"][0].pop("statuses"), "statuses"),
-    ("вигаданий статус", lambda с: с["games"][0].update(statuses=["мрію"], status="мрію"),
+    ("від'ємні партії", lambda state: state["games"][0].update(plays=-1), "plays"),
+    ("партії дробом", lambda state: state["games"][0].update(plays=1.5), "plays"),
+    ("порожня назва", lambda state: state["games"][0].update(name="  "), "назва"),
+    ("id повторюється", lambda state: state["games"][1].update(id="g-base"), "зайнятий"),
+    ("немає statuses", lambda state: state["games"][0].pop("statuses"), "statuses"),
+    ("вигаданий статус",
+     lambda state: state["games"][0].update(statuses=["мрію"], status="мрію"),
      "невідомі статуси"),
     ("статус повторюється",
-     lambda с: с["games"][0].update(statuses=["колекція", "колекція"]), "повторюється"),
-    ("дзеркало status розійшлося", lambda с: с["games"][0].update(status="позбувся"),
-     "перший у statuses"),
+     lambda state: state["games"][0].update(statuses=["колекція", "колекція"]),
+     "повторюється"),
+    ("дзеркало status розійшлося",
+     lambda state: state["games"][0].update(status="позбувся"), "перший у statuses"),
     ("склад столу на трьох з половиною",
-     lambda с: с["games"][0]["byCount"].update({"7": 6}), "зайві склади"),
+     lambda state: state["games"][0]["byCount"].update({"7": 6}), "зайві склади"),
     ("склад «6+» замість сталого «5+»",
-     lambda с: с["games"][0]["byCount"].update({"6+": 6}), "зайві склади"),
+     lambda state: state["games"][0]["byCount"].update({"6+": 6}), "зайві склади"),
     ("оцінка складу понад стелю",
-     lambda с: с["games"][0]["byCount"].update({"2": 12}), "byCount"),
-    ("від більше за до", lambda с: с["games"][0].update(minP=5, maxP=2), "більше за maxP"),
+     lambda state: state["games"][0]["byCount"].update({"2": 12}), "byCount"),
+    ("від більше за до",
+     lambda state: state["games"][0].update(minP=5, maxP=2), "більше за maxP"),
     ("склад з BGG навиворіт",
-     lambda с: с["games"][0].update(bggMin=6, bggMax=2), "більше за bggMax"),
+     lambda state: state["games"][0].update(bggMin=6, bggMax=2), "більше за bggMax"),
     ("час з BGG навиворіт",
-     lambda с: с["games"][0].update(bggTimeMin=90, bggTimeMax=45), "більше за bggTimeMax"),
-    ("вага BGG понад стелю", lambda с: с["games"][0].update(bggWeight=6.2), "від 0 до 5"),
-    ("вага BGG на два знаки", lambda с: с["games"][0].update(bggWeight=2.85), "знак"),
-    ("опитування не списком", lambda с: с["games"][0].update(bggBest="2-3"), "списком"),
-    ("опитування дробом", lambda с: с["games"][0].update(bggBest=[2, 3.5]), "цілих"),
-    ("опитування з повтором", lambda с: с["games"][0].update(bggRec=[1, 2, 2]),
-     "без повторів"),
-    ("опитування не за порядком", lambda с: с["games"][0].update(bggRec=[3, 1, 2]),
-     "зростаючий"),
+     lambda state: state["games"][0].update(bggTimeMin=90, bggTimeMax=45),
+     "більше за bggTimeMax"),
+    ("вага BGG понад стелю",
+     lambda state: state["games"][0].update(bggWeight=6.2), "від 0 до 5"),
+    ("вага BGG на два знаки",
+     lambda state: state["games"][0].update(bggWeight=2.85), "знак"),
+    ("опитування не списком",
+     lambda state: state["games"][0].update(bggBest="2-3"), "списком"),
+    ("опитування дробом",
+     lambda state: state["games"][0].update(bggBest=[2, 3.5]), "цілих"),
+    ("опитування з повтором",
+     lambda state: state["games"][0].update(bggRec=[1, 2, 2]), "без повторів"),
+    ("опитування не за порядком",
+     lambda state: state["games"][0].update(bggRec=[3, 1, 2]), "зростаючий"),
     ("опитування вище за стелю коробки",
-     lambda с: с["games"][0].update(bggBest=[2, 9]), "поза межами"),
-    ("жанри не списком", lambda с: с["games"][0].update(bggGenres="fantasy"),
-     "списком рядків"),
-    ("жанр не слугом", lambda с: с["games"][0].update(bggGenres=["Card Game"]),
-     "не слуги"),
+     lambda state: state["games"][0].update(bggBest=[2, 9]), "поза межами"),
+    ("жанри не списком",
+     lambda state: state["games"][0].update(bggGenres="fantasy"), "списком рядків"),
+    ("жанр не слугом",
+     lambda state: state["games"][0].update(bggGenres=["Card Game"]), "не слуги"),
     ("жанр повторюється",
-     lambda с: с["games"][0].update(bggGenres=["card-game", "card-game"]), "без повторів"),
+     lambda state: state["games"][0].update(bggGenres=["card-game", "card-game"]),
+     "без повторів"),
     ("жанри не за абеткою",
-     lambda с: с["games"][0].update(bggGenres=["fantasy", "card-game"]), "впорядкований"),
-    ("родина не слугом", lambda с: с["games"][0].update(bggFamily=["Strategy Games"]),
-     "не слуги"),
-    ("прив'язка в нікуди", lambda с: с["games"][0].update(withExp=["g-нема"]),
-     "неіснуючу"),
+     lambda state: state["games"][0].update(bggGenres=["fantasy", "card-game"]),
+     "впорядкований"),
+    ("родина не слугом",
+     lambda state: state["games"][0].update(bggFamily=["Strategy Games"]), "не слуги"),
+    ("прив'язка в нікуди",
+     lambda state: state["games"][0].update(withExp=["g-нема"]), "неіснуючу"),
     ("прив'язка до не-доповнення",
-     lambda с: (с["games"][1].pop("expansion"), None)[1], "не доповнення"),
+     lambda state: (state["games"][1].pop("expansion"), None)[1], "не доповнення"),
     ("доповнення тягне доповнення",
-     lambda с: с["games"][1].update(withExp=["g-exp"]), "не може тягнути"),
-    ("дата поламана", lambda с: с["games"][0].update(updated="учора"), "не читається"),
-    ("надгробок без дати", lambda с: с["games"][2].pop("updated"), "немає updated"),
-    ("теги не списком", lambda с: с["games"][0].update(tags="євро"), "tags"),
-    ("expansion рядком", lambda с: с["games"][1].update(expansion="так"), "true/false"),
-    ("немає games", lambda с: с.pop("games"), "games"),
-    ("немає version", lambda с: с.pop("version"), "version"),
-    ("version із майбутнього", lambda с: с.update(version=99), "чекає"),
-    ("правила не списком", lambda с: с["games"][0].update(rules={}), "rules"),
+     lambda state: state["games"][1].update(withExp=["g-exp"]), "не може тягнути"),
+    ("дата поламана",
+     lambda state: state["games"][0].update(updated="учора"), "не читається"),
+    ("надгробок без дати", lambda state: state["games"][2].pop("updated"), "немає updated"),
+    ("теги не списком", lambda state: state["games"][0].update(tags="євро"), "tags"),
+    ("expansion рядком",
+     lambda state: state["games"][1].update(expansion="так"), "true/false"),
+    ("немає games", lambda state: state.pop("games"), "games"),
+    ("немає version", lambda state: state.pop("version"), "version"),
+    ("version із майбутнього", lambda state: state.update(version=99), "чекає"),
+    ("правила не списком", lambda state: state["games"][0].update(rules={}), "rules"),
     ("правила без посилання",
-     lambda с: с["games"][0]["rules"][0].pop("url"), "потрібне посилання"),
+     lambda state: state["games"][0]["rules"][0].pop("url"), "потрібне посилання"),
     ("правила на файл із диска",
-     lambda с: с["games"][0]["rules"][0].update(url="file:///C:/rules.pdf"),
+     lambda state: state["games"][0]["rules"][0].update(url="file:///C:/rules.pdf"),
      "потрібне посилання"),
     ("вигаданий вид правил",
-     lambda с: с["games"][0]["rules"][0].update(kind="шпаргалка"), "невідомий вид"),
+     lambda state: state["games"][0]["rules"][0].update(kind="шпаргалка"), "невідомий вид"),
     ("те саме посилання двічі",
-     lambda с: с["games"][0]["rules"].append(dict(с["games"][0]["rules"][0])),
+     lambda state: state["games"][0]["rules"].append(dict(state["games"][0]["rules"][0])),
      "вже є"),
-    ("журнал не списком", lambda с: с["games"][0].update(log={}), "log"),
-    ("партія без дати", lambda с: с["games"][0]["log"][0].pop("on"), "YYYY-MM-DD"),
+    ("журнал не списком", lambda state: state["games"][0].update(log={}), "log"),
+    ("партія без дати", lambda state: state["games"][0]["log"][0].pop("on"), "YYYY-MM-DD"),
     ("день, якого немає",
-     lambda с: с["games"][0]["log"][0].update(on="2026-02-31"), "такого дня немає"),
+     lambda state: state["games"][0]["log"][0].update(on="2026-02-31"), "такого дня немає"),
     ("дата навиворіт",
-     lambda с: с["games"][0]["log"][0].update(on="30.08.2026"), "YYYY-MM-DD"),
+     lambda state: state["games"][0]["log"][0].update(on="30.08.2026"), "YYYY-MM-DD"),
     ("журнал не за порядком",
-     lambda с: с["games"][0].update(log=list(reversed(с["games"][0]["log"]))),
+     lambda state: state["games"][0].update(log=list(reversed(state["games"][0]["log"]))),
      "від давнішої"),
     ("склад партії вигаданий",
-     lambda с: с["games"][0]["log"][0].update(count="7"), "не склад столу"),
+     lambda state: state["games"][0]["log"][0].update(count="7"), "не склад столу"),
     ("нотатка не рядком",
-     lambda с: с["games"][0]["log"][0].update(note=7), "note"),
+     lambda state: state["games"][0]["log"][0].update(note=7), "note"),
     # Найважливіше з усього журналу: записів не може бути більше за партії.
     ("записів більше, ніж партій",
-     lambda с: с["games"][0].update(plays=1), "лічильник каже"),
+     lambda state: state["games"][0].update(plays=1), "лічильник каже"),
 ]
 
 
@@ -150,7 +163,7 @@ import check
 # чиста, і саме в ньому легко помилитися тихо: не той ключ, не та стеля,
 # зайва службова позначка серед жанрів. Тому шматок відповіді тут
 # підкладений, а мережі не треба.
-ВІДПОВІДЬ_РЕЧІ = {
+ITEM_RESPONSE = {
     "item": {
         "name": "Проба",
         "minplayers": "2", "maxplayers": "5",
@@ -169,7 +182,7 @@ import check
         },
     }
 }
-ВІДПОВІДЬ_ЖИВОГО = {
+DYNAMIC_RESPONSE = {
     "item": {
         "stats": {"average": "7.5754"},
         "polls": {"boardgameweight": {"averageweight": 1.7167235494880546},
@@ -181,105 +194,113 @@ import check
 }
 
 
-def бгг_тести():
+def make_expect(failures):
+    """Порівняння для групи тестів: розбіжність лягає рядком у failures."""
+    def expect(name, actual, expected):
+        if actual != expected:
+            failures.append(f"✗ {name}: маю {actual!r}, чекав {expected!r}")
+    return expect
+
+
+def bgg_tests():
     """Повертає список рядків про провали; порожній — усе добре."""
     import bgg
-    зле = []
+    failures = []
+    expect = make_expect(failures)
 
-    def так(назва, було, треба):
-        if було != треба:
-            зле.append(f"✗ {назва}: маю {було!r}, чекав {треба!r}")
-
-    так("слуг із адреси", bgg.слуг("/boardgamecategory/1002/card-game"), "card-game")
-    так("порожня адреса", bgg.слуг(None), "")
-    так("нуль — це «невідомо»", bgg.ціле("0"), None)
-    так("число рядком", bgg.ціле("45"), 45)
-    так("не число", bgg.ціле("кілька"), None)
-    так("діапазони розгортаються", bgg.склади([{"min": 3, "max": 4}]), [3, 4])
-    так("склади злипаються без повторів",
-        bgg.склади([{"min": 1, "max": 2}, {"min": 2, "max": 3}]), [1, 2, 3])
-    так("стеля опитування", bgg.склади([{"min": 9, "max": 40}]), [9, 10])
-    так("середня — з одним знаком", bgg.десятина("7.5754"), 7.6)
+    expect("слуг із адреси", bgg.slug_from_href("/boardgamecategory/1002/card-game"),
+           "card-game")
+    expect("порожня адреса", bgg.slug_from_href(None), "")
+    expect("нуль — це «невідомо»", bgg.positive_int("0"), None)
+    expect("число рядком", bgg.positive_int("45"), 45)
+    expect("не число", bgg.positive_int("кілька"), None)
+    expect("діапазони розгортаються",
+           bgg.expand_player_ranges([{"min": 3, "max": 4}]), [3, 4])
+    expect("склади злипаються без повторів",
+           bgg.expand_player_ranges([{"min": 1, "max": 2}, {"min": 2, "max": 3}]), [1, 2, 3])
+    expect("стеля опитування", bgg.expand_player_ranges([{"min": 9, "max": 40}]), [9, 10])
+    expect("середня — з одним знаком", bgg.one_decimal("7.5754"), 7.6)
 
     # Той самий шлях, що й у мережі, лише відповіді підкладені.
-    справжнє = bgg.взяти
-    bgg.взяти = lambda url: ВІДПОВІДЬ_РЕЧІ if "geekitems" in url else ВІДПОВІДЬ_ЖИВОГО
+    real_fetch_json = bgg.fetch_json
+    bgg.fetch_json = lambda url: ITEM_RESPONSE if "geekitems" in url else DYNAMIC_RESPONSE
     try:
-        свіже = bgg.дістати("1")
+        fresh = bgg.fetch_game("1")
     finally:
-        bgg.взяти = справжнє
+        bgg.fetch_json = real_fetch_json
 
-    так("склад столу", (свіже.get("bggMin"), свіже.get("bggMax")), (2, 5))
-    так("тривалість", (свіже.get("bggTimeMin"), свіже.get("bggTimeMax")), (30, 45))
-    так("оцінка", свіже.get("bggRating"), 7.6)
-    так("вага", свіже.get("bggWeight"), 1.7)
-    так("ранг беремо загальний, а не підрозділовий", свіже.get("bggRank"), 279)
-    так("найкраще на", свіже.get("bggBest"), [3, 4])
-    так("годиться на", свіже.get("bggRec"), [2, 3, 4, 5])
-    так("жанри за абеткою й без службових позначок",
-        свіже.get("bggGenres"), ["card-game", "fantasy"])
-    так("механіки", свіже.get("bggMech"), ["hand-management"])
-    так("підрозділ", свіже.get("bggFamily"), ["family-games"])
+    expect("склад столу", (fresh.get("bggMin"), fresh.get("bggMax")), (2, 5))
+    expect("тривалість", (fresh.get("bggTimeMin"), fresh.get("bggTimeMax")), (30, 45))
+    expect("оцінка", fresh.get("bggRating"), 7.6)
+    expect("вага", fresh.get("bggWeight"), 1.7)
+    expect("ранг беремо загальний, а не підрозділовий", fresh.get("bggRank"), 279)
+    expect("найкраще на", fresh.get("bggBest"), [3, 4])
+    expect("годиться на", fresh.get("bggRec"), [2, 3, 4, 5])
+    expect("жанри за абеткою й без службових позначок",
+           fresh.get("bggGenres"), ["card-game", "fantasy"])
+    expect("механіки", fresh.get("bggMech"), ["hand-management"])
+    expect("підрозділ", fresh.get("bggFamily"), ["family-games"])
 
     # Порожньої коробки не буває: те, чого BGG не знає, просто не приходить.
-    порожньо = bgg.дістати.__doc__ is not None
-    if not порожньо:
-        зле.append("✗ bgg.дістати без опису")
+    has_docstring = bgg.fetch_game.__doc__ is not None
+    if not has_docstring:
+        failures.append("✗ bgg.fetch_game без опису")
 
     # Що і як лягає в запис.
-    гра = {"bggMin": 2, "bggRating": 7.0, "cover": "https://своя/картинка.jpg",
-           "minP": 3, "score": 9}
-    змінені = bgg.застосувати(dict(гра), свіже, освіжати=False)
-    так("без освіження чуже не переписується", "bggRating" in змінені, False)
-    так("а порожнє добирається", "bggMax" in змінені, True)
+    game = {"bggMin": 2, "bggRating": 7.0, "cover": "https://своя/картинка.jpg",
+            "minP": 3, "score": 9}
+    changed_fields = bgg.apply_fresh_data(dict(game), fresh, refresh=False)
+    expect("без освіження чуже не переписується", "bggRating" in changed_fields, False)
+    expect("а порожнє добирається", "bggMax" in changed_fields, True)
 
-    з_освіженням = dict(гра)
-    bgg.застосувати(з_освіженням, свіже, освіжати=True)
-    так("освіження оновлює оцінку", з_освіженням["bggRating"], 7.6)
-    так("своїх полів не чіпає", (з_освіженням["minP"], з_освіженням["score"]), (3, 9))
-    так("своєї обкладинки не переб'є",
-        з_освіженням["cover"], "https://своя/картинка.jpg")
+    refreshed = dict(game)
+    bgg.apply_fresh_data(refreshed, fresh, refresh=True)
+    expect("освіження оновлює оцінку", refreshed["bggRating"], 7.6)
+    expect("своїх полів не чіпає", (refreshed["minP"], refreshed["score"]), (3, 9))
+    expect("своєї обкладинки не переб'є",
+           refreshed["cover"], "https://своя/картинка.jpg")
 
-    голяк = {}
-    bgg.застосувати(голяк, свіже, освіжати=False)
-    так("порожній коробці обкладинка стає",
-        голяк.get("cover"), "https://cf.geekdo-images.com/x__square200/pic1.jpg")
+    blank = {}
+    bgg.apply_fresh_data(blank, fresh, refresh=False)
+    expect("порожній коробці обкладинка стає",
+           blank.get("cover"), "https://cf.geekdo-images.com/x__square200/pic1.jpg")
 
     # Кошик «6+» в опитуванні BGG: у коробки на двох звідти приїжджає
     # трійка. Складу, якого коробка не дозволяє, у даних бути не може —
     # на ньому справедливо спиняється «check.py».
-    вузька = {}
-    bgg.застосувати(вузька, {"bggMax": 2, "bggBest": [1, 2], "bggRec": [1, 2, 3]},
-                    освіжати=True)
-    так("опитування не перестрибує стелю коробки", вузька.get("bggRec"), [1, 2])
-    так("а те, що в межах, лишається", вузька.get("bggBest"), [1, 2])
-    зовсім = {}
-    bgg.застосувати(зовсім, {"bggMax": 2, "bggBest": [5, 6]}, освіжати=True)
-    так("опитування цілком поза межами просто не пишеться",
-        "bggBest" in зовсім, False)
+    two_player = {}
+    bgg.apply_fresh_data(two_player, {"bggMax": 2, "bggBest": [1, 2], "bggRec": [1, 2, 3]},
+                         refresh=True)
+    expect("опитування не перестрибує стелю коробки", two_player.get("bggRec"), [1, 2])
+    expect("а те, що в межах, лишається", two_player.get("bggBest"), [1, 2])
+    all_out_of_range = {}
+    bgg.apply_fresh_data(all_out_of_range, {"bggMax": 2, "bggBest": [5, 6]}, refresh=True)
+    expect("опитування цілком поза межами просто не пишеться",
+           "bggBest" in all_out_of_range, False)
 
     # Кого щоденний захід узагалі бере в роботу. Помилитися тут дорого в
     # обидва боки: надто широко — і він щодня марно перепитує два десятки
     # незмінних сторінок, надто вузько — і нова коробка лишається порожньою.
-    так("щойно додана коробка — неповна", bgg.бракує({"bggId": "1"}), True)
-    повна = {"bggMin": 2, "bggMax": 4, "bggRating": 7.1, "cover": "https://x/1.jpg"}
-    так("повна — повна", bgg.бракує(повна), False)
-    так("без обкладинки — ще ні", bgg.бракує({k: v for k, v in повна.items()
-                                              if k != "cover"}), True)
-    без_рангу = dict(повна, bggFamily=None, bggRank=None, bggGenres=[])
-    так("доповнення без рангу й підрозділу повним лишається",
-        bgg.бракує(без_рангу), False)
+    expect("щойно додана коробка — неповна", bgg.is_incomplete({"bggId": "1"}), True)
+    complete = {"bggMin": 2, "bggMax": 4, "bggRating": 7.1, "cover": "https://x/1.jpg"}
+    expect("повна — повна", bgg.is_incomplete(complete), False)
+    expect("без обкладинки — ще ні",
+           bgg.is_incomplete({key: value for key, value in complete.items()
+                              if key != "cover"}), True)
+    without_rank = dict(complete, bggFamily=None, bggRank=None, bggGenres=[])
+    expect("доповнення без рангу й підрозділу повним лишається",
+           bgg.is_incomplete(without_rank), False)
 
     # Мовчання BGG не стирає того, що вже є, — крім рангу.
-    мовчазне = {"bggTimeMax": 40, "bggFamily": ["thematic-games"], "bggRank": 900}
-    bgg.застосувати(мовчазне, {"bggMin": 2}, освіжати=True)
-    так("тривалість лишається", мовчазне.get("bggTimeMax"), 40)
-    так("підрозділ лишається", мовчазне.get("bggFamily"), ["thematic-games"])
-    так("а ранг, якого вже нема, зникає", "bggRank" in мовчазне, False)
-    return зле
+    silent = {"bggTimeMax": 40, "bggFamily": ["thematic-games"], "bggRank": 900}
+    bgg.apply_fresh_data(silent, {"bggMin": 2}, refresh=True)
+    expect("тривалість лишається", silent.get("bggTimeMax"), 40)
+    expect("підрозділ лишається", silent.get("bggFamily"), ["thematic-games"])
+    expect("а ранг, якого вже нема, зникає", "bggRank" in silent, False)
+    return failures
 
 
-def безпека_тести():
+def security_tests():
     """Три замки локального сервера і межа, за яку не пускаємо bggId.
 
     Сервер слухає всю мережу, щоб до нього дійшов телефон, — а це означає, що
@@ -289,95 +310,109 @@ def безпека_тести():
     """
     import server
     import bgg
-    зле = []
-
-    def так(назва, було, треба):
-        if було != треба:
-            зле.append(f"✗ {назва}: маю {було!r}, чекав {треба!r}")
+    failures = []
+    expect = make_expect(failures)
 
     # Свої адреси — ті, з яких полицею справді користуються.
-    for хост in ("localhost:8777", "127.0.0.1:8777", "192.168.1.14:8777",
+    for host in ("localhost:8777", "127.0.0.1:8777", "192.168.1.14:8777",
                  "[::1]:8777", "tavi-pc.local:8777", "localhost",
                  "TAVI-PC:8777", "полиця.lan:8777"):
-        так(f"свій хост {хост}", server.свій_хост(хост), True)
+        expect(f"свій хост {host}", server.is_own_host(host), True)
     # А ці — ознака того, що браузер привели до нас чужим ім'ям.
-    for хост in ("evil.example:8777", "полиця.zip", "localhost.evil.com",
+    for host in ("evil.example:8777", "полиця.zip", "localhost.evil.com",
                  "attacker.local.evil.com", "tavi-pc.local.evil.com",
                  "192.168.1.14.evil.com"):
-        так(f"чужий хост {хост}", server.свій_хост(хост), False)
+        expect(f"чужий хост {host}", server.is_own_host(host), False)
 
-    так("Origin зі своєї ж адреси",
-        server.своя_сторінка("http://192.168.1.14:8777", "192.168.1.14:8777"), True)
-    так("Origin чужої сторінки",
-        server.своя_сторінка("http://evil.example", "localhost:8777"), False)
-    так("порожній Origin — це не браузерна сторінка",
-        server.своя_сторінка(None, "localhost:8777"), True)
+    expect("Origin зі своєї ж адреси",
+           server.is_own_page("http://192.168.1.14:8777", "192.168.1.14:8777"), True)
+    expect("Origin чужої сторінки",
+           server.is_own_page("http://evil.example", "localhost:8777"), False)
+    expect("порожній Origin — це не браузерна сторінка",
+           server.is_own_page(None, "localhost:8777"), True)
     # Найпідліший випадок: адреса, яка лише починається як наша.
-    так("Origin, схожий на свій",
-        server.своя_сторінка("http://localhost:8777.evil.com", "localhost:8777"), False)
+    expect("Origin, схожий на свій",
+           server.is_own_page("http://localhost:8777.evil.com", "localhost:8777"), False)
 
     # bggId іде просто в адресу запиту, а в даних він — рядок з чужого CSV.
-    for кривий in ("1&objecttype=x", "../../etc", "13 ", "", "13; rm -rf"):
+    for malformed_id in ("1&objecttype=x", "../../etc", "13 ", "", "13; rm -rf"):
         try:
-            bgg.дістати(кривий)
-            зле.append(f"✗ bggId {кривий!r} пропустили в адресу запиту")
+            bgg.fetch_game(malformed_id)
+            failures.append(f"✗ bggId {malformed_id!r} пропустили в адресу запиту")
         except ValueError:
             pass
-        except Exception as помилка:                       # noqa: BLE001
-            зле.append(f"✗ bggId {кривий!r}: чекав ValueError, маю {помилка!r}")
-    return зле
+        except Exception as error:                         # noqa: BLE001
+            failures.append(f"✗ bggId {malformed_id!r}: чекав ValueError, маю {error!r}")
+    return failures
 
 
-def лад_тести():
+def consistency_tests():
     """Дві домовленості, які тримаються не на увазі, а на цій перевірці."""
-    зле = []
+    failures = []
+    expect = make_expect(failures)
 
-    def так(назва, було, треба):
-        if було != треба:
-            зле.append(f"✗ {назва}: маю {було!r}, чекав {треба!r}")
-
-    # Номер формату лежить у двох файлах — і мусить бути однаковим.
-    так("сторінка й перевірка знають один номер формату",
-        check.версія_сторінки(), check.ВЕРСІЯ_ДАНИХ)
+    # Сталі формату лежать в одному файлі — «src/schema.json» — і його читають
+    # і сторінка (через «build.py»), і перевірка. Звіряти дві копії номера
+    # більше не треба; лишається переконатися, що сам файл придатний: без
+    # номера чи з порожнім списком статусів перевірка мовчки пропускала б
+    # усе або відхиляла б усе.
+    schema = json.loads(check.SCHEMA_FILE.read_text(encoding="utf-8"))
+    version = schema.get("version")
+    expect("номер формату — додатне ціле",
+           isinstance(version, int) and not isinstance(version, bool) and version > 0, True)
+    expect("перевірка знає той самий номер, що й схема", check.SCHEMA_VERSION, version)
+    expect("склади столу — непорожній список рядків без повторів",
+           bool(schema.get("playerCounts"))
+           and all(isinstance(count, str) for count in schema["playerCounts"])
+           and len(set(schema["playerCounts"])) == len(schema["playerCounts"]), True)
+    for section in ("statuses", "ruleKinds"):
+        labels = schema.get(section)
+        expect(f"{section}: непорожній словник «ключ → підпис»",
+               isinstance(labels, dict) and bool(labels)
+               and all(isinstance(label, str) and label for label in labels.values()), True)
+    expect("скасований статус не є водночас чинним",
+           set(schema.get("retiredStatuses") or []) & set(schema.get("statuses") or {}), set())
 
     # Перевірка віддає копії. Доки віддавала свої внутрішні списки, «що було
     # до» і «що стало після» були одним об'єктом, і різниця між ними завжди
     # виходила порожньою.
-    зразок = copy.deepcopy(ЗРАЗОК)
-    зразок["games"][0]["score"] = 11
-    перші, _ = check.перевірити(зразок)
-    зразок["games"][0]["score"] = 8.5
-    другі, _ = check.перевірити(зразок)
-    так("два виклики — два різні списки", перші is другі, False)
-    так("перший список не переписався", len(перші), 1)
-    так("другий чистий", len(другі), 0)
-    return зле
+    sample = copy.deepcopy(SAMPLE)
+    sample["games"][0]["score"] = 11
+    first_errors, _ = check.validate(sample)
+    sample["games"][0]["score"] = 8.5
+    second_errors, _ = check.validate(sample)
+    expect("два виклики — два різні списки", first_errors is second_errors, False)
+    expect("перший список не переписався", len(first_errors), 1)
+    expect("другий чистий", len(second_errors), 0)
+    return failures
 
 
-def злиття_тести():
+def merge_tests():
     """Ті самі випадки, що й у сторінці, — «src/merge-cases.json».
 
-    Правило злиття одне, а реалізацій три: lww() і замінитиСтан() у
-    браузері, злити() тут. Поділити між ними код не можна, тож ділимо
-    перелік випадків: розійдуться реалізації — впаде котрась зі сторін.
+    Правило злиття одне, а реалізацій три: mergeNewestWins() і
+    replaceShelf() у браузері, merge_games() тут. Поділити між ними код не
+    можна, тож ділимо перелік випадків: розійдуться реалізації — впаде
+    котрась зі сторін.
     """
     import server
-    зле = []
-    файл = pathlib.Path(__file__).parent / "src" / "merge-cases.json"
-    випадки = json.loads(файл.read_text(encoding="utf-8"))["випадки"]
-    if not випадки:
+    failures = []
+    cases_file = pathlib.Path(__file__).parent / "src" / "merge-cases.json"
+    cases = json.loads(cases_file.read_text(encoding="utf-8"))["cases"]
+    if not cases:
         return ["✗ перелік випадків злиття порожній"]
-    for в in випадки:
-        вислід, _ = server.злити(copy.deepcopy(в["було"]), copy.deepcopy(в["приїхало"]))
-        за_id = sorted(вислід, key=lambda г: г.get("id", ""))
-        треба = sorted(в["стало"], key=lambda г: г.get("id", ""))
-        if за_id != треба:
-            зле.append(f"✗ злиття: {в['назва']}: маю {за_id!r}, чекав {треба!r}")
-    return зле
+    for case in cases:
+        merged, _ = server.merge_games(copy.deepcopy(case["base"]),
+                                       copy.deepcopy(case["incoming"]))
+        actual = sorted(merged, key=lambda game: game.get("id", ""))
+        expected = sorted(case["expected"], key=lambda game: game.get("id", ""))
+        if actual != expected:
+            failures.append(f"✗ злиття: {case['name']}: маю {actual!r}, чекав {expected!r}")
+    return failures
 
 
-def добирання_тести():
-    """добрати(): або кладе чужі числа, або не міняє нічого.
+def bgg_apply_tests():
+    """apply_bgg_data(): або кладе чужі числа, або не міняє нічого.
 
     Раніше цю функцію не можна було перевірити взагалі — вона жила
     всередині обробника HTTP і трималася на тому, що стан щоразу
@@ -385,171 +420,145 @@ def добирання_тести():
     відкат у ній видно, а не мається на увазі.
     """
     import server
-    зле = []
-
-    def так(назва, було, треба):
-        if було != треба:
-            зле.append(f"✗ {назва}: маю {було!r}, чекав {треба!r}")
+    failures = []
+    expect = make_expect(failures)
 
     # У відповіді завжди є ранг: на вимогу добираємо з освіженням, а воно
     # має право стерти ранг у гри, що вибула з рейтингу. Мовчазна відповідь
     # тут означала б «її вибули», і кожен випадок нижче ще й це перевіряв би.
-    def відповідь(**поля):
-        return dict({"bggRank": 120}, **поля)
+    def bgg_answer(**fields):
+        return dict({"bggRank": 120}, **fields)
 
     # Звичайний випадок: чужі числа лягають на місце.
-    стан = copy.deepcopy(ЗРАЗОК)
-    стан["games"][0].pop("bggWeight", None)
-    поля, вада = server.добрати(стан, "g-base", відповідь(bggWeight=2.9))
-    так("поле добралося", поля, ["bggWeight"])
-    так("і жодної вади", вада, None)
-    так("значення на місці", стан["games"][0].get("bggWeight"), 2.9)
+    state = copy.deepcopy(SAMPLE)
+    state["games"][0].pop("bggWeight", None)
+    changed_fields, failure = server.apply_bgg_data(state, "g-base", bgg_answer(bggWeight=2.9))
+    expect("поле добралося", changed_fields, ["bggWeight"])
+    expect("і жодної вади", failure, None)
+    expect("значення на місці", state["games"][0].get("bggWeight"), 2.9)
 
     # BGG віддав те, що перевірка не приймає (оцінка на два знаки). Стан
     # має лишитися байт у байт таким, яким був: саме це раніше трималося
     # на негласній умові «стан однаково прочитають наново».
-    стан = copy.deepcopy(ЗРАЗОК)
-    до = copy.deepcopy(стан)
-    поля, вада = server.добрати(стан, "g-base", відповідь(bggRating=7.65))
-    так("зіпсованого не взяли", поля, [])
-    так("і сказали чому", вада is not None and вада[0], 502)
-    так("стан не змінився", стан, до)
+    state = copy.deepcopy(SAMPLE)
+    state_before = copy.deepcopy(state)
+    changed_fields, failure = server.apply_bgg_data(state, "g-base", bgg_answer(bggRating=7.65))
+    expect("зіпсованого не взяли", changed_fields, [])
+    expect("і сказали чому", failure is not None and failure[0], 502)
+    expect("стан не змінився", state, state_before)
 
     # Крива сусідка не має заважати: помилка, яка була у файлі до нас, —
     # не привід відмовляти в добиранні цій коробці.
-    стан = copy.deepcopy(ЗРАЗОК)
-    стан["games"][1]["bggId"] = "1&objecttype=x"
-    стан["games"][0].pop("bggWeight", None)
-    поля, вада = server.добрати(стан, "g-base", відповідь(bggWeight=2.9))
-    так("давня чужа вада не заважає", (поля, вада), (["bggWeight"], None))
+    state = copy.deepcopy(SAMPLE)
+    state["games"][1]["bggId"] = "1&objecttype=x"
+    state["games"][0].pop("bggWeight", None)
+    changed_fields, failure = server.apply_bgg_data(state, "g-base", bgg_answer(bggWeight=2.9))
+    expect("давня чужа вада не заважає", (changed_fields, failure), (["bggWeight"], None))
 
     # Коробки вже немає — і стан ніхто не чіпав.
-    стан = copy.deepcopy(ЗРАЗОК)
-    до = copy.deepcopy(стан)
-    поля, вада = server.добрати(стан, "g-немає", відповідь(bggWeight=2.9))
-    так("невідома коробка", (поля, вада is not None and вада[0]), ([], 404))
-    так("і стан цілий", стан, до)
+    state = copy.deepcopy(SAMPLE)
+    state_before = copy.deepcopy(state)
+    changed_fields, failure = server.apply_bgg_data(state, "g-немає", bgg_answer(bggWeight=2.9))
+    expect("невідома коробка",
+           (changed_fields, failure is not None and failure[0]), ([], 404))
+    expect("і стан цілий", state, state_before)
 
     # BGG не сказав нічого нового — тоді й записувати нема чого.
-    стан = copy.deepcopy(ЗРАЗОК)
-    до = copy.deepcopy(стан)
-    поля, вада = server.добрати(
-        стан, "g-base", відповідь(bggWeight=стан["games"][0]["bggWeight"]))
-    так("нічого не змінилося", (поля, вада), ([], None))
-    так("і стан той самий", стан, до)
-    return зле
+    state = copy.deepcopy(SAMPLE)
+    state_before = copy.deepcopy(state)
+    changed_fields, failure = server.apply_bgg_data(
+        state, "g-base", bgg_answer(bggWeight=state["games"][0]["bggWeight"]))
+    expect("нічого не змінилося", (changed_fields, failure), ([], None))
+    expect("і стан той самий", state, state_before)
+    return failures
 
 
-def головне():
-    впало = 0
-    зроблено = 0
+# Група тестів → що друкувати, коли вона вся зелена.
+TEST_GROUPS = [
+    (bgg_tests, "✓ розбір відповіді BGG"),
+    (security_tests, "✓ замки локального сервера"),
+    (consistency_tests, "✓ лад: схема формату й копії списків"),
+    (merge_tests, "✓ злиття: ті самі випадки, що й у сторінці"),
+    (bgg_apply_tests, "✓ добирання з BGG: або кладе, або нічого не міняє"),
+]
 
-    зроблено += 1
-    зле = бгг_тести()
-    if зле:
-        впало += len(зле)
-        for р in зле:
-            print("  ", р)
-    else:
-        print("✓ розбір відповіді BGG")
 
-    зроблено += 1
-    зле = безпека_тести()
-    if зле:
-        впало += len(зле)
-        for р in зле:
-            print("  ", р)
-    else:
-        print("✓ замки локального сервера")
+def main():
+    failed_count = 0
+    run_count = 0
 
-    зроблено += 1
-    зле = лад_тести()
-    if зле:
-        впало += len(зле)
-        for р in зле:
-            print("  ", р)
-    else:
-        print("✓ лад: номер формату й копії списків")
+    for run_group, success_message in TEST_GROUPS:
+        run_count += 1
+        failures = run_group()
+        if failures:
+            failed_count += len(failures)
+            for line in failures:
+                print("  ", line)
+        else:
+            print(success_message)
 
-    зроблено += 1
-    зле = злиття_тести()
-    if зле:
-        впало += len(зле)
-        for р in зле:
-            print("  ", р)
-    else:
-        print("✓ злиття: ті самі випадки, що й у сторінці")
-
-    зроблено += 1
-    зле = добирання_тести()
-    if зле:
-        впало += len(зле)
-        for р in зле:
-            print("  ", р)
-    else:
-        print("✓ добирання з BGG: або кладе, або нічого не міняє")
-
-    зроблено += 1
-    п, з = check.перевірити(copy.deepcopy(ЗРАЗОК))
-    if п:
+    run_count += 1
+    errors, warnings = check.validate(copy.deepcopy(SAMPLE))
+    if errors:
         print("✗ чистий зразок не проходить перевірку:")
-        for р in п:
-            print("    ", р)
-        впало += 1
+        for line in errors:
+            print("    ", line)
+        failed_count += 1
     else:
-        print("✓ чистий зразок проходить" + (f" (застережень: {len(з)})" if з else ""))
+        print("✓ чистий зразок проходить"
+              + (f" (застережень: {len(warnings)})" if warnings else ""))
 
     # Жанр без українського підпису — не помилка: дані цілі, просто сторінка
     # покаже слуг як є. Але мовчати про це не можна, інакше новий жанр
     # заїде в інтерфейс англійською й ніхто не помітить.
-    зроблено += 1
-    с = copy.deepcopy(ЗРАЗОК)
-    с["games"][0]["bggGenres"] = ["card-game", "quantum-ballet"]
-    п, з = check.перевірити(с)
-    if п:
-        впало += 1
-        print(f"✗ невідомий жанр став помилкою, а мав лишитися застереженням: {п}")
-    elif any("немає українського підпису" in р for р in з):
+    run_count += 1
+    state = copy.deepcopy(SAMPLE)
+    state["games"][0]["bggGenres"] = ["card-game", "quantum-ballet"]
+    errors, warnings = check.validate(state)
+    if errors:
+        failed_count += 1
+        print(f"✗ невідомий жанр став помилкою, а мав лишитися застереженням: {errors}")
+    elif any("немає українського підпису" in line for line in warnings):
         print("✓ спіймано: жанр без підпису — застереженням, не помилкою")
     else:
-        впало += 1
-        print(f"✗ ПРОҐАВЛЕНО: жанр без українського підпису; застереження: {з}")
+        failed_count += 1
+        print(f"✗ ПРОҐАВЛЕНО: жанр без українського підпису; застереження: {warnings}")
 
     # Давніший номер формату — теж застереження: так виглядає файл, який
     # востаннє зберіг телефон із кешованою сторінкою. Дані цілі, коміт має
-    # проходити. А от новіший номер лишається помилкою — див. ВАДИ.
-    зроблено += 1
-    с = copy.deepcopy(ЗРАЗОК)
-    с["version"] = check.ВЕРСІЯ_ДАНИХ - 1
-    п, з = check.перевірити(с)
-    if п:
-        впало += 1
-        print(f"✗ давній номер формату став помилкою, а мав бути застереженням: {п}")
-    elif any("давнішого зразка" in р for р in з):
+    # проходити. А от новіший номер лишається помилкою — див. DEFECTS.
+    run_count += 1
+    state = copy.deepcopy(SAMPLE)
+    state["version"] = check.SCHEMA_VERSION - 1
+    errors, warnings = check.validate(state)
+    if errors:
+        failed_count += 1
+        print(f"✗ давній номер формату став помилкою, а мав бути застереженням: {errors}")
+    elif any("давнішого зразка" in line for line in warnings):
         print("✓ спіймано: давній номер формату — застереженням, не помилкою")
     else:
-        впало += 1
-        print(f"✗ ПРОҐАВЛЕНО: давній номер формату; застереження: {з}")
+        failed_count += 1
+        print(f"✗ ПРОҐАВЛЕНО: давній номер формату; застереження: {warnings}")
 
-    for назва, зіпсувати, очікую in ВАДИ:
-        зроблено += 1
-        с = copy.deepcopy(ЗРАЗОК)
-        зіпсувати(с)
-        п, _ = check.перевірити(с)
-        якщо_є = any(очікую in р for р in п)
-        if якщо_є:
-            print(f"✓ спіймано: {назва}")
+    for name, break_state, expected_text in DEFECTS:
+        run_count += 1
+        state = copy.deepcopy(SAMPLE)
+        break_state(state)
+        errors, _ = check.validate(state)
+        if any(expected_text in line for line in errors):
+            print(f"✓ спіймано: {name}")
         else:
-            впало += 1
-            print(f"✗ ПРОҐАВЛЕНО: {назва} — чекав «{очікую}», а маю: {п or 'жодної помилки'}")
+            failed_count += 1
+            print(f"✗ ПРОҐАВЛЕНО: {name} — чекав «{expected_text}», "
+                  f"а маю: {errors or 'жодної помилки'}")
 
     print()
-    if впало:
-        print(f"✗ Провалено перевірок: {впало}")
+    if failed_count:
+        print(f"✗ Провалено перевірок: {failed_count}")
         return 1
-    print(f"✓ Усі {зроблено} перевірок пройдено")
+    print(f"✓ Усі {run_count} перевірок пройдено")
     return 0
 
 
 if __name__ == "__main__":
-    sys.exit(головне())
+    sys.exit(main())

@@ -143,7 +143,7 @@ button{cursor:pointer}
 .seg.abc button{min-width:27px; padding:0 5px; text-align:center;
   font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:12.5px}
 /* «усі» — слово, а не літера, тож фіксоване поле йому лише шкодить. */
-.seg.abc button[data-v="all"]{min-width:0; padding:0 8px;
+.seg.abc button[data-value="all"]{min-width:0; padding:0 8px;
   font-family:"IBM Plex Sans","Segoe UI",system-ui,sans-serif; font-size:13px}
 
 /* ── плашки ввімкненого ────────────────────────────────────────────────
@@ -442,11 +442,11 @@ button{cursor:pointer}
 .chip.tag{height:26px; padding:0 10px; font-size:12.5px; color:var(--ink-faint);
   border-color:var(--rule-soft)}
 .chip.tag:hover{border-color:var(--petrol); color:var(--petrol)}
-.chip.tag.рід{color:var(--petrol); border-color:var(--petrol); font-weight:600}
+.chip.tag.family{color:var(--petrol); border-color:var(--petrol); font-weight:600}
 /* Ключові жанри — ті, що є в другій стрічці фільтрів. Помітніші за
    решту категорій, тихіші за родину: рівно стільки ваги, скільки
    вони важать у навігації. */
-.chip.tag.ключ{color:var(--ink-soft); border-color:var(--rule)}
+.chip.tag.key-genre{color:var(--ink-soft); border-color:var(--rule)}
 .chip.tied{background:var(--sunk); color:var(--ink); border-style:dashed}
 .chip.tied b{margin-left:7px; color:var(--ink-faint); font-weight:600}
 .chip.tied:hover b{color:var(--rust)}
