@@ -344,8 +344,8 @@ const ui = {sort:"score", rev:false, hide:new Set(), cmp:false,
             picked:new Set(), open:null};
 
 const $ = (id) => document.getElementById(id);
-const esc = (s) => String(s == null ? "" : s).replace(/[&<>"]/g, (c) =>
-  ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]));
+const esc = (s) => String(s == null ? "" : s).replace(/[&<>"']/g, (c) =>
+  ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));
 
 /* Адреса, яку не страшно покласти в href чи src.
 
